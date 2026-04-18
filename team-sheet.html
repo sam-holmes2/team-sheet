@@ -1,0 +1,3455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>team-sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:        #07070b;
+  --surface:   #0b0b10;
+  --card:      #0e0e15;
+  --border:    #18181f;
+  --border-hi: #232332;
+  --gold:      #c8a84a;
+  --gold-dim:  rgba(200,168,74,0.09);
+  --text:      #cec8b4;
+  --text-b:    #e4dec8;
+  --text-mid:  #908a78;
+  --text-dim:  #504c44;
+  --mono:      'JetBrains Mono', monospace;
+  --help:      #2da86a;
+  --help-dim:  rgba(45,168,106,0.12);
+  --help-border: rgba(45,168,106,0.35);
+  /* Role colours */
+  --manager:   #3a80c8;
+  --manager-bg: rgba(58,128,200,0.08);
+  --firefighter: #d07830;
+  --firefighter-bg: rgba(208,120,48,0.08);
+  --exile:     #60a838;
+  --exile-bg:  rgba(96,168,56,0.08);
+  --self-color: #e8dfc8;
+  --self-bg:   rgba(232,223,200,0.06);
+  --part-color-popover-bg: #14141e;
+}
+html, body { height:100%; }
+html { background:var(--bg); overflow-x:hidden; }
+body {
+  color:var(--text); font-family:'Crimson Pro',Georgia,serif;
+  font-size:18px; line-height:1.65;
+  padding:24px 40px 24px;
+  overflow-x:hidden;
+  max-width:1400px; margin:0 auto;
+  display:flex; flex-direction:column;
+}
+/* ── Typography ── */
+h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
+.system-title {
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(20px,3vw,32px);
+  color:var(--gold); letter-spacing:0.06em;
+  margin-bottom:4px;
+}
+.system-desc { font-size:15px; color:var(--text-dim); margin-bottom:0; font-style:italic; }
+.header-insights { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+.header-insight {
+  display:flex; align-items:baseline; gap:8px;
+  font-size:14px; line-height:1.45;
+}
+.header-insight-label {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--text-dim); white-space:nowrap; flex-shrink:0;
+}
+.header-insight-text { color:var(--text-mid); font-style:italic; }
+.journal-overview { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(128,144,168,0.15); }
+.journal-overview-title { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; }
+
+/* ── Header ── */
+.sticky-top {
+  position:sticky; top:0; z-index:101;
+  background:var(--bg); padding-top:8px; margin-top:-8px;
+  flex-shrink:0;
+}
+.app-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  margin-bottom:28px; gap:16px; flex-wrap:wrap;
+}
+.app-header-left { flex:1; min-width:200px; }
+.app-header-right { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+.app-header-right-btns { display:flex; gap:8px; align-items:center; }
+.header-btn {
+  background:var(--card); border:1px solid var(--border-hi);
+  color:var(--text-mid); font-family:'Cinzel',serif;
+  font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+  padding:7px 14px; border-radius:4px; cursor:pointer;
+  transition:all 0.15s;
+}
+.header-btn:hover { color:var(--text-b); border-color:var(--gold); }
+.header-btn.import-btn { color:var(--help); border-color:var(--help-border); background:var(--help-dim); }
+.header-btn.import-btn:hover { background:rgba(45,168,106,0.2); }
+
+.app-disclaimer {
+  font-size:12px; color:#c07070; font-style:italic;
+  margin:0; line-height:1.4; opacity:0.8; text-align:right; width:max-content; max-width:480px;
+}
+
+/* ── Tab nav ── */
+.tab-nav {
+  display:flex; gap:4px; margin-bottom:24px;
+  border-bottom:1px solid var(--border); padding-bottom:0;
+  justify-content:center;
+  overflow-x:auto; flex-wrap:nowrap;
+}
+.tab-btn {
+  font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--text-dim);
+  background:none; border:none; border-bottom:2px solid transparent;
+  padding:10px 20px; cursor:pointer;
+  white-space:nowrap; margin-bottom:-1px;
+  transition:all 0.15s;
+}
+.tab-btn:hover { color:var(--text-mid); }
+.tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+/* ── Tab panels ── */
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+/* Map + Self tabs fill remaining viewport height */
+#tab-map, #tab-self { flex:1; display:none; min-height:0; overflow:hidden; }
+#tab-map.active { display:flex; flex-direction:row; gap:12px; }
+#tab-self.active { display:flex; flex-direction:column; }
+
+/* ── Cards ── */
+.card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:6px; padding:18px 20px; margin-bottom:16px;
+}
+.card-hdr {
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--text-dim);
+  margin-bottom:12px;
+}
+.card-hdr.gold { color:var(--gold); }
+.section-heading {
+  font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.16em;
+  text-transform:uppercase; color:var(--gold);
+  margin-bottom:6px;
+}
+
+/* ── Role tags ── */
+.role-tag {
+  display:inline-block;
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em;
+  text-transform:uppercase; padding:2px 8px; border-radius:3px;
+  font-weight:600;
+}
+.role-tag.manager   { background:var(--manager-bg);    color:var(--manager);    border:1px solid rgba(58,128,200,0.3); }
+.role-tag.firefighter { background:var(--firefighter-bg); color:var(--firefighter); border:1px solid rgba(208,120,48,0.3); }
+.role-tag.exile     { background:var(--exile-bg);      color:var(--exile);      border:1px solid rgba(96,168,56,0.3); }
+
+/* ── Part color swatch ── */
+.part-color-swatch {
+  width:16px; height:16px; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.18);
+  cursor:pointer; flex-shrink:0;
+  transition:border-color 0.15s, transform 0.1s;
+  position:relative;
+}
+.part-color-swatch:hover { border-color:rgba(255,255,255,0.5); transform:scale(1.15); }
+.part-color-popover {
+  background:var(--part-color-popover-bg);
+  border:1px solid var(--border-hi);
+  border-radius:6px; padding:10px 12px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.7);
+  min-width:180px;
+}
+.part-color-popover-shades {
+  display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;
+}
+.part-color-shade-btn {
+  width:22px; height:22px; border-radius:50%;
+  border:2px solid transparent; cursor:pointer;
+  transition:border-color 0.1s, transform 0.1s;
+}
+.part-color-shade-btn:hover,
+.part-color-shade-btn.selected { border-color:rgba(255,255,255,0.7); transform:scale(1.15); }
+.part-color-popover-custom {
+  display:flex; align-items:center; gap:6px; margin-top:4px;
+}
+.part-color-popover-custom label {
+  font-size:11px; color:var(--text-dim); flex-shrink:0; font-family:var(--mono);
+}
+.part-color-hex-input {
+  flex:1; background:var(--card); border:1px solid var(--border-hi);
+  color:var(--text); font-family:var(--mono); font-size:11px;
+  padding:3px 6px; border-radius:3px; min-width:0;
+}
+.part-color-hex-input:focus { outline:none; border-color:var(--gold); }
+.part-color-native {
+  width:26px; height:26px; border:none; padding:0;
+  border-radius:3px; cursor:pointer; background:none;
+  flex-shrink:0;
+}
+
+/* ── Editable fields ── */
+.editable {
+  outline:none; border-radius:3px;
+  padding:2px 4px; margin:-2px -4px;
+  min-height:1.4em; cursor:text;
+  transition:background 0.15s;
+}
+.editable:empty::before { content:attr(data-placeholder); color:var(--text-dim); font-style:italic; }
+.editable:hover { background:rgba(255,255,255,0.03); }
+.editable:focus { background:rgba(255,255,255,0.05); box-shadow:0 0 0 1px var(--border-hi); }
+
+/* ── Lock button ── */
+.lock-btn {
+  background:none; border:none; cursor:pointer;
+  font-size:13px; opacity:0.4; padding:2px 4px;
+  transition:opacity 0.15s; vertical-align:middle; flex-shrink:0;
+}
+.lock-btn:hover { opacity:0.8; }
+.lock-btn.locked { opacity:1; }
+
+/* ── Field rows ── */
+.field-row {
+  display:flex; align-items:flex-start; gap:6px;
+  margin-bottom:10px;
+}
+.field-label {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-dim);
+  min-width:110px; padding-top:3px; flex-shrink:0;
+}
+.field-value { flex:1; }
+
+/* ── Part cards (Parts tab) ── */
+.part-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:6px; margin-bottom:12px; overflow:hidden;
+}
+.part-card-header {
+  display:flex; align-items:center; gap:10px;
+  padding:14px 18px; cursor:pointer;
+  transition:background 0.15s;
+}
+.part-card-header:hover { background:rgba(255,255,255,0.02); }
+.part-card-name {
+  font-family:'Cinzel',serif; font-size:15px; color:var(--text-b);
+  flex:0 1 auto; min-width:60px; max-width:220px; outline:none;
+}
+.part-card-name:empty::before { content:'Part name'; color:var(--text-dim); font-style:italic; }
+.part-card-name:focus { background:rgba(255,255,255,0.05); border-radius:3px; padding:0 4px; margin:0 -4px; }
+.part-card-body { display:none; padding:0 18px 18px; border-top:1px solid var(--border); }
+.part-card.expanded .part-card-body { display:block; }
+.part-card.expanded .part-card-header { background:rgba(255,255,255,0.02); }
+
+/* ── Part card body layout ── */
+.part-section {
+  margin-top:16px;
+}
+.part-section-label {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-dim);
+  margin-bottom:6px;
+}
+.part-fields-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:0 24px;
+  margin-top:16px;
+}
+.part-fields-grid .part-section { margin-top:0; margin-bottom:14px; }
+.part-divider {
+  border:none; border-top:1px solid var(--border);
+  margin:18px 0 0;
+}
+
+/* ── Exile warning ── */
+.exile-warning {
+  background:rgba(96,168,56,0.06); border:1px solid rgba(96,168,56,0.2);
+  border-radius:4px; padding:10px 14px; font-size:14px;
+  color:var(--exile); margin:12px 0; line-height:1.5;
+}
+
+/* ── Relationship table ── */
+.rel-table { width:100%; border-collapse:collapse; font-size:14px; margin-top:12px; }
+.rel-table th {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-dim);
+  text-align:left; padding:6px 10px; border-bottom:1px solid var(--border);
+}
+.rel-table td {
+  padding:7px 10px; border-bottom:1px solid rgba(24,24,31,0.7);
+  vertical-align:top;
+}
+.rel-table tr:last-child td { border-bottom:none; }
+.rel-table .part-ref {
+  font-family:'Cinzel',serif; font-size:11px; color:var(--text-mid);
+  white-space:nowrap;
+}
+.dynamic-badge {
+  display:inline-block; font-family:var(--mono); font-size:10px;
+  padding:1px 6px; border-radius:2px; white-space:nowrap;
+}
+.dynamic-badge.polarized { background:rgba(192,64,64,0.15); color:#c06060; border:1px solid rgba(192,64,64,0.3); }
+.dynamic-badge.protective { background:rgba(128,144,168,0.1); color:#8090a8; border:1px solid rgba(128,144,168,0.25); }
+.dynamic-badge.allied { background:rgba(200,168,74,0.1); color:var(--gold); border:1px solid rgba(200,168,74,0.25); }
+.dynamic-badge.distant { background:rgba(80,76,68,0.2); color:var(--text-dim); border:1px solid rgba(80,76,68,0.3); }
+.dynamic-badge.unknown { background:rgba(30,30,40,0.4); color:var(--text-dim); border:1px solid rgba(40,40,50,0.4); }
+
+/* ── Add / delete buttons ── */
+.btn-ghost {
+  background:none; border:1px solid var(--border-hi); color:var(--text-mid);
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.1em;
+  text-transform:uppercase; padding:6px 14px; border-radius:4px;
+  cursor:pointer; transition:all 0.15s;
+}
+.btn-ghost:hover { color:var(--text-b); border-color:var(--gold); }
+.btn-primary {
+  background:var(--help-dim); border:1px solid var(--help-border);
+  color:var(--help); font-family:'Cinzel',serif; font-size:11px;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:6px 14px; border-radius:4px; cursor:pointer;
+  transition:all 0.15s;
+}
+.btn-primary:hover { background:rgba(45,168,106,0.2); }
+.btn-danger {
+  background:none; border:1px solid rgba(192,64,64,0.4); color:#c06060;
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.1em;
+  text-transform:uppercase; padding:5px 12px; border-radius:4px;
+  cursor:pointer; transition:all 0.15s;
+}
+.btn-danger:hover { background:rgba(192,64,64,0.1); }
+
+/* ── MAP tab ── */
+#map-container {
+  position:relative; flex:1; min-width:0; min-height:0;
+  border:1px solid var(--border); border-radius:6px;
+  overflow:hidden; background:var(--surface);
+}
+#map-canvas { display:block; width:100%; height:100%; }
+.map-legend {
+  display:flex; flex-direction:column; gap:0;
+  width:220px; flex-shrink:0; align-self:stretch;
+  font-size:15px; color:var(--text);
+  padding:20px 18px; background:var(--surface); border:1px solid var(--border); border-radius:6px;
+  overflow-y:auto; min-height:0;
+}
+.map-legend-section { display:flex; flex-direction:column; gap:10px; padding:16px 0; }
+.map-legend-section:first-child { padding-top:4px; }
+.map-legend-heading {
+  font-family:'Cinzel',serif; font-size:11px; text-transform:uppercase;
+  letter-spacing:0.1em; color:var(--gold); margin-bottom:4px;
+}
+.map-legend-divider { height:1px; background:var(--border); }
+.map-legend-item { display:flex; align-items:center; gap:10px; }
+.map-legend-line { width:48px; height:12px; flex-shrink:0; }
+.map-legend-node { border-radius:50%; flex-shrink:0; display:inline-block; }
+.map-legend-dot { width:13px; height:13px; border-radius:50%; flex-shrink:0; }
+.map-legend-hint { padding-top:16px; margin-top:16px; border-top:1px solid var(--border); font-size:12px; color:var(--text-dim); font-style:italic; }
+
+/* ── BALANCE / distribution ── */
+#balance-timeline {
+  display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;
+}
+.balance-snapshot {
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  cursor:pointer; transition:opacity 0.15s;
+}
+.balance-snapshot:hover { opacity:0.8; }
+.balance-snapshot-date {
+  font-family:var(--mono); font-size:11px; color:var(--text-dim);
+}
+#balance-summary { margin-bottom:24px; }
+/* ── Parts tab distribution pies ── */
+.parts-dist-row {
+  display:flex; gap:32px; flex-wrap:wrap; margin-bottom:28px;
+  padding-bottom:24px; border-bottom:1px solid var(--border);
+}
+.parts-dist-card { display:flex; flex-direction:column; gap:10px; }
+.parts-dist-label {
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-dim);
+}
+.parts-dist-pie-row { display:flex; align-items:flex-start; gap:16px; }
+/* ── Stacked area chart ── */
+#balance-area-wrap { position:relative; width:100%; margin-bottom:8px; }
+#balance-area-canvas { display:block; width:100%; }
+.balance-area-legend {
+  display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; font-size:13px;
+}
+.balance-area-legend-item {
+  display:flex; align-items:center; gap:6px; color:var(--text-dim);
+}
+.balance-area-legend-dot {
+  width:10px; height:10px; border-radius:50%; flex-shrink:0;
+}
+/* ── Session pie in Journal cards ── */
+.session-pie-row {
+  display:flex; align-items:center; gap:10px; margin-top:10px;
+}
+.session-pie-label {
+  font-family:var(--mono); font-size:10px; color:var(--text-dim);
+  text-transform:uppercase; letter-spacing:0.08em;
+}
+
+/* ── SELF tab ── */
+.self-layout {
+  display:flex; gap:32px; align-items:center; flex:1; min-height:0;
+}
+.self-wheel-col { flex-shrink:0; display:flex; align-items:center; justify-content:center; height:100%; }
+.self-right-col { flex:1; min-width:0; align-self:center; }
+#self-wheel-canvas { display:block; cursor:pointer; width:auto; height:min(560px, 100%); max-width:100%; }
+
+/* Floating tooltip */
+#wheel-tooltip {
+  position:fixed; pointer-events:none; z-index:9999;
+  background:#12121a; border:1px solid rgba(232,223,200,0.18);
+  border-radius:6px; padding:10px 14px; max-width:280px;
+  font-family:'Crimson Pro',Georgia,serif; font-size:14px;
+  color:var(--text-mid); line-height:1.5;
+  box-shadow:0 4px 24px rgba(0,0,0,0.6);
+  opacity:0; transition:opacity 0.12s;
+}
+#wheel-tooltip.visible { opacity:1; }
+#wheel-tooltip .tt-title {
+  font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--self-color); margin-bottom:5px;
+}
+#wheel-tooltip .tt-dist {
+  font-size:13px; color:var(--text-dim); font-style:italic;
+  margin-top:5px; padding-top:5px; border-top:1px solid var(--border);
+}
+#wheel-tooltip .tt-moment-text {
+  color:var(--text); font-size:14px;
+}
+#wheel-tooltip .tt-moment-date {
+  font-family:var(--mono); font-size:11px; color:var(--text-dim); margin-bottom:3px;
+}
+
+/* Detail panel */
+#self-detail-panel {
+  background:var(--card); border:1px solid var(--border-hi);
+  border-radius:8px; padding:20px 24px; margin-bottom:28px;
+  display:none;
+}
+#self-detail-panel.open { display:block; }
+.sdp-hdr {
+  display:flex; align-items:baseline; gap:12px; margin-bottom:6px;
+}
+.sdp-name {
+  font-family:'Cinzel',serif; font-size:18px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--self-color);
+}
+.sdp-count {
+  font-family:var(--mono); font-size:12px; color:var(--text-dim);
+}
+.sdp-desc { font-size:15px; color:var(--text-mid); line-height:1.55; margin-bottom:6px; }
+.sdp-distinction {
+  font-size:14px; color:var(--text-dim); font-style:italic;
+  padding:8px 12px; border-left:2px solid rgba(232,223,200,0.15);
+  margin-bottom:18px;
+}
+.sdp-moments { margin-bottom:14px; }
+.sdp-section-label {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--text-dim); margin:14px 0 4px;
+}
+
+.moment-entry {
+  display:flex; gap:12px; padding:10px 0;
+  border-bottom:1px solid rgba(24,24,31,0.5); font-size:15px;
+}
+.moment-entry:last-child { border-bottom:none; }
+.moment-date { font-family:var(--mono); font-size:12px; color:var(--text-dim); min-width:80px; padding-top:2px; }
+.moment-desc { flex:1; }
+.moment-quality-tag {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.08em;
+  text-transform:uppercase; padding:2px 7px; border-radius:3px;
+  background:rgba(232,223,200,0.07); color:var(--self-color);
+  border:1px solid rgba(232,223,200,0.15);
+  align-self:flex-start; flex-shrink:0;
+}
+
+/* ── JOURNAL tab ── */
+.session-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:6px; margin-bottom:12px; overflow:hidden;
+}
+.session-header {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 18px; cursor:pointer; transition:background 0.15s;
+}
+.session-header:hover { background:rgba(255,255,255,0.02); }
+.session-date { font-family:var(--mono); font-size:12px; color:var(--text-dim); }
+.session-title { font-family:'Cinzel',serif; font-size:14px; color:var(--text-b); flex:1; }
+.session-body { display:none; padding:0 18px 18px; border-top:1px solid var(--border); }
+.session-card.expanded .session-body { display:block; }
+.session-parts-tags {
+  display:flex; gap:6px; flex-wrap:wrap; margin:10px 0;
+}
+.session-part-tag {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.08em;
+  text-transform:uppercase; padding:2px 8px; border-radius:3px;
+  background:var(--surface); border:1px solid var(--border-hi);
+  color:var(--text-dim); cursor:pointer; transition:color 0.15s, border-color 0.15s;
+}
+.session-part-tag:hover { color:var(--gold); border-color:var(--gold); }
+.session-system-read {
+  background:var(--surface); border-left:3px solid var(--gold);
+  padding:10px 14px; margin-top:12px; font-size:15px;
+  color:var(--text-mid); line-height:1.55; border-radius:0 4px 4px 0;
+}
+.session-system-read-label {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--gold); margin-bottom:6px;
+}
+.journal-starters {
+  margin-bottom:24px;
+}
+.starters-toggle {
+  background:none; border:1px solid var(--border-hi); color:var(--text-dim);
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.12em;
+  text-transform:uppercase; padding:8px 16px; border-radius:4px;
+  cursor:pointer; display:flex; align-items:center; gap:8px;
+  transition:all 0.15s;
+}
+.starters-toggle:hover { color:var(--text-mid); border-color:var(--text-dim); }
+.starters-body { display:none; margin-top:10px; }
+.starters-body.open { display:block; }
+.starter-row {
+  display:flex; align-items:center; gap:10px;
+  padding:7px 0; border-bottom:1px solid rgba(24,24,31,0.5);
+  font-size:15px; color:var(--text-mid);
+}
+.starter-row:last-child { border-bottom:none; }
+.starter-copy-btn {
+  background:none; border:1px solid var(--border-hi); color:var(--text-dim);
+  font-family:var(--mono); font-size:11px; padding:3px 10px;
+  border-radius:3px; cursor:pointer; flex-shrink:0; transition:all 0.15s;
+}
+.starter-copy-btn:hover { color:var(--text-mid); border-color:var(--text-mid); }
+
+/* ── Modals ── */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(7,7,11,0.85);
+  display:none; align-items:center; justify-content:center;
+  z-index:1000; padding:20px;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--card); border:1px solid var(--border-hi);
+  border-radius:8px; padding:28px 32px; max-width:620px;
+  width:100%; position:relative; max-height:90vh; overflow-y:auto;
+}
+.modal-close {
+  position:absolute; top:12px; right:14px;
+  background:none; border:none; color:var(--text-dim);
+  font-size:22px; cursor:pointer; line-height:1; padding:4px 8px;
+}
+.modal-close:hover { color:var(--text-b); }
+.modal-title {
+  font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.18em;
+  text-transform:uppercase; margin-bottom:14px;
+}
+.modal textarea {
+  width:100%; min-height:180px; background:var(--surface);
+  border:1px solid var(--border-hi); color:var(--text);
+  font-family:var(--mono); font-size:13px; padding:10px;
+  border-radius:4px; resize:vertical; margin:10px 0;
+}
+.modal-row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+.modal-status { font-family:var(--mono); font-size:13px; }
+.modal-status.ok { color:var(--help); }
+.modal-status.err { color:#c07070; }
+.modal p { font-size:15px; color:var(--text-mid); margin-bottom:10px; line-height:1.55; }
+.export-textarea {
+  width:100%; min-height:160px; background:var(--surface);
+  border:1px solid var(--border-hi); color:var(--text-mid);
+  font-family:var(--mono); font-size:12px; padding:10px;
+  border-radius:4px; resize:vertical;
+}
+.export-warn {
+  display:none; padding:8px 12px; border-radius:4px;
+  font-size:14px; line-height:1.4; margin:8px 0;
+}
+.context-note { font-family:var(--mono); font-size:12px; color:var(--text-dim); margin:6px 0; }
+
+/* ── Confirm modal ── */
+#confirm-modal .modal { max-width:380px; }
+
+/* ── Toast ── */
+#toast {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+  background:var(--card); border:1px solid var(--help-border);
+  color:var(--help); font-family:var(--mono); font-size:13px;
+  padding:10px 20px; border-radius:4px; z-index:2000;
+  opacity:0; transition:opacity 0.3s; pointer-events:none;
+  white-space:nowrap;
+}
+#toast.show { opacity:1; }
+
+/* ── Welcome modal ── */
+#welcome-modal .modal { max-width:520px; }
+#welcome-modal h2 {
+  font-family:'Cinzel',serif; font-size:18px; color:var(--gold);
+  margin-bottom:12px; letter-spacing:0.08em;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border-hi); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:var(--text-dim); }
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  body { padding:16px 16px 60px; font-size:16px; }
+  .app-header { flex-direction:column; }
+  .tab-btn { padding:8px 10px; font-size:10px; }
+  #tab-map.active { flex-direction:column; }
+  .map-legend { width:100%; flex-shrink:0; align-self:auto; max-height:180px; overflow-y:auto; }
+}
+@media(min-width:601px) and (max-width:900px){
+  .map-legend { width:170px; }
+}
+
+/* ── Map tooltip ── */
+#map-tooltip {
+  position:fixed; background:var(--card); border:1px solid var(--border-hi);
+  border-radius:4px; padding:8px 12px; font-size:13px;
+  pointer-events:none; z-index:500; display:none;
+  max-width:220px; line-height:1.4;
+}
+#map-tooltip .tt-name { font-family:'Cinzel',serif; font-size:12px; color:var(--text-b); margin-bottom:3px; }
+#map-tooltip .tt-overview { color:var(--text-mid); font-size:13px; }
+
+/* ── Overview line ── */
+.part-overview-row {
+  display:flex; align-items:flex-start; gap:6px; margin:10px 0 14px;
+}
+.part-overview-text {
+  flex:1; font-size:15px; color:var(--text-mid); font-style:italic;
+}
+
+/* ── Select (dynamic dropdown) ── */
+.inline-select {
+  background:var(--surface); border:1px solid var(--border-hi);
+  color:var(--text-mid); font-family:'Cinzel',serif; font-size:11px;
+  letter-spacing:0.08em; padding:3px 8px; border-radius:3px; cursor:pointer;
+  outline:none; -webkit-appearance:none; appearance:none;
+}
+.inline-select:focus { border-color:var(--gold); }
+
+/* ── Last updated note ── */
+.last-updated { font-family:var(--mono); font-size:11px; color:var(--text-dim); margin-top:8px; }
+
+/* ── Section headings inside parts ── */
+.part-section-hdr {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--text-dim);
+  margin:16px 0 8px; padding-bottom:4px;
+  border-bottom:1px solid var(--border);
+}
+
+/* ── Help modal ── */
+.help-cols { display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin-bottom:16px; }
+.help-col { padding:0 18px; border-right:1px solid var(--border-hi); }
+.help-col:first-child { padding-left:0; }
+.help-col:last-child { border-right:none; padding-right:0; }
+.help-col-hdr {
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--help); margin-bottom:12px; padding-bottom:8px;
+  border-bottom:1px solid var(--help-border);
+}
+.help-step { display:flex; gap:9px; padding:7px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+.help-step:last-child { border-bottom:none; }
+.help-step-num { font-family:var(--mono); font-size:14px; color:var(--help); flex-shrink:0; width:18px; padding-top:2px; opacity:0.7; }
+.help-step-text { font-size:15px; color:var(--text-mid); line-height:1.5; flex:1; }
+.help-step-text strong { color:var(--text-b); font-weight:600; }
+.help-note { font-size:14px; color:var(--text-dim); font-style:italic; line-height:1.5; padding:7px 0 5px; border-bottom:1px solid var(--border); }
+.help-note:last-child { border-bottom:none; }
+#help-modal .modal { max-width:860px; border-top:3px solid var(--help); }
+#help-modal .modal-title { color:var(--help); }
+@media(max-width:700px){
+  .help-cols { grid-template-columns:1fr; }
+  .help-col { border-right:none; border-bottom:1px solid var(--border-hi); padding:0 0 14px; margin-bottom:14px; }
+  .help-col:last-child { border-bottom:none; margin-bottom:0; }
+}
+
+/* ── Settings modal ── */
+.settings-section { margin-bottom:18px; }
+.settings-label { font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.18em; color:var(--text-dim); text-transform:uppercase; margin-bottom:8px; }
+.settings-pin-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.settings-pin-input {
+  background:var(--surface); border:1px solid var(--border-hi); border-radius:6px;
+  color:var(--text-b); font-family:var(--mono); font-size:15px; letter-spacing:0.1em;
+  padding:7px 12px; flex:1; min-width:140px; outline:none; transition:border-color 0.15s;
+}
+.settings-pin-input:focus { border-color:var(--gold); }
+.settings-select {
+  background:var(--surface); border:1px solid var(--border-hi); border-radius:6px;
+  color:var(--text-b); font-family:'Crimson Pro',serif; font-size:16px;
+  padding:7px 12px; outline:none; cursor:pointer;
+}
+.settings-select:focus { border-color:var(--gold); }
+.settings-status { font-size:15px; color:var(--text-dim); margin-top:6px; min-height:18px; }
+.settings-status.ok  { color:#3a8050; }
+.settings-status.err { color:#903030; }
+.settings-danger-zone { border-top:1px solid rgba(200,60,60,0.25); padding-top:16px; margin-top:4px; }
+.settings-danger-label { font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.18em; color:#c84040; text-transform:uppercase; margin-bottom:8px; }
+#reset-confirm-row { display:none; margin-top:10px; padding:12px 14px; background:rgba(200,60,60,0.08); border:1px solid rgba(200,60,60,0.3); border-radius:8px; }
+
+/* ── Lock screen ── */
+#lock-screen {
+  display:none; position:fixed; inset:0; z-index:2000;
+  background:var(--bg); align-items:center; justify-content:center;
+  flex-direction:column; gap:16px;
+}
+#lock-screen.open { display:flex; }
+.lock-title { font-family:'Cinzel Decorative',serif; font-size:22px; color:var(--gold); letter-spacing:0.08em; }
+.lock-subtitle { font-size:15px; color:var(--text-dim); }
+.lock-pin-row { display:flex; gap:10px; align-items:center; }
+.lock-pin-input {
+  background:var(--surface); border:1px solid var(--border-hi); border-radius:6px;
+  color:var(--text-b); font-family:var(--mono); font-size:16px;
+  padding:9px 14px; width:220px; outline:none; transition:border-color 0.15s, box-shadow 0.15s;
+}
+.lock-pin-input:focus { border-color:var(--gold); }
+.lock-pin-input.error { border-color:#c84040; box-shadow:0 0 0 2px rgba(200,60,60,0.15); }
+.lock-error { font-size:14px; color:#c84040; min-height:18px; }
+
+/* ── TIMELINE tab uses balance-area-canvas (see #balance-area-wrap styles above) ── */
+
+/* ── Reset undo banner ── */
+#reset-undo-banner { display:none; position:fixed; top:12px; right:16px; z-index:3000; background:rgba(180,60,30,0.95); color:#fff; font-size:13px; padding:7px 12px; border-radius:6px; align-items:center; gap:10px; box-shadow:0 2px 12px rgba(0,0,0,0.4); }
+#reset-undo-banner.visible { display:flex; }
+#reset-undo-banner button { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); color:#fff; border-radius:5px; cursor:pointer; font-size:13px; padding:3px 12px; white-space:nowrap; }
+#reset-undo-banner button:hover { background:rgba(255,255,255,0.25); }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER + NAV (sticky) ════════════════════════════════════ -->
+<div class="sticky-top">
+<header class="app-header">
+  <div class="app-header-left">
+    <div class="system-title" id="system-title-display">Your Inner System</div>
+    <div class="header-insights">
+      <div class="header-insight">
+        <span class="header-insight-label">Key question</span>
+        <span class="header-insight-text" id="header-key-question">What's going on inside?</span>
+      </div>
+      <div class="header-insight">
+        <span class="header-insight-label">Key experiment</span>
+        <span class="header-insight-text" id="header-key-experiment">What might change if I understood myself more clearly?</span>
+      </div>
+    </div>
+  </div>
+  <div class="app-header-right">
+    <div class="app-header-right-btns">
+      <button class="header-btn" onclick="openHelpModal()" title="Help: how to use team-sheet with your AI">? Help</button>
+      <button class="header-btn" onclick="openSettingsModal()" title="Security and password protection">&#9881; Security</button>
+      <button class="header-btn" id="lock-btn" onclick="lockApp()" title="Lock app" style="display:none;">&#11042; Lock</button>
+      <button class="header-btn import-btn" onclick="openModal()">&#8593;&nbsp; Import</button>
+      <button class="header-btn" onclick="openExport()">&#8595;&nbsp; Export</button>
+    </div>
+    <p class="app-disclaimer">team-sheet is intended as a supplement to a professional IFS therapist, not a replacement.<br>All data is estimated and open to change.</p>
+  </div>
+</header>
+
+<!-- ══ TAB NAV ══════════════════════════════════════════════════ -->
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="map"     onclick="switchTab('map')"      title="System Map: a visual overview of all your parts and how they relate to each other. Nodes are sized by prominence; edges show relationship dynamics.">Map</button>
+  <button class="tab-btn"        data-tab="parts"   onclick="switchTab('parts')"    title="Parts: the full roster of your inner parts. Each part has a role (manager, firefighter, or exile), a function, and a relationship to Self and to each other.">Parts</button>
+  <button class="tab-btn"        data-tab="self"    onclick="switchTab('self')"     title="Self: your natural ground state, the witnessing presence that was never wounded. The 8 Cs and 5 Ps describe qualities that arise when Self is present.">Self</button>
+  <button class="tab-btn"        data-tab="journal"  onclick="switchTab('journal')"  title="Journal: a log of your sessions. Each entry captures what was explored, which parts were active, and any Self-led moments that emerged.">Journal</button>
+  <button class="tab-btn"        data-tab="timeline" onclick="switchTab('timeline')" title="Timeline: a horizontal chart showing when each part is believed to have emerged. Self is the baseline from birth; parts arise in response to experience.">Timeline</button>
+</nav>
+</div>
+
+<!-- ══ TAB: MAP ══════════════════════════════════════════════════ -->
+<div id="tab-map" class="tab-panel active">
+  <div id="map-container">
+    <canvas id="map-canvas"></canvas>
+  </div>
+  <div class="map-legend">
+    <div class="map-legend-section">
+      <span class="map-legend-heading">Roles</span>
+      <div id="role-colors-editor"></div>
+    </div>
+    <div class="map-legend-divider"></div>
+    <div class="map-legend-section">
+      <span class="map-legend-heading">Node size</span>
+      <span class="map-legend-item"><span class="map-legend-node" style="width:18px;height:18px;background:var(--text-dim);opacity:0.5;"></span>Less active</span>
+      <span class="map-legend-item"><span class="map-legend-node" style="width:30px;height:30px;background:var(--text-dim);opacity:0.5;"></span>More active</span>
+    </div>
+    <div class="map-legend-divider"></div>
+    <div class="map-legend-section">
+      <span class="map-legend-heading">Relationships</span>
+      <span class="map-legend-item"><svg class="map-legend-line" viewBox="0 0 40 10"><line x1="0" y1="5" x2="32" y2="5" stroke="rgba(128,144,168,0.8)" stroke-width="1.5"/><polygon points="32,5 22,2 22,8" fill="rgba(128,144,168,0.9)"/></svg>Protective</span>
+      <span class="map-legend-item"><svg class="map-legend-line" viewBox="0 0 40 10"><line x1="0" y1="5" x2="40" y2="5" stroke="rgba(200,168,74,0.8)" stroke-width="2.5"/></svg>Allied</span>
+      <span class="map-legend-item"><svg class="map-legend-line" viewBox="0 0 40 10"><line x1="0" y1="5" x2="40" y2="5" stroke="rgba(192,64,64,0.8)" stroke-width="2"/></svg>Polarised</span>
+      <span class="map-legend-item"><svg class="map-legend-line" viewBox="0 0 40 10"><line x1="0" y1="5" x2="40" y2="5" stroke="rgba(80,76,68,0.7)" stroke-width="1" stroke-dasharray="5,5"/></svg>Distant</span>
+    </div>
+    <span class="map-legend-hint">Click a node to open its profile</span>
+  </div>
+</div>
+
+<!-- ══ TAB: PARTS ════════════════════════════════════════════════ -->
+<div id="tab-parts" class="tab-panel">
+  <div id="parts-list"></div>
+  <div style="margin-top:16px;">
+    <button class="btn-primary" onclick="addPart()">+ Add Part</button>
+  </div>
+</div>
+
+<!-- ══ TAB: SELF ══════════════════════════════════════════════════ -->
+<div id="tab-self" class="tab-panel">
+  <div class="self-layout">
+    <div class="self-wheel-col">
+      <canvas id="self-wheel-canvas" width="560" height="560"></canvas>
+    </div>
+    <div class="self-right-col">
+      <div id="self-detail-panel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating tooltip, shared -->
+<div id="wheel-tooltip"><div class="tt-title" id="wtt-title"></div><div id="wtt-body"></div></div>
+
+<!-- ══ TAB: JOURNAL ══════════════════════════════════════════════ -->
+<div id="tab-journal" class="tab-panel">
+  <div id="journal-system-summary" class="journal-overview" style="display:none;">
+    <div class="journal-overview-title">Summary of system</div>
+    <div class="system-desc" id="system-summary-display"></div>
+  </div>
+  <div id="journal-recent-shifts" class="journal-overview" style="display:none;">
+    <div class="journal-overview-title">Recent shifts</div>
+    <div class="system-desc" id="recent-shifts-display"></div>
+  </div>
+  <div class="journal-starters">
+    <button class="starters-toggle" onclick="toggleStarters()">
+      <span id="starters-arrow">&#9658;</span> Session starters
+    </button>
+    <div class="starters-body" id="starters-body">
+      <div class="starter-row">
+        <span>"Here's what's been present lately..."</span>
+        <button class="starter-copy-btn" onclick="copyStarter(this,'Here\'s what\'s been present lately...')">Copy</button>
+      </div>
+      <div class="starter-row">
+        <span>"I noticed [part] showing up this week. Here's what happened..."</span>
+        <button class="starter-copy-btn" onclick="copyStarter(this,'I noticed [part] showing up this week. Here\'s what happened...')">Copy</button>
+      </div>
+      <div class="starter-row">
+        <span>"I want to get curious about [part] today..."</span>
+        <button class="starter-copy-btn" onclick="copyStarter(this,'I want to get curious about [part] today...')">Copy</button>
+      </div>
+      <div class="starter-row">
+        <span>"Something shifted this week. I felt [quality] toward [part]..."</span>
+        <button class="starter-copy-btn" onclick="copyStarter(this,'Something shifted this week. I felt [quality] toward [part]...')">Copy</button>
+      </div>
+      <div class="starter-row">
+        <span>"Two parts are in conflict right now. Let me describe what's happening..."</span>
+        <button class="starter-copy-btn" onclick="copyStarter(this,'Two parts are in conflict right now. Let me describe what\'s happening...')">Copy</button>
+      </div>
+    </div>
+  </div>
+  <div id="sessions-list"></div>
+  <div id="sessions-empty" style="color:var(--text-dim);font-size:15px;display:none;">
+    No sessions yet. Start a conversation with your AI and import the update here.
+  </div>
+</div>
+
+<!-- ══ TAB: TIMELINE ══════════════════════════════════════════════ -->
+<div id="tab-timeline" class="tab-panel">
+  <div id="timeline-empty" style="color:var(--text-dim);font-size:15px;display:none;">
+    No session history yet. Import a session update to see the distribution chart.
+  </div>
+
+  <!-- Distribution pies -->
+  <div class="parts-dist-row" id="parts-dist-row" style="display:none;margin-bottom:32px;">
+    <div class="parts-dist-card">
+      <div class="parts-dist-label">Average over time</div>
+      <div class="parts-dist-pie-row" id="parts-dist-alltime"></div>
+    </div>
+    <div class="parts-dist-card">
+      <div class="parts-dist-label">Latest session</div>
+      <div class="parts-dist-pie-row" id="parts-dist-latest"></div>
+    </div>
+  </div>
+
+  <div id="timeline-recent-section" style="display:none;">
+    <div style="margin-bottom:14px;">
+      <div class="section-heading">Recent shifts</div>
+      <p class="balance-note" style="margin:0;">The past year of part leadership. Each vertical line marks a session; click to open it. Proportions reflect session balance weights.</p>
+    </div>
+    <div style="position:relative;width:100%;margin-bottom:8px;">
+      <canvas id="balance-area-canvas-recent" style="cursor:pointer;display:block;width:100%;"></canvas>
+      <div class="balance-area-legend" id="balance-area-legend-recent"></div>
+    </div>
+  </div>
+
+  <div id="timeline-alltime-section" style="display:none;margin-top:36px;">
+    <div style="margin-bottom:14px;">
+      <div class="section-heading">All time</div>
+      <p class="balance-note" style="margin:0;">Your full history of part leadership across every session. Use this to spot long-term patterns and how the system has evolved.</p>
+    </div>
+    <div id="balance-area-wrap" style="display:none;">
+      <canvas id="balance-area-canvas" style="cursor:pointer;"></canvas>
+      <div class="balance-area-legend" id="balance-area-legend"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ IMPORT MODAL ══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="border-top:3px solid var(--help);">
+    <button class="modal-close" onclick="closeModal()">&#215;</button>
+    <div class="modal-title" style="color:var(--help);">&#8593;&nbsp; Import</div>
+    <p>Paste a data.json here and hit Apply. Use this to restore a backup or import an update from your AI after a journalling session.</p>
+    <textarea id="json-input" placeholder='{ "parts": [...], "sessions": [...], ... }'></textarea>
+    <div class="modal-row">
+      <button class="btn-primary" onclick="applyUpdate()">Apply</button>
+      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      <span class="modal-status" id="modal-status"></span>
+      <button class="btn-ghost" style="margin-left:auto;font-size:11px;opacity:0.7;" onclick="document.getElementById('import-file-input').click()">&#8593; data.json</button>
+      <input type="file" id="import-file-input" accept=".json,application/json" style="display:none" onchange="importFromFile(event)">
+    </div>
+    <p style="font-size:12px;color:#c84040;margin-top:8px;margin-bottom:0;">data.json contains your private data. Treat it like a diary and don't share it casually.</p>
+  </div>
+</div>
+
+<!-- ══ EXPORT MODAL ══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="export-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" style="border-top:3px solid var(--help);max-width:700px;width:95vw;">
+    <button class="modal-close" onclick="document.getElementById('export-modal').classList.remove('open')">&#215;</button>
+    <div class="modal-title" style="color:var(--help);">&#8595;&nbsp; Export</div>
+    <p>Copy your data.json and share it with your AI project to start or continue a journalling session.</p>
+    <div id="export-warn-box" class="export-warn"></div>
+    <div id="export-context-note" class="context-note"></div>
+    <textarea id="export-textarea" class="export-textarea" readonly></textarea>
+    <div class="modal-row" style="margin-top:8px;">
+      <button class="btn-primary" id="copy-export-btn" onclick="copyExport()">Copy</button>
+      <button class="btn-ghost" style="font-size:11px;opacity:0.7;" onclick="downloadExport()">&#8595; data.json</button>
+    </div>
+    <p style="font-size:12px;color:#c84040;margin-top:14px;margin-bottom:0;text-align:center;">This file contains your private data. Treat it like a diary.</p>
+  </div>
+</div>
+
+<!-- ══ CONFIRM DELETE MODAL ════════════════════════════════════════ -->
+<div class="modal-overlay" id="confirm-modal" onclick="if(event.target===this)closeConfirm()">
+  <div class="modal" style="border-top:3px solid #c84040;max-width:380px;">
+    <div class="modal-title" style="color:#c84040;">Delete?</div>
+    <p id="confirm-msg" style="color:var(--text-dim);"></p>
+    <div class="modal-row">
+      <button class="btn-danger" id="confirm-ok">Delete</button>
+      <button class="btn-ghost" onclick="closeConfirm()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WELCOME MODAL ════════════════════════════════════════════ -->
+<div class="modal-overlay" id="welcome-modal">
+  <div class="modal" style="border-top:3px solid var(--gold);">
+    <div class="modal-title" style="color:var(--gold);">Welcome to team-sheet</div>
+    <p>This is your IFS inner system map. Parts you discover through journalling with your AI live here.</p>
+    <p>You're currently viewing example data. Import your own data.json to get started, or explore the demo first.</p>
+    <div class="modal-row">
+      <button class="btn-primary" onclick="document.getElementById('welcome-modal').classList.remove('open');openModal()">Import my data</button>
+      <button class="btn-ghost" onclick="document.getElementById('welcome-modal').classList.remove('open')">Explore demo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOOLTIP ══════════════════════════════════════════════════ -->
+<div id="map-tooltip">
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-overview" id="tt-overview"></div>
+</div>
+
+<!-- ══ TOAST ════════════════════════════════════════════════════ -->
+<div id="toast"></div>
+
+<!-- ══ HELP MODAL ═══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="help-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" id="help-modal-box" style="border-top:3px solid var(--help);max-width:860px;width:96vw;">
+    <button class="modal-close" onclick="document.getElementById('help-modal').classList.remove('open')">&#215;</button>
+    <div class="modal-title" style="color:var(--help);margin-bottom:16px;">? &nbsp;HOW TEAM-SHEET WORKS</div>
+    <div class="help-cols">
+
+      <!-- Column 1: Setup with AI -->
+      <div class="help-col">
+        <div class="help-col-hdr">Setup with your AI</div>
+        <span style="display:block;font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:10px;">team-sheet is designed for ongoing IFS journalling. Your AI reads your sessions and updates your inner system map.</span>
+        <div class="help-step">
+          <div class="help-step-num">1</div>
+          <div class="help-step-text"><strong>Download instructions.md</strong> from the same folder as team-sheet.html. This tells your AI how the app works and what JSON to produce.</div>
+        </div>
+        <div class="help-step">
+          <div class="help-step-num">2</div>
+          <div class="help-step-text"><strong>Create a project in your AI.</strong> Upload instructions.md to the project knowledge so it's always attached to every session.</div>
+        </div>
+        <div class="help-step">
+          <div class="help-step-num">3</div>
+          <div class="help-step-text"><strong>Start a session.</strong> Try: <em>"Here's what's been present lately..."</em> or use a Session Starter on the Journal tab.</div>
+        </div>
+        <div class="help-step">
+          <div class="help-step-num">4</div>
+          <div class="help-step-text"><strong>At the end,</strong> ask your AI: <em>"Update my data.json"</em> and copy the output.</div>
+        </div>
+        <p class="help-note" style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">Your AI infers which parts were present, how relationships shifted, and whether any Self-led moments occurred. Lock any field to protect your own writing from being overwritten.</p>
+      </div>
+
+      <!-- Column 2: Import -->
+      <div class="help-col">
+        <div class="help-col-hdr">&#8593; &nbsp;Import</div>
+        <span style="display:block;font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:10px;">Load your data into team-sheet after a session, or restore a backup from another device.</span>
+        <div class="help-step">
+          <div class="help-step-num">1</div>
+          <div class="help-step-text"><strong>Open Import:</strong>
+            <span style="display:block;margin-top:6px;"><button class="btn-primary" style="font-size:12px;padding:4px 14px;" onclick="document.getElementById('help-modal').classList.remove('open');openModal()">&#8593; Import</button></span>
+          </div>
+        </div>
+        <div class="help-step">
+          <div class="help-step-num">2</div>
+          <div class="help-step-text"><strong>Paste your data.json</strong> into the text area and hit Apply. Or use the file picker to load directly from disk.</div>
+        </div>
+        <div class="help-step">
+          <div class="help-step-num">3</div>
+          <div class="help-step-text"><strong>The app updates instantly.</strong> New parts appear on the Map. Session entries appear in the Journal tab. Balance history grows over time.</div>
+        </div>
+        <p class="help-note" style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;"><strong style="color:var(--text-mid);">Lock icons</strong> protect individual fields from being overwritten. Click &#8857; on any field to protect it, so your own writing survives future imports.</p>
+      </div>
+
+      <!-- Column 3: Export -->
+      <div class="help-col">
+        <div class="help-col-hdr">&#8595; &nbsp;Export</div>
+        <span style="display:block;font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:10px;">Your data lives in browser storage. Export regularly so you have a backup and so your AI stays up to date.</span>
+        <div class="help-step">
+          <div class="help-step-num">1</div>
+          <div class="help-step-text"><strong>Export your data:</strong>
+            <span style="display:block;margin-top:6px;"><button class="btn-primary" style="font-size:12px;padding:4px 14px;" onclick="document.getElementById('help-modal').classList.remove('open');openExport()">&#8595; Export</button></span>
+          </div>
+        </div>
+        <div class="help-step">
+          <div class="help-step-num">2</div>
+          <div class="help-step-text"><strong>Store it somewhere safe.</strong> data.json contains your private journal and inner system map. Treat it like a diary.</div>
+        </div>
+        <div class="help-step">
+          <div class="help-step-num">3</div>
+          <div class="help-step-text"><strong>Before a new session,</strong> paste this JSON into your AI project to replace the old data.json. Your AI then has your latest state.</div>
+        </div>
+        <p class="help-note" style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">Set a password in Security to encrypt your data at rest in the browser. Good practice if you share a device or browser profile.</p>
+      </div>
+
+    </div>
+    <div style="margin-top:14px;display:flex;justify-content:flex-end;">
+      <button class="btn-ghost" onclick="document.getElementById('help-modal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SETTINGS MODAL ════════════════════════════════════════════ -->
+<div class="modal-overlay" id="settings-modal" onclick="if(event.target===this)closeSettingsModal()">
+  <div class="modal" style="border-top:3px solid rgba(200,168,74,0.4);">
+    <button class="modal-close" onclick="closeSettingsModal()">&#215;</button>
+    <div class="modal-title" style="color:var(--gold);">&#9881; &nbsp;SECURITY</div>
+    <p style="font-size:13px;color:#c84040;line-height:1.6;margin-bottom:14px;">&#9888; <strong>Your data is stored only in this browser.</strong> Nothing leaves your machine unless you send it. If you journal with an AI, that provider may store what you share with them. Use Firefox if possible; Chrome and Edge share storage across local files. A password encrypts your data at rest in the browser.</p>
+
+    <div class="settings-section">
+      <div class="settings-label">Password Protection</div>
+      <p id="settings-pin-status-text" style="font-size:15px;color:var(--text-dim);margin-bottom:8px;"></p>
+      <p style="font-size:15px;color:var(--text-dim);margin-bottom:8px;">When set, <strong>all</strong> local data is encrypted with AES-256-GCM. Use a long random password from a password manager for strongest protection.</p>
+      <p style="font-size:15px;color:var(--text-dim);margin-bottom:8px;">&#9888; If you forget your password, your data cannot be recovered. Keep an export of your data.json as a backup.</p>
+      <div class="settings-pin-row" id="settings-pin-set-row">
+        <input class="settings-pin-input" id="settings-pin-new" type="password" placeholder="New password (min 8 chars)" autocomplete="new-password" oninput="updatePwStrength(this.value)">
+        <input class="settings-pin-input" id="settings-pin-confirm" type="password" placeholder="Confirm" autocomplete="new-password">
+        <button class="btn-primary" onclick="settingsSavePIN()">Set password</button>
+      </div>
+      <div id="settings-pw-strength" style="display:none;margin:6px 0 4px;font-size:13px;color:var(--text-dim);"></div>
+      <div class="settings-pin-row" id="settings-pin-remove-row" style="display:none;">
+        <input class="settings-pin-input" id="settings-pin-current" type="password" placeholder="Current password" autocomplete="current-password">
+        <button class="btn-ghost" onclick="settingsRemovePIN()">Remove password</button>
+        <button class="btn-primary" onclick="settingsShowChangePIN()">Change password</button>
+      </div>
+      <div class="settings-pin-row" id="settings-pin-change-row" style="display:none;margin-top:8px;">
+        <input class="settings-pin-input" id="settings-pin-change-new" type="password" placeholder="New password (min 8 chars)" autocomplete="new-password">
+        <input class="settings-pin-input" id="settings-pin-change-confirm" type="password" placeholder="Confirm" autocomplete="new-password">
+        <button class="btn-primary" onclick="settingsChangePIN()">Save</button>
+        <button class="btn-ghost" onclick="settingsHideChangePIN()">Cancel</button>
+      </div>
+      <div class="settings-status" id="settings-pin-status"></div>
+    </div>
+
+    <div class="settings-section" id="settings-timeout-section" style="display:none;">
+      <div class="settings-label">Auto-Lock After</div>
+      <select class="settings-select" id="settings-timeout-select" onchange="settingsSaveTimeout()">
+        <option value="0">Never</option>
+        <option value="1">1 minute</option>
+        <option value="5">5 minutes</option>
+        <option value="15">15 minutes</option>
+        <option value="30">30 minutes</option>
+        <option value="60">1 hour</option>
+      </select>
+    </div>
+
+    <div class="settings-danger-zone">
+      <div class="settings-danger-label">Danger Zone</div>
+      <button class="btn-ghost" style="color:#c84040;border-color:rgba(200,60,60,0.4);" onclick="showResetConfirm()">Reset all data...</button>
+      <div id="reset-confirm-row">
+        <p style="font-size:14px;color:#e07070;margin:0 0 10px;line-height:1.5;">This deletes everything: your parts, sessions, balance history, and settings. An undo option will appear for 60 seconds.</p>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button class="btn-ghost" style="color:#c84040;border-color:rgba(200,60,60,0.6);font-size:13px;" onclick="confirmResetAllData()">Yes, delete everything</button>
+          <button class="btn-ghost" style="font-size:13px;" onclick="hideResetConfirm()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;display:flex;">
+      <button class="btn-ghost" onclick="closeSettingsModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LOCK SCREEN ═══════════════════════════════════════════════ -->
+<div id="lock-screen">
+  <div class="lock-title">&#11042; TEAM-SHEET</div>
+  <div class="lock-subtitle">Enter your password to continue</div>
+  <div class="lock-pin-row">
+    <input class="lock-pin-input" id="lock-pin-input" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')unlockApp()">
+    <button class="btn-primary" onclick="unlockApp()">Unlock</button>
+  </div>
+  <div class="lock-error" id="lock-error"></div>
+</div>
+
+<!-- ══ RESET UNDO BANNER ═════════════════════════════════════════ -->
+<div id="reset-undo-banner">
+  <span>All data was reset.</span>
+  <button onclick="undoReset()">Undo reset</button>
+  <button onclick="document.getElementById('reset-undo-banner').classList.remove('visible');localStorage.removeItem('ts-reset-undo-v1')" style="background:none;border:none;opacity:0.6;font-size:18px;padding:0 4px;">&#215;</button>
+</div>
+
+<script>
+// ══ CONSTANTS ══════════════════════════════════════════════════
+const STATE_KEY     = 'ts-state-v1';
+const LOCKS_KEY     = 'ts-locks-v1';
+const SESSIONS_KEY  = 'ts-sessions-v1';
+const BAL_HIST_KEY  = 'ts-balance-hist-v1';
+const WELCOMED_KEY  = 'ts-welcomed-v1';
+const UNDO_KEY      = 'ts-undo-v1';
+const DEMO_NAME     = "Alex's Inner System";
+const IS_DEMO       = location.hostname.endsWith('github.io');
+
+// Base role colors (can be overridden by appState.roleColors)
+const DEFAULT_ROLE_COLORS = {
+  manager:     '#3a80c8',
+  firefighter: '#d07830',
+  exile:       '#60a838',
+};
+
+// Returns current role base colors (user-overridable)
+function getRoleColors() {
+  return Object.assign({}, DEFAULT_ROLE_COLORS, (appState && appState.roleColors) || {});
+}
+
+// Generate N distinct shades from a hex base color
+function _genShades(hex, count) {
+  // Parse hex to hsl, then produce count shades by varying lightness/saturation
+  const r = parseInt(hex.slice(1,3),16)/255;
+  const g = parseInt(hex.slice(3,5),16)/255;
+  const b = parseInt(hex.slice(5,7),16)/255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b);
+  let h, s, l = (max+min)/2;
+  if (max === min) { h = s = 0; }
+  else {
+    const d = max - min;
+    s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+    switch(max) {
+      case r: h = ((g-b)/d + (g<b?6:0))/6; break;
+      case g: h = ((b-r)/d + 2)/6; break;
+      case b: h = ((r-g)/d + 4)/6; break;
+    }
+  }
+  h = Math.round(h*360); s = Math.round(s*100); l = Math.round(l*100);
+
+  const shades = [];
+  // Produce count shades: vary lightness symmetrically around base, ±20%
+  const step = count <= 1 ? 0 : 32 / (count - 1);
+  const startL = Math.min(75, l + Math.floor(count/2) * step);
+  for (let i = 0; i < count; i++) {
+    const li = Math.max(22, Math.min(78, startL - i * step));
+    shades.push(`hsl(${h},${s}%,${Math.round(li)}%)`);
+  }
+  return shades;
+}
+
+// Returns the shades palette for a given role (always 5 options)
+function roleShadePalette(role) {
+  const base = getRoleColors()[role] || '#908a78';
+  return _genShades(base, 5);
+}
+
+// Returns the display color for a part: part.color if set, else auto-assign a shade
+function getPartColor(part, allParts) {
+  if (part.color) return part.color;
+  const role = part.role || 'manager';
+  const shades = roleShadePalette(role);
+  const sameRole = (allParts || []).filter(p => p.role === role);
+  const idx = sameRole.findIndex(p => p.id === part.id);
+  return shades[Math.max(0, idx) % shades.length];
+}
+
+// Legacy constant kept so old references don't break during render
+const ROLE_COLORS = DEFAULT_ROLE_COLORS;
+
+// Update CSS variables from current role colors
+function applyRoleColorVars() {
+  const rc = getRoleColors();
+  const root = document.documentElement.style;
+  Object.entries(rc).forEach(([role, hex]) => {
+    root.setProperty(`--${role}`, hex);
+    // parse rgba background
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    root.setProperty(`--${role}-bg`, `rgba(${r},${g},${b},0.08)`);
+  });
+}
+const EIGHT_CS = [
+  { name:'Calm',         desc:'A settled quality that isn\'t forced. Not the absence of feeling, but a groundedness that lets you be with what\'s happening.', distinction:'A part performing calm is holding tension underneath. Genuine calm has space in it.' },
+  { name:'Curiosity',    desc:'An open wondering toward a part, without an agenda about what you\'ll find.', distinction:'A part performing curiosity is actually interrogating. Genuine curiosity doesn\'t need the answer to be a particular thing.' },
+  { name:'Clarity',      desc:'Seeing a situation or part cleanly, without it being filtered through another part\'s fear or agenda.', distinction:'A manager providing "clarity" is usually planning. Genuine clarity is more like recognising something that was already true.' },
+  { name:'Compassion',   desc:'Warmth toward a part\'s experience, especially a part that is in pain or behaving badly.', distinction:'A part performing compassion may be trying to fix. Genuine compassion can be with suffering without needing to resolve it.' },
+  { name:'Confidence',   desc:'A quiet knowing that you can be with whatever comes up, not that you\'ll handle it perfectly.', distinction:'A manager\'s confidence is often performance. Genuine confidence doesn\'t need to prove itself.' },
+  { name:'Courage',      desc:'Moving toward something difficult in the inner world, particularly toward an exile part, without being armoured.', distinction:'A firefighter\'s version of courage can be reckless. Genuine courage includes uncertainty.' },
+  { name:'Creativity',   desc:'Finding a new way to relate to a part or understand what it carries. Not problem-solving, but genuine novelty.', distinction:'A manager\'s creativity is often strategy. Genuine creativity feels more like play.' },
+  { name:'Connectedness', desc:'A sense of belonging to something larger, and of being in genuine relationship with the parts of your system.', distinction:'A part performing connectedness is often seeking. Genuine connectedness is more like arriving.' },
+];
+
+// ══ STATE ══════════════════════════════════════════════════════
+let appState = {
+  system: { name: 'Your Inner System', systemSummary: '', recentShifts: '' },
+  parts: [],
+  sessions: [],
+  selfMoments: [],
+  roleColors: {},
+  _instructionsVersion: '1.2.0',
+};
+
+// ══ SAVE / LOAD ════════════════════════════════════════════════
+function saveState(s) {
+  if (IS_DEMO) return;
+  if (typeof _pinActive !== 'undefined' && _pinActive && _currentPIN) {
+    _encryptAndSave(s, _currentPIN);
+    return;
+  }
+  try { localStorage.setItem(STATE_KEY, JSON.stringify(s)); } catch(e) { showToast('Storage full — data not saved'); }
+}
+function loadState() {
+  const raw = localStorage.getItem(STATE_KEY);
+  if (raw) { try { return JSON.parse(raw); } catch(e) {} }
+  return null;
+}
+
+// ══ LOCKS ══════════════════════════════════════════════════════
+function getLocks() {
+  try { return JSON.parse(localStorage.getItem(LOCKS_KEY) || '{}'); } catch(e) { return {}; }
+}
+function saveLocks(m) {
+  if (!IS_DEMO) {
+    localStorage.setItem(LOCKS_KEY, JSON.stringify(m));
+    _reencryptIfActive();
+  }
+}
+function isLocked(dotPath) { return !!getLocks()[dotPath]; }
+function toggleLock(dotPath) {
+  const m = getLocks();
+  if (m[dotPath]) delete m[dotPath];
+  else m[dotPath] = true;
+  saveLocks(m);
+  document.querySelectorAll(`.lock-btn[data-lock-path="${CSS.escape(dotPath)}"]`).forEach(btn => {
+    const locked = !!m[dotPath];
+    btn.classList.toggle('locked', locked);
+    btn.title = locked ? 'Protected: your AI will not overwrite this field. Click to unprotect.' : 'Protect this field so your AI cannot overwrite it during import.';
+    btn.textContent = locked ? '🛡' : '⊙';
+  });
+}
+function makeLockBtn(dotPath) {
+  const locked = isLocked(dotPath);
+  const btn = document.createElement('button');
+  btn.className = 'lock-btn' + (locked ? ' locked' : '');
+  btn.dataset.lockPath = dotPath;
+  btn.title = locked ? 'Protected: your AI will not overwrite this field. Click to unprotect.' : 'Protect this field so your AI cannot overwrite it during import.';
+  btn.textContent = locked ? '🛡' : '⊙';
+  btn.addEventListener('click', e => { e.stopPropagation(); e.preventDefault(); toggleLock(dotPath); });
+  return btn;
+}
+function applyLockedFields(merged, snapshot) {
+  const locks = getLocks();
+  Object.keys(locks).forEach(dotPath => {
+    const parts = dotPath.split('.');
+    let sv = snapshot;
+    for (const p of parts) { if (sv == null) break; sv = typeof sv === 'object' ? sv[p] : null; }
+    if (sv !== undefined) {
+      let mv = merged;
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (mv == null || typeof mv !== 'object') break;
+        mv = mv[parts[i]];
+      }
+      if (mv != null && typeof mv === 'object') mv[parts[parts.length - 1]] = sv;
+    }
+  });
+}
+
+// ══ BALANCE HISTORY ════════════════════════════════════════════
+function loadBalHist() {
+  try { return JSON.parse(localStorage.getItem(BAL_HIST_KEY) || '[]'); } catch(e) { return []; }
+}
+function saveBalHist(arr) {
+  if (!IS_DEMO) localStorage.setItem(BAL_HIST_KEY, JSON.stringify(arr));
+}
+
+// ══ EDITABLE HELPER ════════════════════════════════════════════
+function makeEditable(text, placeholder, onSave, extraClass) {
+  const el = document.createElement('div');
+  el.className = 'editable' + (extraClass ? ' ' + extraClass : '');
+  el.contentEditable = 'true';
+  el.setAttribute('data-placeholder', placeholder);
+  el.textContent = text || '';
+  el.addEventListener('blur', () => onSave(el.textContent.trim()));
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } });
+  return el;
+}
+
+// ══ RENDER ════════════════════════════════════════════════════
+function render(s) {
+  applyRoleColorVars();
+  // Header
+  document.getElementById('system-title-display').textContent = s.system?.name || 'Your Inner System';
+  document.getElementById('header-key-question').textContent = s.system?.keyQuestion || "What's going on inside?";
+  document.getElementById('header-key-experiment').textContent = s.system?.keyExperiment || 'What might change if I understood myself more clearly?';
+  const summaryEl = document.getElementById('system-summary-display');
+  summaryEl.textContent = s.system?.systemSummary || '';
+  document.getElementById('journal-system-summary').style.display = s.system?.systemSummary ? '' : 'none';
+  const shiftsEl = document.getElementById('recent-shifts-display');
+  shiftsEl.textContent = s.system?.recentShifts || '';
+  document.getElementById('journal-recent-shifts').style.display = s.system?.recentShifts ? '' : 'none';
+  // Tabs
+  renderMap(s);
+  renderParts(s);
+  renderSelf(s);
+  renderJournal(s);
+  renderTimeline(s);
+}
+
+// ══ TAB: MAP ══════════════════════════════════════════════════
+const MAP_PHYSICS = {
+  repulsion: 9000,
+  springLen: { small: 90, medium: 130, large: 170 },
+  damping: 0.82,
+  iterations: 200,
+};
+let mapNodes = [];
+let mapEdges = [];
+let mapAnimFrame = null;
+let mapVx = {}, mapVy = {};
+
+function renderMap(s) {
+  renderRoleColorsEditor(s);
+  const canvas = document.getElementById('map-canvas');
+  const container = document.getElementById('map-container');
+  const W = container.clientWidth || 800;
+  const H = container.clientHeight || Math.max(420, Math.round(W * 0.52));
+  canvas.width = W;
+  canvas.height = H;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+
+  const parts = s.parts || [];
+  if (parts.length === 0) {
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#504c44';
+    ctx.font = "16px 'Crimson Pro',Georgia,serif";
+    ctx.textAlign = 'center';
+    ctx.fillText('Add parts to see your system map', W / 2, H / 2);
+    return;
+  }
+
+  // Build nodes
+  mapNodes = parts.map((p, i) => {
+    const angle = (i / parts.length) * Math.PI * 2;
+    const radius = Math.min(W, H) * 0.38;
+    const r = p.nodeSize === 'large' ? 42 : p.nodeSize === 'small' ? 26 : 34;
+    return {
+      id: p.id,
+      x: W / 2 + radius * Math.cos(angle),
+      y: H / 2 + radius * Math.sin(angle),
+      r,
+      color: getPartColor(p, parts),
+      role: p.role,
+      name: p.name,
+      overview: p.overview || '',
+    };
+  });
+
+  // Build edges from relationships
+  mapEdges = [];
+  const seen = new Set();
+  parts.forEach(p => {
+    (p.relationships || []).forEach(rel => {
+      if (rel.dynamic === 'unknown' || rel.partId === 'self') return;
+      const key = [p.id, rel.partId].sort().join('|');
+      if (seen.has(key)) return;
+      seen.add(key);
+      const targetNode = mapNodes.find(n => n.id === rel.partId);
+      if (!targetNode) return;
+      mapEdges.push({ a: p.id, b: rel.partId, dynamic: rel.dynamic, directed: rel.dynamic === 'protective' });
+    });
+  });
+
+  // Init velocities
+  mapNodes.forEach(n => { if (!mapVx[n.id]) { mapVx[n.id] = 0; mapVy[n.id] = 0; } });
+
+  if (mapAnimFrame) cancelAnimationFrame(mapAnimFrame);
+  let iter = 0;
+  function step() {
+    simulateStep();
+    drawMap(canvas, W, H);
+    iter++;
+    if (iter < MAP_PHYSICS.iterations) mapAnimFrame = requestAnimationFrame(step);
+    else { drawMap(canvas, W, H); } // final draw
+  }
+  step();
+}
+
+function simulateStep() {
+  const nodes = mapNodes;
+  const forces = {};
+  nodes.forEach(n => { forces[n.id] = { x: 0, y: 0 }; });
+
+  // Repulsion
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const f = MAP_PHYSICS.repulsion / (dist * dist);
+      forces[a.id].x -= (dx / dist) * f;
+      forces[a.id].y -= (dy / dist) * f;
+      forces[b.id].x += (dx / dist) * f;
+      forces[b.id].y += (dy / dist) * f;
+    }
+  }
+
+  // Spring attraction on edges
+  const canvas = document.getElementById('map-canvas');
+  const W = canvas.width, H = canvas.height;
+  mapEdges.forEach(e => {
+    const a = mapNodes.find(n => n.id === e.a);
+    const b = mapNodes.find(n => n.id === e.b);
+    if (!a || !b) return;
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const targetLen = Math.min(W, H) * 0.38;
+    const stretch = dist - targetLen;
+    const f = stretch * 0.025;
+    forces[a.id].x += (dx / dist) * f;
+    forces[a.id].y += (dy / dist) * f;
+    forces[b.id].x -= (dx / dist) * f;
+    forces[b.id].y -= (dy / dist) * f;
+  });
+
+  // Center pull
+  mapNodes.forEach(n => {
+    forces[n.id].x += (W / 2 - n.x) * 0.007;
+    forces[n.id].y += (H / 2 - n.y) * 0.007;
+  });
+
+  // Apply with damping
+  mapNodes.forEach(n => {
+    mapVx[n.id] = (mapVx[n.id] + forces[n.id].x) * MAP_PHYSICS.damping;
+    mapVy[n.id] = (mapVy[n.id] + forces[n.id].y) * MAP_PHYSICS.damping;
+    n.x = Math.max(n.r + 40, Math.min(W - n.r - 40, n.x + mapVx[n.id]));
+    n.y = Math.max(n.r + 30, Math.min(H - n.r - 30, n.y + mapVy[n.id]));
+  });
+}
+
+function drawMap(canvas, W, H) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+
+  // Self ambient glow
+  const grd = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.min(W, H) * 0.5);
+  grd.addColorStop(0, 'rgba(232,223,200,0.06)');
+  grd.addColorStop(1, 'rgba(232,223,200,0)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+
+  // Edges
+  mapEdges.forEach(e => {
+    const a = mapNodes.find(n => n.id === e.a);
+    const b = mapNodes.find(n => n.id === e.b);
+    if (!a || !b) return;
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    if (e.dynamic === 'polarized') {
+      ctx.strokeStyle = 'rgba(192,64,64,0.65)'; ctx.lineWidth = 2;
+    } else if (e.dynamic === 'allied') {
+      ctx.strokeStyle = 'rgba(200,168,74,0.45)'; ctx.lineWidth = 2.5;
+    } else if (e.dynamic === 'protective') {
+      ctx.strokeStyle = 'rgba(128,144,168,0.5)'; ctx.lineWidth = 1.5;
+    } else if (e.dynamic === 'distant') {
+      ctx.setLineDash([5, 7]); ctx.strokeStyle = 'rgba(80,76,68,0.5)'; ctx.lineWidth = 1;
+    } else {
+      ctx.strokeStyle = 'rgba(60,60,70,0.4)'; ctx.lineWidth = 1;
+    }
+    ctx.stroke();
+    // Arrow for protective
+    if (e.dynamic === 'protective') {
+      const angle = Math.atan2(b.y - a.y, b.x - a.x);
+      const tip = { x: b.x - Math.cos(angle) * b.r, y: b.y - Math.sin(angle) * b.r };
+      ctx.beginPath();
+      ctx.moveTo(tip.x, tip.y);
+      ctx.lineTo(tip.x - 10 * Math.cos(angle - 0.4), tip.y - 10 * Math.sin(angle - 0.4));
+      ctx.lineTo(tip.x - 10 * Math.cos(angle + 0.4), tip.y - 10 * Math.sin(angle + 0.4));
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(128,144,168,0.7)';
+      ctx.fill();
+    }
+    ctx.restore();
+  });
+
+  // Nodes
+  mapNodes.forEach(n => {
+    ctx.save();
+    const isExile = n.role === 'exile';
+
+    // Node circle
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    if (isExile) {
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = n.color;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = n.color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    } else {
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = n.color;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = n.color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // Role initial badge
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#fff';
+    ctx.font = `bold ${Math.round(n.r * 0.6)}px 'Cinzel', serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const initials = { manager: 'M', firefighter: 'F', exile: 'E' };
+    ctx.fillText(initials[n.role] || '?', n.x, n.y);
+
+    // Name label
+    ctx.fillStyle = '#cec8b4';
+    ctx.font = `${Math.round(n.r * 0.42)}px 'Cinzel', serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(n.name, n.x, n.y + n.r + 6);
+
+    ctx.restore();
+  });
+}
+
+// Map interactivity
+(function setupMapInteraction() {
+  const canvas = document.getElementById('map-canvas');
+  const tooltip = document.getElementById('map-tooltip');
+
+  function getHoveredNode(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const my = (e.clientY - rect.top) * (canvas.height / rect.height);
+    return mapNodes.find(n => {
+      const dx = n.x - mx, dy = n.y - my;
+      return Math.sqrt(dx * dx + dy * dy) <= n.r + 4;
+    });
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const node = getHoveredNode(e);
+    if (node) {
+      canvas.style.cursor = 'pointer';
+      document.getElementById('tt-name').textContent = node.name;
+      document.getElementById('tt-overview').textContent = node.overview;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.clientX + 14) + 'px';
+      tooltip.style.top  = (e.clientY - 10) + 'px';
+    } else {
+      canvas.style.cursor = 'default';
+      tooltip.style.display = 'none';
+    }
+  });
+  canvas.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; canvas.style.cursor = 'default'; });
+  canvas.addEventListener('click', e => {
+    const node = getHoveredNode(e);
+    if (node) {
+      switchTab('parts');
+      setTimeout(() => {
+        const card = document.querySelector(`.part-card[data-part-id="${node.id}"]`);
+        if (card) {
+          card.classList.add('expanded');
+          card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 80);
+    }
+  });
+})();
+
+// Resize map/timeline when window resizes
+window.addEventListener('resize', () => {
+  if (document.getElementById('tab-map').classList.contains('active')) {
+    mapVx = {}; mapVy = {};
+    renderMap(appState);
+  }
+  if (document.getElementById('tab-timeline').classList.contains('active')) {
+    renderTimeline(appState);
+  }
+});
+
+// ══ TAB: PARTS ════════════════════════════════════════════════
+function renderParts(s) {
+  const list = document.getElementById('parts-list');
+  list.innerHTML = '';
+  (s.parts || []).forEach((part, idx) => {
+    list.appendChild(buildPartCard(part, idx, s));
+  });
+}
+
+function renderRoleColorsEditor(s) {
+  const container = document.getElementById('role-colors-editor');
+  if (!container) return;
+  const rc = getRoleColors();
+  container.innerHTML = '';
+  container.style.cssText = 'display:flex;flex-direction:column;gap:10px;';
+  ['manager','firefighter','exile'].forEach(role => {
+    const item = document.createElement('span');
+    item.className = 'map-legend-item';
+    item.style.cursor = 'pointer';
+    const dot = document.createElement('span');
+    dot.className = 'map-legend-dot';
+    dot.style.background = rc[role];
+    if (role === 'exile') {
+      dot.style.border = '2px dashed ' + rc[role];
+      dot.style.opacity = '0.85';
+      dot.style.boxSizing = 'border-box';
+    }
+    const label = document.createElement('span');
+    label.style.flex = '1';
+    label.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+    const picker = document.createElement('input');
+    picker.type = 'color';
+    picker.style.cssText = 'width:20px;height:20px;border:none;background:none;cursor:pointer;padding:0;border-radius:3px;flex-shrink:0;';
+    picker.value = hexFromColor(rc[role]);
+    picker.title = 'Change ' + role + ' colour';
+    picker.addEventListener('input', () => {
+      if (!s.roleColors) s.roleColors = {};
+      s.roleColors[role] = picker.value;
+      dot.style.background = picker.value;
+      if (role === 'exile') dot.style.borderColor = picker.value;
+      applyRoleColorVars();
+      saveState(s);
+      renderMap(s);
+      renderTimeline(s);
+      renderPartsDistribution(s);
+      document.querySelectorAll('.part-card').forEach(card => {
+        const pid = card.dataset.partId;
+        const p = (s.parts||[]).find(pt => pt.id === pid);
+        if (p && !p.color) {
+          const sw = card.querySelector('.part-color-swatch');
+          if (sw) sw.style.background = getPartColor(p, s.parts);
+        }
+      });
+    });
+    item.appendChild(dot);
+    item.appendChild(label);
+    item.appendChild(picker);
+    container.appendChild(item);
+  });
+}
+
+function hexFromColor(color) {
+  if (!color) return '#888888';
+  if (color.startsWith('#') && color.length === 7) return color;
+  if (color.startsWith('#') && color.length === 4)
+    return '#' + color[1]+color[1]+color[2]+color[2]+color[3]+color[3];
+  const tmp = document.createElement('canvas');
+  tmp.width = tmp.height = 1;
+  const ctx2 = tmp.getContext('2d');
+  ctx2.fillStyle = color;
+  ctx2.fillRect(0,0,1,1);
+  const d = ctx2.getImageData(0,0,1,1).data;
+  return '#' + [d[0],d[1],d[2]].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+
+function buildColorPopover(part, s, onChange) {
+  const pop = document.createElement('div');
+  pop.className = 'part-color-popover';
+
+  const shadesLabel = document.createElement('div');
+  shadesLabel.style.cssText = 'font-size:10px;color:var(--text-dim);font-family:var(--mono);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em;';
+  shadesLabel.textContent = 'Shades';
+  pop.appendChild(shadesLabel);
+
+  const shadesRow = document.createElement('div');
+  shadesRow.className = 'part-color-popover-shades';
+
+  const shades = roleShadePalette(part.role);
+  const currentColor = getPartColor(part, s.parts);
+
+  shades.forEach(shade => {
+    const btn = document.createElement('div');
+    btn.className = 'part-color-shade-btn';
+    btn.style.background = shade;
+    btn.title = shade;
+    if (hexFromColor(shade) === hexFromColor(currentColor)) btn.classList.add('selected');
+    btn.addEventListener('click', ev => {
+      ev.stopPropagation();
+      part.color = shade;
+      saveState(appState);
+      shadesRow.querySelectorAll('.part-color-shade-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      hexInput.value = hexFromColor(shade);
+      nativePicker.value = hexFromColor(shade);
+      onChange();
+    });
+    shadesRow.appendChild(btn);
+  });
+
+  const resetBtn = document.createElement('div');
+  resetBtn.className = 'part-color-shade-btn';
+  resetBtn.style.cssText = 'background:var(--card);border:1px dashed var(--border-hi);font-size:9px;color:var(--text-dim);display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;';
+  resetBtn.textContent = '\u21ba';
+  resetBtn.title = 'Reset to auto';
+  resetBtn.addEventListener('click', ev => {
+    ev.stopPropagation();
+    delete part.color;
+    saveState(appState);
+    onChange();
+    shadesRow.querySelectorAll('.part-color-shade-btn').forEach(b => b.classList.remove('selected'));
+  });
+  shadesRow.appendChild(resetBtn);
+  pop.appendChild(shadesRow);
+
+  const customRow = document.createElement('div');
+  customRow.className = 'part-color-popover-custom';
+  const customLabel = document.createElement('label');
+  customLabel.textContent = 'Custom';
+  const hexInput = document.createElement('input');
+  hexInput.type = 'text';
+  hexInput.className = 'part-color-hex-input';
+  hexInput.value = hexFromColor(currentColor);
+  hexInput.maxLength = 7;
+  hexInput.placeholder = '#rrggbb';
+  hexInput.addEventListener('input', () => {
+    if (/^#[0-9a-fA-F]{6}$/.test(hexInput.value)) {
+      part.color = hexInput.value;
+      nativePicker.value = hexInput.value;
+      saveState(appState);
+      onChange();
+    }
+  });
+  const nativePicker = document.createElement('input');
+  nativePicker.type = 'color';
+  nativePicker.className = 'part-color-native';
+  nativePicker.value = hexFromColor(currentColor);
+  nativePicker.addEventListener('input', () => {
+    part.color = nativePicker.value;
+    hexInput.value = nativePicker.value;
+    saveState(appState);
+    onChange();
+  });
+  customRow.appendChild(customLabel);
+  customRow.appendChild(hexInput);
+  customRow.appendChild(nativePicker);
+  pop.appendChild(customRow);
+  return pop;
+}
+
+function buildPartCard(part, idx, s) {
+  const card = document.createElement('div');
+  card.className = 'part-card';
+  card.dataset.partId = part.id;
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'part-card-header';
+
+  const nameEl = document.createElement('div');
+  nameEl.className = 'part-card-name';
+  nameEl.contentEditable = 'true';
+  nameEl.textContent = part.name || '';
+  nameEl.setAttribute('data-placeholder', 'Part name');
+  nameEl.addEventListener('blur', () => {
+    part.name = nameEl.textContent.trim();
+    saveState(appState);
+    renderMap(appState);
+  });
+  nameEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); nameEl.blur(); } });
+  nameEl.addEventListener('click', e => e.stopPropagation());
+
+  const roleSelect = document.createElement('select');
+  roleSelect.className = 'inline-select';
+  ['manager','firefighter','exile'].forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r;
+    opt.textContent = r.charAt(0).toUpperCase() + r.slice(1);
+    if (r === part.role) opt.selected = true;
+    roleSelect.appendChild(opt);
+  });
+  roleSelect.addEventListener('change', e => {
+    e.stopPropagation();
+    part.role = roleSelect.value;
+    saveState(appState);
+    render(appState);
+  });
+  roleSelect.addEventListener('click', e => e.stopPropagation());
+
+  // Color swatch
+  const swatchWrap = document.createElement('div');
+  swatchWrap.style.cssText = 'flex-shrink:0;';
+  const swatch = document.createElement('div');
+  swatch.className = 'part-color-swatch';
+  swatch.style.background = getPartColor(part, s.parts);
+  swatch.title = 'Change colour';
+  swatchWrap.appendChild(swatch);
+  swatch.addEventListener('click', e => {
+    e.stopPropagation();
+    document.querySelectorAll('.part-color-popover').forEach(el => el.remove());
+    const pop = buildColorPopover(part, s, () => {
+      swatch.style.background = getPartColor(part, s.parts);
+      renderMap(appState);
+      renderTimeline(appState);
+      renderPartsDistribution(appState);
+    });
+    // Attach to body so overflow:hidden on .part-card doesn't clip the popover
+    pop.style.position = 'fixed';
+    pop.style.zIndex = '500';
+    document.body.appendChild(pop);
+    const rect = swatch.getBoundingClientRect();
+    pop.style.left = rect.left + 'px';
+    pop.style.top  = (rect.bottom + 6) + 'px';
+    const closeHandler = ev => {
+      if (!pop.contains(ev.target) && ev.target !== swatch) { pop.remove(); document.removeEventListener('click', closeHandler, true); }
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler, true), 0);
+  });
+
+  const chevron = document.createElement('span');
+  chevron.textContent = '▶';
+  chevron.style.cssText = 'font-size:10px;color:var(--text-dim);transition:transform 0.2s;flex-shrink:0;';
+
+  hdr.appendChild(nameEl);
+  hdr.appendChild(roleSelect);
+  hdr.appendChild(swatchWrap);
+  hdr.appendChild(chevron);
+  hdr.addEventListener('click', () => {
+    card.classList.toggle('expanded');
+    chevron.style.transform = card.classList.contains('expanded') ? 'rotate(90deg)' : '';
+  });
+  card.appendChild(hdr);
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'part-card-body';
+
+  // Exile warning
+  if (part.role === 'exile') {
+    const w = document.createElement('div');
+    w.className = 'exile-warning';
+    w.textContent = 'Working directly with exile parts can be intense. Consider doing this with a qualified IFS therapist.';
+    body.appendChild(w);
+  }
+
+  // Overview (full width)
+  const overviewSection = document.createElement('div');
+  overviewSection.className = 'part-section';
+  overviewSection.style.marginTop = '14px';
+  const overviewLbl = document.createElement('div');
+  overviewLbl.className = 'part-section-label';
+  overviewLbl.textContent = 'Overview';
+  const overviewRow = document.createElement('div');
+  overviewRow.style.cssText = 'display:flex;align-items:flex-start;gap:6px;';
+  const overviewEl = makeEditable(part.overview || '', 'One-line overview...', v => {
+    part.overview = v; saveState(appState);
+  }, 'part-overview-text');
+  overviewRow.appendChild(overviewEl);
+  overviewRow.appendChild(makeLockBtn(`parts.${idx}.overview`));
+  overviewSection.appendChild(overviewLbl);
+  overviewSection.appendChild(overviewRow);
+  body.appendChild(overviewSection);
+
+  // Two-column grid for detail fields
+  // Left: Skills, Wants, Values & Needs — Right: Fears, Burdens, Potential Roles
+  const grid = document.createElement('div');
+  grid.className = 'part-fields-grid';
+
+  const LEFT_FIELDS = [
+    { key:'skills',        label:'Skills', placeholder:'What this part specialises in, strengths and weaknesses...' },
+    { key:'wants',         label:'Wants', placeholder:'Wants...' },
+    { key:'valuesAndNeeds',label:'Values & Needs', placeholder:'Values & Needs...' },
+  ];
+  const RIGHT_FIELDS = [
+    { key:'fears',          label:'Fears', placeholder:'Fears...' },
+    { key:'burdens',        label:'Burdens', placeholder:'Burdens...' },
+    { key:'potentialRoles', label:'Potential Roles', placeholder:'If unburdened, what could this part do instead...' },
+  ];
+
+  [LEFT_FIELDS, RIGHT_FIELDS].forEach(col => {
+    const colEl = document.createElement('div');
+    col.forEach(f => {
+      const sec = document.createElement('div');
+      sec.className = 'part-section';
+      const lbl = document.createElement('div');
+      lbl.className = 'part-section-label';
+      lbl.textContent = f.label;
+      // migrate gifts → skills
+      const rawVal = (f.key === 'skills' && !part.skills && part.gifts) ? part.gifts : (part[f.key] || '');
+      const valRow = document.createElement('div');
+      valRow.style.cssText = 'display:flex;align-items:flex-start;gap:6px;';
+      const val = makeEditable(rawVal, f.placeholder, v => {
+        part[f.key] = v; saveState(appState);
+      }, 'field-value');
+      valRow.appendChild(val);
+      valRow.appendChild(makeLockBtn(`parts.${idx}.${f.key}`));
+      sec.appendChild(lbl);
+      sec.appendChild(valRow);
+      colEl.appendChild(sec);
+    });
+    grid.appendChild(colEl);
+  });
+  body.appendChild(grid);
+
+  // Divider before relationships
+  const divider = document.createElement('hr');
+  divider.className = 'part-divider';
+  body.appendChild(divider);
+
+  // Relationships (full width)
+  const relHdr = document.createElement('div');
+  relHdr.className = 'part-section-label';
+  relHdr.style.marginTop = '14px';
+  relHdr.textContent = 'Relationships';
+  body.appendChild(relHdr);
+
+  const relTable = buildRelTable(part, idx, s);
+  body.appendChild(relTable);
+
+  // Last updated + delete
+  const footer = document.createElement('div');
+  footer.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:8px;';
+  const lu = document.createElement('div');
+  lu.className = 'last-updated';
+  lu.textContent = part.lastUpdated ? 'Last updated ' + part.lastUpdated : '';
+  const delBtn = document.createElement('button');
+  delBtn.className = 'btn-danger';
+  delBtn.textContent = 'Delete part';
+  delBtn.addEventListener('click', () => confirmDelete(`Delete "${part.name || 'this part'}"?`, () => deletePart(part.id)));
+  footer.appendChild(lu);
+  footer.appendChild(delBtn);
+  body.appendChild(footer);
+
+  card.appendChild(body);
+  return card;
+}
+
+function buildRelTable(part, partIdx, s) {
+  const wrapper = document.createElement('div');
+  wrapper.style.overflowX = 'auto';
+  const table = document.createElement('table');
+  table.className = 'rel-table';
+
+  const thead = document.createElement('thead');
+  thead.innerHTML = '<tr><th>Part</th><th>How I relate to them</th><th>How they relate to me</th><th>Dynamic</th></tr>';
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+
+  // Ensure Self row exists
+  const allRels = part.relationships || [];
+  const hasSelf = allRels.some(r => r.partId === 'self');
+  if (!hasSelf) {
+    allRels.unshift({ partId: 'self', partName: 'Self', thisPartToOther: '', otherToThisPart: '', dynamic: 'unknown', notes: '' });
+    part.relationships = allRels;
+  }
+
+  allRels.forEach((rel, relIdx) => {
+    const tr = document.createElement('tr');
+
+    const tdName = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = 'part-ref';
+    badge.textContent = rel.partName || rel.partId;
+    tdName.appendChild(badge);
+
+    const tdToOther = document.createElement('td');
+    const toOtherEl = makeEditable(rel.thisPartToOther || '', 'How I relate to them...', v => {
+      rel.thisPartToOther = v; saveState(appState);
+    });
+    tdToOther.appendChild(toOtherEl);
+
+    const tdToThis = document.createElement('td');
+    const toThisEl = makeEditable(rel.otherToThisPart || '', 'How they relate to me...', v => {
+      rel.otherToThisPart = v; saveState(appState);
+    });
+    tdToThis.appendChild(toThisEl);
+
+    const tdDynamic = document.createElement('td');
+    const dynSelect = document.createElement('select');
+    dynSelect.className = 'inline-select';
+    ['polarized','protective','allied','distant','unknown'].forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d;
+      opt.textContent = d;
+      if (d === rel.dynamic) opt.selected = true;
+      dynSelect.appendChild(opt);
+    });
+    dynSelect.addEventListener('change', () => {
+      rel.dynamic = dynSelect.value;
+      saveState(appState);
+      renderMap(appState);
+    });
+    tdDynamic.appendChild(dynSelect);
+
+    tr.appendChild(tdName); tr.appendChild(tdToOther); tr.appendChild(tdToThis); tr.appendChild(tdDynamic);
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  wrapper.appendChild(table);
+  return wrapper;
+}
+
+function addPart() {
+  const id = 'part-' + Date.now();
+  const newPart = {
+    id,
+    name: '',
+    role: 'manager',
+    overview: '',
+    skills: '', wants: '', fears: '', burdens: '', valuesAndNeeds: '', potentialRoles: '',
+    relationships: [{ partId: 'self', partName: 'Self', thisPartToOther: '', otherToThisPart: '', dynamic: 'unknown', notes: '' }],
+    balanceWeight: 0.1,
+    nodeSize: 'medium',
+    lastUpdated: new Date().toISOString().slice(0, 10),
+  };
+  // Add this part to all existing parts' relationship tables
+  appState.parts.forEach(p => {
+    if (!p.relationships) p.relationships = [];
+    p.relationships.push({ partId: id, partName: '', thisPartToOther: '', otherToThisPart: '', dynamic: 'unknown', notes: '' });
+  });
+  appState.parts.push(newPart);
+  saveState(appState);
+  render(appState);
+  // Expand new card
+  setTimeout(() => {
+    const card = document.querySelector(`.part-card[data-part-id="${id}"]`);
+    if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  }, 50);
+}
+
+function deletePart(id) {
+  appState.parts = appState.parts.filter(p => p.id !== id);
+  // Remove from other parts' relationship tables
+  appState.parts.forEach(p => {
+    if (p.relationships) p.relationships = p.relationships.filter(r => r.partId !== id);
+  });
+  saveState(appState);
+  render(appState);
+}
+
+// ══ DISTRIBUTION / BALANCE HELPERS ═════════════════════════════
+
+function _partColor(id) {
+  if (id === 'self') return 'rgba(232,223,200,0.88)';
+  const parts = appState.parts || [];
+  const part = parts.find(p => p.id === id);
+  if (!part) return 'rgba(144,138,120,0.8)';
+  const base = getPartColor(part, parts);
+  if (base.startsWith('hsl')) return base.replace(/^hsl\(/, 'hsla(').replace(/\)$/, ',0.8)');
+  if (base.startsWith('rgba') || base.startsWith('hsla')) return base;
+  // hex -> rgba
+  const h = base.replace('#','');
+  const r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b2 = parseInt(h.slice(4,6),16);
+  return `rgba(${r},${g},${b2},0.8)`;
+}
+
+function _snapEntries(weights) {
+  const roleOrder = { self: 0, manager: 1, firefighter: 2, exile: 3 };
+  return Object.entries(weights || {})
+    .filter(([,v]) => v > 0.005)
+    .sort(([idA], [idB]) => {
+      const rA = idA === 'self' ? 'self' : ((appState.parts||[]).find(p=>p.id===idA)||{}).role||'zzz';
+      const rB = idB === 'self' ? 'self' : ((appState.parts||[]).find(p=>p.id===idB)||{}).role||'zzz';
+      return (roleOrder[rA]??9)-(roleOrder[rB]??9);
+    });
+}
+
+function averageSnapshots(hist) {
+  const sums = {}, counts = {};
+  hist.forEach(snap => {
+    Object.entries(snap.weights || {}).forEach(([k, v]) => {
+      sums[k] = (sums[k] || 0) + v;
+      counts[k] = (counts[k] || 0) + 1;
+    });
+  });
+  const avg = {};
+  Object.entries(sums).forEach(([k, v]) => { avg[k] = v / counts[k]; });
+  return { date: 'All time', weights: avg };
+}
+
+// Renders a pie canvas + legend into container el. size = px diameter.
+function buildBalancePie(snap, size, container) {
+  const entries = _snapEntries(snap.weights);
+  const total = entries.reduce((a,[,v])=>a+v,0)||1;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  canvas.style.cssText = `width:${size}px;height:${size}px;flex-shrink:0;`;
+  const ctx = canvas.getContext('2d');
+  const cx = size/2, cy = size/2, r = size/2 - 2;
+  let angle = -Math.PI/2;
+  entries.forEach(([id, w]) => {
+    const slice = (w/total)*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,angle,angle+slice); ctx.closePath();
+    ctx.fillStyle = _partColor(id); ctx.fill();
+    angle += slice;
+  });
+  container.appendChild(canvas);
+
+  const legend = document.createElement('div');
+  legend.style.cssText = 'display:flex;flex-direction:column;gap:3px;';
+  entries.forEach(([id, w]) => {
+    const pct = Math.round((w/total)*100);
+    const part = id === 'self' ? null : (appState.parts||[]).find(p=>p.id===id);
+    const name = id === 'self' ? 'Self' : (part ? part.name : id);
+    const sub  = part ? part.role : '';
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:5px;';
+    const dot = document.createElement('span');
+    dot.style.cssText = `width:8px;height:8px;border-radius:50%;background:${_partColor(id)};flex-shrink:0;`;
+    const txt = document.createElement('span');
+    txt.style.cssText = 'font-family:var(--mono);font-size:10px;color:var(--text-dim);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+    txt.textContent = sub ? `${name} (${sub})` : name;
+    const pctEl = document.createElement('span');
+    pctEl.style.cssText = 'font-family:var(--mono);font-size:10px;color:var(--text-dim);flex-shrink:0;';
+    pctEl.textContent = `${pct}%`;
+    row.appendChild(dot); row.appendChild(txt); row.appendChild(pctEl);
+    legend.appendChild(row);
+  });
+  container.appendChild(legend);
+}
+
+// Renders pies into Parts tab top
+function renderPartsDistribution(s) {
+  const hist = loadBalHist();
+  const distRow   = document.getElementById('parts-dist-row');
+  const allTimeEl = document.getElementById('parts-dist-alltime');
+  const latestEl  = document.getElementById('parts-dist-latest');
+
+  allTimeEl.innerHTML = ''; latestEl.innerHTML = '';
+
+  if (hist.length === 0) {
+    distRow.style.display = 'none';
+    return;
+  }
+  distRow.style.display = '';
+
+  buildBalancePie(averageSnapshots(hist), 120, allTimeEl);
+  buildBalancePie(hist[hist.length - 1], 120, latestEl);
+}
+
+function renderBalanceAreaChart(s, hist, canvasId, legendId) {
+  const canvas = document.getElementById(canvasId || 'balance-area-canvas');
+  const legendEl = document.getElementById(legendId || 'balance-area-legend');
+  if (!canvas) return;
+
+  const DPR = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.clientWidth || 800;
+  const H = 220;
+  canvas.width = Math.round(W * DPR);
+  canvas.height = Math.round(H * DPR);
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(DPR, DPR);
+  ctx.clearRect(0, 0, W, H);
+
+  const PAD_L = 40, PAD_R = 16, PAD_T = 12, PAD_B = 28;
+  const drawW = W - PAD_L - PAD_R;
+  const drawH = H - PAD_T - PAD_B;
+
+  // Collect all part IDs across history (ordered: self, then manager, firefighter, exile)
+  const roleOrder = { self: 0, manager: 1, firefighter: 2, exile: 3 };
+  const idSet = new Set();
+  hist.forEach(snap => Object.keys(snap.weights||{}).forEach(k => idSet.add(k)));
+  const ids = Array.from(idSet).sort((a, b) => {
+    const rA = a==='self'?'self':((s.parts||[]).find(p=>p.id===a)||{}).role||'zzz';
+    const rB = b==='self'?'self':((s.parts||[]).find(p=>p.id===b)||{}).role||'zzz';
+    return (roleOrder[rA]??9)-(roleOrder[rB]??9);
+  });
+
+  // Normalise each snapshot to proportions (sum to 1)
+  const snaps = hist.map(snap => {
+    const raw = snap.weights || {};
+    const total = Object.values(raw).reduce((a,v)=>a+v,0) || 1;
+    const props = {};
+    ids.forEach(id => { props[id] = (raw[id]||0)/total; });
+    return { date: snap.date, props };
+  });
+
+  const n = snaps.length;
+  function snapX(i) { return PAD_L + (n <= 1 ? drawW/2 : (i/(n-1))*drawW); }
+  function propY(cum) { return PAD_T + drawH * (1 - cum); }
+
+  // Draw stacked areas bottom-up (ids reversed so self is on top)
+  const idsRev = ids.slice().reverse();
+  idsRev.forEach(id => {
+    const color = _partColor(id);
+    ctx.beginPath();
+    // Top edge left to right
+    snaps.forEach((snap, i) => {
+      const cum = ids.slice(0, ids.indexOf(id)+1).reduce((a,k)=>a+snap.props[k],0);
+      const prev = ids.slice(0, ids.indexOf(id)).reduce((a,k)=>a+snap.props[k],0);
+      if (i===0) ctx.moveTo(snapX(i), propY(cum));
+      else ctx.lineTo(snapX(i), propY(cum));
+    });
+    // Bottom edge right to left
+    for (let i = snaps.length-1; i >= 0; i--) {
+      const snap = snaps[i];
+      const prev = ids.slice(0, ids.indexOf(id)).reduce((a,k)=>a+snap.props[k],0);
+      ctx.lineTo(snapX(i), propY(prev));
+    }
+    ctx.closePath();
+    ctx.fillStyle = color.replace(/[\d.]+\)$/, '0.55)');
+    ctx.fill();
+  });
+
+  // Gridlines + Y axis labels (0%, 50%, 100%)
+  ctx.font = `10px 'JetBrains Mono', monospace`;
+  ctx.fillStyle = '#504c44';
+  ctx.textAlign = 'right';
+  [0, 0.5, 1].forEach(v => {
+    const y = propY(v);
+    ctx.fillText(Math.round(v*100)+'%', PAD_L - 5, y + 3);
+    ctx.strokeStyle = 'rgba(35,35,50,0.8)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(PAD_L+drawW, y); ctx.stroke();
+  });
+
+  // X axis date labels (up to 6 evenly spaced)
+  ctx.fillStyle = '#504c44';
+  ctx.textAlign = 'center';
+  const labelStep = Math.max(1, Math.floor(n/6));
+  snaps.forEach((snap, i) => {
+    if (i % labelStep !== 0 && i !== n-1) return;
+    ctx.fillText(snap.date, snapX(i), H - PAD_B + 16);
+  });
+
+  // Session event pins (vertical lines)
+  const sessions = (s.sessions || []);
+  sessions.forEach(sess => {
+    // Find closest snap by date
+    let closest = -1, closestDist = Infinity;
+    snaps.forEach((snap, i) => {
+      const d = Math.abs(new Date(snap.date) - new Date(sess.date));
+      if (d < closestDist) { closestDist = d; closest = i; }
+    });
+    if (closest < 0) return;
+    const x = snapX(closest);
+    ctx.strokeStyle = 'rgba(200,168,74,0.5)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(x, PAD_T); ctx.lineTo(x, PAD_T+drawH); ctx.stroke();
+    ctx.setLineDash([]);
+    // Store hit zone on canvas for click navigation
+    if (!canvas._eventPins) canvas._eventPins = [];
+    canvas._eventPins.push({ x, sessionId: sess.id, date: sess.date });
+  });
+
+  // Click on event pin -> switch to journal and expand that session
+  if (!canvas._pinClickBound) {
+    canvas._pinClickBound = true;
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = (e.clientX - rect.left) * (W / rect.width);
+      const pins = canvas._eventPins || [];
+      const hit = pins.find(p => Math.abs(p.x - mx) < 10);
+      if (hit) {
+        switchTab('journal');
+        setTimeout(() => {
+          const card = document.querySelector(`.session-card[data-session-id="${hit.sessionId}"]`);
+          if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior:'smooth', block:'start' }); }
+        }, 80);
+      }
+    });
+    canvas.style.cursor = 'pointer';
+  }
+  canvas._eventPins = [];
+  // Re-populate pins (done above inside forEach, clear and re-add needed since we reset above)
+  sessions.forEach(sess => {
+    let closest = -1, closestDist = Infinity;
+    snaps.forEach((snap, i) => {
+      const d = Math.abs(new Date(snap.date) - new Date(sess.date));
+      if (d < closestDist) { closestDist = d; closest = i; }
+    });
+    if (closest < 0) return;
+    canvas._eventPins.push({ x: snapX(closest), sessionId: sess.id, date: sess.date });
+  });
+
+  // Legend
+  legendEl.innerHTML = '';
+  ids.forEach(id => {
+    const part = id==='self' ? null : (s.parts||[]).find(p=>p.id===id);
+    const name = id==='self' ? 'Self' : (part ? part.name : id);
+    const item = document.createElement('div');
+    item.className = 'balance-area-legend-item';
+    const dot = document.createElement('span');
+    dot.className = 'balance-area-legend-dot';
+    dot.style.background = _partColor(id).replace(/[\d.]+\)$/, '0.8)');
+    item.appendChild(dot);
+    item.appendChild(document.createTextNode(name));
+    legendEl.appendChild(item);
+  });
+}
+
+function snapshotBalance(s) {
+  const hist = loadBalHist();
+  const weights = {};
+  (s.parts || []).forEach(p => {
+    weights[p.id] = p.balanceWeight || 0;
+  });
+  // Include self weight if present
+  if (s._selfWeight) weights['self'] = s._selfWeight;
+  hist.push({ date: new Date().toISOString().slice(0, 10), weights });
+  saveBalHist(hist);
+}
+
+// ══ TAB: SELF — wheel ════════════════════════════════════════
+
+let _wheelSelectedC = -1;
+let _wheelHitDots   = [];
+
+function renderSelf(s) {
+  _initWheelEvents();
+  _drawWheel(s);
+  _renderDetailPanel(s, _wheelSelectedC);
+}
+
+function _groupedMoments(s) {
+  const grouped = {};
+  EIGHT_CS.forEach(c => { grouped[c.name.toLowerCase()] = []; });
+  (s.selfMoments || []).forEach(m => {
+    const key = (m.quality || '').toLowerCase();
+    if (grouped[key] !== undefined) grouped[key].push(m);
+  });
+  return grouped;
+}
+
+function _drawWheel(s) {
+  const canvas = document.getElementById('self-wheel-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const N   = EIGHT_CS.length;
+  const W   = canvas.width, H = canvas.height;
+  const cx  = W / 2, cy = H / 2;
+
+  const innerR   = 44;
+  const spokeR   = 182;
+  const labelR   = spokeR + 18; // anchor = midpoint of label, on the spoke outward ray
+  const dotRing0 = 100;
+  const dotStep  = 22;
+
+  ctx.clearRect(0, 0, W, H);
+  const grouped = _groupedMoments(s);
+  _wheelHitDots = [];
+
+  // Segment fills
+  for (let i = 0; i < N; i++) {
+    const a0 = (i / N) * Math.PI * 2 - Math.PI / 2;
+    const a1 = ((i + 1) / N) * Math.PI * 2 - Math.PI / 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, spokeR, a0, a1);
+    ctx.closePath();
+    ctx.fillStyle = _wheelSelectedC === i ? 'rgba(232,223,200,0.07)' : 'rgba(232,223,200,0.02)';
+    ctx.fill();
+    if (_wheelSelectedC === i) {
+      ctx.strokeStyle = 'rgba(232,223,200,0.18)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  }
+
+  // Outer ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, spokeR, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(232,223,200,0.12)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Hub — glows on hover (tracked via _hubHovered flag)
+  const hubGlow = typeof _hubHovered !== 'undefined' && _hubHovered;
+  if (hubGlow) {
+    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, innerR * 1.8);
+    grd.addColorStop(0, 'rgba(232,223,200,0.12)');
+    grd.addColorStop(1, 'rgba(232,223,200,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, innerR * 1.8, 0, Math.PI * 2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+  }
+  ctx.beginPath();
+  ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+  ctx.strokeStyle = hubGlow ? 'rgba(232,223,200,0.55)' : 'rgba(232,223,200,0.22)';
+  ctx.lineWidth = hubGlow ? 2 : 1.5;
+  ctx.stroke();
+  ctx.font = hubGlow ? '700 12px "Cinzel", serif' : '600 11px "Cinzel", serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = hubGlow ? '#e8dfc8' : 'rgba(232,223,200,0.38)';
+  ctx.fillText('SELF', cx, cy);
+
+  // Spokes, labels (horizontal), dots
+  for (let i = 0; i < N; i++) {
+    const midAngle = (i / N) * Math.PI * 2 - Math.PI / 2 + Math.PI / N;
+    const isSel    = _wheelSelectedC === i;
+    const c        = EIGHT_CS[i];
+    const moments  = grouped[c.name.toLowerCase()] || [];
+
+    // Spoke
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(midAngle) * innerR, cy + Math.sin(midAngle) * innerR);
+    ctx.lineTo(cx + Math.cos(midAngle) * spokeR,  cy + Math.sin(midAngle) * spokeR);
+    ctx.strokeStyle = isSel ? 'rgba(232,223,200,0.55)' : 'rgba(232,223,200,0.14)';
+    ctx.lineWidth   = isSel ? 1.5 : 1;
+    ctx.stroke();
+
+    // Horizontal label: centre of word anchored on spoke's outward ray
+    const lx = cx + Math.cos(midAngle) * labelR;
+    const ly = cy + Math.sin(midAngle) * labelR;
+    ctx.font      = isSel ? '600 13px "Cinzel", serif' : '400 12px "Cinzel", serif';
+    ctx.fillStyle = isSel ? '#e8dfc8' : 'rgba(232,223,200,0.6)';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(c.name.toUpperCase(), lx, ly);
+
+    // Dots along spoke
+    moments.forEach((m, di) => {
+      const dotDist = dotRing0 + di * dotStep;
+      const dx = cx + Math.cos(midAngle) * dotDist;
+      const dy = cy + Math.sin(midAngle) * dotDist;
+      const r  = 5;
+      const grd = ctx.createRadialGradient(dx, dy, 0, dx, dy, r * 3.2);
+      grd.addColorStop(0, 'rgba(232,223,200,0.5)');
+      grd.addColorStop(1, 'rgba(232,223,200,0)');
+      ctx.beginPath();
+      ctx.arc(dx, dy, r * 3.2, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(dx, dy, r, 0, Math.PI * 2);
+      ctx.fillStyle = isSel ? '#e8dfc8' : 'rgba(232,223,200,0.62)';
+      ctx.fill();
+      _wheelHitDots.push({ cx: dx, cy: dy, radius: r + 7, moment: m, cIdx: i });
+    });
+  }
+}
+
+let _hubHovered = false;
+
+function _canvasPos(canvas, ex, ey) {
+  const rect   = canvas.getBoundingClientRect();
+  const scaleX = canvas.width  / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return { px: (ex - rect.left) * scaleX, py: (ey - rect.top) * scaleY };
+}
+
+function _hitTestDot(canvas, ex, ey) {
+  const { px, py } = _canvasPos(canvas, ex, ey);
+  for (const d of _wheelHitDots) {
+    const dx = px - d.cx, dy = py - d.cy;
+    if (dx * dx + dy * dy <= d.radius * d.radius) return d;
+  }
+  return null;
+}
+
+function _hitTestHub(canvas, ex, ey) {
+  const { px, py } = _canvasPos(canvas, ex, ey);
+  const dx = px - canvas.width  / 2;
+  const dy = py - canvas.height / 2;
+  return dx * dx + dy * dy <= 44 * 44;
+}
+
+function _hitTestSpoke(canvas, ex, ey) {
+  const N = EIGHT_CS.length;
+  const { px, py } = _canvasPos(canvas, ex, ey);
+  const x = px - canvas.width  / 2;
+  const y = py - canvas.height / 2;
+  const r = Math.sqrt(x * x + y * y);
+  if (r < 48 || r > 185) return null; // 48 = hub radius, 185 ≈ spokeR
+  let angle = Math.atan2(y, x) + Math.PI / 2;
+  if (angle < 0) angle += Math.PI * 2;
+  if (angle >= Math.PI * 2) angle -= Math.PI * 2;
+  return Math.floor((angle / (Math.PI * 2)) * N) % N;
+}
+
+function _initWheelEvents() {
+  const canvas = document.getElementById('self-wheel-canvas');
+  if (!canvas || canvas._wheelBound) return;
+  canvas._wheelBound = true;
+
+  const tooltip = document.getElementById('wheel-tooltip');
+  const ttTitle = document.getElementById('wtt-title');
+  const ttBody  = document.getElementById('wtt-body');
+
+  function showTip(title, html, e) {
+    ttTitle.textContent = title;
+    ttBody.innerHTML = html;
+    tooltip.classList.add('visible');
+    _positionTooltip(e);
+  }
+
+  canvas.addEventListener('mousemove', e => {
+    const dot = _hitTestDot(canvas, e.clientX, e.clientY);
+    if (dot) {
+      canvas.style.cursor = 'pointer';
+      const m = dot.moment;
+      const preview = (m.description || '').slice(0, 130) + ((m.description || '').length > 130 ? '...' : '');
+      showTip(
+        EIGHT_CS[dot.cIdx].name,
+        `<div class="tt-moment-date">${m.date || ''}</div><div class="tt-moment-text">${preview || '<em style="color:var(--text-dim)">No description yet</em>'}</div>`,
+        e
+      );
+      _setHubHover(false);
+      return;
+    }
+    if (_hitTestHub(canvas, e.clientX, e.clientY)) {
+      canvas.style.cursor = 'pointer';
+      showTip('Self', '<div>The natural ground state present when parts step back. Click to learn more.</div>', e);
+      _setHubHover(true);
+      return;
+    }
+    const idx = _hitTestSpoke(canvas, e.clientX, e.clientY);
+    if (idx !== null) {
+      canvas.style.cursor = 'pointer';
+      const c   = EIGHT_CS[idx];
+      const cnt = (_groupedMoments(appState)[c.name.toLowerCase()] || []).length;
+      showTip(
+        `${c.name.toUpperCase()} — ${cnt} moment${cnt !== 1 ? 's' : ''}`,
+        `<div>${c.desc}</div><div class="tt-dist">${c.distinction}</div>`,
+        e
+      );
+      _setHubHover(false);
+      return;
+    }
+    canvas.style.cursor = 'default';
+    tooltip.classList.remove('visible');
+    _setHubHover(false);
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    tooltip.classList.remove('visible');
+    _setHubHover(false);
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (tooltip.classList.contains('visible')) _positionTooltip(e);
+  }, { passive: true });
+
+  canvas.addEventListener('click', e => {
+    if (_hitTestHub(canvas, e.clientX, e.clientY)) {
+      _wheelSelectedC = (_wheelSelectedC === -1) ? null : -1;
+      _drawWheel(appState);
+      _renderDetailPanel(appState, _wheelSelectedC);
+      return;
+    }
+    const dot  = _hitTestDot(canvas, e.clientX, e.clientY);
+    const cIdx = dot !== null ? dot.cIdx : _hitTestSpoke(canvas, e.clientX, e.clientY);
+    if (cIdx === null || cIdx === undefined) return;
+    _wheelSelectedC = (_wheelSelectedC === cIdx) ? null : cIdx;
+    _drawWheel(appState);
+    _renderDetailPanel(appState, _wheelSelectedC);
+  });
+}
+
+function _setHubHover(val) {
+  if (_hubHovered === val) return;
+  _hubHovered = val;
+  _drawWheel(appState);
+}
+
+
+function _positionTooltip(e) {
+  const tt = document.getElementById('wheel-tooltip');
+  const pad = 14;
+  let tx = e.clientX + pad, ty = e.clientY + pad;
+  const tw = tt.offsetWidth || 280, th = tt.offsetHeight || 80;
+  if (tx + tw > window.innerWidth  - 8) tx = e.clientX - tw - pad;
+  if (ty + th > window.innerHeight - 8) ty = e.clientY - th - pad;
+  tt.style.left = tx + 'px';
+  tt.style.top  = ty + 'px';
+}
+
+function _renderDetailPanel(s, cIdx) {
+  const panel = document.getElementById('self-detail-panel');
+  if (!panel) return;
+  if (cIdx === null || cIdx === undefined) {
+    panel.style.display = 'none';
+    panel.innerHTML = '';
+    return;
+  }
+  panel.style.display = 'block';
+  panel.className = 'card sdp';
+
+  // Self hub selected (-1)
+  if (cIdx === -1) {
+    panel.innerHTML = `
+      <div class="sdp-hdr"><span class="sdp-name">Self</span></div>
+      <div class="sdp-section-label">What it is</div>
+      <div class="sdp-desc">Self is your natural ground state, the part of you that was never wounded. It doesn't need to be built or earned. When parts step back, Self is what remains: a steady, spacious presence that can witness and relate to every part without fusing with any of them.</div>
+      <div class="sdp-section-label">What it isn't</div>
+      <div class="sdp-desc">Self isn't a feeling of calm you achieve through effort, or a higher self you ascend to. It isn't the absence of parts, or the voice that says "I've done the work." It isn't produced by meditation or therapy. Those just remove what was obscuring it. If it feels like an accomplishment, it's probably a part.</div>
+      <div class="sdp-section-label">The 8 Cs</div>
+      <div class="sdp-desc">When Self is present you tend to notice some of these qualities: Calm, Curiosity, Clarity, Compassion, Confidence, Courage, Creativity, Connectedness. These aren't goals to achieve. They're signs Self is already there.</div>
+      <div class="sdp-section-label">The 5 Ps</div>
+      <div class="sdp-desc">Another way to recognise Self-energy. Where the 8 Cs describe inner qualities, the 5 Ps often show up in how you hold a situation over time: Presence (being fully here, not managing from a distance), Patience (not needing this to resolve on a particular timeline), Perspective (holding the bigger picture without losing the detail), Persistence (staying engaged even when it's hard, without forcing), Playfulness (a lightness that doesn't trivialise). Like the 8 Cs, these aren't achievements. They're descriptions of what's already true when parts aren't running the show.</div>`;
+    return;
+  }
+
+  const c       = EIGHT_CS[cIdx];
+  const moments = _groupedMoments(s)[c.name.toLowerCase()] || [];
+
+  let html = `
+    <div class="sdp-hdr">
+      <span class="sdp-name">${c.name}</span>
+      <span class="sdp-count">${moments.length} moment${moments.length !== 1 ? 's' : ''}</span>
+    </div>
+    <div class="sdp-desc">${c.desc}</div>
+    <div class="sdp-distinction">${c.distinction}</div>
+    <div class="sdp-moments">`;
+
+  if (moments.length === 0) {
+    html += `<p style="color:var(--text-dim);font-size:15px;margin-bottom:14px;">No moments logged for ${c.name} yet.</p>`;
+  } else {
+    moments.forEach(m => {
+      const idx  = (s.selfMoments || []).indexOf(m);
+      const desc = m.description || '';
+      html += `<div class="moment-entry">
+        <div class="moment-date">${m.date || ''}</div>
+        <div class="moment-desc sdp-editable" data-midx="${idx}" contenteditable="true" spellcheck="false">${desc}</div>
+      </div>`;
+    });
+  }
+
+  html += `</div><button class="btn-ghost" onclick="addSelfMoment(${cIdx})">+ Add moment</button>`;
+  panel.innerHTML = html;
+
+  panel.querySelectorAll('.sdp-editable').forEach(el => {
+    if (!el.textContent.trim()) {
+      el.textContent = 'Describe the moment...';
+      el.style.color = 'var(--text-dim)';
+      el.dataset.ph  = '1';
+    }
+    el.addEventListener('focus', () => {
+      if (el.dataset.ph === '1') { el.textContent = ''; el.style.color = ''; delete el.dataset.ph; }
+    });
+    el.addEventListener('blur', () => {
+      const val = el.textContent.trim();
+      if (!val) { el.textContent = 'Describe the moment...'; el.style.color = 'var(--text-dim)'; el.dataset.ph = '1'; }
+      const idx = parseInt(el.dataset.midx, 10);
+      if (!isNaN(idx) && appState.selfMoments?.[idx]) {
+        appState.selfMoments[idx].description = val;
+        saveState(appState);
+        _drawWheel(appState);
+      }
+    });
+  });
+}
+
+function addSelfMoment(cIdx) {
+  if (cIdx === undefined || cIdx === null) {
+    const name = prompt('Which of the 8 Cs was present?\n\nCalm, Curiosity, Clarity, Compassion, Confidence, Courage, Creativity, Connectedness');
+    if (!name) return;
+    const found = EIGHT_CS.findIndex(c => c.name.toLowerCase() === name.toLowerCase().trim());
+    cIdx = found === -1 ? undefined : found;
+  }
+  if (!appState.selfMoments) appState.selfMoments = [];
+  appState.selfMoments.push({
+    id: 'sm-' + Date.now(),
+    date: new Date().toISOString().slice(0, 10),
+    quality: cIdx !== undefined ? EIGHT_CS[cIdx].name.toLowerCase() : '',
+    description: '',
+  });
+  saveState(appState);
+  if (cIdx !== undefined) _wheelSelectedC = cIdx;
+  renderSelf(appState);
+}
+
+// ══ TAB: JOURNAL ════════════════════════════════════════════
+function renderJournal(s) {
+  const list = document.getElementById('sessions-list');
+  const empty = document.getElementById('sessions-empty');
+  list.innerHTML = '';
+  const sessions = s.sessions || [];
+  if (sessions.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  // Most recent first
+  [...sessions].reverse().forEach(session => {
+    list.appendChild(buildSessionCard(session, s));
+  });
+}
+
+function buildSessionCard(session, s) {
+  const card = document.createElement('div');
+  card.className = 'session-card';
+  card.dataset.sessionId = session.id || session.date;
+
+  const hdr = document.createElement('div');
+  hdr.className = 'session-header';
+
+  const date = document.createElement('div');
+  date.className = 'session-date';
+  date.textContent = session.date || '';
+
+  const title = document.createElement('div');
+  title.className = 'session-title';
+  title.textContent = session.title || 'Untitled session';
+
+  const chevron = document.createElement('span');
+  chevron.textContent = '▶';
+  chevron.style.cssText = 'font-size:10px;color:var(--text-dim);transition:transform 0.2s;flex-shrink:0;';
+
+  hdr.appendChild(date); hdr.appendChild(title); hdr.appendChild(chevron);
+  hdr.addEventListener('click', () => {
+    card.classList.toggle('expanded');
+    chevron.style.transform = card.classList.contains('expanded') ? 'rotate(90deg)' : '';
+  });
+  card.appendChild(hdr);
+
+  const body = document.createElement('div');
+  body.className = 'session-body';
+
+  // Parts tagged
+  if (session.partsTagged && session.partsTagged.length) {
+    const tagsRow = document.createElement('div');
+    tagsRow.className = 'session-parts-tags';
+    session.partsTagged.forEach(pid => {
+      const part = (s.parts || []).find(p => p.id === pid);
+      const tag = document.createElement('span');
+      tag.className = 'session-part-tag';
+      tag.textContent = part ? part.name : pid;
+      tag.addEventListener('click', () => {
+        switchTab('parts');
+        const card = document.querySelector(`.part-card[data-part-id="${pid}"]`);
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      tagsRow.appendChild(tag);
+    });
+    body.appendChild(tagsRow);
+  }
+
+  // Content
+  const contentEl = document.createElement('div');
+  contentEl.style.cssText = 'font-size:15px;color:var(--text-mid);line-height:1.65;margin:10px 0;white-space:pre-wrap;';
+  contentEl.textContent = session.content || '';
+  body.appendChild(contentEl);
+
+  // System read
+  if (session.systemRead) {
+    const readEl = document.createElement('div');
+    readEl.className = 'session-system-read';
+    const readLabel = document.createElement('div');
+    readLabel.className = 'session-system-read-label';
+    readLabel.textContent = 'System read';
+    const readText = document.createElement('div');
+    readText.textContent = session.systemRead;
+    readEl.appendChild(readLabel);
+    readEl.appendChild(readText);
+    body.appendChild(readEl);
+  }
+
+  // Session distribution pie (built from balance history snapshot closest to session date)
+  const hist = loadBalHist();
+  if (hist.length > 0) {
+    let closest = hist[0], closestDist = Infinity;
+    hist.forEach(snap => {
+      const d = Math.abs(new Date(snap.date) - new Date(session.date));
+      if (d < closestDist) { closestDist = d; closest = snap; }
+    });
+    const pieRow = document.createElement('div');
+    pieRow.className = 'session-pie-row';
+    const lbl = document.createElement('div');
+    lbl.className = 'session-pie-label';
+    lbl.textContent = 'Distribution';
+    pieRow.appendChild(lbl);
+    buildBalancePie(closest, 56, pieRow);
+    body.appendChild(pieRow);
+  }
+
+  card.appendChild(body);
+  return card;
+}
+
+// ══ TAB: TIMELINE ═════════════════════════════════════════════
+let _timelineTooltipPart = null;
+
+function renderTimeline(s) {
+  const emptyEl = document.getElementById('timeline-empty');
+  const recentSection = document.getElementById('timeline-recent-section');
+  const alltimeSection = document.getElementById('timeline-alltime-section');
+  const areaWrap = document.getElementById('balance-area-wrap');
+  const hist = loadBalHist();
+
+  renderPartsDistribution(s);
+
+  if (hist.length === 0) {
+    emptyEl.style.display = '';
+    recentSection.style.display = 'none';
+    alltimeSection.style.display = 'none';
+    return;
+  }
+  emptyEl.style.display = 'none';
+
+  // Recent: past 12 months
+  const cutoff = new Date();
+  cutoff.setFullYear(cutoff.getFullYear() - 1);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  const recentHist = hist.filter(h => h.date >= cutoffStr);
+
+  if (recentHist.length > 0) {
+    recentSection.style.display = '';
+    renderBalanceAreaChart(s, recentHist, 'balance-area-canvas-recent', 'balance-area-legend-recent');
+  } else {
+    recentSection.style.display = 'none';
+  }
+
+  alltimeSection.style.display = '';
+  areaWrap.style.display = '';
+  renderBalanceAreaChart(s, hist);
+}
+
+// ══ TAB SWITCHING ══════════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('tab-' + name);
+  if (panel) panel.classList.add('active');
+  const btn = document.querySelector(`.tab-btn[data-tab="${name}"]`);
+  if (btn) btn.classList.add('active');
+
+  if (name === 'map') {
+    mapVx = {}; mapVy = {};
+    renderMap(appState);
+  }
+  if (name === 'self') {
+    renderSelf(appState);
+  }
+  if (name === 'timeline') {
+    renderTimeline(appState);
+  }
+}
+
+// ══ IMPORT MODAL ══════════════════════════════════════════════
+function openModal() {
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('json-input').value = '';
+  document.getElementById('modal-status').textContent = '';
+  document.getElementById('modal-status').className = 'modal-status';
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+function setModalStatus(msg, type) {
+  const el = document.getElementById('modal-status');
+  el.textContent = msg;
+  el.className = 'modal-status ' + type;
+  if (type === 'ok') setTimeout(() => { el.textContent = ''; el.className = 'modal-status'; }, 3500);
+}
+function importFromFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('json-input').value = e.target.result;
+    applyUpdate();
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// ══ APPLY UPDATE (IMPORT) ═════════════════════════════════════
+function applyUpdate() {
+  const raw = document.getElementById('json-input').value.trim();
+  try {
+    const p = JSON.parse(raw);
+    const isPartial = p._partial === true || (!p.system && !p.parts);
+    delete p._partial;
+
+    // Snapshot for undo and locked field restore
+    const prevSnapshot = JSON.parse(JSON.stringify(appState));
+    if (!IS_DEMO) {
+      localStorage.setItem(UNDO_KEY, JSON.stringify(prevSnapshot));
+    }
+
+    let merged;
+    if (isPartial) {
+      merged = Object.assign({}, appState);
+      for (const [k, v] of Object.entries(p)) {
+        if (Array.isArray(v) && Array.isArray(merged[k]) && v.length && v[0]?.id !== undefined) {
+          const map = new Map((merged[k] || []).map(x => [x.id, x]));
+          v.forEach(x => map.set(x.id, Object.assign({}, map.get(x.id) || {}, x)));
+          merged[k] = [...map.values()];
+        } else {
+          merged[k] = v;
+        }
+      }
+    } else {
+      merged = p;
+    }
+
+    // Restore or rebuild balance history
+    if (!isPartial && merged._balanceHistory) {
+      // Full import with embedded history: restore it directly
+      saveBalHist(merged._balanceHistory);
+      delete merged._balanceHistory;
+    } else if (!isPartial) {
+      // Full import without embedded history: clear stale history, then snapshot
+      saveBalHist([]);
+    }
+    if (merged.parts && merged.parts.some(p => p.balanceWeight)) {
+      snapshotBalance(merged);
+    }
+
+    // Merge new sessions into session history key
+    if (merged.sessions && Array.isArray(merged.sessions)) {
+      // Also store into dedicated sessions key for potential future use
+    }
+
+    // Restore locked fields
+    applyLockedFields(merged, prevSnapshot);
+
+    saveState(merged);
+    appState = merged;
+    render(merged);
+
+    setModalStatus('Sheet updated', 'ok');
+    document.getElementById('json-input').value = '';
+    setTimeout(closeModal, 1200);
+
+    // Mark welcomed
+    if (merged.system?.name && merged.system.name !== DEMO_NAME && !IS_DEMO) {
+      localStorage.setItem(WELCOMED_KEY, '1');
+      document.getElementById('welcome-modal').classList.remove('open');
+    }
+
+  } catch(e) {
+    setModalStatus('Invalid JSON: ' + (e.message || ''), 'err');
+  }
+}
+
+// ══ EXPORT ════════════════════════════════════════════════════
+function openExport() {
+  const exportModal = document.getElementById('export-modal');
+  const data = buildExportJSON();
+  const jsonStr = JSON.stringify(data, null, 2);
+  const ta = document.getElementById('export-textarea');
+  ta.value = jsonStr;
+
+  // Token estimate
+  const WARN_AMBER = 40000;
+  const WARN_RED = 80000;
+  const total = jsonStr.length;
+  const dataTok = Math.round(total / 4);
+  const instrTok = 3000; // estimated instructions.md tokens
+  const combined = dataTok + instrTok;
+  document.getElementById('export-context-note').textContent =
+    'data.json ~' + dataTok.toLocaleString() + ' tokens + instructions.md ~' + instrTok.toLocaleString() + ' tokens = ~' + combined.toLocaleString() + ' tokens total AI context.';
+
+  const warn = document.getElementById('export-warn-box');
+  if (total >= WARN_RED) {
+    warn.style.display = 'block';
+    warn.style.cssText = 'display:block;padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(160,60,60,0.12);border:1px solid rgba(160,60,60,0.4);color:#c07070;margin:8px 0;';
+    warn.textContent = 'Large export (' + Math.round(total / 1000) + 'KB / ~' + dataTok.toLocaleString() + ' tokens). Consider trimming old session content.';
+  } else if (total >= WARN_AMBER) {
+    warn.style.display = 'block';
+    warn.style.cssText = 'display:block;padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(200,168,74,0.08);border:1px solid rgba(200,168,74,0.3);color:var(--gold);margin:8px 0;';
+    warn.textContent = 'Growing export (' + Math.round(total / 1000) + 'KB / ~' + dataTok.toLocaleString() + ' tokens). Keep an eye on session size.';
+  } else {
+    warn.style.display = 'none';
+  }
+
+  exportModal.classList.add('open');
+}
+
+function buildExportJSON() {
+  return {
+    ...appState,
+    _balanceHistory: loadBalHist(),
+  };
+}
+
+function copyExport() {
+  const ta = document.getElementById('export-textarea');
+  ta.select();
+  document.execCommand('copy');
+  const btn = document.getElementById('copy-export-btn');
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = 'Copy', 2000);
+}
+
+function downloadExport() {
+  const ta = document.getElementById('export-textarea');
+  const blob = new Blob([ta.value], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'team-data.json';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+// ══ CONFIRM DELETE ════════════════════════════════════════════
+let _confirmCallback = null;
+function confirmDelete(msg, cb) {
+  document.getElementById('confirm-msg').textContent = msg;
+  _confirmCallback = cb;
+  document.getElementById('confirm-modal').classList.add('open');
+}
+document.getElementById('confirm-ok').addEventListener('click', () => {
+  closeConfirm();
+  if (_confirmCallback) { _confirmCallback(); _confirmCallback = null; }
+});
+function closeConfirm() {
+  document.getElementById('confirm-modal').classList.remove('open');
+}
+
+// ══ STARTERS TOGGLE ═══════════════════════════════════════════
+function toggleStarters() {
+  const body = document.getElementById('starters-body');
+  const arrow = document.getElementById('starters-arrow');
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▼' : '▶';
+}
+function copyStarter(btn, text) {
+  navigator.clipboard.writeText(text).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  });
+  const orig = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = orig, 1500);
+}
+
+// ══ TOAST ════════════════════════════════════════════════════
+function showToast(msg, dur) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur || 2500);
+}
+
+// ══ HELP MODAL ════════════════════════════════════════════════
+function openHelpModal() {
+  document.getElementById('help-modal').classList.add('open');
+}
+
+// ══ ENCRYPTION ════════════════════════════════════════════════
+const ENC_KEY       = 'ts-enc-v1';
+const PIN_CHECK_KEY = 'ts-pin-check-v1';
+const PIN_TIMEOUT_KEY = 'ts-pin-timeout-v1';
+const SENTINEL      = 'ts-unlocked';
+
+let _lockTimer  = null;
+let _pinActive  = false;
+let _currentPIN = null;
+
+function _b64(buf){ return btoa(String.fromCharCode(...new Uint8Array(buf))); }
+function _unb64(s){ return Uint8Array.from(atob(s), c=>c.charCodeAt(0)).buffer; }
+
+async function _deriveKey(pin, salt){
+  const enc = new TextEncoder();
+  const km = await crypto.subtle.importKey('raw', enc.encode(pin), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2', salt, iterations:200000, hash:'SHA-256'},
+    km, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']
+  );
+}
+
+async function _encrypt(pin, plaintext){
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv   = crypto.getRandomValues(new Uint8Array(12));
+  const key  = await _deriveKey(pin, salt);
+  const enc  = new TextEncoder();
+  const data = await crypto.subtle.encrypt({name:'AES-GCM',iv}, key, enc.encode(plaintext));
+  return JSON.stringify({salt:_b64(salt), iv:_b64(iv), data:_b64(data)});
+}
+
+async function _decrypt(pin, stored){
+  try {
+    const {salt, iv, data} = JSON.parse(stored);
+    const key = await _deriveKey(pin, _unb64(salt));
+    const plain = await crypto.subtle.decrypt({name:'AES-GCM', iv:_unb64(iv)}, key, _unb64(data));
+    return new TextDecoder().decode(plain);
+  } catch { return null; }
+}
+
+function _hasPIN(){ return !!localStorage.getItem(PIN_CHECK_KEY); }
+
+async function _verifyAndDecrypt(pin){
+  const check = localStorage.getItem(PIN_CHECK_KEY);
+  if(!check) return null;
+  const sentinel = await _decrypt(pin, check);
+  if(sentinel !== SENTINEL) return null;
+  const enc = localStorage.getItem(ENC_KEY);
+  if(!enc) return null;
+  return _decrypt(pin, enc);
+}
+
+function _collectBlob(s){
+  return {
+    state: s,
+    [LOCKS_KEY]:    localStorage.getItem(LOCKS_KEY),
+    [SESSIONS_KEY]: localStorage.getItem(SESSIONS_KEY),
+    [BAL_HIST_KEY]: localStorage.getItem(BAL_HIST_KEY),
+  };
+}
+
+function _restoreBlob(blob){
+  if(!blob || typeof blob !== 'object') return;
+  if(blob.state) localStorage.setItem(STATE_KEY, JSON.stringify(blob.state));
+  [LOCKS_KEY, SESSIONS_KEY, BAL_HIST_KEY].forEach(k=>{
+    if(blob[k] != null) localStorage.setItem(k, blob[k]);
+  });
+}
+
+function _clearSensitiveKeys(){
+  [STATE_KEY, LOCKS_KEY, SESSIONS_KEY, BAL_HIST_KEY].forEach(k=>localStorage.removeItem(k));
+}
+
+async function _encryptAndSave(s, pin){
+  if(IS_DEMO) return;
+  const enc = await _encrypt(pin, JSON.stringify(_collectBlob(s)));
+  localStorage.setItem(ENC_KEY, enc);
+  _clearSensitiveKeys();
+}
+
+function _reencryptIfActive(){
+  if(_pinActive && _currentPIN) _encryptAndSave(appState, _currentPIN);
+}
+
+function _getLockTimeout(){ return parseInt(localStorage.getItem(PIN_TIMEOUT_KEY)||'0')||0; }
+
+function _resetLockTimer(){
+  if(_lockTimer){ clearTimeout(_lockTimer); _lockTimer=null; }
+  const mins = _getLockTimeout();
+  if(!_pinActive || !mins) return;
+  _lockTimer = setTimeout(()=>lockApp(), mins*60*1000);
+}
+
+['mousemove','keydown','touchstart','click'].forEach(ev=>{
+  document.addEventListener(ev, ()=>{ if(_pinActive) _resetLockTimer(); }, {passive:true});
+});
+
+function lockApp(){
+  if(_lockTimer){ clearTimeout(_lockTimer); _lockTimer=null; }
+  _pinActive = false;
+  _currentPIN = null;
+  const ls = document.getElementById('lock-screen');
+  ls.classList.add('open');
+  document.getElementById('lock-pin-input').value = '';
+  document.getElementById('lock-error').textContent = '';
+  document.querySelector('.sticky-top').style.visibility='hidden';
+  document.querySelectorAll('.tab-panel').forEach(p=>p.style.visibility='hidden');
+  setTimeout(()=>document.getElementById('lock-pin-input').focus(), 50);
+}
+
+function _showApp(){
+  document.getElementById('lock-screen').classList.remove('open');
+  document.querySelector('.sticky-top').style.visibility='';
+  document.querySelectorAll('.tab-panel').forEach(p=>p.style.visibility='');
+  document.getElementById('lock-btn').style.display='';
+}
+
+async function unlockApp(){
+  const pin = document.getElementById('lock-pin-input').value;
+  const input = document.getElementById('lock-pin-input');
+  const errEl = document.getElementById('lock-error');
+  if(!pin){ errEl.textContent='Enter your password'; input.classList.add('error'); setTimeout(()=>input.classList.remove('error'),400); return; }
+  errEl.textContent='';
+  const plain = await _verifyAndDecrypt(pin);
+  if(plain===null){
+    errEl.textContent='Incorrect password';
+    input.classList.add('error');
+    setTimeout(()=>input.classList.remove('error'),400);
+    input.value='';
+    return;
+  }
+  _currentPIN = pin;
+  _pinActive = true;
+  let blob = null;
+  try { blob = JSON.parse(plain); } catch {}
+  if(blob && blob.state){
+    _restoreBlob(blob);
+    appState = blob.state;
+  } else if(blob){
+    appState = blob;
+  }
+  _showApp();
+  _doInit();
+  _resetLockTimer();
+}
+
+// ── Settings modal ─────────────────────────────────────────────
+function updatePwStrength(val){
+  const el = document.getElementById('settings-pw-strength');
+  if(!el) return;
+  if(!val){ el.style.display='none'; el.textContent=''; return; }
+  el.style.display='';
+  const len = val.length;
+  if(len < 8){ el.textContent='Too short (minimum 8 characters)'; el.style.color='#c84040'; return; }
+  const hasUpper=/[A-Z]/.test(val), hasLower=/[a-z]/.test(val);
+  const hasDigit=/\d/.test(val), hasSymbol=/[^A-Za-z0-9]/.test(val);
+  const variety = [hasUpper,hasLower,hasDigit,hasSymbol].filter(Boolean).length;
+  if(len >= 16 && variety >= 3){ el.textContent='Strong'; el.style.color='#3a8050'; }
+  else if(len >= 12 && variety >= 2){ el.textContent='Good'; el.style.color='#c8a84a'; }
+  else { el.textContent='Weak. Use a longer random password from a password manager.'; el.style.color='#c86040'; }
+}
+
+function openSettingsModal(){
+  const hasPIN = _hasPIN();
+  document.getElementById('settings-pin-status-text').textContent = hasPIN
+    ? 'Password protection is enabled. All your data is AES-256-GCM encrypted in the browser.'
+    : 'No password set. Data is stored in plain text.';
+  document.getElementById('settings-pin-set-row').style.display = hasPIN ? 'none' : '';
+  document.getElementById('settings-pin-remove-row').style.display = hasPIN ? '' : 'none';
+  document.getElementById('settings-pin-change-row').style.display = 'none';
+  document.getElementById('settings-timeout-section').style.display = hasPIN ? '' : 'none';
+  ['settings-pin-new','settings-pin-confirm','settings-pin-current','settings-pin-change-new','settings-pin-change-confirm'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('settings-pin-status').textContent='';
+  const strengthEl = document.getElementById('settings-pw-strength');
+  if(strengthEl){ strengthEl.style.display='none'; strengthEl.textContent=''; }
+  const sel = document.getElementById('settings-timeout-select');
+  const t = _getLockTimeout();
+  [...sel.options].forEach(o=>o.selected=(parseInt(o.value)===t));
+  hideResetConfirm();
+  document.getElementById('settings-modal').classList.add('open');
+}
+
+function closeSettingsModal(){
+  hideResetConfirm();
+  document.getElementById('settings-modal').classList.remove('open');
+}
+
+function showResetConfirm(){ document.getElementById('reset-confirm-row').style.display=''; }
+function hideResetConfirm(){ document.getElementById('reset-confirm-row').style.display='none'; }
+
+function _setSettingsStatus(msg, type){
+  const el = document.getElementById('settings-pin-status');
+  el.textContent = msg; el.className='settings-status '+(type||'');
+}
+
+async function settingsSavePIN(){
+  const p1 = document.getElementById('settings-pin-new').value;
+  const p2 = document.getElementById('settings-pin-confirm').value;
+  if(!p1){ _setSettingsStatus('Enter a password','err'); return; }
+  if(p1.length < 8){ _setSettingsStatus('Password must be at least 8 characters','err'); return; }
+  if(p1!==p2){ _setSettingsStatus('Passwords do not match','err'); return; }
+  _setSettingsStatus('Encrypting...','');
+  const check = await _encrypt(p1, SENTINEL);
+  localStorage.setItem(PIN_CHECK_KEY, check);
+  await _encryptAndSave(appState, p1);
+  _currentPIN = p1;
+  _pinActive = true;
+  const strengthEl = document.getElementById('settings-pw-strength');
+  if(strengthEl) strengthEl.style.display='none';
+  document.getElementById('lock-btn').style.display='';
+  _setSettingsStatus('Password set. All data is now AES-256-GCM encrypted.','ok');
+  document.getElementById('settings-pin-status-text').textContent='Password protection is enabled. All your data is AES-256-GCM encrypted in the browser.';
+  document.getElementById('settings-pin-set-row').style.display='none';
+  document.getElementById('settings-pin-remove-row').style.display='';
+  document.getElementById('settings-timeout-section').style.display='';
+  _resetLockTimer();
+}
+
+async function settingsRemovePIN(){
+  const pin = document.getElementById('settings-pin-current').value;
+  if(!pin){ _setSettingsStatus('Enter current password to confirm','err'); return; }
+  const sentinel = await _decrypt(pin, localStorage.getItem(PIN_CHECK_KEY));
+  if(sentinel!==SENTINEL){ _setSettingsStatus('Incorrect password','err'); return; }
+  const plain = await _decrypt(pin, localStorage.getItem(ENC_KEY));
+  localStorage.removeItem(PIN_CHECK_KEY);
+  localStorage.removeItem(ENC_KEY);
+  localStorage.removeItem(PIN_TIMEOUT_KEY);
+  if(plain){
+    let blob = null;
+    try { blob = JSON.parse(plain); } catch {}
+    if(blob && blob.state) _restoreBlob(blob);
+    else if(blob) localStorage.setItem(STATE_KEY, JSON.stringify(blob));
+  }
+  _currentPIN = null;
+  _pinActive = false;
+  if(_lockTimer){ clearTimeout(_lockTimer); _lockTimer=null; }
+  document.getElementById('lock-btn').style.display='none';
+  _setSettingsStatus('Password removed. Data stored in plain text.','ok');
+  document.getElementById('settings-pin-status-text').textContent='No password set. Data is stored in plain text.';
+  document.getElementById('settings-pin-set-row').style.display='';
+  document.getElementById('settings-pin-remove-row').style.display='none';
+  document.getElementById('settings-timeout-section').style.display='none';
+}
+
+function settingsShowChangePIN(){ document.getElementById('settings-pin-change-row').style.display=''; }
+function settingsHideChangePIN(){ document.getElementById('settings-pin-change-row').style.display='none'; }
+
+async function settingsChangePIN(){
+  const oldPin = document.getElementById('settings-pin-current').value;
+  const newPin = document.getElementById('settings-pin-change-new').value;
+  const conf   = document.getElementById('settings-pin-change-confirm').value;
+  if(!oldPin||!newPin){ _setSettingsStatus('Fill in all fields','err'); return; }
+  if(newPin.length < 8){ _setSettingsStatus('New password must be at least 8 characters','err'); return; }
+  if(newPin!==conf){ _setSettingsStatus('New passwords do not match','err'); return; }
+  const sentinel = await _decrypt(oldPin, localStorage.getItem(PIN_CHECK_KEY));
+  if(sentinel!==SENTINEL){ _setSettingsStatus('Incorrect current password','err'); return; }
+  _setSettingsStatus('Encrypting...','');
+  const check = await _encrypt(newPin, SENTINEL);
+  localStorage.setItem(PIN_CHECK_KEY, check);
+  await _encryptAndSave(appState, newPin);
+  _currentPIN = newPin;
+  _setSettingsStatus('Password changed.','ok');
+  settingsHideChangePIN();
+  document.getElementById('settings-pin-current').value='';
+}
+
+function settingsSaveTimeout(){
+  const val = document.getElementById('settings-timeout-select').value;
+  localStorage.setItem(PIN_TIMEOUT_KEY, val);
+  _resetLockTimer();
+}
+
+// ── Reset all data ──────────────────────────────────────────────
+function confirmResetAllData(){
+  if(IS_DEMO) return;
+  try {
+    const snap = { state: appState, _ts: Date.now() };
+    [LOCKS_KEY, SESSIONS_KEY, BAL_HIST_KEY, WELCOMED_KEY].forEach(k=>{
+      const v = localStorage.getItem(k); if(v != null) snap[k] = v;
+    });
+    if(_hasPIN()){
+      snap[ENC_KEY] = localStorage.getItem(ENC_KEY);
+      snap[PIN_CHECK_KEY] = localStorage.getItem(PIN_CHECK_KEY);
+      snap[PIN_TIMEOUT_KEY] = localStorage.getItem(PIN_TIMEOUT_KEY);
+    }
+    localStorage.setItem('ts-reset-undo-v1', JSON.stringify(snap));
+  } catch(e){ console.error('Reset snapshot failed', e); }
+  const keysToRemove = [];
+  for(let i = 0; i < localStorage.length; i++){
+    const k = localStorage.key(i); if(k && k !== 'ts-reset-undo-v1') keysToRemove.push(k);
+  }
+  for(const k of keysToRemove) localStorage.removeItem(k);
+  location.reload();
+}
+
+function undoReset(){
+  try {
+    const raw = localStorage.getItem('ts-reset-undo-v1');
+    if(!raw) return;
+    const snap = JSON.parse(raw);
+    localStorage.removeItem('ts-reset-undo-v1');
+    if(snap.state) localStorage.setItem(STATE_KEY, JSON.stringify(snap.state));
+    [LOCKS_KEY, SESSIONS_KEY, BAL_HIST_KEY, WELCOMED_KEY, ENC_KEY, PIN_CHECK_KEY, PIN_TIMEOUT_KEY].forEach(k=>{
+      if(snap[k] != null) localStorage.setItem(k, snap[k]);
+    });
+    location.reload();
+  } catch(e){ console.error('Undo reset failed', e); }
+}
+
+let _resetUndoBannerTimer = null;
+function maybeShowResetUndoBanner(){
+  const raw = localStorage.getItem('ts-reset-undo-v1');
+  if(!raw) return;
+  let snap; try{ snap = JSON.parse(raw); } catch{ return; }
+  const age = Date.now() - (snap._ts || 0);
+  const remaining = 60000 - age;
+  if(remaining <= 0){ localStorage.removeItem('ts-reset-undo-v1'); return; }
+  const banner = document.getElementById('reset-undo-banner');
+  if(banner) banner.classList.add('visible');
+  _resetUndoBannerTimer = setTimeout(()=>{
+    if(banner) banner.classList.remove('visible');
+    localStorage.removeItem('ts-reset-undo-v1');
+  }, remaining);
+}
+
+// ── Init PIN check ──────────────────────────────────────────────
+async function _initPINCheck(){
+  if(IS_DEMO) return;
+  if(_hasPIN()){
+    document.getElementById('lock-btn').style.display='';
+    lockApp();
+  }
+}
+
+// ══ INIT ════════════════════════════════════════════════════
+function init() {
+  _initPINCheck().then(() => {
+    if (_hasPIN()) return; // locked — init happens after unlock
+    _doInit();
+  });
+}
+
+function _doInit() {
+  const saved = loadState();
+  if (saved) {
+    appState = saved;
+    render(appState);
+    maybeShowResetUndoBanner();
+    return;
+  }
+
+  // Load demo data
+  fetch('alex-example-data.json')
+    .then(r => r.json())
+    .then(data => {
+      appState = data;
+      if (!IS_DEMO) {
+        // Don't save demo data into localStorage; show welcome
+        const welcomed = localStorage.getItem(WELCOMED_KEY);
+        if (!welcomed) {
+          document.getElementById('welcome-modal').classList.add('open');
+        }
+      }
+      render(appState);
+    })
+    .catch(() => {
+      render(appState);
+    });
+}
+
+init();
+</script>
+</body>
+</html>
