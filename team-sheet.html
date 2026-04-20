@@ -15,10 +15,10 @@
   --border-hi: #232332;
   --gold:      #c8a84a;
   --gold-dim:  rgba(200,168,74,0.09);
-  --text:      #cec8b4;
-  --text-b:    #e4dec8;
-  --text-mid:  #908a78;
-  --text-dim:  #504c44;
+  --text:      #d4cebb;
+  --text-b:    #eae4ce;
+  --text-mid:  #aba598;
+  --text-dim:  #605c52;
   --mono:      'JetBrains Mono', monospace;
   --help:      #2da86a;
   --help-dim:  rgba(45,168,106,0.12);
@@ -38,43 +38,75 @@ html, body { height:100%; }
 html { background:var(--bg); overflow-x:hidden; }
 body {
   color:var(--text); font-family:'Crimson Pro',Georgia,serif;
-  font-size:18px; line-height:1.65;
-  padding:24px 40px 24px;
+  font-size:18px; font-weight:400; line-height:1.65;
+  padding:0 40px 24px;
   overflow-x:hidden;
   max-width:1400px; margin:0 auto;
   display:flex; flex-direction:column;
 }
 /* ── Typography ── */
 h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
+.app-label {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.22em;
+  text-transform:uppercase; color:var(--text-dim);
+  margin-bottom:6px; display:block;
+}
 .system-title {
-  font-family:'Cinzel Decorative',serif;
-  font-size:clamp(20px,3vw,32px);
-  color:var(--gold); letter-spacing:0.06em;
-  margin-bottom:4px;
+  font-family:'Crimson Pro',Georgia,serif;
+  font-size:clamp(22px,2.8vw,34px); font-weight:400; font-style:italic;
+  color:var(--gold); letter-spacing:0.01em; line-height:1.15;
+  margin-bottom:5px;
+  outline:none; cursor:text;
+  border-bottom:1px solid transparent; transition:border-color 0.15s;
+  display:inline-block; min-width:40px;
 }
-.system-desc { font-size:15px; color:var(--text-dim); margin-bottom:0; font-style:italic; }
-.header-insights { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
-.header-insight {
-  display:flex; align-items:baseline; gap:8px;
-  font-size:14px; line-height:1.45;
+.system-title:focus { border-bottom-color:var(--border-hi); }
+.system-title:empty::before { content:attr(data-placeholder); color:var(--text-dim); }
+.header-tagline {
+  font-size:13px; color:var(--text-mid);
+  letter-spacing:0.01em; line-height:1.4;
 }
-.header-insight-label {
-  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
-  color:var(--text-dim); white-space:nowrap; flex-shrink:0;
+.system-desc {
+  font-size:16px; color:var(--text-mid); margin-bottom:0; line-height:1.6;
+  outline:none; border:1px solid transparent; border-radius:4px; padding:3px 5px;
+  transition:border-color 0.15s; cursor:text;
 }
-.header-insight-text { color:var(--text-mid); font-style:italic; }
+.system-desc:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.01); }
+.system-desc:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
+.journal-intentions {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  margin-bottom:32px; padding-bottom:28px;
+  border-bottom:1px solid var(--border);
+}
+.journal-intention-group { display:flex; flex-direction:column; gap:8px; }
+.journal-intention-label {
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--gold); margin-bottom:4px;
+}
+.journal-intention-item {
+  font-size:16px; color:var(--text-b); line-height:1.55;
+  padding:8px 10px; border-radius:4px; border:1px solid transparent;
+  outline:none; transition:border-color 0.15s, background 0.15s;
+  min-height:36px; cursor:text;
+}
+.journal-intention-item:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.02); }
+.journal-intention-item:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.6; }
+@media(max-width:600px){
+  .journal-intentions { grid-template-columns:1fr; }
+}
 .journal-overview { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(128,144,168,0.15); }
-.journal-overview-title { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; }
+.journal-overview-title { font-family:'Cinzel',serif; font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
 
 /* ── Header ── */
 .sticky-top {
   position:sticky; top:0; z-index:101;
-  background:var(--bg); padding-top:8px; margin-top:-8px;
+  background:var(--bg); padding-top:16px;
   flex-shrink:0;
 }
 .app-header {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  margin-bottom:28px; gap:16px; flex-wrap:wrap;
+  display:flex; align-items:center; justify-content:space-between;
+  padding-bottom:18px; border-bottom:1px solid var(--border);
+  gap:16px; flex-wrap:wrap;
 }
 .app-header-left { flex:1; min-width:200px; }
 .app-header-right { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
@@ -84,34 +116,37 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   color:var(--text-mid); font-family:'Cinzel',serif;
   font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
   padding:7px 14px; border-radius:4px; cursor:pointer;
-  transition:all 0.15s;
+  transition:all 0.15s; white-space:nowrap;
 }
 .header-btn:hover { color:var(--text-b); border-color:var(--gold); }
 .header-btn.import-btn { color:var(--help); border-color:var(--help-border); background:var(--help-dim); }
 .header-btn.import-btn:hover { background:rgba(45,168,106,0.2); }
-
+.header-sep { width:1px; height:18px; background:var(--border-hi); flex-shrink:0; }
 .app-disclaimer {
   font-size:12px; color:#c07070; font-style:italic;
-  margin:0; line-height:1.4; opacity:0.8; text-align:right; width:max-content; max-width:480px;
+  margin:0; line-height:1.4; opacity:0.8; text-align:right; max-width:480px;
 }
+
 
 /* ── Tab nav ── */
 .tab-nav {
-  display:flex; gap:4px; margin-bottom:24px;
+  display:flex; gap:0; margin-top:4px; margin-bottom:32px;
   border-bottom:1px solid var(--border); padding-bottom:0;
   justify-content:center;
   overflow-x:auto; flex-wrap:nowrap;
 }
 .tab-btn {
-  font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.12em;
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.16em;
   text-transform:uppercase; color:var(--text-dim);
   background:none; border:none; border-bottom:2px solid transparent;
-  padding:10px 20px; cursor:pointer;
+  padding:10px 22px; cursor:pointer;
   white-space:nowrap; margin-bottom:-1px;
-  transition:all 0.15s;
+  transition:color 0.15s, border-color 0.15s;
+  display:flex; align-items:center; gap:7px;
 }
 .tab-btn:hover { color:var(--text-mid); }
 .tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+.tab-nav-count { font-family:var(--mono); font-size:13px; font-weight:700; min-width:16px; text-align:center; flex-shrink:0; opacity:0.75; }
 
 /* ── Tab panels ── */
 .tab-panel { display:none; }
@@ -128,7 +163,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .card-hdr {
   font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.14em;
-  text-transform:uppercase; color:var(--text-dim);
+  text-transform:uppercase; color:var(--gold);
   margin-bottom:12px;
 }
 .card-hdr.gold { color:var(--gold); }
@@ -220,7 +255,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .field-label {
   font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em;
-  text-transform:uppercase; color:var(--text-dim);
+  text-transform:uppercase; color:var(--text-mid);
   min-width:110px; padding-top:3px; flex-shrink:0;
 }
 .field-value { flex:1; }
@@ -251,8 +286,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   margin-top:16px;
 }
 .part-section-label {
-  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.1em;
-  text-transform:uppercase; color:var(--text-dim);
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--gold);
   margin-bottom:6px;
 }
 .part-fields-grid {
@@ -329,25 +364,55 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   overflow:hidden; background:var(--surface);
 }
 #map-canvas { display:block; width:100%; height:100%; }
-.map-legend {
+.map-legend, .map-editor {
   display:flex; flex-direction:column; gap:0;
-  width:220px; flex-shrink:0; align-self:stretch;
-  font-size:15px; color:var(--text);
-  padding:20px 18px; background:var(--surface); border:1px solid var(--border); border-radius:6px;
+  width:200px; flex-shrink:0; align-self:stretch;
+  font-size:13px; color:var(--text);
+  padding:16px 14px; background:var(--surface); border:1px solid var(--border); border-radius:6px;
   overflow-y:auto; min-height:0;
 }
-.map-legend-section { display:flex; flex-direction:column; gap:10px; padding:16px 0; }
-.map-legend-section:first-child { padding-top:4px; }
-.map-legend-heading {
+.map-legend-section, .map-editor-section { display:flex; flex-direction:column; gap:10px; padding:14px 0; }
+.map-legend-section:first-child, .map-editor-section:first-child { padding-top:4px; }
+.map-legend-heading, .map-editor-heading {
   font-family:'Cinzel',serif; font-size:11px; text-transform:uppercase;
   letter-spacing:0.1em; color:var(--gold); margin-bottom:4px;
 }
-.map-legend-divider { height:1px; background:var(--border); }
+.map-legend-divider, .map-editor-divider { height:1px; background:var(--border); flex-shrink:0; }
 .map-legend-item { display:flex; align-items:center; gap:10px; }
 .map-legend-line { width:48px; height:12px; flex-shrink:0; }
 .map-legend-node { border-radius:50%; flex-shrink:0; display:inline-block; }
 .map-legend-dot { width:13px; height:13px; border-radius:50%; flex-shrink:0; }
 .map-legend-hint { padding-top:16px; margin-top:16px; border-top:1px solid var(--border); font-size:12px; color:var(--text-dim); font-style:italic; }
+/* Map editor controls */
+.map-editor-row { display:flex; align-items:center; gap:8px; min-height:26px; }
+.map-editor-label { font-size:11px; color:var(--text-dim); flex:1; min-width:0; }
+.map-editor select, .map-editor input[type=text] {
+  background:var(--bg); border:1px solid var(--border); border-radius:3px;
+  color:var(--text); font-size:12px; padding:3px 5px; width:100%; box-sizing:border-box;
+}
+.map-editor select:focus, .map-editor input[type=text]:focus { outline:1px solid var(--gold); }
+.map-editor input[type=color] {
+  width:26px; height:22px; border:1px solid var(--border); border-radius:3px;
+  padding:1px; background:none; cursor:pointer; flex-shrink:0;
+}
+.map-editor-hint { font-size:11px; color:var(--text-dim); font-style:italic; line-height:1.4; }
+.map-editor-conn-row {
+  display:grid; grid-template-columns:1fr auto auto; gap:5px; align-items:center;
+  font-size:12px;
+}
+.map-editor-conn-row select { font-size:11px; padding:2px 3px; }
+.map-editor-btn {
+  font-size:10px; font-family:'Cinzel',serif; letter-spacing:0.05em; text-transform:uppercase;
+  padding:3px 7px; background:var(--bg); border:1px solid var(--border);
+  border-radius:3px; color:var(--text-dim); cursor:pointer;
+}
+.map-editor-btn:hover { border-color:var(--gold); color:var(--gold); }
+.map-editor-btn.danger:hover { border-color:#c04040; color:#c04040; }
+.map-editor-add-btn {
+  font-size:11px; color:var(--text-dim); background:none; border:1px dashed var(--border);
+  border-radius:3px; padding:4px 8px; cursor:pointer; text-align:center; width:100%;
+}
+.map-editor-add-btn:hover { border-color:var(--gold); color:var(--gold); }
 
 /* ── BALANCE / distribution ── */
 #balance-timeline {
@@ -370,7 +435,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .parts-dist-card { display:flex; flex-direction:column; gap:10px; }
 .parts-dist-label {
   font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.1em;
-  text-transform:uppercase; color:var(--text-dim);
+  text-transform:uppercase; color:var(--gold);
 }
 .parts-dist-pie-row { display:flex; align-items:flex-start; gap:16px; }
 /* ── Stacked area chart ── */
@@ -380,8 +445,9 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; font-size:13px;
 }
 .balance-area-legend-item {
-  display:flex; align-items:center; gap:6px; color:var(--text-dim);
+  display:flex; align-items:center; gap:6px; color:var(--text-mid);
 }
+.balance-note { font-size:14px; color:var(--text-mid); line-height:1.55; }
 .balance-area-legend-dot {
   width:10px; height:10px; border-radius:50%; flex-shrink:0;
 }
@@ -418,7 +484,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   text-transform:uppercase; color:var(--self-color); margin-bottom:5px;
 }
 #wheel-tooltip .tt-dist {
-  font-size:13px; color:var(--text-dim); font-style:italic;
+  font-size:13px; color:var(--text-mid);
   margin-top:5px; padding-top:5px; border-top:1px solid var(--border);
 }
 #wheel-tooltip .tt-moment-text {
@@ -440,21 +506,21 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .sdp-name {
   font-family:'Cinzel',serif; font-size:18px; letter-spacing:0.1em;
-  text-transform:uppercase; color:var(--self-color);
+  text-transform:uppercase; color:var(--gold);
 }
 .sdp-count {
   font-family:var(--mono); font-size:12px; color:var(--text-dim);
 }
-.sdp-desc { font-size:15px; color:var(--text-mid); line-height:1.55; margin-bottom:6px; }
+.sdp-desc { font-size:16px; color:var(--text-mid); line-height:1.55; margin-bottom:6px; }
 .sdp-distinction {
-  font-size:14px; color:var(--text-dim); font-style:italic;
-  padding:8px 12px; border-left:2px solid rgba(232,223,200,0.15);
+  font-size:15px; color:var(--text-mid);
+  padding:8px 12px; border-left:2px solid rgba(232,223,200,0.2);
   margin-bottom:18px;
 }
 .sdp-moments { margin-bottom:14px; }
 .sdp-section-label {
   font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.14em;
-  text-transform:uppercase; color:var(--text-dim); margin:14px 0 4px;
+  text-transform:uppercase; color:var(--text-mid); margin:14px 0 4px;
 }
 
 .moment-entry {
@@ -482,8 +548,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   padding:14px 18px; cursor:pointer; transition:background 0.15s;
 }
 .session-header:hover { background:rgba(255,255,255,0.02); }
-.session-date { font-family:var(--mono); font-size:12px; color:var(--text-dim); }
-.session-title { font-family:'Cinzel',serif; font-size:14px; color:var(--text-b); flex:1; }
+.session-date { font-family:var(--mono); font-size:12px; color:var(--text-mid); }
+.session-title { font-family:'Cinzel',serif; font-size:15px; color:var(--text-b); flex:1; letter-spacing:0.04em; }
 .session-body { display:none; padding:0 18px 18px; border-top:1px solid var(--border); }
 .session-card.expanded .session-body { display:block; }
 .session-parts-tags {
@@ -498,30 +564,118 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .session-part-tag:hover { color:var(--gold); border-color:var(--gold); }
 .session-system-read {
   background:var(--surface); border-left:3px solid var(--gold);
-  padding:10px 14px; margin-top:12px; font-size:15px;
-  color:var(--text-mid); line-height:1.55; border-radius:0 4px 4px 0;
+  padding:12px 16px; margin-top:12px; font-size:15px;
+  color:var(--text-b); line-height:1.6; border-radius:0 4px 4px 0;
 }
 .session-system-read-label {
   font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.12em;
   text-transform:uppercase; color:var(--gold); margin-bottom:6px;
 }
+.session-title-edit {
+  font-family:'Cinzel',serif; font-size:15px; color:var(--text-b); flex:1; letter-spacing:0.04em;
+  outline:none; background:none; border:none; border-bottom:1px solid transparent;
+  cursor:text; min-width:60px; transition:border-color 0.15s;
+}
+.session-title-edit:focus { border-bottom-color:var(--border-hi); }
+.session-title-edit:empty::before { content:attr(data-placeholder); color:var(--text-dim); }
+.session-date-edit {
+  font-family:var(--mono); font-size:12px; color:var(--text-mid);
+  outline:none; background:none; border:none; border-bottom:1px solid transparent;
+  cursor:text; min-width:48px; width:88px; transition:border-color 0.15s;
+}
+.session-date-edit:focus { border-bottom-color:var(--border-hi); }
+.session-content-edit {
+  font-size:15px; color:var(--text-mid); line-height:1.65;
+  margin:10px 0; white-space:pre-wrap; outline:none;
+  border:1px solid transparent; border-radius:4px; padding:4px 6px;
+  transition:border-color 0.15s; cursor:text; min-height:32px;
+}
+.session-content-edit:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.01); }
+.session-content-edit:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
+.part-tag-picker {
+  display:flex; flex-wrap:wrap; gap:5px; margin:8px 0;
+}
+.part-tag-toggle {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.08em;
+  text-transform:uppercase; padding:2px 8px; border-radius:3px;
+  border:1px solid var(--border-hi); color:var(--text-dim);
+  cursor:pointer; transition:all 0.15s; background:var(--surface);
+  user-select:none;
+}
+.part-tag-toggle.active { color:var(--gold); border-color:var(--gold); background:var(--gold-dim); }
+.part-tag-toggle:hover { color:var(--text-mid); }
+.session-footer {
+  display:flex; justify-content:flex-end; margin-top:14px;
+}
+.memory-label-edit {
+  font-size:15px; color:var(--text-b); line-height:1.4; outline:none;
+  border:1px solid transparent; border-radius:4px; padding:2px 4px;
+  transition:border-color 0.15s; cursor:text;
+}
+.memory-label-edit:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.01); }
+.memory-label-edit:empty::before { content:attr(data-placeholder); color:var(--text-dim); }
+.memory-notes-edit {
+  font-size:13px; color:var(--text-mid); line-height:1.5; margin-bottom:6px; outline:none;
+  border:1px solid transparent; border-radius:4px; padding:2px 4px;
+  transition:border-color 0.15s; cursor:text; min-height:20px;
+}
+.memory-notes-edit:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.01); }
+.memory-notes-edit:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
+.memory-date-edit {
+  font-family:var(--mono); font-size:12px; color:var(--text-dim);
+  outline:none; background:none; border:none; border-bottom:1px solid transparent;
+  cursor:text; min-width:48px; width:90px; transition:border-color 0.15s; display:block;
+}
+.memory-date-edit:focus { border-bottom-color:var(--border-hi); }
+.memory-approx-edit {
+  font-size:11px; color:var(--text-dim); opacity:0.85; font-style:italic; outline:none;
+  background:none; border:none; border-bottom:1px solid transparent;
+  cursor:text; min-width:40px; transition:border-color 0.15s; display:block;
+}
+.memory-approx-edit:focus { border-bottom-color:var(--border-hi); opacity:1; }
+.memory-footer { display:flex; justify-content:flex-end; margin-top:8px; }
+.section-heading-row {
+  margin-bottom:14px; display:flex; align-items:center; gap:12px;
+}
+.session-read-text-edit:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
+.memory-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:6px; margin-bottom:10px; padding:14px 18px;
+  display:flex; gap:14px; align-items:flex-start;
+}
+.memory-date-col {
+  flex-shrink:0; min-width:96px; text-align:right;
+}
+.memory-date { font-family:var(--mono); font-size:12px; color:var(--text-dim); }
+.memory-approx { font-size:11px; color:var(--text-dim); opacity:0.7; font-style:italic; }
+.memory-body { flex:1; min-width:0; }
+.memory-label { font-size:15px; color:var(--text-b); line-height:1.4; margin-bottom:4px; }
+.memory-notes { font-size:13px; color:var(--text-mid); line-height:1.5; margin-bottom:6px; }
+.memory-parts { display:flex; gap:5px; flex-wrap:wrap; }
+.memory-part-tag {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.08em;
+  text-transform:uppercase; padding:2px 7px; border-radius:3px;
+  background:var(--surface); border:1px solid var(--border-hi);
+  color:var(--text-dim);
+}
+
 .journal-starters {
   margin-bottom:24px;
 }
 .starters-toggle {
-  background:none; border:1px solid var(--border-hi); color:var(--text-dim);
+  background:none; border:1px solid var(--border-hi); color:var(--text-mid);
   font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.12em;
   text-transform:uppercase; padding:8px 16px; border-radius:4px;
   cursor:pointer; display:flex; align-items:center; gap:8px;
   transition:all 0.15s;
 }
-.starters-toggle:hover { color:var(--text-mid); border-color:var(--text-dim); }
+.starters-toggle:hover { color:var(--gold); border-color:var(--gold); }
 .starters-body { display:none; margin-top:10px; }
 .starters-body.open { display:block; }
 .starter-row {
   display:flex; align-items:center; gap:10px;
-  padding:7px 0; border-bottom:1px solid rgba(24,24,31,0.5);
-  font-size:15px; color:var(--text-mid);
+  padding:8px 0; border-bottom:1px solid rgba(24,24,31,0.5);
+  font-size:15px; color:var(--text-b);
 }
 .starter-row:last-child { border-bottom:none; }
 .starter-copy-btn {
@@ -605,14 +759,15 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 /* ── Responsive ── */
 @media(max-width:600px){
-  body { padding:16px 16px 60px; font-size:16px; }
+  body { padding:0 16px 60px; font-size:16px; }
   .app-header { flex-direction:column; }
   .tab-btn { padding:8px 10px; font-size:10px; }
   #tab-map.active { flex-direction:column; }
-  .map-legend { width:100%; flex-shrink:0; align-self:auto; max-height:180px; overflow-y:auto; }
+  .map-legend, .map-editor { width:100%; flex-shrink:0; align-self:auto; max-height:200px; overflow-y:auto; }
+  .map-editor { order:-1; }
 }
 @media(min-width:601px) and (max-width:900px){
-  .map-legend { width:170px; }
+  .map-legend, .map-editor { width:160px; }
 }
 
 /* ── Map tooltip ── */
@@ -630,7 +785,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   display:flex; align-items:flex-start; gap:6px; margin:10px 0 14px;
 }
 .part-overview-text {
-  flex:1; font-size:15px; color:var(--text-mid); font-style:italic;
+  flex:1; font-size:16px; color:var(--text-mid);
 }
 
 /* ── Select (dynamic dropdown) ── */
@@ -648,7 +803,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 /* ── Section headings inside parts ── */
 .part-section-hdr {
   font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.14em;
-  text-transform:uppercase; color:var(--text-dim);
+  text-transform:uppercase; color:var(--text-mid);
   margin:16px 0 8px; padding-bottom:4px;
   border-bottom:1px solid var(--border);
 }
@@ -668,7 +823,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .help-step-num { font-family:var(--mono); font-size:14px; color:var(--help); flex-shrink:0; width:18px; padding-top:2px; opacity:0.7; }
 .help-step-text { font-size:15px; color:var(--text-mid); line-height:1.5; flex:1; }
 .help-step-text strong { color:var(--text-b); font-weight:600; }
-.help-note { font-size:14px; color:var(--text-dim); font-style:italic; line-height:1.5; padding:7px 0 5px; border-bottom:1px solid var(--border); }
+.help-note { font-size:15px; color:var(--text-mid); line-height:1.5; padding:7px 0 5px; border-bottom:1px solid var(--border); }
 .help-note:last-child { border-bottom:none; }
 #help-modal .modal { max-width:860px; border-top:3px solid var(--help); }
 #help-modal .modal-title { color:var(--help); }
@@ -735,17 +890,9 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 <div class="sticky-top">
 <header class="app-header">
   <div class="app-header-left">
-    <div class="system-title" id="system-title-display">Your Inner System</div>
-    <div class="header-insights">
-      <div class="header-insight">
-        <span class="header-insight-label">Key question</span>
-        <span class="header-insight-text" id="header-key-question">What's going on inside?</span>
-      </div>
-      <div class="header-insight">
-        <span class="header-insight-label">Key experiment</span>
-        <span class="header-insight-text" id="header-key-experiment">What might change if I understood myself more clearly?</span>
-      </div>
-    </div>
+    <span class="app-label">team-sheet</span>
+    <div class="system-title" id="system-title-display" contenteditable="true" spellcheck="false" data-placeholder="Your name"></div>
+    <div class="header-tagline">Every part of you is on the same team.</div>
   </div>
   <div class="app-header-right">
     <div class="app-header-right-btns">
@@ -761,16 +908,38 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 <!-- ══ TAB NAV ══════════════════════════════════════════════════ -->
 <nav class="tab-nav">
-  <button class="tab-btn active" data-tab="map"     onclick="switchTab('map')"      title="System Map: a visual overview of all your parts and how they relate to each other. Nodes are sized by prominence; edges show relationship dynamics.">Map</button>
-  <button class="tab-btn"        data-tab="parts"   onclick="switchTab('parts')"    title="Parts: the full roster of your inner parts. Each part has a role (manager, firefighter, or exile), a function, and a relationship to Self and to each other.">Parts</button>
-  <button class="tab-btn"        data-tab="self"    onclick="switchTab('self')"     title="Self: your natural ground state, the witnessing presence that was never wounded. The 8 Cs and 5 Ps describe qualities that arise when Self is present.">Self</button>
-  <button class="tab-btn"        data-tab="journal"  onclick="switchTab('journal')"  title="Journal: a log of your sessions. Each entry captures what was explored, which parts were active, and any Self-led moments that emerged.">Journal</button>
-  <button class="tab-btn"        data-tab="timeline" onclick="switchTab('timeline')" title="Timeline: a horizontal chart showing when each part is believed to have emerged. Self is the baseline from birth; parts arise in response to experience.">Timeline</button>
+  <button class="tab-btn active" data-tab="map"     onclick="switchTab('map')"      title="System Map: a visual overview of all your parts and how they relate to each other. Nodes are sized by prominence; edges show relationship dynamics."><span class="tab-nav-count" id="nav-map">0</span>Map</button>
+  <button class="tab-btn"        data-tab="parts"   onclick="switchTab('parts')"    title="Parts: the full roster of your inner parts. Each part has a role (manager, firefighter, or exile), a function, and a relationship to Self and to each other."><span class="tab-nav-count" id="nav-parts">0</span>Parts</button>
+  <button class="tab-btn"        data-tab="self"    onclick="switchTab('self')"     title="Self: your natural ground state, the witnessing presence that was never wounded. The 8 Cs and 5 Ps describe qualities that arise when Self is present."><span class="tab-nav-count" id="nav-self">0</span>Self</button>
+  <button class="tab-btn"        data-tab="journal"  onclick="switchTab('journal')"  title="Journal: a log of your sessions. Each entry captures what was explored, which parts were active, and any Self-led moments that emerged."><span class="tab-nav-count" id="nav-journal">0</span>Journal</button>
+  <button class="tab-btn"        data-tab="timeline" onclick="switchTab('timeline')" title="Timeline: a horizontal chart showing when each part is believed to have emerged. Self is the baseline from birth; parts arise in response to experience."><span class="tab-nav-count" id="nav-timeline">0</span>Timeline</button>
 </nav>
 </div>
 
 <!-- ══ TAB: MAP ══════════════════════════════════════════════════ -->
 <div id="tab-map" class="tab-panel active">
+  <div id="map-editor" class="map-editor">
+    <div class="map-editor-section">
+      <span class="map-editor-heading">Edit</span>
+      <span class="map-editor-hint" id="map-editor-hint">Click a node to edit it</span>
+    </div>
+    <div class="map-editor-divider"></div>
+    <div id="map-editor-node-section" style="display:none">
+      <div class="map-editor-section" id="map-editor-node-fields"></div>
+      <div class="map-editor-divider"></div>
+      <div class="map-editor-section" id="map-editor-connections"></div>
+    </div>
+    <div class="map-editor-section" id="map-editor-global">
+      <span class="map-editor-heading">Global</span>
+      <div class="map-editor-row">
+        <label class="map-editor-label">Node size</label>
+        <input type="range" id="map-global-size" min="0.5" max="2" step="0.1" value="1"
+          style="flex:1;accent-color:var(--gold);cursor:pointer;"
+          oninput="mapApplyGlobalSize(this.value)">
+      </div>
+      <button class="map-editor-btn" style="width:100%;margin-top:2px;" onclick="mapResetPositions()">Reset positions</button>
+    </div>
+  </div>
   <div id="map-container">
     <canvas id="map-canvas"></canvas>
   </div>
@@ -822,13 +991,28 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 <!-- ══ TAB: JOURNAL ══════════════════════════════════════════════ -->
 <div id="tab-journal" class="tab-panel">
-  <div id="journal-system-summary" class="journal-overview" style="display:none;">
-    <div class="journal-overview-title">Summary of system</div>
-    <div class="system-desc" id="system-summary-display"></div>
+  <!-- Key questions + experiments -->
+  <div class="journal-intentions">
+    <div class="journal-intention-group">
+      <div class="journal-intention-label">Key questions</div>
+      <div class="journal-intention-item" id="journal-kq-1" contenteditable="true" spellcheck="false" data-field="keyQuestion1" data-placeholder="What is this part trying to protect?"></div>
+      <div class="journal-intention-item" id="journal-kq-2" contenteditable="true" spellcheck="false" data-field="keyQuestion2" data-placeholder="When did this part first show up?"></div>
+      <div class="journal-intention-item" id="journal-kq-3" contenteditable="true" spellcheck="false" data-field="keyQuestion3" data-placeholder="What does it need from Self?"></div>
+    </div>
+    <div class="journal-intention-group">
+      <div class="journal-intention-label">Key experiments</div>
+      <div class="journal-intention-item" id="journal-ke-1" contenteditable="true" spellcheck="false" data-field="keyExperiment1" data-placeholder="Notice when this part activates this week."></div>
+      <div class="journal-intention-item" id="journal-ke-2" contenteditable="true" spellcheck="false" data-field="keyExperiment2" data-placeholder="Try speaking to it with curiosity rather than frustration."></div>
+      <div class="journal-intention-item" id="journal-ke-3" contenteditable="true" spellcheck="false" data-field="keyExperiment3" data-placeholder="Spend 5 minutes with a part that rarely gets attention."></div>
+    </div>
   </div>
-  <div id="journal-recent-shifts" class="journal-overview" style="display:none;">
+  <div id="journal-system-summary" class="journal-overview">
+    <div class="journal-overview-title">Summary of system</div>
+    <div class="system-desc" id="system-summary-display" contenteditable="true" spellcheck="false" data-placeholder="No summary yet. Your AI will fill this in after sessions."></div>
+  </div>
+  <div id="journal-recent-shifts" class="journal-overview">
     <div class="journal-overview-title">Recent shifts</div>
-    <div class="system-desc" id="recent-shifts-display"></div>
+    <div class="system-desc" id="recent-shifts-display" contenteditable="true" spellcheck="false" data-placeholder="No recent shifts recorded yet."></div>
   </div>
   <div class="journal-starters">
     <button class="starters-toggle" onclick="toggleStarters()">
@@ -857,6 +1041,10 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
       </div>
     </div>
   </div>
+  <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
+    <div class="section-heading" style="margin-bottom:0;">Sessions</div>
+    <button class="btn-primary" onclick="addSession()">+ Add session</button>
+  </div>
   <div id="sessions-list"></div>
   <div id="sessions-empty" style="color:var(--text-dim);font-size:15px;display:none;">
     No sessions yet. Start a conversation with your AI and import the update here.
@@ -867,6 +1055,17 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 <div id="tab-timeline" class="tab-panel">
   <div id="timeline-empty" style="color:var(--text-dim);font-size:15px;display:none;">
     No session history yet. Import a session update to see the distribution chart.
+  </div>
+
+  <!-- Memories -->
+  <div id="memories-section" style="margin-bottom:36px;">
+    <div style="margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div class="section-heading" style="margin-bottom:0;">Memories</div>
+      <span style="font-size:13px;color:var(--text-dim);flex:1;">Significant events from before you started using team-sheet, inferred across sessions.</span>
+      <button class="btn-primary" onclick="addMemory()">+ Add memory</button>
+    </div>
+    <div id="memories-list"></div>
+    <div id="memories-empty" style="color:var(--text-dim);font-size:14px;display:none;">No memories logged yet. Your AI will infer these from what you share across sessions.</div>
   </div>
 
   <!-- Distribution pies -->
@@ -1235,8 +1434,9 @@ let appState = {
   parts: [],
   sessions: [],
   selfMoments: [],
+  memories: [],
   roleColors: {},
-  _instructionsVersion: '1.2.0',
+  _instructionsVersion: '1.4.0',
 };
 
 // ══ SAVE / LOAD ════════════════════════════════════════════════
@@ -1325,24 +1525,75 @@ function makeEditable(text, placeholder, onSave, extraClass) {
 }
 
 // ══ RENDER ════════════════════════════════════════════════════
+function updateNavCounts(s) {
+  const parts = s.parts || [];
+  const sessions = s.sessions || [];
+  const selfMoments = s.selfMoments || [];
+
+  // Map: number of unique connections (edges) between parts
+  const seen = new Set();
+  let connCount = 0;
+  parts.forEach(p => {
+    (p.relationships || []).forEach(rel => {
+      if (rel.dynamic === 'unknown' || rel.partId === 'self') return;
+      const key = [p.id, rel.partId].sort().join('|');
+      if (seen.has(key)) return;
+      seen.add(key);
+      if (parts.find(q => q.id === rel.partId)) connCount++;
+    });
+  });
+
+  const memories = s.memories || [];
+
+  const el = id => document.getElementById(id);
+  if (el('nav-map'))      el('nav-map').textContent      = connCount;
+  if (el('nav-parts'))    el('nav-parts').textContent    = parts.length;
+  if (el('nav-self'))     el('nav-self').textContent     = selfMoments.length;
+  if (el('nav-journal'))  el('nav-journal').textContent  = sessions.length;
+  if (el('nav-timeline')) el('nav-timeline').textContent = memories.length;
+}
+
 function render(s) {
   applyRoleColorVars();
-  // Header
-  document.getElementById('system-title-display').textContent = s.system?.name || 'Your Inner System';
-  document.getElementById('header-key-question').textContent = s.system?.keyQuestion || "What's going on inside?";
-  document.getElementById('header-key-experiment').textContent = s.system?.keyExperiment || 'What might change if I understood myself more clearly?';
+  // Header title — only update when not focused to avoid clobbering edits
+  const titleEl = document.getElementById('system-title-display');
+  if (document.activeElement !== titleEl) titleEl.textContent = s.system?.name || '';
+  if (!titleEl._bound) {
+    titleEl._bound = true;
+    titleEl.addEventListener('blur', () => {
+      if (!appState.system) appState.system = {};
+      appState.system.name = titleEl.textContent.trim();
+      saveState(appState);
+    });
+    titleEl.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); titleEl.blur(); } });
+  }
   const summaryEl = document.getElementById('system-summary-display');
-  summaryEl.textContent = s.system?.systemSummary || '';
-  document.getElementById('journal-system-summary').style.display = s.system?.systemSummary ? '' : 'none';
+  if (document.activeElement !== summaryEl) summaryEl.textContent = s.system?.systemSummary || '';
+  if (!summaryEl._bound) {
+    summaryEl._bound = true;
+    summaryEl.addEventListener('blur', () => {
+      if (!appState.system) appState.system = {};
+      appState.system.systemSummary = summaryEl.textContent.trim();
+      saveState(appState);
+    });
+  }
   const shiftsEl = document.getElementById('recent-shifts-display');
-  shiftsEl.textContent = s.system?.recentShifts || '';
-  document.getElementById('journal-recent-shifts').style.display = s.system?.recentShifts ? '' : 'none';
+  if (document.activeElement !== shiftsEl) shiftsEl.textContent = s.system?.recentShifts || '';
+  if (!shiftsEl._bound) {
+    shiftsEl._bound = true;
+    shiftsEl.addEventListener('blur', () => {
+      if (!appState.system) appState.system = {};
+      appState.system.recentShifts = shiftsEl.textContent.trim();
+      saveState(appState);
+    });
+  }
   // Tabs
   renderMap(s);
   renderParts(s);
   renderSelf(s);
   renderJournal(s);
   renderTimeline(s);
+  updateNavCounts(s);
 }
 
 // ══ TAB: MAP ══════════════════════════════════════════════════
@@ -1356,6 +1607,7 @@ let mapNodes = [];
 let mapEdges = [];
 let mapAnimFrame = null;
 let mapVx = {}, mapVy = {};
+let mapEditorSelectedId = null;
 
 function renderMap(s) {
   renderRoleColorsEditor(s);
@@ -1423,6 +1675,7 @@ function renderMap(s) {
     else { drawMap(canvas, W, H); } // final draw
   }
   step();
+  renderMapEditor(s);
 }
 
 function simulateStep() {
@@ -1528,6 +1781,18 @@ function drawMap(canvas, W, H) {
   mapNodes.forEach(n => {
     ctx.save();
     const isExile = n.role === 'exile';
+    const isSelected = n.id === mapEditorSelectedId;
+
+    // Selection ring
+    if (isSelected) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r + 5, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(232,200,80,0.85)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 3]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
 
     // Node circle
     ctx.beginPath();
@@ -1603,18 +1868,248 @@ function drawMap(canvas, W, H) {
   canvas.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; canvas.style.cursor = 'default'; });
   canvas.addEventListener('click', e => {
     const node = getHoveredNode(e);
-    if (node) {
-      switchTab('parts');
-      setTimeout(() => {
-        const card = document.querySelector(`.part-card[data-part-id="${node.id}"]`);
-        if (card) {
-          card.classList.add('expanded');
-          card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 80);
-    }
+    if (node) mapEditorSelectNode(node.id);
   });
 })();
+
+// ── Map Editor ─────────────────────────────────────────────────
+function mapEditorSelectNode(id) {
+  mapEditorSelectedId = id;
+  renderMapEditor(appState);
+}
+
+function renderMapEditor(s) {
+  const hint = document.getElementById('map-editor-hint');
+  const nodeSection = document.getElementById('map-editor-node-section');
+  const nodeFields = document.getElementById('map-editor-node-fields');
+  const connSection = document.getElementById('map-editor-connections');
+  if (!hint) return;
+
+  const part = mapEditorSelectedId ? (s.parts || []).find(p => p.id === mapEditorSelectedId) : null;
+
+  if (!part) {
+    hint.style.display = '';
+    nodeSection.style.display = 'none';
+    return;
+  }
+
+  hint.style.display = 'none';
+  nodeSection.style.display = '';
+
+  // ── Node fields ──
+  nodeFields.innerHTML = '';
+  const heading = document.createElement('span');
+  heading.className = 'map-editor-heading';
+  heading.textContent = part.name || 'Unnamed';
+  nodeFields.appendChild(heading);
+
+  // Name
+  const nameWrap = document.createElement('div');
+  nameWrap.style.cssText = 'display:flex;flex-direction:column;gap:3px;';
+  const nameLbl = document.createElement('label');
+  nameLbl.className = 'map-editor-label';
+  nameLbl.textContent = 'Name';
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.value = part.name || '';
+  nameInput.addEventListener('change', () => {
+    part.name = nameInput.value.trim();
+    heading.textContent = part.name || 'Unnamed';
+    saveState(s); renderMap(s);
+  });
+  nameWrap.appendChild(nameLbl); nameWrap.appendChild(nameInput);
+  nodeFields.appendChild(nameWrap);
+
+  // Role
+  const roleRow = document.createElement('div');
+  roleRow.className = 'map-editor-row';
+  const roleLbl = document.createElement('label');
+  roleLbl.className = 'map-editor-label';
+  roleLbl.textContent = 'Role';
+  const roleSelect = document.createElement('select');
+  ['manager','firefighter','exile'].forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r; opt.textContent = r.charAt(0).toUpperCase() + r.slice(1);
+    if (part.role === r) opt.selected = true;
+    roleSelect.appendChild(opt);
+  });
+  roleSelect.addEventListener('change', () => { part.role = roleSelect.value; saveState(s); renderMap(s); renderMapEditor(s); });
+  roleRow.appendChild(roleLbl); roleRow.appendChild(roleSelect);
+  nodeFields.appendChild(roleRow);
+
+  // Size
+  const sizeRow = document.createElement('div');
+  sizeRow.className = 'map-editor-row';
+  const sizeLbl = document.createElement('label');
+  sizeLbl.className = 'map-editor-label';
+  sizeLbl.textContent = 'Size';
+  const sizeSelect = document.createElement('select');
+  ['small','medium','large'].forEach(sz => {
+    const opt = document.createElement('option');
+    opt.value = sz; opt.textContent = sz.charAt(0).toUpperCase() + sz.slice(1);
+    if ((part.nodeSize || 'medium') === sz) opt.selected = true;
+    sizeSelect.appendChild(opt);
+  });
+  sizeSelect.addEventListener('change', () => { part.nodeSize = sizeSelect.value; saveState(s); renderMap(s); });
+  sizeRow.appendChild(sizeLbl); sizeRow.appendChild(sizeSelect);
+  nodeFields.appendChild(sizeRow);
+
+  // Colour
+  const colorRow = document.createElement('div');
+  colorRow.className = 'map-editor-row';
+  const colorLbl = document.createElement('label');
+  colorLbl.className = 'map-editor-label';
+  colorLbl.textContent = 'Colour';
+  const colorPicker = document.createElement('input');
+  colorPicker.type = 'color';
+  colorPicker.value = hexFromColor(getPartColor(part, s.parts));
+  colorPicker.title = 'Custom colour';
+  colorPicker.addEventListener('input', () => { part.color = colorPicker.value; saveState(s); renderMap(s); });
+  const colorReset = document.createElement('button');
+  colorReset.className = 'map-editor-btn';
+  colorReset.textContent = 'Role';
+  colorReset.title = 'Reset to role colour';
+  colorReset.addEventListener('click', () => {
+    delete part.color; saveState(s); renderMap(s);
+    colorPicker.value = hexFromColor(getPartColor(part, s.parts));
+  });
+  colorRow.appendChild(colorLbl); colorRow.appendChild(colorPicker); colorRow.appendChild(colorReset);
+  nodeFields.appendChild(colorRow);
+
+  // Open profile button
+  const profileBtn = document.createElement('button');
+  profileBtn.className = 'map-editor-btn';
+  profileBtn.textContent = 'Open profile';
+  profileBtn.style.cssText = 'width:100%;margin-top:4px;';
+  profileBtn.addEventListener('click', () => {
+    switchTab('parts');
+    setTimeout(() => {
+      const card = document.querySelector(`.part-card[data-part-id="${part.id}"]`);
+      if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior:'smooth', block:'start' }); }
+    }, 80);
+  });
+  nodeFields.appendChild(profileBtn);
+
+  // ── Connections ──
+  connSection.innerHTML = '';
+  const connHd = document.createElement('span');
+  connHd.className = 'map-editor-heading';
+  connHd.textContent = 'Connections';
+  connSection.appendChild(connHd);
+
+  (part.relationships || []).filter(r => r.partId !== 'self' && r.dynamic !== 'unknown').forEach(rel => {
+    const target = (s.parts || []).find(p => p.id === rel.partId);
+    if (!target) return;
+    const row = document.createElement('div');
+    row.className = 'map-editor-conn-row';
+
+    const nm = document.createElement('span');
+    nm.textContent = target.name || 'Unnamed';
+    nm.style.cssText = 'overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;';
+
+    const dynSel = document.createElement('select');
+    ['protective','allied','polarized','distant','unknown'].forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d; opt.textContent = d.charAt(0).toUpperCase() + d.slice(1);
+      if (rel.dynamic === d) opt.selected = true;
+      dynSel.appendChild(opt);
+    });
+    dynSel.addEventListener('change', () => {
+      rel.dynamic = dynSel.value;
+      const mirror = (target.relationships || []).find(r => r.partId === part.id);
+      if (mirror) mirror.dynamic = dynSel.value;
+      saveState(s); renderMap(s);
+      if (dynSel.value === 'unknown') renderMapEditor(s);
+    });
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'map-editor-btn danger';
+    delBtn.textContent = 'x';
+    delBtn.title = 'Remove from map';
+    delBtn.addEventListener('click', () => {
+      rel.dynamic = 'unknown';
+      const mirror = (target.relationships || []).find(r => r.partId === part.id);
+      if (mirror) mirror.dynamic = 'unknown';
+      saveState(s); renderMap(s); renderMapEditor(s); updateNavCounts(s);
+    });
+
+    row.appendChild(nm); row.appendChild(dynSel); row.appendChild(delBtn);
+    connSection.appendChild(row);
+  });
+
+  // Add new connection
+  const unconnected = (s.parts || []).filter(p => {
+    if (p.id === part.id) return false;
+    const rel = (part.relationships || []).find(r => r.partId === p.id);
+    return !rel || rel.dynamic === 'unknown';
+  });
+
+  if (unconnected.length > 0) {
+    const addRow = document.createElement('div');
+    addRow.style.cssText = 'display:flex;gap:4px;align-items:center;margin-top:4px;';
+
+    const addSel = document.createElement('select');
+    addSel.style.cssText = 'flex:1;font-size:11px;padding:2px 3px;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--text);min-width:0;';
+    const ph = document.createElement('option');
+    ph.value = ''; ph.textContent = 'Add...';
+    addSel.appendChild(ph);
+    unconnected.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id; opt.textContent = p.name || 'Unnamed';
+      addSel.appendChild(opt);
+    });
+
+    const dynSel2 = document.createElement('select');
+    dynSel2.style.cssText = 'font-size:11px;padding:2px 3px;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--text);';
+    ['allied','protective','polarized','distant'].forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d; opt.textContent = d.charAt(0).toUpperCase() + d.slice(1);
+      dynSel2.appendChild(opt);
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'map-editor-btn';
+    addBtn.textContent = '+';
+    addBtn.addEventListener('click', () => {
+      const tid = addSel.value;
+      if (!tid) return;
+      const dyn = dynSel2.value;
+      const tgt = (s.parts || []).find(p => p.id === tid);
+      let rel = (part.relationships || []).find(r => r.partId === tid);
+      if (rel) { rel.dynamic = dyn; } else {
+        if (!part.relationships) part.relationships = [];
+        part.relationships.push({ partId: tid, partName: tgt ? tgt.name : '', thisPartToOther:'', otherToThisPart:'', dynamic: dyn, notes:'' });
+      }
+      if (tgt) {
+        let mirror = (tgt.relationships || []).find(r => r.partId === part.id);
+        if (mirror) { mirror.dynamic = dyn; } else {
+          if (!tgt.relationships) tgt.relationships = [];
+          tgt.relationships.push({ partId: part.id, partName: part.name||'', thisPartToOther:'', otherToThisPart:'', dynamic: dyn, notes:'' });
+        }
+      }
+      saveState(s); renderMap(s); renderMapEditor(s); updateNavCounts(s);
+    });
+
+    addRow.appendChild(addSel); addRow.appendChild(dynSel2); addRow.appendChild(addBtn);
+    connSection.appendChild(addRow);
+  }
+}
+
+function mapResetPositions() {
+  mapVx = {}; mapVy = {};
+  renderMap(appState);
+}
+
+function mapApplyGlobalSize(mult) {
+  const m = parseFloat(mult);
+  mapNodes.forEach(n => {
+    const part = (appState.parts || []).find(p => p.id === n.id);
+    const base = part ? (part.nodeSize === 'large' ? 42 : part.nodeSize === 'small' ? 26 : 34) : 34;
+    n.r = Math.round(base * m);
+  });
+  const canvas = document.getElementById('map-canvas');
+  drawMap(canvas, parseInt(canvas.width), parseInt(canvas.height));
+}
 
 // Resize map/timeline when window resizes
 window.addEventListener('resize', () => {
@@ -2038,6 +2533,50 @@ function buildRelTable(part, partIdx, s) {
   table.appendChild(tbody);
   wrapper.appendChild(table);
   return wrapper;
+}
+
+function addSession() {
+  if (!appState.sessions) appState.sessions = [];
+  const newSession = {
+    id: 'sess-' + Date.now(),
+    date: new Date().toISOString().slice(0, 10),
+    title: '',
+    content: '',
+    partsTagged: [],
+    systemRead: '',
+  };
+  appState.sessions.push(newSession);
+  saveState(appState);
+  renderJournal(appState);
+  setTimeout(() => {
+    const card = document.querySelector(`.session-card[data-session-id="${newSession.id}"]`);
+    if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  }, 50);
+}
+
+function addMemory() {
+  if (!appState.memories) appState.memories = [];
+  const newMem = {
+    id: 'mem-' + Date.now(),
+    date: '',
+    dateApprox: '',
+    label: '',
+    notes: '',
+    partsTagged: [],
+  };
+  appState.memories.push(newMem);
+  saveState(appState);
+  renderTimeline(appState);
+  setTimeout(() => {
+    const card = document.querySelector(`.memory-card[data-memory-id="${newMem.id}"]`);
+    if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  }, 50);
+}
+
+function deleteMemory(id) {
+  appState.memories = (appState.memories || []).filter(m => m.id !== id);
+  saveState(appState);
+  renderTimeline(appState);
 }
 
 function addPart() {
@@ -2706,19 +3245,32 @@ function addSelfMoment(cIdx) {
   saveState(appState);
   if (cIdx !== undefined) _wheelSelectedC = cIdx;
   renderSelf(appState);
+  updateNavCounts(appState);
 }
 
 // ══ TAB: JOURNAL ════════════════════════════════════════════
 function renderJournal(s) {
+  // Key questions + experiments
+  ['kq-1','kq-2','kq-3','ke-1','ke-2','ke-3'].forEach(id => {
+    const el = document.getElementById('journal-' + id);
+    if (!el) return;
+    const field = el.dataset.field;
+    if (document.activeElement !== el) el.textContent = s.system?.[field] || '';
+    if (!el._bound) {
+      el._bound = true;
+      el.addEventListener('blur', () => {
+        if (!appState.system) appState.system = {};
+        appState.system[field] = el.textContent.trim();
+        saveState(appState);
+      });
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } });
+    }
+  });
   const list = document.getElementById('sessions-list');
   const empty = document.getElementById('sessions-empty');
   list.innerHTML = '';
   const sessions = s.sessions || [];
-  if (sessions.length === 0) {
-    empty.style.display = 'block';
-    return;
-  }
-  empty.style.display = 'none';
+  empty.style.display = sessions.length === 0 ? 'block' : 'none';
   // Most recent first
   [...sessions].reverse().forEach(session => {
     list.appendChild(buildSessionCard(session, s));
@@ -2733,19 +3285,35 @@ function buildSessionCard(session, s) {
   const hdr = document.createElement('div');
   hdr.className = 'session-header';
 
-  const date = document.createElement('div');
-  date.className = 'session-date';
-  date.textContent = session.date || '';
+  // Editable date
+  const dateEl = document.createElement('input');
+  dateEl.className = 'session-date-edit';
+  dateEl.value = session.date || '';
+  dateEl.placeholder = 'YYYY-MM-DD';
+  dateEl.addEventListener('click', e => e.stopPropagation());
+  dateEl.addEventListener('change', () => {
+    session.date = dateEl.value.trim();
+    saveState(appState);
+  });
 
-  const title = document.createElement('div');
-  title.className = 'session-title';
-  title.textContent = session.title || 'Untitled session';
+  // Editable title
+  const titleEl = document.createElement('div');
+  titleEl.className = 'session-title-edit';
+  titleEl.contentEditable = 'true';
+  titleEl.setAttribute('data-placeholder', 'Untitled session');
+  titleEl.textContent = session.title || '';
+  titleEl.addEventListener('click', e => e.stopPropagation());
+  titleEl.addEventListener('blur', () => {
+    session.title = titleEl.textContent.trim();
+    saveState(appState);
+  });
+  titleEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); titleEl.blur(); } });
 
   const chevron = document.createElement('span');
   chevron.textContent = '▶';
-  chevron.style.cssText = 'font-size:10px;color:var(--text-dim);transition:transform 0.2s;flex-shrink:0;';
+  chevron.style.cssText = 'font-size:10px;color:var(--text-dim);transition:transform 0.2s;flex-shrink:0;pointer-events:none;';
 
-  hdr.appendChild(date); hdr.appendChild(title); hdr.appendChild(chevron);
+  hdr.appendChild(dateEl); hdr.appendChild(titleEl); hdr.appendChild(chevron);
   hdr.addEventListener('click', () => {
     card.classList.toggle('expanded');
     chevron.style.transform = card.classList.contains('expanded') ? 'rotate(90deg)' : '';
@@ -2755,46 +3323,74 @@ function buildSessionCard(session, s) {
   const body = document.createElement('div');
   body.className = 'session-body';
 
-  // Parts tagged
-  if (session.partsTagged && session.partsTagged.length) {
-    const tagsRow = document.createElement('div');
-    tagsRow.className = 'session-parts-tags';
-    session.partsTagged.forEach(pid => {
-      const part = (s.parts || []).find(p => p.id === pid);
-      const tag = document.createElement('span');
-      tag.className = 'session-part-tag';
-      tag.textContent = part ? part.name : pid;
-      tag.addEventListener('click', () => {
-        switchTab('parts');
-        const card = document.querySelector(`.part-card[data-part-id="${pid}"]`);
-        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      tagsRow.appendChild(tag);
-    });
-    body.appendChild(tagsRow);
-  }
+  // Parts tagged — toggleable picker
+  const tagsLabel = document.createElement('div');
+  tagsLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-top:12px;margin-bottom:4px;';
+  tagsLabel.textContent = 'Parts tagged';
+  body.appendChild(tagsLabel);
 
-  // Content
+  const tagPicker = document.createElement('div');
+  tagPicker.className = 'part-tag-picker';
+  const tagged = new Set(session.partsTagged || []);
+  (s.parts || []).forEach(part => {
+    const tog = document.createElement('span');
+    tog.className = 'part-tag-toggle' + (tagged.has(part.id) ? ' active' : '');
+    tog.textContent = part.name || 'Unnamed';
+    tog.addEventListener('click', () => {
+      if (tagged.has(part.id)) { tagged.delete(part.id); tog.classList.remove('active'); }
+      else { tagged.add(part.id); tog.classList.add('active'); }
+      session.partsTagged = Array.from(tagged);
+      saveState(appState);
+    });
+    tagPicker.appendChild(tog);
+  });
+  if ((s.parts || []).length === 0) {
+    const hint = document.createElement('span');
+    hint.style.cssText = 'font-size:13px;color:var(--text-dim);';
+    hint.textContent = 'No parts yet';
+    tagPicker.appendChild(hint);
+  }
+  body.appendChild(tagPicker);
+
+  // Editable content
+  const contentLabel = document.createElement('div');
+  contentLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-top:12px;margin-bottom:4px;';
+  contentLabel.textContent = 'Notes';
+  body.appendChild(contentLabel);
+
   const contentEl = document.createElement('div');
-  contentEl.style.cssText = 'font-size:15px;color:var(--text-mid);line-height:1.65;margin:10px 0;white-space:pre-wrap;';
+  contentEl.className = 'session-content-edit';
+  contentEl.contentEditable = 'true';
+  contentEl.setAttribute('data-placeholder', 'Session notes...');
   contentEl.textContent = session.content || '';
+  contentEl.addEventListener('blur', () => {
+    session.content = contentEl.textContent.trim();
+    saveState(appState);
+  });
   body.appendChild(contentEl);
 
-  // System read
-  if (session.systemRead) {
-    const readEl = document.createElement('div');
-    readEl.className = 'session-system-read';
-    const readLabel = document.createElement('div');
-    readLabel.className = 'session-system-read-label';
-    readLabel.textContent = 'System read';
-    const readText = document.createElement('div');
-    readText.textContent = session.systemRead;
-    readEl.appendChild(readLabel);
-    readEl.appendChild(readText);
-    body.appendChild(readEl);
-  }
+  // Editable system read
+  const readEl = document.createElement('div');
+  readEl.className = 'session-system-read';
+  const readLabel = document.createElement('div');
+  readLabel.className = 'session-system-read-label';
+  readLabel.textContent = 'System read';
+  const readText = document.createElement('div');
+  readText.contentEditable = 'true';
+  readText.setAttribute('data-placeholder', 'Your AI\'s read of the system after this session...');
+  readText.style.cssText = 'outline:none;min-height:20px;';
+  readText.style.setProperty('--placeholder-color', 'var(--text-dim)');
+  readText.textContent = session.systemRead || '';
+  readText.addEventListener('blur', () => {
+    session.systemRead = readText.textContent.trim();
+    saveState(appState);
+  });
+  readText.classList.add('session-read-text-edit');
+  readEl.appendChild(readLabel);
+  readEl.appendChild(readText);
+  body.appendChild(readEl);
 
-  // Session distribution pie (built from balance history snapshot closest to session date)
+  // Session distribution pie
   const hist = loadBalHist();
   if (hist.length > 0) {
     let closest = hist[0], closestDist = Infinity;
@@ -2812,12 +3408,166 @@ function buildSessionCard(session, s) {
     body.appendChild(pieRow);
   }
 
+  // Delete button
+  const footer = document.createElement('div');
+  footer.className = 'session-footer';
+  const delBtn = document.createElement('button');
+  delBtn.className = 'btn-danger';
+  delBtn.textContent = 'Delete session';
+  delBtn.addEventListener('click', () => {
+    confirmDelete(`Delete "${session.title || 'this session'}"?`, () => {
+      appState.sessions = (appState.sessions || []).filter(sess => sess.id !== session.id);
+      saveState(appState);
+      renderJournal(appState);
+    });
+  });
+  footer.appendChild(delBtn);
+  body.appendChild(footer);
+
   card.appendChild(body);
   return card;
 }
 
 // ══ TAB: TIMELINE ═════════════════════════════════════════════
 let _timelineTooltipPart = null;
+
+function renderMemories(s) {
+  const list = document.getElementById('memories-list');
+  const empty = document.getElementById('memories-empty');
+  if (!list) return;
+
+  const memories = (s.memories || []).slice().sort((a, b) => {
+    if (a.date && b.date) return a.date.localeCompare(b.date);
+    if (a.date) return -1;
+    if (b.date) return 1;
+    return (a.label || '').localeCompare(b.label || '');
+  });
+
+  if (memories.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  list.innerHTML = '';
+  const parts = s.parts || [];
+  memories.forEach(mem => {
+    // ensure id for data-memory-id targeting
+    if (!mem.id) mem.id = 'mem-' + Date.now() + Math.random();
+
+    const card = document.createElement('div');
+    card.className = 'memory-card';
+    card.dataset.memoryId = mem.id;
+    card.style.flexDirection = 'column';
+
+    const topRow = document.createElement('div');
+    topRow.style.cssText = 'display:flex;gap:14px;align-items:flex-start;';
+
+    // Editable date column
+    const dateCol = document.createElement('div');
+    dateCol.className = 'memory-date-col';
+
+    const dateInput = document.createElement('input');
+    dateInput.className = 'memory-date-edit';
+    dateInput.value = mem.date || '';
+    dateInput.placeholder = 'YYYY-MM-DD';
+    dateInput.title = 'Exact date';
+    dateInput.addEventListener('change', () => {
+      mem.date = dateInput.value.trim();
+      saveState(appState);
+    });
+    dateCol.appendChild(dateInput);
+
+    const approxEl = document.createElement('div');
+    approxEl.className = 'memory-approx-edit';
+    approxEl.contentEditable = 'true';
+    approxEl.setAttribute('data-placeholder', 'approx. date');
+    approxEl.textContent = mem.dateApprox || '';
+    approxEl.title = 'Approximate date label';
+    approxEl.addEventListener('blur', () => {
+      mem.dateApprox = approxEl.textContent.trim();
+      saveState(appState);
+    });
+    approxEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); approxEl.blur(); } });
+    dateCol.appendChild(approxEl);
+
+    topRow.appendChild(dateCol);
+
+    // Editable body
+    const body = document.createElement('div');
+    body.className = 'memory-body';
+
+    const labelEl = document.createElement('div');
+    labelEl.className = 'memory-label-edit';
+    labelEl.contentEditable = 'true';
+    labelEl.setAttribute('data-placeholder', 'Memory label...');
+    labelEl.textContent = mem.label || '';
+    labelEl.addEventListener('blur', () => {
+      mem.label = labelEl.textContent.trim();
+      saveState(appState);
+    });
+    labelEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); labelEl.blur(); } });
+    body.appendChild(labelEl);
+
+    const notesEl = document.createElement('div');
+    notesEl.className = 'memory-notes-edit';
+    notesEl.contentEditable = 'true';
+    notesEl.setAttribute('data-placeholder', 'Notes...');
+    notesEl.textContent = mem.notes || '';
+    notesEl.addEventListener('blur', () => {
+      mem.notes = notesEl.textContent.trim();
+      saveState(appState);
+    });
+    body.appendChild(notesEl);
+
+    topRow.appendChild(body);
+    card.appendChild(topRow);
+
+    // Parts tag picker
+    const tagLabel = document.createElement('div');
+    tagLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-top:10px;margin-bottom:4px;';
+    tagLabel.textContent = 'Parts tagged';
+    card.appendChild(tagLabel);
+
+    const tagPicker = document.createElement('div');
+    tagPicker.className = 'part-tag-picker';
+    const tagged = new Set(mem.partsTagged || []);
+    parts.forEach(part => {
+      const tog = document.createElement('span');
+      tog.className = 'part-tag-toggle' + (tagged.has(part.id) ? ' active' : '');
+      tog.textContent = part.name || 'Unnamed';
+      tog.addEventListener('click', () => {
+        if (tagged.has(part.id)) { tagged.delete(part.id); tog.classList.remove('active'); }
+        else { tagged.add(part.id); tog.classList.add('active'); }
+        mem.partsTagged = Array.from(tagged);
+        saveState(appState);
+      });
+      tagPicker.appendChild(tog);
+    });
+    if (parts.length === 0) {
+      const hint = document.createElement('span');
+      hint.style.cssText = 'font-size:13px;color:var(--text-dim);';
+      hint.textContent = 'No parts yet';
+      tagPicker.appendChild(hint);
+    }
+    card.appendChild(tagPicker);
+
+    // Delete button
+    const footer = document.createElement('div');
+    footer.className = 'memory-footer';
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn-danger';
+    delBtn.textContent = 'Delete memory';
+    delBtn.addEventListener('click', () => {
+      confirmDelete(`Delete "${mem.label || 'this memory'}"?`, () => deleteMemory(mem.id));
+    });
+    footer.appendChild(delBtn);
+    card.appendChild(footer);
+
+    list.appendChild(card);
+  });
+}
 
 function renderTimeline(s) {
   const emptyEl = document.getElementById('timeline-empty');
@@ -2826,6 +3576,7 @@ function renderTimeline(s) {
   const areaWrap = document.getElementById('balance-area-wrap');
   const hist = loadBalHist();
 
+  renderMemories(s);
   renderPartsDistribution(s);
 
   if (hist.length === 0) {
@@ -2946,9 +3697,17 @@ function applyUpdate() {
       snapshotBalance(merged);
     }
 
-    // Merge new sessions into session history key
+    // Ensure all sessions have an id
     if (merged.sessions && Array.isArray(merged.sessions)) {
-      // Also store into dedicated sessions key for potential future use
+      merged.sessions.forEach(sess => {
+        if (!sess.id) sess.id = 'sess-' + (sess.date || Date.now()) + '-' + Math.random().toString(36).slice(2, 7);
+      });
+    }
+    // Ensure all memories have an id
+    if (merged.memories && Array.isArray(merged.memories)) {
+      merged.memories.forEach(mem => {
+        if (!mem.id) mem.id = 'mem-' + (mem.date || Date.now()) + '-' + Math.random().toString(36).slice(2, 7);
+      });
     }
 
     // Restore locked fields
@@ -3425,6 +4184,13 @@ function _doInit() {
   const saved = loadState();
   if (saved) {
     appState = saved;
+    // Backfill ids for sessions/memories from before id field was added
+    (appState.sessions || []).forEach(sess => {
+      if (!sess.id) sess.id = 'sess-' + (sess.date || Date.now()) + '-' + Math.random().toString(36).slice(2, 7);
+    });
+    (appState.memories || []).forEach(mem => {
+      if (!mem.id) mem.id = 'mem-' + (mem.date || Date.now()) + '-' + Math.random().toString(36).slice(2, 7);
+    });
     render(appState);
     maybeShowResetUndoBanner();
     return;

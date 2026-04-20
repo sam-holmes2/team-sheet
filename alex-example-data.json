@@ -21,7 +21,7 @@
         {
           "partId": "self",
           "partName": "Self",
-          "thisPartToOther": "Rarely turns toward Self — too busy. When Self is present, The Achiever notices but quickly finds another task to fill the stillness.",
+          "thisPartToOther": "Rarely turns toward Self - too busy. When Self is present, The Achiever notices but quickly finds another task to fill the stillness.",
           "otherToThisPart": "Self sees The Achiever clearly and with real appreciation, but also knows it is running too hot.",
           "dynamic": "distant",
           "notes": ""
@@ -29,7 +29,7 @@
         {
           "partId": "part-critic",
           "partName": "The Critic",
-          "thisPartToOther": "Depends on The Critic to set the bar — they have been working together so long they feel like one voice",
+          "thisPartToOther": "Depends on The Critic to set the bar - they have been working together so long they feel like one voice",
           "otherToThisPart": "The Critic uses The Achiever as its enforcement arm: if you don't achieve, you deserve the criticism",
           "dynamic": "allied",
           "notes": "The alliance between these two is the system's core operating loop"
@@ -37,7 +37,7 @@
         {
           "partId": "part-little-one",
           "partName": "The Little One",
-          "thisPartToOther": "Doesn't acknowledge The Little One's existence — she would slow everything down",
+          "thisPartToOther": "Doesn't acknowledge The Little One's existence - she would slow everything down",
           "otherToThisPart": "The Little One watches The Achiever run and feels completely left behind",
           "dynamic": "distant",
           "notes": ""
@@ -46,14 +46,14 @@
           "partId": "part-soother",
           "partName": "The Soother",
           "thisPartToOther": "Resents The Soother when it interrupts a productive streak",
-          "otherToThisPart": "The Soother deploys after The Achiever burns out — offers relief but also enables the next burnout cycle",
+          "otherToThisPart": "The Soother deploys after The Achiever burns out - offers relief but also enables the next burnout cycle",
           "dynamic": "polarized",
           "notes": "Classic manager-firefighter tension"
         },
         {
           "partId": "part-witness",
           "partName": "The Witness",
-          "thisPartToOther": "Finds The Witness slightly irritating — it slows things down and names things The Achiever would rather not look at",
+          "thisPartToOther": "Finds The Witness slightly irritating - it slows things down and names things The Achiever would rather not look at",
           "otherToThisPart": "The Witness observes The Achiever with curiosity but rarely gets heard in real time",
           "dynamic": "distant",
           "notes": ""
@@ -71,7 +71,7 @@
       "role": "manager",
       "overview": "The internal quality-control voice that prevents embarrassment and keeps standards high",
       "gifts": "Discernment, precision, the ability to spot what needs improving before anyone else does. Unburdened, The Critic becomes a trusted advisor with impeccable taste.",
-      "wants": "Flawlessness. Or failing that, plausible deniability — at least being able to say 'I knew it wasn't good enough'",
+      "wants": "Flawlessness. Or failing that, plausible deniability - at least being able to say 'I knew it wasn't good enough'",
       "fears": "Being exposed as mediocre. Being laughed at. The gap between what Alex can imagine and what Alex can produce.",
       "burdens": "The belief that harsh internal criticism protects against harsher external judgment. Learned young: better to hear it from yourself first.",
       "valuesAndNeeds": "Honesty, high standards, self-awareness. Needs to feel it is being listened to. When ignored, it gets louder.",
@@ -79,7 +79,7 @@
         {
           "partId": "self",
           "partName": "Self",
-          "thisPartToOther": "Suspicious of Self's unconditional warmth — it feels naive, like it's missing something",
+          "thisPartToOther": "Suspicious of Self's unconditional warmth - it feels naive, like it's missing something",
           "otherToThisPart": "Self recognises The Critic is trying to protect Alex, even when the methods are painful",
           "dynamic": "distant",
           "notes": ""
@@ -95,7 +95,7 @@
         {
           "partId": "part-little-one",
           "partName": "The Little One",
-          "thisPartToOther": "Turns on The Little One hardest of all — her neediness is embarrassing",
+          "thisPartToOther": "Turns on The Little One hardest of all - her neediness is embarrassing",
           "otherToThisPart": "The Little One is terrified of The Critic",
           "dynamic": "polarized",
           "notes": "The Critic originally formed partly to manage The Little One's vulnerability"
@@ -103,7 +103,7 @@
         {
           "partId": "part-soother",
           "partName": "The Soother",
-          "thisPartToOther": "Criticises The Soother's methods even while the system is using them — narrates the failure of both extremes",
+          "thisPartToOther": "Criticises The Soother's methods even while the system is using them - narrates the failure of both extremes",
           "otherToThisPart": "The Soother doesn't argue back; it just waits for The Critic to exhaust itself",
           "dynamic": "distant",
           "notes": ""
@@ -111,7 +111,7 @@
         {
           "partId": "part-witness",
           "partName": "The Witness",
-          "thisPartToOther": "Wary of The Witness — being seen clearly is not always comfortable for The Critic",
+          "thisPartToOther": "Wary of The Witness - being seen clearly is not always comfortable for The Critic",
           "otherToThisPart": "The Witness holds The Critic with some compassion, recognising the fear underneath the harshness",
           "dynamic": "distant",
           "notes": "The Witness's growing presence may be the thing most likely to soften The Critic over time"
@@ -140,7 +140,7 @@
           "thisPartToOther": "Has started to feel Self's presence a little in recent sessions. Cautious but curious.",
           "otherToThisPart": "Self wants to make contact but moves slowly to avoid overwhelming her",
           "dynamic": "distant",
-          "notes": "There is movement here — this relationship is shifting"
+          "notes": "There is movement here - this relationship is shifting"
         },
         {
           "partId": "part-achiever",
@@ -161,7 +161,7 @@
         {
           "partId": "part-soother",
           "partName": "The Soother",
-          "thisPartToOther": "Finds some comfort in The Soother's presence — it at least offers a pause in the driving",
+          "thisPartToOther": "Finds some comfort in The Soother's presence - it at least offers a pause in the driving",
           "otherToThisPart": "The Soother responds to The Little One's pain but with numbing rather than genuine contact",
           "dynamic": "protective",
           "notes": "The Soother is partly responding to The Little One's distress, even if imperfectly"
@@ -169,7 +169,7 @@
         {
           "partId": "part-witness",
           "partName": "The Witness",
-          "thisPartToOther": "Doesn't fully trust The Witness yet — being seen still feels risky",
+          "thisPartToOther": "Doesn't fully trust The Witness yet - being seen still feels risky",
           "otherToThisPart": "The Witness is the part most likely to notice when The Little One is present and hold that with gentleness",
           "dynamic": "distant",
           "notes": ""
@@ -189,8 +189,8 @@
       "gifts": "Real pleasure in rest, in small things, in slowing down. Unburdened, The Soother becomes genuine nourishment and healthy self-care.",
       "wants": "To stop. To not think. To be comfortable and off the hook for a little while.",
       "fears": "The pain that emerges when distraction is removed. That if the numbing stops, something unbearable will surface.",
-      "burdens": "The belief that rest must be earned — so when it finally arrives, it overshoots into shutdown.",
-      "valuesAndNeeds": "Relief, ease, permission. Needs to know there is safety in stopping — that stopping doesn't mean falling apart.",
+      "burdens": "The belief that rest must be earned - so when it finally arrives, it overshoots into shutdown.",
+      "valuesAndNeeds": "Relief, ease, permission. Needs to know there is safety in stopping - that stopping doesn't mean falling apart.",
       "relationships": [
         {
           "partId": "self",
@@ -227,7 +227,7 @@
         {
           "partId": "part-witness",
           "partName": "The Witness",
-          "thisPartToOther": "Largely unaware of The Witness — when The Soother is running, there isn't much observation happening",
+          "thisPartToOther": "Largely unaware of The Witness - when The Soother is running, there isn't much observation happening",
           "otherToThisPart": "The Witness notices The Soother's patterns without judgment",
           "dynamic": "distant",
           "notes": ""
@@ -243,17 +243,17 @@
       "id": "part-witness",
       "name": "The Witness",
       "role": "manager",
-      "overview": "A quiet observing presence that has been gaining strength — notices patterns without immediately reacting",
+      "overview": "A quiet observing presence that has been gaining strength - notices patterns without immediately reacting",
       "gifts": "Perspective. The ability to pause before reacting. Pattern recognition across sessions.",
       "wants": "To be heard when it speaks up. Silence. Room to see things clearly.",
       "fears": "Being drowned out by the louder parts. That the insight won't land before The Achiever has already moved on.",
-      "burdens": "Has sometimes been used as a dissociative strategy — observing as a way of not feeling. Working to distinguish witnessing from disconnecting.",
+      "burdens": "Has sometimes been used as a dissociative strategy - observing as a way of not feeling. Working to distinguish witnessing from disconnecting.",
       "valuesAndNeeds": "Spaciousness, time, reflection. Needs moments of genuine stillness to do its work.",
       "relationships": [
         {
           "partId": "self",
           "partName": "Self",
-          "thisPartToOther": "The Witness is closest to Self of all the parts — sometimes hard to tell them apart",
+          "thisPartToOther": "The Witness is closest to Self of all the parts - sometimes hard to tell them apart",
           "otherToThisPart": "Self works through The Witness most naturally",
           "dynamic": "allied",
           "notes": "This is the strongest connection to Self in the system"
@@ -262,7 +262,7 @@
           "partId": "part-achiever",
           "partName": "The Achiever",
           "thisPartToOther": "Tries to name what The Achiever is doing in real time. Usually ignored.",
-          "otherToThisPart": "The Achiever finds The Witness slightly irritating — it slows things down",
+          "otherToThisPart": "The Achiever finds The Witness slightly irritating - it slows things down",
           "dynamic": "distant",
           "notes": ""
         },
@@ -270,7 +270,7 @@
           "partId": "part-critic",
           "partName": "The Critic",
           "thisPartToOther": "Holds The Critic with some compassion, recognising the fear underneath the harshness",
-          "otherToThisPart": "The Critic is wary of being seen clearly — The Witness's presence is uncomfortable for it",
+          "otherToThisPart": "The Critic is wary of being seen clearly - The Witness's presence is uncomfortable for it",
           "dynamic": "distant",
           "notes": "The Witness's growing presence may be the thing most likely to soften The Critic over time"
         },
@@ -278,7 +278,7 @@
           "partId": "part-little-one",
           "partName": "The Little One",
           "thisPartToOther": "Notices when The Little One is present and holds that with gentleness rather than pushing it away",
-          "otherToThisPart": "The Little One doesn't fully trust The Witness yet — being seen still feels risky",
+          "otherToThisPart": "The Little One doesn't fully trust The Witness yet - being seen still feels risky",
           "dynamic": "distant",
           "notes": ""
         },
@@ -286,7 +286,7 @@
           "partId": "part-soother",
           "partName": "The Soother",
           "thisPartToOther": "Notices The Soother's patterns without judgment",
-          "otherToThisPart": "The Soother is largely unaware of The Witness — when numbing is running, observation goes quiet",
+          "otherToThisPart": "The Soother is largely unaware of The Witness - when numbing is running, observation goes quiet",
           "dynamic": "distant",
           "notes": ""
         }
@@ -306,7 +306,7 @@
       "id": "session-001",
       "date": "2026-03-22",
       "title": "First mapping session",
-      "content": "Started mapping the system for the first time. The Achiever and The Critic showed up immediately and were very articulate. The Little One was mentioned almost in passing — Alex noticed a tightness in the chest when her name came up. The Soother came up as the end-of-day scroll and snack pattern. The Witness was the last to be named and felt like a surprise: 'oh, that's a part too?'",
+      "content": "Started mapping the system for the first time. The Achiever and The Critic showed up immediately and were very articulate. The Little One was mentioned almost in passing - Alex noticed a tightness in the chest when her name came up. The Soother came up as the end-of-day scroll and snack pattern. The Witness was the last to be named and felt like a surprise: 'oh, that's a part too?'",
       "partsTagged": ["part-achiever", "part-critic", "part-little-one", "part-soother", "part-witness"],
       "systemRead": "This system is well-organized on the surface with two strong managers coordinating most behavior. The exile (The Little One) is present but contained. There is early movement toward Self through The Witness.",
       "selfMoments": ["Noticing the chest tightness around The Little One with curiosity rather than pushing it away"]
@@ -315,9 +315,9 @@
       "id": "session-002",
       "date": "2026-04-10",
       "title": "The Achiever and the weekend",
-      "content": "Alex described a weekend where The Achiever couldn't rest — even on a walk, it was cataloguing what needed to be done. Then The Soother took over Sunday afternoon and it felt like a crash. Explored the polarity. The Critic was present throughout, narrating the failure of both extremes. Brief moment at the end where Alex sat with The Little One's loneliness without trying to fix it — described it as 'just being with her for a minute'.",
+      "content": "Alex described a weekend where The Achiever couldn't rest - even on a walk, it was cataloguing what needed to be done. Then The Soother took over Sunday afternoon and it felt like a crash. Explored the polarity. The Critic was present throughout, narrating the failure of both extremes. Brief moment at the end where Alex sat with The Little One's loneliness without trying to fix it - described it as 'just being with her for a minute'.",
       "partsTagged": ["part-achiever", "part-soother", "part-critic", "part-little-one"],
-      "systemRead": "The Achiever-Soother polarity is clearer now. The Critic is working as a kind of referee who criticises both sides. The brief contact with The Little One near the end of the session is significant — the system didn't immediately shut it down.",
+      "systemRead": "The Achiever-Soother polarity is clearer now. The Critic is working as a kind of referee who criticises both sides. The brief contact with The Little One near the end of the session is significant - the system didn't immediately shut it down.",
       "selfMoments": ["Sitting with The Little One's loneliness without fixing it for about a minute near the end of the session"]
     },
     {
@@ -326,7 +326,7 @@
       "title": "What The Critic is protecting",
       "content": "Went directly to The Critic today. Asked what it was afraid would happen if it stopped criticising. After some resistance, it said: 'You'd become complacent and then you'd be mediocre and then no one would want you around.' Got curious about who taught it that. The Critic softened slightly and mentioned a teacher from primary school. The Achiever was quieter than usual during this session. The Witness had a lot of space.",
       "partsTagged": ["part-critic", "part-achiever", "part-witness"],
-      "systemRead": "Direct engagement with The Critic produced real new information about its origin. The softening is a sign the system is starting to trust the process. The Achiever being quieter may indicate early differentiation — The Critic and Achiever are starting to be seen as distinct rather than fused.",
+      "systemRead": "Direct engagement with The Critic produced real new information about its origin. The softening is a sign the system is starting to trust the process. The Achiever being quieter may indicate early differentiation - The Critic and Achiever are starting to be seen as distinct rather than fused.",
       "selfMoments": ["Staying curious toward The Critic even when it was hostile", "Noticing The Witness having more space and feeling glad about it rather than suspicious"]
     }
   ],
