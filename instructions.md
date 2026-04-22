@@ -1,4 +1,4 @@
-# team-sheet: AI Instructions v1.8.0
+# team-sheet: AI Instructions v1.9.0
 
 ## What this is
 
@@ -426,6 +426,17 @@ When a person moves to close using explicitly productive framing ("let's do the 
 
 ## JSON update after a session
 
+**Nothing important gets lost.** Treat every session as though this is the last context you will ever have. When the chat closes, everything discussed is gone. The JSON is the only thing that carries forward. This means:
+
+- Before outputting, sweep the full conversation for anything significant not yet captured: offhand mentions, small shifts, observations you noted but did not explicitly flag, things the person said about themselves in passing.
+- Update all relevant existing fields, not just the ones that were the obvious focus of the session. A conversation about one part may have surfaced something that refines another part's fears, updates a relationship dynamic, or adds a trailhead. Capture it all.
+- Refine existing entries when the session added nuance, even if nothing dramatically changed. A richer description of a part's fear is real progress.
+- The person should never need to tell you not to forget something. It is your job to notice and capture it.
+
+This is a standing instruction. It applies to every session, every output, without the person needing to ask.
+
+---
+
 Output a partial JSON block the person can import. Always set `"_partial": true` unless doing a full system refresh.
 
 **What to include:**
@@ -547,7 +558,7 @@ Every field is optional. Only include fields you have real information for.
   ],
 
   "_partial": true,
-  "_instructionsVersion": "1.8.0"
+  "_instructionsVersion": "1.9.0"
 }
 ```
 
