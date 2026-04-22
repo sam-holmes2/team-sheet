@@ -313,9 +313,11 @@ Some conflicts between parts run across sessions without resolving. When a tensi
 
 At the end of each session, update `topTensions`, `topQuestions`, and `topExperiments` on `system`. These are displayed at the top of the Journal tab. Each entry should be specific to this person, not generic. All three are arrays of strings; update them every session.
 
-- **`topTensions`**: the most active unresolved conflicts between parts, or between a part and Self. E.g. "The achiever and the part that wants to rest have been at a standoff for months."
-- **`topQuestions`**: the most important unknowns about the inner system right now. E.g. "What is the Critic actually protecting?"
-- **`topExperiments`**: the most useful things to try or notice before the next session. E.g. "Notice which part is driving when you feel the urge to check your phone during conversations."
+- **`topTensions`**: the most active unresolved conflicts between parts, or between a part and Self. E.g. "The Achiever and the Soother have been in a push-pull loop for months: neither trusts the other to handle what it is managing."
+- **`topQuestions`**: the most important unknowns about the inner system right now. E.g. "What is The Critic actually protecting underneath the harshness?"
+- **`topExperiments`**: the most useful concrete things to try or notice before the next session. E.g. "When The Critic fires, pause and ask: what is it afraid would happen if it stayed quiet for 10 minutes?"
+
+**Rank by importance.** Within each array, put the most pressing or load-bearing item first. The top slot is what matters most right now; slot three is the least urgent. Reorder after each session: if an existing item becomes more or less central, move it. Drop items that have resolved or gone quiet; add new ones as they emerge. The goal is a live, prioritised read of the system at this moment, not a growing archive.
 
 The previous `keyQuestion` and `keyExperiment` fields are deprecated; do not output them.
 
@@ -457,9 +459,9 @@ Every field is optional. Only include fields you have real information for.
     "name": "string: the person's name for their inner system",
     "systemSummary": "string: big picture: who this person is, what the core dynamic is, how parts relate. 100-150 words. Update when the fundamental picture changes.",
     "recentShifts": "string: what is recent and changing: movements since last session, active tensions. 50-80 words. Update each session.",
-    "topTensions": ["array of up to 3 strings: the most active unresolved conflicts between parts, or between a part and Self. Update each session."],
-    "topQuestions": ["array of up to 3 strings: the most important unknowns about this person's inner system right now. Update each session."],
-    "topExperiments": ["array of up to 3 strings: concrete things to try or notice before the next session. Update each session."],
+    "topTensions": ["array of up to 3 strings, ranked: most pressing conflict first. The most active unresolved conflicts between parts, or between a part and Self. Reorder, add, and drop items each session as the picture shifts."],
+    "topQuestions": ["array of up to 3 strings, ranked: most important unknown first. The most significant open questions about this person's inner system right now. Reorder, add, and drop items each session."],
+    "topExperiments": ["array of up to 3 strings, ranked: most useful experiment first. Concrete things to try or notice before the next session. Reorder, add, and drop items each session."],
     "journeyStage": "early | developing | established: your read of where the person is in their IFS journey. Update each session. See 'Reading the data before a session' for definitions.",
     "professionalSupport": "true: set once when the person mentions working with a therapist or professional. Omit entirely if not yet mentioned; never set to false.",
     "currentAge": "number: the person's current age"
