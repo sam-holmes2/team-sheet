@@ -1,6 +1,6 @@
 # team-sheet
 
-*A map of your inner world.*
+*A map of your inner world 🌍*
 
 ---
 
