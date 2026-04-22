@@ -1819,7 +1819,7 @@ function render(s) {
 // ══ TAB: MAP ══════════════════════════════════════════════════
 const MAP_PHYSICS = {
   repulsion: 9000,
-  springLen: { small: 90, medium: 130, large: 170 },
+  springLen: { small: 120, medium: 170, large: 230 },
   damping: 0.82,
   iterations: 200,
 };
@@ -1854,7 +1854,7 @@ function renderMap(s) {
   mapNodes = parts.map((p, i) => {
     const angle = (i / parts.length) * Math.PI * 2;
     const radius = Math.min(W, H) * 0.38;
-    const r = p.nodeSize === 'large' ? 42 : p.nodeSize === 'small' ? 26 : 34;
+    const r = p.nodeSize === 'large' ? 72 : p.nodeSize === 'small' ? 34 : 50;
     return {
       id: p.id,
       x: W / 2 + radius * Math.cos(angle),
@@ -2324,7 +2324,7 @@ function mapApplyGlobalSize(mult) {
   const m = parseFloat(mult);
   mapNodes.forEach(n => {
     const part = (appState.parts || []).find(p => p.id === n.id);
-    const base = part ? (part.nodeSize === 'large' ? 42 : part.nodeSize === 'small' ? 26 : 34) : 34;
+    const base = part ? (part.nodeSize === 'large' ? 72 : part.nodeSize === 'small' ? 34 : 50) : 50;
     n.r = Math.round(base * m);
   });
   const canvas = document.getElementById('map-canvas');
