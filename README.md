@@ -8,22 +8,81 @@ Most self-help tools treat the mind as a single agent to be optimised. team-shee
 
 team-sheet is a personal IFS (Internal Family Systems) mapping app. Journal with your AI, paste back the JSON, and watch your inner map fill in over time. No AI? Edit fields directly — it works fully standalone too.
 
+No prior IFS experience needed. The app will introduce the concepts naturally through journalling.
+
 ---
 
 ## What is IFS?
 
-Internal Family Systems is a model of the mind developed by psychologist Richard Schwartz. It proposes that the psyche is made up of distinct **parts** — each with its own perspective, emotions, and intentions — and a core **Self** that can witness and relate to those parts from a place of calm, curiosity, and compassion.
+Internal Family Systems (IFS) is a model of the mind developed by psychologist Richard Schwartz in the 1980s. It is one of the most widely-used frameworks in contemporary psychotherapy, with a growing evidence base for treating trauma, anxiety, depression, and other conditions. The core insight is simple but far-reaching: the mind is not a single unified voice. It is a system of **parts** — each with its own perspective, emotions, fears, and intentions.
 
-Parts are not problems. They are protective strategies that made sense at the time they formed. The aim of IFS is not to eliminate parts, but to understand them, build trust with them, and help them carry less.
+You have probably already met some of yours: the part that wants to get things done and the part that just can't start. The part that longs for connection and the part that pushes people away. The voice that says you're not good enough, and the quieter voice that knows that isn't true. IFS gives these a framework.
 
-There are three types of protective part:
-- **Managers** — proactive protectors that keep order before things go wrong. They plan, achieve, control, and please.
-- **Firefighters** — reactive protectors that step in when pain has already been triggered. They distract, numb, and douse the fire.
-- **Exiles** — parts that carry old pain, shame, or fear. They have been pushed away by protectors to keep the system stable.
+### The three types of part
 
-**Self** is not a part. It is your natural ground state — the quality of presence that remains when parts step back. IFS describes Self through the 8 Cs (Calm, Curiosity, Clarity, Compassion, Confidence, Courage, Creativity, Connectedness) and the 5 Ps (Presence, Patience, Perspective, Persistence, Playfulness).
+**Managers** are proactive protectors. They run things before pain has a chance to arrive. They plan, achieve, control, optimise, and people-please. A manager's logic is: if I stay on top of everything, nothing bad can happen. Managers are often responsible for your most productive and also your most exhausting traits.
 
-team-sheet is not a replacement for IFS therapy. It is a reflective tool for mapping your system, tracking what you notice, and building a relationship with your parts over time.
+**Firefighters** are reactive protectors. They step in *after* pain has already been triggered, when something has gotten through the managers. Their job is to douse the fire by any means necessary: scrolling, drinking, overeating, rage, withdrawal, numbing. Firefighters are not the enemy; they are crisis responders doing the only thing they know how.
+
+**Exiles** are the parts that carry the original pain: old shame, fear, grief, or wounds from the past. Managers and firefighters exist in large part to keep exiles locked away, because their pain feels too much to bear. IFS therapy involves, carefully and with professional support, getting to know exiles and helping them carry less.
+
+### Self
+
+**Self** is not a part. It is not a voice or an agenda. It is your natural ground state: the calm, curious, connected presence that remains when parts step back. IFS describes Self through the **8 Cs** (Calm, Curiosity, Clarity, Compassion, Confidence, Courage, Creativity, Connectedness) and the **5 Ps** (Presence, Patience, Perspective, Persistence, Playfulness). You cannot lose Self; you can only lose access to it when parts are running things.
+
+The aim of IFS is not to eliminate parts or become "part-free". Parts are protective strategies that formed for good reasons. The aim is to build a relationship with each part from Self, to understand what it has been trying to do, and to help it carry less so it can play a freer role.
+
+### IFS and professional therapy
+
+IFS is widely practised by trained therapists and is one of the few approaches recognised by the US Substance Abuse and Mental Health Services Administration (SAMHSA) as an evidence-based treatment. If you are dealing with complex trauma, significant mental health challenges, or distressing material, IFS therapy with a qualified practitioner offers depth and safety that self-guided tools cannot provide.
+
+**team-sheet is a reflective tool, not a replacement for therapy.** Use it alongside professional support, or as a way of mapping your inner world and preparing for sessions. If you are looking for a qualified IFS therapist:
+
+- [IFS Institute Practitioner Directory](https://ifs-institute.com/practitioners) — the official directory maintained by Richard Schwartz's own organisation
+
+Outside the US, search for "IFS therapist" with your country or city, or filter by "Internal Family Systems" on your national therapist directory, to find trained practitioners.
+
+---
+
+## What the app gives you
+
+- **A parts map** — a visual overview of your parts as nodes, sized by prominence, connected by relationship edges
+- **Part profiles** — for each part: role, overview, wants, fears, gifts, triggers, body sensations, and relationships to other parts
+- **A Self log** — moments of genuine Self-leadership, tagged by quality (curiosity, compassion, calm, etc.)
+- **Session journal** — narrative summaries of what was explored each session and which parts were active
+- **A timeline** — when each part emerged and how the balance between parts and Self has shifted over time
+
+Over sessions, the map fills in. Parts that were unnamed and tangled become distinct and understood. Relationships between parts become visible. Self-led moments start to outweigh part-driven ones. The app holds what would otherwise be forgotten between sessions.
+
+---
+
+## Do I need to know IFS first?
+
+No. The quickstart prompt is designed to let you journal freely about what's going on, and the AI will introduce IFS concepts only when they become useful. You do not need to read anything before starting.
+
+If you want to go deeper before or alongside using the app, here are good starting points.
+
+**To listen first:**
+
+- **Podcast:** "How (and Why) to Hug Your Inner Dragons" — an interview with Richard Schwartz, the founder of IFS. A good first listen if you prefer audio.
+- **Podcast:** The Tim Ferriss Show #492 — "Richard Schwartz: IFS, Psychedelic Experiences Without Drugs, and Finding Inner Peace for Our Many Parts". Wide-ranging and accessible.
+
+**To read first:**
+
+- **Book:** *Introduction to the Internal Family Systems Model* by Richard Schwartz. A friendly 140-page overview with examples — the shortest path to understanding the whole model.
+- **Book:** *Self-Therapy* by Jay Earley. A comprehensive step-by-step guide aimed at people doing IFS on themselves or with a friend.
+- **Article:** "Introduction to Internal Family Systems Therapy" by Jay Earley — a free shorter overview of the same ground.
+
+**To go further:**
+
+- **Book:** *No Bad Parts* by Richard Schwartz. His newest book, applying IFS not just to personal healing but to relationships and broader societal change.
+- **Book:** *You Are the One You've Been Waiting For* by Richard Schwartz. Applies IFS to romantic relationships: how two people's exiles and protectors trigger each other.
+- **Book:** *Somatic Internal Family Systems Therapy* by Susan McConnell. Unifies IFS with somatic experiencing — useful if body-based work resonates with you.
+- **Book:** *Self-Therapy, Vol. 2* by Jay Earley. Advanced techniques: switching focus between parts, working with polarized parts, and more.
+
+**Online:**
+
+- [The IFS Institute](https://ifs-institute.com/) — free articles, videos, and the official practitioner directory. Richard Schwartz's own organisation.
 
 ---
 
@@ -36,6 +95,8 @@ team-sheet is not a replacement for IFS therapy. It is a reflective tool for map
 5. **At the end of your session, ask:** `"Update my data.json based on our conversation."`
 6. **Add `data.json` to project knowledge:** same as step 3. (If updating: remove the old version first, then upload the new one.)
 7. **Import into the app:** open `team-sheet.html`, click `↑` (top right), paste the JSON, Import.
+
+**No AI?** Open the app, edit fields directly, and export your data. The import/export workflow is optional.
 
 ---
 
@@ -77,7 +138,7 @@ Name any mode at the start of a session to direct the conversation.
 
 ## The 6 Fs: working with a part
 
-When focusing on a specific part, the AI will use the 6 Fs as a loose guide:
+When focusing on a specific part, the AI will use the 6 Fs as a loose guide. You do not need to know these in advance; the AI will lead the conversation naturally. They describe a direction of inquiry, not a rigid script.
 
 1. **Find** — locate the part; where do you feel it in your body?
 2. **Focus** — turn attention toward it without trying to change it
@@ -108,7 +169,7 @@ When focusing on a specific part, the AI will use the 6 Fs as a loose guide:
 - **AI is optional.** The app works fully offline as a plain tracker. Edit fields directly without any AI involved.
 - **Use [Firefox](https://www.firefox.com/) if possible.** It isolates each local HTML file's storage. In Chrome and Edge, all local files share the same origin.
 
-team-sheet is not a replacement for professional mental health support. IFS has a strong evidence base and is practised by trained therapists — if you're working with complex trauma or distressing material, please seek qualified support alongside using this app.
+team-sheet is not a replacement for professional mental health support. IFS has a strong evidence base and is practised by trained therapists. If you are working with complex trauma or distressing material, please seek qualified support alongside using this app.
 
 ---
 
@@ -124,9 +185,9 @@ team-sheet is not a replacement for professional mental health support. IFS has 
 
 ## Why I built this
 
-IFS gave me a genuinely useful framework for understanding my inner world — but keeping track of it was hard. Insights from one session were forgotten by the next. Parts I'd named would fade back into unnamed patterns. There was nowhere to hold the map.
+IFS gave me a genuinely useful framework for understanding my inner world, but keeping track of it was hard. Insights from one session were forgotten by the next. Parts I had named would fade back into unnamed patterns. There was nowhere to hold the map.
 
-team-sheet is that place. A single file, no server, no accounts. Your data stays on your machine. Pair it with an AI that has persistent project context and you have a reflective partner that remembers every part you've named — and can help you go deeper each time.
+team-sheet is that place. A single file, no server, no accounts. Your data stays on your machine. Pair it with an AI that has persistent project context and you have a reflective partner that remembers every part you have named, and can help you go deeper each time.
 
 ---
 

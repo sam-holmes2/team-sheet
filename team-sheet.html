@@ -74,7 +74,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .system-desc:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.01); }
 .system-desc:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
 .journal-intentions {
-  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;
   margin-bottom:32px; padding-bottom:28px;
   border-bottom:1px solid var(--border);
 }
@@ -91,7 +91,10 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .journal-intention-item:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.02); }
 .journal-intention-item:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.6; }
-@media(max-width:600px){
+@media(max-width:800px){
+  .journal-intentions { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:500px){
   .journal-intentions { grid-template-columns:1fr; }
 }
 .journal-overview { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(128,144,168,0.15); }
@@ -299,6 +302,57 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   border:none; border-top:1px solid var(--border);
   margin:18px 0 0;
 }
+
+/* ── Bullet field lists ── */
+.bullet-list {
+  display:flex; flex-direction:column; gap:2px;
+}
+.bullet-item {
+  display:flex; align-items:flex-start; gap:4px;
+  border-radius:3px; padding:1px 2px 1px 0;
+  transition:background 0.12s;
+  position:relative;
+}
+.bullet-item:hover { background:rgba(255,255,255,0.02); }
+.bullet-drag-handle {
+  cursor:grab; color:var(--text-dim); font-size:11px;
+  padding:3px 2px 0; flex-shrink:0; opacity:0;
+  transition:opacity 0.12s; user-select:none;
+  line-height:1;
+}
+.bullet-item:hover .bullet-drag-handle { opacity:1; }
+.bullet-drag-handle:active { cursor:grabbing; }
+.bullet-dot {
+  flex-shrink:0; color:var(--text-dim); font-size:13px;
+  padding-top:2px; user-select:none; line-height:1.65;
+}
+.bullet-text {
+  flex:1; outline:none; border-radius:3px;
+  padding:1px 4px; margin:-1px -4px;
+  min-height:1.4em; cursor:text; word-break:break-word;
+  transition:background 0.12s;
+}
+.bullet-text:empty::before { content:attr(data-placeholder); color:var(--text-dim); font-style:italic; }
+.bullet-text:hover { background:rgba(255,255,255,0.03); }
+.bullet-text:focus { background:rgba(255,255,255,0.05); box-shadow:0 0 0 1px var(--border-hi); }
+.bullet-remove {
+  background:none; border:none; cursor:pointer;
+  color:var(--text-dim); font-size:14px; line-height:1;
+  padding:2px 4px; flex-shrink:0; opacity:0;
+  transition:opacity 0.12s, color 0.12s; border-radius:3px;
+}
+.bullet-item:hover .bullet-remove { opacity:0.5; }
+.bullet-remove:hover { opacity:1 !important; color:var(--text-b); }
+.bullet-add {
+  background:none; border:none; cursor:pointer;
+  color:var(--text-dim); font-size:12px; font-family:var(--mono);
+  padding:3px 4px; margin-top:2px; text-align:left;
+  border-radius:3px; transition:color 0.12s, background 0.12s;
+  display:flex; align-items:center; gap:5px;
+}
+.bullet-add:hover { color:var(--text-mid); background:rgba(255,255,255,0.04); }
+.bullet-item.dragging { opacity:0.4; }
+.bullet-item.drag-over { box-shadow:0 -1px 0 var(--gold); }
 
 /* ── Exile warning ── */
 .exile-warning {
@@ -991,7 +1045,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 <!-- ══ TAB: JOURNAL ══════════════════════════════════════════════ -->
 <div id="tab-journal" class="tab-panel">
-  <!-- Key questions + experiments -->
+  <!-- Key questions, experiments, tensions -->
   <div class="journal-intentions">
     <div class="journal-intention-group">
       <div class="journal-intention-label">Key questions</div>
@@ -1005,14 +1059,30 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
       <div class="journal-intention-item" id="journal-ke-2" contenteditable="true" spellcheck="false" data-field="keyExperiment2" data-placeholder="Try speaking to it with curiosity rather than frustration."></div>
       <div class="journal-intention-item" id="journal-ke-3" contenteditable="true" spellcheck="false" data-field="keyExperiment3" data-placeholder="Spend 5 minutes with a part that rarely gets attention."></div>
     </div>
+    <div class="journal-intention-group">
+      <div class="journal-intention-label">Active tensions</div>
+      <div class="journal-intention-item" id="journal-kt-1" contenteditable="true" spellcheck="false" data-field="topTension1" data-placeholder="Which parts are most at odds right now?"></div>
+      <div class="journal-intention-item" id="journal-kt-2" contenteditable="true" spellcheck="false" data-field="topTension2" data-placeholder="What is each side protecting?"></div>
+      <div class="journal-intention-item" id="journal-kt-3" contenteditable="true" spellcheck="false" data-field="topTension3" data-placeholder="What would it take for them to soften?"></div>
+    </div>
   </div>
   <div id="journal-system-summary" class="journal-overview">
-    <div class="journal-overview-title">Summary of system</div>
-    <div class="system-desc" id="system-summary-display" contenteditable="true" spellcheck="false" data-placeholder="No summary yet. Your AI will fill this in after sessions."></div>
+    <div style="display:flex;gap:20px;align-items:flex-start;">
+      <div style="flex:1;min-width:0;">
+        <div class="journal-overview-title">Summary of system</div>
+        <div class="system-desc" id="system-summary-display" contenteditable="true" spellcheck="false" data-placeholder="No summary yet. Your AI will fill this in after sessions."></div>
+      </div>
+      <div id="parts-dist-alltime" class="parts-dist-pie-row" style="flex-shrink:0;"></div>
+    </div>
   </div>
   <div id="journal-recent-shifts" class="journal-overview">
-    <div class="journal-overview-title">Recent shifts</div>
-    <div class="system-desc" id="recent-shifts-display" contenteditable="true" spellcheck="false" data-placeholder="No recent shifts recorded yet."></div>
+    <div style="display:flex;gap:20px;align-items:flex-start;">
+      <div style="flex:1;min-width:0;">
+        <div class="journal-overview-title">Recent shifts</div>
+        <div class="system-desc" id="recent-shifts-display" contenteditable="true" spellcheck="false" data-placeholder="No recent shifts recorded yet."></div>
+      </div>
+      <div id="parts-dist-latest" class="parts-dist-pie-row" style="flex-shrink:0;"></div>
+    </div>
   </div>
   <div class="journal-starters">
     <button class="starters-toggle" onclick="toggleStarters()">
@@ -1057,33 +1127,10 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
     No session history yet. Import a session update to see the distribution chart.
   </div>
 
-  <!-- Memories -->
-  <div id="memories-section" style="margin-bottom:36px;">
-    <div style="margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-      <div class="section-heading" style="margin-bottom:0;">Memories</div>
-      <span style="font-size:13px;color:var(--text-dim);flex:1;">Significant events from before you started using team-sheet, inferred across sessions.</span>
-      <button class="btn-primary" onclick="addMemory()">+ Add memory</button>
-    </div>
-    <div id="memories-list"></div>
-    <div id="memories-empty" style="color:var(--text-dim);font-size:14px;display:none;">No memories logged yet. Your AI will infer these from what you share across sessions.</div>
-  </div>
-
-  <!-- Distribution pies -->
-  <div class="parts-dist-row" id="parts-dist-row" style="display:none;margin-bottom:32px;">
-    <div class="parts-dist-card">
-      <div class="parts-dist-label">Average over time</div>
-      <div class="parts-dist-pie-row" id="parts-dist-alltime"></div>
-    </div>
-    <div class="parts-dist-card">
-      <div class="parts-dist-label">Latest session</div>
-      <div class="parts-dist-pie-row" id="parts-dist-latest"></div>
-    </div>
-  </div>
-
   <div id="timeline-recent-section" style="display:none;">
     <div style="margin-bottom:14px;">
-      <div class="section-heading">Recent shifts</div>
-      <p class="balance-note" style="margin:0;">The past year of part leadership. Each vertical line marks a session; click to open it. Proportions reflect session balance weights.</p>
+      <div class="section-heading">Since you started</div>
+      <p class="balance-note" style="margin:0;">Part leadership across all sessions. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll to them). Proportions reflect session balance weights.</p>
     </div>
     <div style="position:relative;width:100%;margin-bottom:8px;">
       <canvas id="balance-area-canvas-recent" style="cursor:pointer;display:block;width:100%;"></canvas>
@@ -1094,12 +1141,23 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   <div id="timeline-alltime-section" style="display:none;margin-top:36px;">
     <div style="margin-bottom:14px;">
       <div class="section-heading">All time</div>
-      <p class="balance-note" style="margin:0;">Your full history of part leadership across every session. Use this to spot long-term patterns and how the system has evolved.</p>
+      <p class="balance-note" style="margin:0;">Your full history of part leadership including pre-app memories. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll to them).</p>
     </div>
     <div id="balance-area-wrap" style="display:none;">
       <canvas id="balance-area-canvas" style="cursor:pointer;"></canvas>
       <div class="balance-area-legend" id="balance-area-legend"></div>
     </div>
+  </div>
+
+  <!-- Memories -->
+  <div id="memories-section" style="margin-top:36px;margin-bottom:36px;">
+    <div style="margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div class="section-heading" style="margin-bottom:0;">Memories</div>
+      <span style="font-size:13px;color:var(--text-dim);flex:1;">Significant events inferred across sessions.</span>
+      <button class="btn-primary" onclick="addMemory()">+ Add memory</button>
+    </div>
+    <div id="memories-list"></div>
+    <div id="memories-empty" style="color:var(--text-dim);font-size:14px;display:none;">No memories logged yet. Your AI will infer these from what you share across sessions.</div>
   </div>
 </div>
 
@@ -1436,7 +1494,7 @@ let appState = {
   selfMoments: [],
   memories: [],
   roleColors: {},
-  _instructionsVersion: '1.4.0',
+  _instructionsVersion: '1.8.0',
 };
 
 // ══ SAVE / LOAD ════════════════════════════════════════════════
@@ -1522,6 +1580,168 @@ function makeEditable(text, placeholder, onSave, extraClass) {
   el.addEventListener('blur', () => onSave(el.textContent.trim()));
   el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } });
   return el;
+}
+
+// ══ BULLET FIELD HELPER ═══════════════════════════════════════
+function toArray(val) {
+  if (Array.isArray(val)) return val.filter(s => typeof s === 'string');
+  if (typeof val === 'string' && val.trim()) {
+    // Legacy string: split on newlines; each non-empty line becomes an item
+    return val.split('\n').map(s => s.trim()).filter(Boolean);
+  }
+  return [];
+}
+
+function buildBulletField(part, key, itemPlaceholder) {
+  const container = document.createElement('div');
+  container.className = 'bullet-list';
+
+  function getItems() { return Array.isArray(part[key]) ? part[key] : toArray(part[key]); }
+
+  let dragSrc = null;
+
+  function buildItem(text, itemIdx) {
+    const row = document.createElement('div');
+    row.className = 'bullet-item';
+    row.draggable = true;
+
+    const handle = document.createElement('span');
+    handle.className = 'bullet-drag-handle';
+    handle.textContent = '⠿';
+    handle.title = 'Drag to reorder';
+
+    const dot = document.createElement('span');
+    dot.className = 'bullet-dot';
+    dot.textContent = '·';
+
+    const textEl = document.createElement('div');
+    textEl.className = 'bullet-text';
+    textEl.contentEditable = 'true';
+    textEl.setAttribute('data-placeholder', itemPlaceholder);
+    textEl.textContent = text;
+
+    textEl.addEventListener('blur', () => {
+      const items = getItems();
+      const val = textEl.textContent.trim();
+      if (val === '') {
+        // Remove empty items on blur
+        items.splice(itemIdx, 1);
+        part[key] = items;
+        saveState(appState);
+        rebuildList();
+      } else {
+        items[itemIdx] = val;
+        part[key] = items;
+        saveState(appState);
+      }
+    });
+
+    textEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        // Insert new item after current
+        const items = getItems();
+        const val = textEl.textContent.trim();
+        if (val) items[itemIdx] = val;
+        items.splice(itemIdx + 1, 0, '');
+        part[key] = items;
+        saveState(appState);
+        rebuildList();
+        // Focus new item
+        const newRow = container.children[itemIdx + 1];
+        if (newRow) { const t = newRow.querySelector('.bullet-text'); if (t) { t.focus(); placeCursorAtEnd(t); } }
+      } else if (e.key === 'Backspace' && textEl.textContent === '') {
+        e.preventDefault();
+        const items = getItems();
+        items.splice(itemIdx, 1);
+        part[key] = items;
+        saveState(appState);
+        rebuildList();
+        // Focus previous item
+        const prevRow = container.children[Math.max(0, itemIdx - 1)];
+        if (prevRow) { const t = prevRow.querySelector('.bullet-text'); if (t) { t.focus(); placeCursorAtEnd(t); } }
+      }
+    });
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'bullet-remove';
+    removeBtn.textContent = '×';
+    removeBtn.title = 'Remove';
+    removeBtn.addEventListener('click', () => {
+      const items = getItems();
+      items.splice(itemIdx, 1);
+      part[key] = items;
+      saveState(appState);
+      rebuildList();
+    });
+
+    // Drag-and-drop reordering
+    row.addEventListener('dragstart', e => {
+      dragSrc = itemIdx;
+      row.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    row.addEventListener('dragend', () => {
+      row.classList.remove('dragging');
+      container.querySelectorAll('.bullet-item').forEach(r => r.classList.remove('drag-over'));
+    });
+    row.addEventListener('dragover', e => {
+      e.preventDefault();
+      container.querySelectorAll('.bullet-item').forEach(r => r.classList.remove('drag-over'));
+      if (dragSrc !== itemIdx) row.classList.add('drag-over');
+    });
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      row.classList.remove('drag-over');
+      if (dragSrc === null || dragSrc === itemIdx) return;
+      const items = getItems();
+      const [moved] = items.splice(dragSrc, 1);
+      items.splice(itemIdx, 0, moved);
+      part[key] = items;
+      saveState(appState);
+      rebuildList();
+    });
+
+    row.appendChild(handle);
+    row.appendChild(dot);
+    row.appendChild(textEl);
+    row.appendChild(removeBtn);
+    return row;
+  }
+
+  function rebuildList() {
+    container.innerHTML = '';
+    const items = getItems();
+    items.forEach((text, i) => container.appendChild(buildItem(text, i)));
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'bullet-add';
+    addBtn.innerHTML = '<span style="font-size:14px;line-height:1">+</span> Add item';
+    addBtn.addEventListener('click', () => {
+      const items = getItems();
+      items.push('');
+      part[key] = items;
+      saveState(appState);
+      rebuildList();
+      const rows = container.querySelectorAll('.bullet-item');
+      const lastRow = rows[rows.length - 1];
+      if (lastRow) { const t = lastRow.querySelector('.bullet-text'); if (t) { t.focus(); } }
+    });
+    container.appendChild(addBtn);
+  }
+
+  rebuildList();
+  return container;
+}
+
+function placeCursorAtEnd(el) {
+  el.focus();
+  const range = document.createRange();
+  const sel = window.getSelection();
+  range.selectNodeContents(el);
+  range.collapse(false);
+  sel.removeAllRanges();
+  sel.addRange(range);
 }
 
 // ══ RENDER ════════════════════════════════════════════════════
@@ -2395,19 +2615,20 @@ function buildPartCard(part, idx, s) {
   body.appendChild(overviewSection);
 
   // Two-column grid for detail fields
-  // Left: Skills, Wants, Values & Needs — Right: Fears, Burdens, Potential Roles
   const grid = document.createElement('div');
   grid.className = 'part-fields-grid';
 
   const LEFT_FIELDS = [
-    { key:'skills',        label:'Skills', placeholder:'What this part specialises in, strengths and weaknesses...' },
-    { key:'wants',         label:'Wants', placeholder:'Wants...' },
-    { key:'valuesAndNeeds',label:'Values & Needs', placeholder:'Values & Needs...' },
+    { key:'skills',        label:'Skills', placeholder:'Add a skill or weakness...' },
+    { key:'wants',         label:'Wants', placeholder:'Add something this part wants...' },
+    { key:'valuesAndNeeds',label:'Values & Needs', placeholder:'Add a value or need...' },
+    { key:'needsFromSelf', label:'Needs from Self', placeholder:'What would it take for this part to trust Self enough to step back...' },
   ];
   const RIGHT_FIELDS = [
-    { key:'fears',          label:'Fears', placeholder:'Fears...' },
-    { key:'burdens',        label:'Burdens', placeholder:'Burdens...' },
-    { key:'potentialRoles', label:'Potential Roles', placeholder:'If unburdened, what could this part do instead...' },
+    { key:'fears',      label:'Fears',      placeholder:'Add a fear...' },
+    { key:'burdens',    label:'Burdens',    placeholder:'Add a burden...' },
+    { key:'triggers',   label:'Triggers',   placeholder:'Add a situation or state that activates this part...' },
+    { key:'trailheads', label:'Trailheads', placeholder:'Add a body sensation or signal for this part...' },
   ];
 
   [LEFT_FIELDS, RIGHT_FIELDS].forEach(col => {
@@ -2418,22 +2639,28 @@ function buildPartCard(part, idx, s) {
       const lbl = document.createElement('div');
       lbl.className = 'part-section-label';
       lbl.textContent = f.label;
-      // migrate gifts → skills
-      const rawVal = (f.key === 'skills' && !part.skills && part.gifts) ? part.gifts : (part[f.key] || '');
-      const valRow = document.createElement('div');
-      valRow.style.cssText = 'display:flex;align-items:flex-start;gap:6px;';
-      const val = makeEditable(rawVal, f.placeholder, v => {
-        part[f.key] = v; saveState(appState);
-      }, 'field-value');
-      valRow.appendChild(val);
-      valRow.appendChild(makeLockBtn(`parts.${idx}.${f.key}`));
+      // migrate gifts → skills (legacy string migration handled inside buildBulletField via toArray)
+      if (f.key === 'skills' && !part.skills && part.gifts) part.skills = part.gifts;
+      const bulletList = buildBulletField(part, f.key, f.placeholder);
       sec.appendChild(lbl);
-      sec.appendChild(valRow);
+      sec.appendChild(bulletList);
       colEl.appendChild(sec);
     });
     grid.appendChild(colEl);
   });
   body.appendChild(grid);
+
+  // Potential Roles — full width below the grid (sparsely populated, only when the part has named something)
+  const potentialSection = document.createElement('div');
+  potentialSection.className = 'part-section';
+  potentialSection.style.marginTop = '4px';
+  const potentialLbl = document.createElement('div');
+  potentialLbl.className = 'part-section-label';
+  potentialLbl.textContent = 'Potential Roles';
+  const potentialList = buildBulletField(part, 'potentialRoles', 'Add a potential role if this part were unburdened...');
+  potentialSection.appendChild(potentialLbl);
+  potentialSection.appendChild(potentialList);
+  body.appendChild(potentialSection);
 
   // Divider before relationships
   const divider = document.createElement('hr');
@@ -2586,7 +2813,8 @@ function addPart() {
     name: '',
     role: 'manager',
     overview: '',
-    skills: '', wants: '', fears: '', burdens: '', valuesAndNeeds: '', potentialRoles: '',
+    skills: [], wants: [], fears: [], burdens: [], valuesAndNeeds: [], potentialRoles: [],
+    needsFromSelf: [], triggers: [], trailheads: [],
     relationships: [{ partId: 'self', partName: 'Self', thisPartToOther: '', otherToThisPart: '', dynamic: 'unknown', notes: '' }],
     balanceWeight: 0.1,
     nodeSize: 'medium',
@@ -2703,20 +2931,17 @@ function buildBalancePie(snap, size, container) {
 // Renders pies into Parts tab top
 function renderPartsDistribution(s) {
   const hist = loadBalHist();
-  const distRow   = document.getElementById('parts-dist-row');
   const allTimeEl = document.getElementById('parts-dist-alltime');
   const latestEl  = document.getElementById('parts-dist-latest');
+  if (!allTimeEl || !latestEl) return;
 
-  allTimeEl.innerHTML = ''; latestEl.innerHTML = '';
+  allTimeEl.innerHTML = '';
+  latestEl.innerHTML = '';
 
-  if (hist.length === 0) {
-    distRow.style.display = 'none';
-    return;
-  }
-  distRow.style.display = '';
+  if (hist.length === 0) return;
 
-  buildBalancePie(averageSnapshots(hist), 120, allTimeEl);
-  buildBalancePie(hist[hist.length - 1], 120, latestEl);
+  buildBalancePie(averageSnapshots(hist), 100, allTimeEl);
+  buildBalancePie(hist[hist.length - 1], 100, latestEl);
 }
 
 function renderBalanceAreaChart(s, hist, canvasId, legendId) {
@@ -2807,28 +3032,45 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
     ctx.fillText(snap.date, snapX(i), H - PAD_B + 16);
   });
 
-  // Session event pins (vertical lines)
-  const sessions = (s.sessions || []);
-  sessions.forEach(sess => {
-    // Find closest snap by date
+  // Helper: find x position for a date string on the chart
+  function dateX(dateStr) {
+    if (!dateStr) return -1;
     let closest = -1, closestDist = Infinity;
     snaps.forEach((snap, i) => {
-      const d = Math.abs(new Date(snap.date) - new Date(sess.date));
+      const d = Math.abs(new Date(snap.date) - new Date(dateStr));
       if (d < closestDist) { closestDist = d; closest = i; }
     });
-    if (closest < 0) return;
-    const x = snapX(closest);
+    return closest >= 0 ? snapX(closest) : -1;
+  }
+
+  // Build pin lists
+  canvas._eventPins = [];
+
+  // Session pins (gold dashed)
+  (s.sessions || []).forEach(sess => {
+    const x = dateX(sess.date);
+    if (x < 0) return;
     ctx.strokeStyle = 'rgba(200,168,74,0.5)';
     ctx.lineWidth = 1;
     ctx.setLineDash([3,3]);
     ctx.beginPath(); ctx.moveTo(x, PAD_T); ctx.lineTo(x, PAD_T+drawH); ctx.stroke();
     ctx.setLineDash([]);
-    // Store hit zone on canvas for click navigation
-    if (!canvas._eventPins) canvas._eventPins = [];
-    canvas._eventPins.push({ x, sessionId: sess.id, date: sess.date });
+    canvas._eventPins.push({ x, type: 'session', sessionId: sess.id });
   });
 
-  // Click on event pin -> switch to journal and expand that session
+  // Memory pins (blue solid)
+  (s.memories || []).filter(m => m.date).forEach(mem => {
+    const x = dateX(mem.date);
+    if (x < 0) return;
+    ctx.strokeStyle = 'rgba(80,140,220,0.55)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([2,4]);
+    ctx.beginPath(); ctx.moveTo(x, PAD_T); ctx.lineTo(x, PAD_T+drawH); ctx.stroke();
+    ctx.setLineDash([]);
+    canvas._eventPins.push({ x, type: 'memory', memoryId: mem.id });
+  });
+
+  // Click handler: sessions -> journal tab; memories -> scroll to memory card
   if (!canvas._pinClickBound) {
     canvas._pinClickBound = true;
     canvas.addEventListener('click', e => {
@@ -2836,27 +3078,20 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
       const mx = (e.clientX - rect.left) * (W / rect.width);
       const pins = canvas._eventPins || [];
       const hit = pins.find(p => Math.abs(p.x - mx) < 10);
-      if (hit) {
+      if (!hit) return;
+      if (hit.type === 'session') {
         switchTab('journal');
         setTimeout(() => {
           const card = document.querySelector(`.session-card[data-session-id="${hit.sessionId}"]`);
           if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior:'smooth', block:'start' }); }
         }, 80);
+      } else if (hit.type === 'memory') {
+        const card = document.getElementById('memory-anchor-' + hit.memoryId);
+        if (card) card.scrollIntoView({ behavior:'smooth', block:'center' });
       }
     });
     canvas.style.cursor = 'pointer';
   }
-  canvas._eventPins = [];
-  // Re-populate pins (done above inside forEach, clear and re-add needed since we reset above)
-  sessions.forEach(sess => {
-    let closest = -1, closestDist = Infinity;
-    snaps.forEach((snap, i) => {
-      const d = Math.abs(new Date(snap.date) - new Date(sess.date));
-      if (d < closestDist) { closestDist = d; closest = i; }
-    });
-    if (closest < 0) return;
-    canvas._eventPins.push({ x: snapX(closest), sessionId: sess.id, date: sess.date });
-  });
 
   // Legend
   legendEl.innerHTML = '';
@@ -3193,7 +3428,13 @@ function _renderDetailPanel(s, cIdx) {
   if (moments.length === 0) {
     html += `<p style="color:var(--text-dim);font-size:15px;margin-bottom:14px;">No moments logged for ${c.name} yet.</p>`;
   } else {
-    moments.forEach(m => {
+    const sorted = moments.slice().sort((a, b) => {
+      if (a.date && b.date) return b.date.localeCompare(a.date);
+      if (a.date) return 1;
+      if (b.date) return -1;
+      return 0;
+    });
+    sorted.forEach(m => {
       const idx  = (s.selfMoments || []).indexOf(m);
       const desc = m.description || '';
       html += `<div class="moment-entry">
@@ -3250,8 +3491,8 @@ function addSelfMoment(cIdx) {
 
 // ══ TAB: JOURNAL ════════════════════════════════════════════
 function renderJournal(s) {
-  // Key questions + experiments
-  ['kq-1','kq-2','kq-3','ke-1','ke-2','ke-3'].forEach(id => {
+  // Key questions, experiments, active tensions
+  ['kq-1','kq-2','kq-3','ke-1','ke-2','ke-3','kt-1','kt-2','kt-3'].forEach(id => {
     const el = document.getElementById('journal-' + id);
     if (!el) return;
     const field = el.dataset.field;
@@ -3275,6 +3516,8 @@ function renderJournal(s) {
   [...sessions].reverse().forEach(session => {
     list.appendChild(buildSessionCard(session, s));
   });
+
+  renderPartsDistribution(s);
 }
 
 function buildSessionCard(session, s) {
@@ -3437,9 +3680,9 @@ function renderMemories(s) {
   if (!list) return;
 
   const memories = (s.memories || []).slice().sort((a, b) => {
-    if (a.date && b.date) return a.date.localeCompare(b.date);
-    if (a.date) return -1;
-    if (b.date) return 1;
+    if (a.date && b.date) return b.date.localeCompare(a.date);
+    if (a.date) return 1;
+    if (b.date) return -1;
     return (a.label || '').localeCompare(b.label || '');
   });
 
@@ -3459,6 +3702,7 @@ function renderMemories(s) {
     const card = document.createElement('div');
     card.className = 'memory-card';
     card.dataset.memoryId = mem.id;
+    card.id = 'memory-anchor-' + mem.id;
     card.style.flexDirection = 'column';
 
     const topRow = document.createElement('div');
@@ -3577,7 +3821,6 @@ function renderTimeline(s) {
   const hist = loadBalHist();
 
   renderMemories(s);
-  renderPartsDistribution(s);
 
   if (hist.length === 0) {
     emptyEl.style.display = '';
@@ -3587,22 +3830,22 @@ function renderTimeline(s) {
   }
   emptyEl.style.display = 'none';
 
-  // Recent: past 12 months
-  const cutoff = new Date();
-  cutoff.setFullYear(cutoff.getFullYear() - 1);
-  const cutoffStr = cutoff.toISOString().slice(0, 10);
-  const recentHist = hist.filter(h => h.date >= cutoffStr);
+  // "Since you started" = all session history snapshots
+  recentSection.style.display = '';
+  renderBalanceAreaChart(s, hist, 'balance-area-canvas-recent', 'balance-area-legend-recent');
 
-  if (recentHist.length > 0) {
-    recentSection.style.display = '';
-    renderBalanceAreaChart(s, recentHist, 'balance-area-canvas-recent', 'balance-area-legend-recent');
+  // "All time" = sessions + memories extended back; only show if there are dated memories
+  // older than the earliest session snapshot
+  const memories = (s.memories || []).filter(m => m.date);
+  const earliestSnap = hist[0]?.date || '';
+  const hasOlderMemories = memories.some(m => m.date < earliestSnap);
+  if (hasOlderMemories) {
+    alltimeSection.style.display = '';
+    areaWrap.style.display = '';
+    renderBalanceAreaChart(s, hist);
   } else {
-    recentSection.style.display = 'none';
+    alltimeSection.style.display = 'none';
   }
-
-  alltimeSection.style.display = '';
-  areaWrap.style.display = '';
-  renderBalanceAreaChart(s, hist);
 }
 
 // ══ TAB SWITCHING ══════════════════════════════════════════════
@@ -3707,6 +3950,30 @@ function applyUpdate() {
     if (merged.memories && Array.isArray(merged.memories)) {
       merged.memories.forEach(mem => {
         if (!mem.id) mem.id = 'mem-' + (mem.date || Date.now()) + '-' + Math.random().toString(36).slice(2, 7);
+      });
+    }
+
+    // Unpack AI array fields into flat system fields the UI uses
+    if (merged.system) {
+      const arrayMap = [
+        ['topQuestions',   'keyQuestion'],
+        ['topExperiments', 'keyExperiment'],
+        ['topTensions',    'topTension'],
+      ];
+      arrayMap.forEach(([arrayKey, prefix]) => {
+        if (Array.isArray(merged.system[arrayKey])) {
+          merged.system[arrayKey].slice(0, 3).forEach((val, i) => {
+            merged.system[prefix + (i + 1)] = val;
+          });
+          delete merged.system[arrayKey];
+        }
+      });
+      // Legacy single-value keyQuestion / keyExperiment -> slot 1
+      ['keyQuestion', 'keyExperiment'].forEach(key => {
+        if (typeof merged.system[key] === 'string' && merged.system[key]) {
+          if (!merged.system[key + '1']) merged.system[key + '1'] = merged.system[key];
+          delete merged.system[key];
+        }
       });
     }
 
