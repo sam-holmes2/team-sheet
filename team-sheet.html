@@ -1818,10 +1818,10 @@ function render(s) {
 
 // ══ TAB: MAP ══════════════════════════════════════════════════
 const MAP_PHYSICS = {
-  repulsion: 9000,
-  springLen: { small: 120, medium: 170, large: 230 },
-  damping: 0.82,
-  iterations: 200,
+  repulsion: 16000,
+  damping: 0.80,
+  overlapGap: 22,
+  iterations: 350,
 };
 let mapNodes = [];
 let mapEdges = [];
@@ -1851,10 +1851,13 @@ function renderMap(s) {
   }
 
   // Build nodes
+  const minDim = Math.min(W, H);
   mapNodes = parts.map((p, i) => {
     const angle = (i / parts.length) * Math.PI * 2;
-    const radius = Math.min(W, H) * 0.38;
-    const r = p.nodeSize === 'large' ? 72 : p.nodeSize === 'small' ? 34 : 50;
+    const radius = minDim * 0.36;
+    const r = p.nodeSize === 'large' ? Math.round(minDim * 0.13)
+            : p.nodeSize === 'small' ? Math.round(minDim * 0.065)
+            :                          Math.round(minDim * 0.095);
     return {
       id: p.id,
       x: W / 2 + radius * Math.cos(angle),
@@ -1900,53 +1903,67 @@ function renderMap(s) {
 
 function simulateStep() {
   const nodes = mapNodes;
+  const canvas = document.getElementById('map-canvas');
+  const W = canvas.width, H = canvas.height;
+  const minDim = Math.min(W, H);
   const forces = {};
   nodes.forEach(n => { forces[n.id] = { x: 0, y: 0 }; });
 
-  // Repulsion
+  // Repulsion + hard overlap separation
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
       const a = nodes[i], b = nodes[j];
       const dx = b.x - a.x, dy = b.y - a.y;
-      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      const f = MAP_PHYSICS.repulsion / (dist * dist);
-      forces[a.id].x -= (dx / dist) * f;
-      forces[a.id].y -= (dy / dist) * f;
-      forces[b.id].x += (dx / dist) * f;
-      forces[b.id].y += (dy / dist) * f;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 0.1;
+
+      // Hard push: prevent overlap
+      const minSep = a.r + b.r + MAP_PHYSICS.overlapGap;
+      if (dist < minSep) {
+        const push = (minSep - dist) * 5.0;
+        forces[a.id].x -= (dx / dist) * push;
+        forces[a.id].y -= (dy / dist) * push;
+        forces[b.id].x += (dx / dist) * push;
+        forces[b.id].y += (dy / dist) * push;
+      }
+
+      // Inverse-square repulsion (scaled to canvas)
+      const rep = (MAP_PHYSICS.repulsion * minDim) / (500 * dist * dist);
+      forces[a.id].x -= (dx / dist) * rep;
+      forces[a.id].y -= (dy / dist) * rep;
+      forces[b.id].x += (dx / dist) * rep;
+      forces[b.id].y += (dy / dist) * rep;
     }
   }
 
-  // Spring attraction on edges
-  const canvas = document.getElementById('map-canvas');
-  const W = canvas.width, H = canvas.height;
+  // Spring attraction on edges — target = proportional to the two node radii
   mapEdges.forEach(e => {
     const a = mapNodes.find(n => n.id === e.a);
     const b = mapNodes.find(n => n.id === e.b);
     if (!a || !b) return;
     const dx = b.x - a.x, dy = b.y - a.y;
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    const targetLen = Math.min(W, H) * 0.38;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 0.1;
+    const targetLen = (a.r + b.r) * 2.4 + minDim * 0.04;
     const stretch = dist - targetLen;
-    const f = stretch * 0.025;
+    const f = stretch * 0.022;
     forces[a.id].x += (dx / dist) * f;
     forces[a.id].y += (dy / dist) * f;
     forces[b.id].x -= (dx / dist) * f;
     forces[b.id].y -= (dy / dist) * f;
   });
 
-  // Center pull
+  // Weak center pull
   mapNodes.forEach(n => {
-    forces[n.id].x += (W / 2 - n.x) * 0.007;
-    forces[n.id].y += (H / 2 - n.y) * 0.007;
+    forces[n.id].x += (W / 2 - n.x) * 0.005;
+    forces[n.id].y += (H / 2 - n.y) * 0.005;
   });
 
-  // Apply with damping
+  // Apply with damping + boundary clamping (pad relative to node size)
   mapNodes.forEach(n => {
     mapVx[n.id] = (mapVx[n.id] + forces[n.id].x) * MAP_PHYSICS.damping;
     mapVy[n.id] = (mapVy[n.id] + forces[n.id].y) * MAP_PHYSICS.damping;
-    n.x = Math.max(n.r + 40, Math.min(W - n.r - 40, n.x + mapVx[n.id]));
-    n.y = Math.max(n.r + 30, Math.min(H - n.r - 30, n.y + mapVy[n.id]));
+    const pad = Math.round(n.r * 0.5) + 10;
+    n.x = Math.max(n.r + pad, Math.min(W - n.r - pad, n.x + mapVx[n.id]));
+    n.y = Math.max(n.r + pad, Math.min(H - n.r - pad, n.y + mapVy[n.id]));
   });
 }
 

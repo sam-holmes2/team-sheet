@@ -185,6 +185,19 @@ team-sheet is not a replacement for professional mental health support. IFS has 
 | **[team-sheet.html](team-sheet.html)** | The app. Open in your browser. |
 | **[instructions.md](instructions.md)** | Upload to your AI project knowledge. Defines the data format and all session guidance. |
 | **[alex-example-data.json](alex-example-data.json)** | Example data so you can see what a mapped system looks like. |
+| **[session-threat-model.md](session-threat-model.md)** | Privacy risk breakdown across all levels of AI journalling. |
+| **[ai-privacy-guide.md](ai-privacy-guide.md)** | Full provider comparison: training policies, retention, ZDR options, local model setup. |
+
+---
+
+## Customising
+
+team-sheet is free and open source. The app and instructions are both designed to be modified — IFS is a rich model and no two people's inner worlds look the same. There is no one-size-fits-all approach to how you name parts, what you track, or how you want your AI to guide sessions.
+
+- **Edit `instructions.md`** to change how your AI communicates, which part properties it focuses on, how it phrases questions, how it leads the 6 Fs sequence, or what session modes are available. All changes stay in your own copy of the file.
+- **Edit `team-sheet.html`** directly to rename fields, add new part properties, adjust the visual map, or remove sections that don't suit your approach. It's a single file with no build step.
+
+Contributions welcome: if you adapt the instructions in a way others might find useful, or build something new into the app, [open a pull request](https://github.com/sam-holmes2/team-sheet/pulls) or share it in issues.
 
 ---
 
