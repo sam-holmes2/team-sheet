@@ -1,2 +1,7 @@
+CLAUDE.md
+backups/
+.DS_Store
+
+# local-only planning files
 dev-plan.md
 .gitignore

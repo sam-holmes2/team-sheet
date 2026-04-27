@@ -1,6 +1,6 @@
 # Session Threat Model
 
-How private is your inner map, really? This document breaks down the trust and risk involved at each level of journalling — from pen and paper to frontier AI — and shows how team-sheet can fit into any of them.
+How private is your inner map, really? This document breaks down the trust and risk involved at each level of journalling, from pen and paper to frontier AI, and shows how team-sheet can fit into any of them.
 
 ---
 
@@ -19,25 +19,25 @@ How private is your inner map, really? This document breaks down the trust and r
 
 ## Notes on each level
 
-### Level 0 — Pen and paper
+### Level 0: Pen and paper
 The gold standard for privacy by default: no network, no server, no account. The risk is entirely physical. A locked box, a fireproof safe, or simply being choosy about where you keep it covers most of the threat surface. The downside is massive friction to usage, no search, no AI reflection, no long-term pattern tracking.
 
-### Level 1 — Local digital, no AI
-A plain text file, an offline app, or team-sheet with no AI connected. Full-disk encryption (FileVault on Mac, BitLocker on Windows) is the most important control — if someone steals your laptop, encryption is what stands between them and your inner map. Backups matter here: a local-only map lost to a hard drive failure is gone. For an extra layer, team-sheet's built-in password protection (Settings) encrypts all local data with AES-256-GCM so it is unreadable without your password even if someone has device access.
+### Level 1: Local digital, no AI
+A plain text file, an offline app, or team-sheet with no AI connected. Full-disk encryption (FileVault on Mac, BitLocker on Windows) is the most important control. If someone steals your laptop, encryption is what stands between them and your inner map. Backups matter here: a local-only map lost to a hard drive failure is gone. For an extra layer, team-sheet's built-in password protection (Settings) encrypts all local data with AES-256-GCM so it is unreadable without your password even if someone has device access.
 
-### Level 2 — Cloud storage, no AI
+### Level 2: Cloud storage, no AI
 Adds device sync and automatic backup at the cost of storing data on a provider's infrastructure. Google, Apple, and Dropbox all have privacy policies that grant them broad rights. End-to-end encrypted alternatives (Proton Drive, Cryptomator layer on top of any provider) close most of this gap. Government legal requests are a theoretical but real risk in some jurisdictions.
 
-### Level 3 — Local AI (e.g. Ollama, LM Studio)
+### Level 3: Local AI (e.g. Ollama, LM Studio)
 Running a model locally means no data leaves your machine. The practical tradeoff is capability: models that run on consumer hardware (7B-34B parameters) are less nuanced than frontier models at deep reflection tasks, though the gap is narrowing quickly. Setup is more technical. This is the highest-privacy option that still gives you AI assistance.
 
-### Level 4 — Frontier AI (Claude, GPT-4, Gemini)
-The most capable reflection partner available. The cost is trust: your session content travels to the provider's servers and is subject to their data retention and privacy policies. Most providers offer a way to opt out of using your data for model training — find and enable this setting if it matters to you. Note that opting out of training doesn't necessarily mean your data isn't stored at all; the retention period and legal access policies are separate questions.
+### Level 4: Frontier AI (Claude, GPT-4, Gemini)
+The most capable reflection partner available. The cost is trust: your session content travels to the provider's servers and is subject to their data retention and privacy policies. Most providers offer a way to opt out of using your data for model training. Find and enable this setting if it matters to you. Note that opting out of training doesn't necessarily mean your data isn't stored at all; the retention period and legal access policies are separate questions.
 
 **What Anthropic says:** Claude has an opt-out for model training, but stored conversations are still retained according to their standard policy. Check [Anthropic's privacy policy](https://www.anthropic.com/privacy) for current details.
 
-### Level 5 — Frontier AI via 3rd-party apps
-Apps that use frontier model APIs under the hood. You're trusting the AI provider *and* the app company. The app often stores your journal content in its own database for features like search and history — check whether it does. team-sheet deliberately avoids this layer: it talks to no server, stores nothing remotely, and the only third party in the chain is the AI provider you choose.
+### Level 5: Frontier AI via 3rd-party apps
+Apps that use frontier model APIs under the hood. You're trusting the AI provider *and* the app company. The app often stores your journal content in its own database for features like search and history. Check whether it does. team-sheet deliberately avoids this layer: it talks to no server, stores nothing remotely, and the only third party in the chain is the AI provider you choose.
 
 ---
 
@@ -46,7 +46,7 @@ Apps that use frontier model APIs under the hood. You're trusting the AI provide
 | Level | How to use it |
 |-------|--------------|
 | **0** | Browse Alex's demo, use the Map and Parts tab structure as inspiration for what to reflect on, journal on paper using the same categories |
-| **1** | Download `team-sheet.html`, open locally in Firefox, use as a standalone offline tracker — edit fields directly, no AI needed |
+| **1** | Download `team-sheet.html`, open locally in Firefox, use as a standalone offline tracker. Edit fields directly. No AI needed. |
 | **2** | Store the file in Google Drive or iCloud to enable sync across devices |
 | **3** | Journal with a local model (Ollama + Open WebUI); paste the AI's JSON output into team-sheet manually |
 | **4** | The default setup: AI project + `instructions.md` + `data.json` in project knowledge |

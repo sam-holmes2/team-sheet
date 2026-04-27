@@ -67,7 +67,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   letter-spacing:0.01em; line-height:1.4;
 }
 .system-desc {
-  font-size:16px; color:var(--text-mid); margin-bottom:0; line-height:1.6;
+  font-size:16px; color:var(--text); margin-bottom:0; line-height:1.6;
   outline:none; border:1px solid transparent; border-radius:4px; padding:3px 5px;
   transition:border-color 0.15s; cursor:text;
 }
@@ -155,8 +155,9 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .tab-panel { display:none; }
 .tab-panel.active { display:block; }
 /* Map + Self tabs fill remaining viewport height */
-#tab-map, #tab-self { flex:1; display:none; min-height:0; overflow:hidden; }
+#tab-map { flex:1; display:none; min-height:0; overflow:hidden; }
 #tab-map.active { display:flex; flex-direction:row; gap:12px; }
+#tab-self { flex:1; display:none; min-height:0; overflow-y:auto; }
 #tab-self.active { display:flex; flex-direction:column; }
 
 /* ── Cards ── */
@@ -516,11 +517,11 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 /* ── SELF tab ── */
 .self-layout {
-  display:flex; gap:32px; align-items:center; flex:1; min-height:0;
+  display:flex; gap:32px; align-items:center; flex:1; min-height:min(520px, 68vh); flex-shrink:0;
 }
-.self-wheel-col { flex-shrink:0; display:flex; align-items:center; justify-content:center; height:100%; }
+.self-wheel-col { flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .self-right-col { flex:1; min-width:0; align-self:center; }
-#self-wheel-canvas { display:block; cursor:pointer; width:auto; height:min(560px, 100%); max-width:100%; }
+#self-wheel-canvas { display:block; cursor:pointer; width:auto; height:min(520px, 68vh); max-width:100%; }
 
 /* Floating tooltip */
 #wheel-tooltip {
@@ -594,17 +595,17 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 /* ── JOURNAL tab ── */
 .session-card {
-  background:var(--card); border:1px solid var(--border);
+  background:var(--card); border:1px solid var(--border-hi);
   border-radius:6px; margin-bottom:12px; overflow:hidden;
 }
 .session-header {
   display:flex; align-items:center; gap:12px;
   padding:14px 18px; cursor:pointer; transition:background 0.15s;
 }
-.session-header:hover { background:rgba(255,255,255,0.02); }
+.session-header:hover { background:rgba(255,255,255,0.04); }
 .session-date { font-family:var(--mono); font-size:12px; color:var(--text-mid); }
 .session-title { font-family:'Cinzel',serif; font-size:15px; color:var(--text-b); flex:1; letter-spacing:0.04em; }
-.session-body { display:none; padding:0 18px 18px; border-top:1px solid var(--border); }
+.session-body { display:none; padding:0 18px 18px; border-top:1px solid var(--border-hi); }
 .session-card.expanded .session-body { display:block; }
 .session-parts-tags {
   display:flex; gap:6px; flex-wrap:wrap; margin:10px 0;
@@ -613,11 +614,11 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.08em;
   text-transform:uppercase; padding:2px 8px; border-radius:3px;
   background:var(--surface); border:1px solid var(--border-hi);
-  color:var(--text-dim); cursor:pointer; transition:color 0.15s, border-color 0.15s;
+  color:var(--text-mid); cursor:pointer; transition:color 0.15s, border-color 0.15s;
 }
 .session-part-tag:hover { color:var(--gold); border-color:var(--gold); }
 .session-system-read {
-  background:var(--surface); border-left:3px solid var(--gold);
+  background:rgba(200,168,74,0.05); border-left:3px solid var(--gold);
   padding:12px 16px; margin-top:12px; font-size:15px;
   color:var(--text-b); line-height:1.6; border-radius:0 4px 4px 0;
 }
@@ -639,7 +640,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .session-date-edit:focus { border-bottom-color:var(--border-hi); }
 .session-content-edit {
-  font-size:15px; color:var(--text-mid); line-height:1.65;
+  font-size:15px; color:var(--text); line-height:1.65;
   margin:10px 0; white-space:pre-wrap; outline:none;
   border:1px solid transparent; border-radius:4px; padding:4px 6px;
   transition:border-color 0.15s; cursor:text; min-height:32px;
@@ -669,7 +670,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .memory-label-edit:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.01); }
 .memory-label-edit:empty::before { content:attr(data-placeholder); color:var(--text-dim); }
 .memory-notes-edit {
-  font-size:13px; color:var(--text-mid); line-height:1.5; margin-bottom:6px; outline:none;
+  font-size:13px; color:var(--text); line-height:1.5; margin-bottom:6px; outline:none;
   border:1px solid transparent; border-radius:4px; padding:2px 4px;
   transition:border-color 0.15s; cursor:text; min-height:20px;
 }
@@ -693,7 +694,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .session-read-text-edit:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
 .memory-card {
-  background:var(--card); border:1px solid var(--border);
+  background:var(--card); border:1px solid var(--border-hi);
   border-radius:6px; margin-bottom:10px; padding:14px 18px;
   display:flex; gap:14px; align-items:flex-start;
 }
@@ -704,13 +705,13 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .memory-approx { font-size:11px; color:var(--text-dim); opacity:0.7; font-style:italic; }
 .memory-body { flex:1; min-width:0; }
 .memory-label { font-size:15px; color:var(--text-b); line-height:1.4; margin-bottom:4px; }
-.memory-notes { font-size:13px; color:var(--text-mid); line-height:1.5; margin-bottom:6px; }
+.memory-notes { font-size:13px; color:var(--text); line-height:1.5; margin-bottom:6px; }
 .memory-parts { display:flex; gap:5px; flex-wrap:wrap; }
 .memory-part-tag {
   font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.08em;
   text-transform:uppercase; padding:2px 7px; border-radius:3px;
   background:var(--surface); border:1px solid var(--border-hi);
-  color:var(--text-dim);
+  color:var(--text-mid);
 }
 
 .journal-starters {
@@ -733,11 +734,11 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .starter-row:last-child { border-bottom:none; }
 .starter-copy-btn {
-  background:none; border:1px solid var(--border-hi); color:var(--text-dim);
+  background:none; border:1px solid var(--border-hi); color:var(--text-mid);
   font-family:var(--mono); font-size:11px; padding:3px 10px;
   border-radius:3px; cursor:pointer; flex-shrink:0; transition:all 0.15s;
 }
-.starter-copy-btn:hover { color:var(--text-mid); border-color:var(--text-mid); }
+.starter-copy-btn:hover { color:var(--text-b); border-color:var(--text-mid); }
 
 /* ── Modals ── */
 .modal-overlay {
@@ -1038,6 +1039,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
       <div id="self-detail-panel"></div>
     </div>
   </div>
+  <div id="self-moments-section" style="margin-top:36px;padding-top:28px;border-top:1px solid var(--border);margin-bottom:36px;"></div>
 </div>
 
 <!-- Floating tooltip, shared -->
@@ -1563,11 +1565,14 @@ function applyLockedFields(merged, snapshot) {
 }
 
 // ══ BALANCE HISTORY ════════════════════════════════════════════
+let _memBalHist = null; // in-memory history for demo mode (localStorage writes are skipped in IS_DEMO)
 function loadBalHist() {
+  if (IS_DEMO) return _memBalHist || [];
   try { return JSON.parse(localStorage.getItem(BAL_HIST_KEY) || '[]'); } catch(e) { return []; }
 }
 function saveBalHist(arr) {
-  if (!IS_DEMO) localStorage.setItem(BAL_HIST_KEY, JSON.stringify(arr));
+  if (IS_DEMO) { _memBalHist = arr; return; }
+  localStorage.setItem(BAL_HIST_KEY, JSON.stringify(arr));
 }
 
 // ══ EDITABLE HELPER ════════════════════════════════════════════
@@ -1984,9 +1989,23 @@ function drawMap(canvas, W, H) {
     const b = mapNodes.find(n => n.id === e.b);
     if (!a || !b) return;
     ctx.save();
+
+    // Offset start/end to node surfaces so lines don't originate from centers
+    const angle = Math.atan2(b.y - a.y, b.x - a.x);
+    const sx = a.x + Math.cos(angle) * a.r;
+    const sy = a.y + Math.sin(angle) * a.r;
+    const ex = b.x - Math.cos(angle) * b.r;
+    const ey = b.y - Math.sin(angle) * b.r;
+
+    // Quadratic bezier with a gentle perpendicular bow to separate crossing edges
+    const sign = (e.a < e.b) ? 1 : -1;
+    const curvature = 20;
+    const cpx = (sx + ex) / 2 - Math.sin(angle) * curvature * sign;
+    const cpy = (sy + ey) / 2 + Math.cos(angle) * curvature * sign;
+
     ctx.beginPath();
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
+    ctx.moveTo(sx, sy);
+    ctx.quadraticCurveTo(cpx, cpy, ex, ey);
     if (e.dynamic === 'polarized') {
       ctx.strokeStyle = 'rgba(192,64,64,0.65)'; ctx.lineWidth = 2;
     } else if (e.dynamic === 'allied') {
@@ -1999,14 +2018,15 @@ function drawMap(canvas, W, H) {
       ctx.strokeStyle = 'rgba(60,60,70,0.4)'; ctx.lineWidth = 1;
     }
     ctx.stroke();
-    // Arrow for protective
+
+    // Arrow for protective: direction follows curve tangent at endpoint
     if (e.dynamic === 'protective') {
-      const angle = Math.atan2(b.y - a.y, b.x - a.x);
-      const tip = { x: b.x - Math.cos(angle) * b.r, y: b.y - Math.sin(angle) * b.r };
+      const arrowAngle = Math.atan2(ey - cpy, ex - cpx);
+      ctx.setLineDash([]);
       ctx.beginPath();
-      ctx.moveTo(tip.x, tip.y);
-      ctx.lineTo(tip.x - 10 * Math.cos(angle - 0.4), tip.y - 10 * Math.sin(angle - 0.4));
-      ctx.lineTo(tip.x - 10 * Math.cos(angle + 0.4), tip.y - 10 * Math.sin(angle + 0.4));
+      ctx.moveTo(ex, ey);
+      ctx.lineTo(ex - 10 * Math.cos(arrowAngle - 0.4), ey - 10 * Math.sin(arrowAngle - 0.4));
+      ctx.lineTo(ex - 10 * Math.cos(arrowAngle + 0.4), ey - 10 * Math.sin(arrowAngle + 0.4));
       ctx.closePath();
       ctx.fillStyle = 'rgba(128,144,168,0.7)';
       ctx.fill();
@@ -3002,7 +3022,23 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
   });
 
   const n = snaps.length;
-  function snapX(i) { return PAD_L + (n <= 1 ? drawW/2 : (i/(n-1))*drawW); }
+  // All-time chart: date-proportional x axis extended to include memory dates.
+  // Recent chart: even index-based spacing so each session is equally visible.
+  const isAllTime = !canvasId || canvasId === 'balance-area-canvas';
+
+  const snapMs = snaps.map(sn => { const d = new Date(sn.date); return isNaN(d) ? 0 : d.getTime(); });
+  let dateMin = snapMs.length ? Math.min(...snapMs) : Date.now();
+  let dateMax = snapMs.length ? Math.max(...snapMs) : Date.now();
+  if (isAllTime) {
+    const memMs = (s.memories || []).filter(m => m.date).map(m => new Date(m.date).getTime()).filter(t => !isNaN(t));
+    if (memMs.length) dateMin = Math.min(dateMin, ...memMs);
+  }
+  const dateRange = Math.max(dateMax - dateMin, 1);
+
+  function snapX(i) {
+    if (isAllTime) return PAD_L + ((snapMs[i] - dateMin) / dateRange) * drawW;
+    return PAD_L + (n <= 1 ? drawW / 2 : (i / (n - 1)) * drawW);
+  }
   function propY(cum) { return PAD_T + drawH * (1 - cum); }
 
   // Draw stacked areas bottom-up (ids reversed so self is on top)
@@ -3040,24 +3076,47 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
     ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(PAD_L+drawW, y); ctx.stroke();
   });
 
-  // X axis date labels (up to 6 evenly spaced)
+  // X axis date labels
   ctx.fillStyle = '#504c44';
   ctx.textAlign = 'center';
-  const labelStep = Math.max(1, Math.floor(n/6));
-  snaps.forEach((snap, i) => {
-    if (i % labelStep !== 0 && i !== n-1) return;
-    ctx.fillText(snap.date, snapX(i), H - PAD_B + 16);
-  });
+  if (isAllTime) {
+    // Evenly-spaced calendar dates across the full time range
+    const nLabels = Math.min(6, Math.max(2, n));
+    for (let li = 0; li < nLabels; li++) {
+      const ms = dateMin + dateRange * li / Math.max(nLabels - 1, 1);
+      const label = new Date(ms).toISOString().slice(0, 10);
+      const x = PAD_L + (li / Math.max(nLabels - 1, 1)) * drawW;
+      ctx.fillText(label, x, H - PAD_B + 16);
+    }
+  } else {
+    const labelStep = Math.max(1, Math.floor(n / 6));
+    snaps.forEach((snap, i) => {
+      if (i % labelStep !== 0 && i !== n - 1) return;
+      ctx.fillText(snap.date, snapX(i), H - PAD_B + 16);
+    });
+  }
 
-  // Helper: find x position for a date string on the chart
+  // x position for a date string: proportional for all-time, interpolated between
+  // session positions for recent chart (so pins reflect actual dates, not nearest snapshot).
   function dateX(dateStr) {
     if (!dateStr) return -1;
-    let closest = -1, closestDist = Infinity;
-    snaps.forEach((snap, i) => {
-      const d = Math.abs(new Date(snap.date) - new Date(dateStr));
-      if (d < closestDist) { closestDist = d; closest = i; }
-    });
-    return closest >= 0 ? snapX(closest) : -1;
+    const ms = new Date(dateStr).getTime();
+    if (isNaN(ms)) return -1;
+    if (isAllTime) {
+      const t = Math.min(Math.max((ms - dateMin) / dateRange, 0), 1);
+      return PAD_L + t * drawW;
+    }
+    if (n === 0) return -1;
+    if (n === 1) return snapX(0);
+    if (ms <= snapMs[0]) return snapX(0);
+    if (ms >= snapMs[n - 1]) return snapX(n - 1);
+    for (let i = 0; i < n - 1; i++) {
+      if (ms >= snapMs[i] && ms <= snapMs[i + 1]) {
+        const t = (ms - snapMs[i]) / (snapMs[i + 1] - snapMs[i]);
+        return snapX(i) + t * (snapX(i + 1) - snapX(i));
+      }
+    }
+    return -1;
   }
 
   // Build pin lists
@@ -3088,11 +3147,12 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
   });
 
   // Click handler: sessions -> journal tab; memories -> scroll to memory card
+  canvas._chartW = W; // store current CSS width so the click handler always uses latest value
   if (!canvas._pinClickBound) {
     canvas._pinClickBound = true;
     canvas.addEventListener('click', e => {
       const rect = canvas.getBoundingClientRect();
-      const mx = (e.clientX - rect.left) * (W / rect.width);
+      const mx = (e.clientX - rect.left) * ((canvas._chartW || rect.width) / rect.width);
       const pins = canvas._eventPins || [];
       const hit = pins.find(p => Math.abs(p.x - mx) < 10);
       if (!hit) return;
@@ -3147,6 +3207,7 @@ function renderSelf(s) {
   _initWheelEvents();
   _drawWheel(s);
   _renderDetailPanel(s, _wheelSelectedC);
+  _renderAllMoments(s);
 }
 
 function _groupedMoments(s) {
@@ -3223,7 +3284,9 @@ function _drawWheel(s) {
   ctx.fillStyle = hubGlow ? '#e8dfc8' : 'rgba(232,223,200,0.38)';
   ctx.fillText('SELF', cx, cy);
 
-  // Spokes, labels (horizontal), dots
+  // First pass: spokes + dots (labels drawn after so they're always on top)
+  const dotR = 5;
+  const maxDotsPerSpoke = Math.floor((spokeR - dotR - 4 - dotRing0) / dotStep) + 1;
   for (let i = 0; i < N; i++) {
     const midAngle = (i / N) * Math.PI * 2 - Math.PI / 2 + Math.PI / N;
     const isSel    = _wheelSelectedC === i;
@@ -3238,7 +3301,31 @@ function _drawWheel(s) {
     ctx.lineWidth   = isSel ? 1.5 : 1;
     ctx.stroke();
 
-    // Horizontal label: centre of word anchored on spoke's outward ray
+    // Dots along spoke — capped to stay within outer ring, so labels are never obscured
+    moments.slice(0, maxDotsPerSpoke).forEach((m, di) => {
+      const dotDist = dotRing0 + di * dotStep;
+      const dx = cx + Math.cos(midAngle) * dotDist;
+      const dy = cy + Math.sin(midAngle) * dotDist;
+      const grd = ctx.createRadialGradient(dx, dy, 0, dx, dy, dotR * 3.2);
+      grd.addColorStop(0, 'rgba(232,223,200,0.5)');
+      grd.addColorStop(1, 'rgba(232,223,200,0)');
+      ctx.beginPath();
+      ctx.arc(dx, dy, dotR * 3.2, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(dx, dy, dotR, 0, Math.PI * 2);
+      ctx.fillStyle = isSel ? '#e8dfc8' : 'rgba(232,223,200,0.62)';
+      ctx.fill();
+      _wheelHitDots.push({ cx: dx, cy: dy, radius: dotR + 7, moment: m, cIdx: i });
+    });
+  }
+
+  // Second pass: labels on top of everything so glows cannot obscure them
+  for (let i = 0; i < N; i++) {
+    const midAngle = (i / N) * Math.PI * 2 - Math.PI / 2 + Math.PI / N;
+    const isSel    = _wheelSelectedC === i;
+    const c        = EIGHT_CS[i];
     const lx = cx + Math.cos(midAngle) * labelR;
     const ly = cy + Math.sin(midAngle) * labelR;
     ctx.font      = isSel ? '600 13px "Cinzel", serif' : '400 12px "Cinzel", serif';
@@ -3246,26 +3333,6 @@ function _drawWheel(s) {
     ctx.textAlign    = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(c.name.toUpperCase(), lx, ly);
-
-    // Dots along spoke
-    moments.forEach((m, di) => {
-      const dotDist = dotRing0 + di * dotStep;
-      const dx = cx + Math.cos(midAngle) * dotDist;
-      const dy = cy + Math.sin(midAngle) * dotDist;
-      const r  = 5;
-      const grd = ctx.createRadialGradient(dx, dy, 0, dx, dy, r * 3.2);
-      grd.addColorStop(0, 'rgba(232,223,200,0.5)');
-      grd.addColorStop(1, 'rgba(232,223,200,0)');
-      ctx.beginPath();
-      ctx.arc(dx, dy, r * 3.2, 0, Math.PI * 2);
-      ctx.fillStyle = grd;
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(dx, dy, r, 0, Math.PI * 2);
-      ctx.fillStyle = isSel ? '#e8dfc8' : 'rgba(232,223,200,0.62)';
-      ctx.fill();
-      _wheelHitDots.push({ cx: dx, cy: dy, radius: r + 7, moment: m, cIdx: i });
-    });
   }
 }
 
@@ -3506,6 +3573,90 @@ function addSelfMoment(cIdx) {
   updateNavCounts(appState);
 }
 
+function _renderAllMoments(s) {
+  const section = document.getElementById('self-moments-section');
+  if (!section) return;
+
+  const allMoments = (s.selfMoments || []).slice().sort((a, b) => {
+    if (a.date && b.date) return b.date.localeCompare(a.date);
+    if (a.date) return 1;
+    if (b.date) return -1;
+    return 0;
+  });
+
+  section.innerHTML = `
+    <div style="margin-bottom:14px;display:flex;align-items:center;gap:12px;">
+      <div class="section-heading" style="margin-bottom:0;">All moments</div>
+      <span style="font-size:13px;color:var(--text-dim);flex:1;">${allMoments.length} across all 8 Cs</span>
+      <button class="btn-primary" onclick="addSelfMoment()">+ Add moment</button>
+    </div>`;
+
+  if (allMoments.length === 0) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'color:var(--text-dim);font-size:14px;';
+    empty.textContent = 'No moments logged yet. Your AI will capture these from sessions.';
+    section.appendChild(empty);
+    return;
+  }
+
+  allMoments.forEach(m => {
+    const idx = (s.selfMoments || []).indexOf(m);
+    const entry = document.createElement('div');
+    entry.className = 'moment-entry';
+    entry.style.alignItems = 'flex-start';
+
+    const dateEl = document.createElement('div');
+    dateEl.className = 'moment-date';
+    dateEl.textContent = m.date || '';
+
+    const qualEl = document.createElement('div');
+    qualEl.className = 'moment-quality-tag';
+    qualEl.textContent = m.quality || '';
+
+    const descEl = document.createElement('div');
+    descEl.className = 'moment-desc';
+    descEl.contentEditable = 'true';
+    descEl.spellcheck = false;
+    if (!m.description) {
+      descEl.textContent = 'Describe the moment...';
+      descEl.style.color = 'var(--text-dim)';
+      descEl.dataset.ph = '1';
+    } else {
+      descEl.textContent = m.description;
+    }
+    descEl.addEventListener('focus', () => {
+      if (descEl.dataset.ph === '1') { descEl.textContent = ''; descEl.style.color = ''; delete descEl.dataset.ph; }
+    });
+    descEl.addEventListener('blur', () => {
+      const val = descEl.textContent.trim();
+      if (!val) { descEl.textContent = 'Describe the moment...'; descEl.style.color = 'var(--text-dim)'; descEl.dataset.ph = '1'; }
+      if (!isNaN(idx) && appState.selfMoments?.[idx]) {
+        appState.selfMoments[idx].description = val === 'Describe the moment...' ? '' : val;
+        saveState(appState);
+      }
+    });
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn-danger';
+    delBtn.textContent = 'Delete';
+    delBtn.style.cssText = 'font-size:11px;padding:2px 8px;flex-shrink:0;';
+    delBtn.addEventListener('click', () => {
+      confirmDelete('Delete this moment?', () => {
+        appState.selfMoments.splice(idx, 1);
+        saveState(appState);
+        renderSelf(appState);
+        updateNavCounts(appState);
+      });
+    });
+
+    entry.appendChild(dateEl);
+    entry.appendChild(qualEl);
+    entry.appendChild(descEl);
+    entry.appendChild(delBtn);
+    section.appendChild(entry);
+  });
+}
+
 // ══ TAB: JOURNAL ════════════════════════════════════════════
 function renderJournal(s) {
   // Key questions, experiments, active tensions
@@ -3585,7 +3736,7 @@ function buildSessionCard(session, s) {
 
   // Parts tagged — toggleable picker
   const tagsLabel = document.createElement('div');
-  tagsLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-top:12px;margin-bottom:4px;';
+  tagsLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid);margin-top:12px;margin-bottom:4px;';
   tagsLabel.textContent = 'Parts tagged';
   body.appendChild(tagsLabel);
 
@@ -3614,7 +3765,7 @@ function buildSessionCard(session, s) {
 
   // Editable content
   const contentLabel = document.createElement('div');
-  contentLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-top:12px;margin-bottom:4px;';
+  contentLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid);margin-top:12px;margin-bottom:4px;';
   contentLabel.textContent = 'Notes';
   body.appendChild(contentLabel);
 
@@ -4485,6 +4636,14 @@ function _doInit() {
     .then(r => r.json())
     .then(data => {
       appState = data;
+      // Build balance history from embedded history or current weights
+      if (data._balanceHistory && Array.isArray(data._balanceHistory)) {
+        saveBalHist(data._balanceHistory);
+        delete appState._balanceHistory;
+      } else if (data.parts && data.parts.some(p => p.balanceWeight)) {
+        saveBalHist([]);
+        snapshotBalance(data);
+      }
       if (!IS_DEMO) {
         // Don't save demo data into localStorage; show welcome
         const welcomed = localStorage.getItem(WELCOMED_KEY);

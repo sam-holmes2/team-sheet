@@ -6,7 +6,7 @@
 
 Most self-help tools treat the mind as a single agent to be optimised. team-sheet treats it as a system of parts, each trying to help, each with its own history, fears, and gifts.
 
-team-sheet is a personal [IFS (Internal Family Systems)](https://ifs-institute.com/) mapping app. Journal with your AI, paste back the JSON, and watch your inner map take shape and grow more detailed over time. No AI? Edit fields directly — it works fully standalone too.
+team-sheet is a personal [IFS (Internal Family Systems)](https://ifs-institute.com/) mapping app. Journal with your AI, paste back the JSON, and watch your inner map take shape and grow more detailed over time. No AI? Edit fields directly. It works fully standalone too.
 
 No prior IFS experience needed. The app will introduce the concepts naturally through journalling.
 
@@ -16,7 +16,7 @@ No prior IFS experience needed. The app will introduce the concepts naturally th
 
 ---
 
-🔒 **Private by default.** A single `.html` file and some JSON — no server, no accounts, no telemetry. Your data stays on your machine. If you use an AI to journal, check your provider's privacy settings. Local models like [Ollama](https://ollama.com) work for fully offline journalling.
+🔒 **Private by default.** A single `.html` file and some JSON. No server, no accounts, no telemetry. Your data stays on your machine. If you use an AI to journal, check your provider's privacy settings. Local models like [Ollama](https://ollama.com) work for fully offline journalling.
 
 ---
 
@@ -39,7 +39,7 @@ No prior IFS experience needed. The app will introduce the concepts naturally th
 ```
 I'm setting up team-sheet, a personal IFS mapping app. I've attached instructions.md which explains the data format and how to work with me.
 
-Start by asking me what's been on my mind lately — what I've been noticing internally, any recurring patterns, tensions, or inner conflicts. Keep it conversational, ask one thing at a time, and follow the thread. Don't introduce IFS language until it becomes useful.
+Start by asking me what's been on my mind lately, what I've been noticing internally, any recurring patterns, tensions, or inner conflicts. Keep it conversational, ask one thing at a time, and follow the thread. Don't introduce IFS language until it becomes useful.
 
 Once you have a reasonable picture, generate my initial data.json using the format in instructions.md. We can fill in the gaps over time.
 ```
@@ -74,12 +74,12 @@ Name any mode at the start of a session to direct the conversation.
 
 When focusing on a specific part, the AI will use the 6 Fs as a loose guide. You do not need to know these in advance; the AI will lead the conversation naturally. They describe a direction of inquiry, not a rigid script.
 
-1. **Find** — locate the part; where do you feel it in your body?
-2. **Focus** — turn attention toward it without trying to change it
-3. **Flesh out** — get to know its shape, age, and what it's doing
-4. **Feel toward** — what arises in you when you look at it?
-5. **Befriend** — what does the part want you to know? What has it been trying to do?
-6. **Fear** — what is it afraid would happen if it stopped doing its job?
+1. **Find:** locate the part; where do you feel it in your body?
+2. **Focus:** turn attention toward it without trying to change it
+3. **Flesh out:** get to know its shape, age, and what it's doing
+4. **Feel toward:** what arises in you when you look at it?
+5. **Befriend:** what does the part want you to know? What has it been trying to do?
+6. **Fear:** what is it afraid would happen if it stopped doing its job?
 
 ---
 
@@ -121,8 +121,8 @@ IFS is widely practised by trained therapists and is one of the few approaches r
 
 **team-sheet is a reflective tool, not a replacement for therapy.** Use it alongside professional support, or as a way of mapping your inner world and preparing for sessions. If you are looking for a qualified IFS therapist:
 
-- [IFS Institute Practitioner Directory](https://ifs-institute.com/practitioners) — the official directory maintained by Richard Schwartz's own organisation
-- [IFS Training UK Therapist Directory](https://directory-uk.internalfamilysystemstraining.co.uk/) — for UK-based practitioners
+- [IFS Institute Practitioner Directory](https://ifs-institute.com/practitioners): the official directory maintained by Richard Schwartz's own organisation
+- [IFS Training UK Therapist Directory](https://directory-uk.internalfamilysystemstraining.co.uk/): for UK-based practitioners
 
 Outside the US and UK, search for "IFS therapist" with your country or city, or filter by "Internal Family Systems" on your national therapist directory, to find trained practitioners.
 
@@ -148,25 +148,25 @@ If you want to go deeper before or alongside using the app, here are good starti
 
 **To listen first:**
 
-- **Podcast:** "How (and Why) to Hug Your Inner Dragons" — an interview with Richard Schwartz, the founder of IFS. A good first listen if you prefer audio.
-- **Podcast:** The Tim Ferriss Show #492 — "Richard Schwartz: IFS, Psychedelic Experiences Without Drugs, and Finding Inner Peace for Our Many Parts". Wide-ranging and accessible.
+- **Podcast:** "How (and Why) to Hug Your Inner Dragons" (an interview with Richard Schwartz, the founder of IFS). A good first listen if you prefer audio.
+- **Podcast:** The Tim Ferriss Show #492, "Richard Schwartz: IFS, Psychedelic Experiences Without Drugs, and Finding Inner Peace for Our Many Parts". Wide-ranging and accessible.
 
 **To read first:**
 
-- **Book:** *Introduction to the Internal Family Systems Model* by Richard Schwartz. A friendly 140-page overview with examples — the shortest path to understanding the whole model.
+- **Book:** *Introduction to the Internal Family Systems Model* by Richard Schwartz. A friendly 140-page overview with examples, and the shortest path to understanding the whole model.
 - **Book:** *Self-Therapy* by Jay Earley. A comprehensive step-by-step guide aimed at people doing IFS on themselves or with a friend.
-- **Article:** "Introduction to Internal Family Systems Therapy" by Jay Earley — a free shorter overview of the same ground.
+- **Article:** "Introduction to Internal Family Systems Therapy" by Jay Earley, a free shorter overview of the same ground.
 
 **To go further:**
 
 - **Book:** *No Bad Parts* by Richard Schwartz. His newest book, applying IFS not just to personal healing but to relationships and broader societal change.
 - **Book:** *You Are the One You've Been Waiting For* by Richard Schwartz. Applies IFS to romantic relationships: how two people's exiles and protectors trigger each other.
-- **Book:** *Somatic Internal Family Systems Therapy* by Susan McConnell. Unifies IFS with somatic experiencing — useful if body-based work resonates with you.
+- **Book:** *Somatic Internal Family Systems Therapy* by Susan McConnell. Unifies IFS with somatic experiencing; useful if body-based work resonates with you.
 - **Book:** *Self-Therapy, Vol. 2* by Jay Earley. Advanced techniques: switching focus between parts, working with polarized parts, and more.
 
 **Online:**
 
-- [The IFS Institute](https://ifs-institute.com/) — free articles, videos, and the official practitioner directory. Richard Schwartz's own organisation.
+- [The IFS Institute](https://ifs-institute.com/): free articles, videos, and the official practitioner directory. Richard Schwartz's own organisation.
 
 ---
 
@@ -196,7 +196,7 @@ team-sheet is not a replacement for professional mental health support. IFS has 
 
 ## Customising
 
-team-sheet is free and open source. The app and instructions are both designed to be modified — IFS is a rich model and no two people's inner worlds look the same. There is no one-size-fits-all approach to how you name parts, what you track, or how you want your AI to guide sessions.
+team-sheet is free and open source. The app and instructions are both designed to be modified. IFS is a rich model and no two people's inner worlds look the same. There is no one-size-fits-all approach to how you name parts, what you track, or how you want your AI to guide sessions.
 
 - **Edit `instructions.md`** to change how your AI communicates, which part properties it focuses on, how it phrases questions, how it leads the 6 Fs sequence, or what session modes are available. All changes stay in your own copy of the file.
 - **Edit `team-sheet.html`** directly to rename fields, add new part properties, adjust the visual map, or remove sections that don't suit your approach. It's a single file with no build step.

@@ -110,7 +110,7 @@ Google's policy explicitly states that trained reviewers may read Gemini convers
 18 months by default. Adjustable to 3 months, or you can disable history entirely.
 
 **Personal Intelligence (2026):**
-In early 2026, Google introduced "Personal Intelligence" — Gemini's cross-app access to your Gmail, Drive, Maps, and other Google services, enabled by default for US users. This substantially expands what Gemini can access and process. It is managed separately from Gemini Apps Activity.
+In early 2026, Google introduced "Personal Intelligence": Gemini's cross-app access to your Gmail, Drive, Maps, and other Google services, enabled by default for US users. This substantially expands what Gemini can access and process. It is managed separately from Gemini Apps Activity.
 
 **Plan name:**
 Google AI Pro (formerly Gemini Advanced) is the paid consumer tier, ~$19.99/month.
@@ -184,7 +184,7 @@ The download happens once. After that, the model runs fully offline.
 ```
 ollama run llama3.1
 ```
-For a browser-based chat interface similar to commercial AI products, [Open WebUI](https://github.com/open-webui/open-webui) can be run locally via Docker, all data stays on your machine.
+For a browser-based chat interface similar to commercial AI products, [Open WebUI](https://github.com/open-webui/open-webui) can be run locally via Docker. All data stays on your machine.
 
 **4. Using with this app**
 Local models do not maintain persistent project context between sessions. At the start of each session, paste `instructions.md` and your current `data.json`. At the end, copy the updated JSON block and import it into the app. The workflow is more manual but the output format is identical.
