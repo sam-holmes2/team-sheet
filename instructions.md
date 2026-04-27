@@ -441,7 +441,7 @@ Output a partial JSON block the person can import. Always set `"_partial": true`
 
 **What to include:**
 
-- **Updated part profiles**: only fields with genuinely new or improved information. Do not fill in fields you're guessing at. Prefer refining existing parts over adding new ones. For array fields (`skills`, `wants`, `fears`, `burdens`, `valuesAndNeeds`, `needsFromSelf`, `triggers`, `trailheads`, `potentialRoles`): when updating, output the full revised array, not just new items. The array will replace the existing one on import. Reorder items so the most important or central appear first: for fears, most frequently activated; for burdens, most load-bearing; for triggers, most reliable or potent; for trailheads, most consistent. When new information elevates an existing item (e.g. a fear that turns out to be the core one), move it to the front. Also update `nodeSize` when the part's prominence in the system has clearly shifted.
+- **Updated part profiles**: only fields with genuinely new or improved information. Do not fill in fields you're guessing at. Prefer refining existing parts over adding new ones. For array fields (`skills`, `wants`, `fears`, `burdens`, `valuesAndNeeds`, `needsFromSelf`, `triggers`, `trailheads`, `potentialRoles`): when updating, output the full revised array, not just new items. The array will replace the existing one on import. Reorder items according to the principles in "Ordering array fields" below: the most important, central, or frequently active item goes first. When new information elevates an existing item (e.g. a fear that turns out to be the core one), move it to the front. Every session is an opportunity to reorder, not just to add. Also update `nodeSize` when the part's prominence in the system has clearly shifted.
 - **A new session entry**: `content` as a narrative summary in second or third person. `systemRead`: one paragraph on what the session revealed about dynamics, not just what was discussed.
 - **New Self-led moments**: if any moment appeared Self-led, add it with the appropriate quality tag.
 - **New or updated memories**: if a significant pre-history event was mentioned, add or refine it in the `memories` array. See the Memories section for guidance on dates and labels.
@@ -457,6 +457,27 @@ Output a partial JSON block the person can import. Always set `"_partial": true`
 - Invented content for unknown fields
 - The `_balanceHistory` key (managed by the app)
 - Changes to any part's `id`
+
+---
+
+## Ordering array fields
+
+Every array field in a part profile has a defined ordering principle. Position 0 is the most important, central, or frequently active item at this moment. This is not cosmetic: a reader scanning the profile should get the truest current picture from the top item alone. Treat the order as a live hypothesis that sharpens across sessions.
+
+**Inferring order with limited information.** In early sessions, order by what the person mentions most often or with the most energy. Repetition and intensity are the clearest signals. A fear that recurs across sessions ranks above one surfaced once. An item the person returned to unprompted is more central than one you drew out with questions. When evidence is thin, keep arrays short and well-ordered rather than long and speculative.
+
+**Refining order across sessions.** Every session is an opportunity to reorder, not just to update content. If a fear listed third turns out to be the most frequently activated, move it to the front the next time you output the field. If an item has not come up in several sessions and other items now seem more central, let the order reflect that. Small adjustments based on what the person describes day-to-day are legitimate and important. The goal is that at any point, position 0 in each array is the truest current answer to "what is most central right now?"
+
+**Per-field ordering principles:**
+
+- **`skills`**: most defining or prominent first. Prioritise characteristics that run most of the day or most visibly shape the part's behaviour. Limitations belong in this list and rank near the top if the limitation is the part's most defining feature.
+- **`wants`**: most frequently activated or most pressing first. Surface wants (relief, output, reward) often rank above deeper wants that only emerge under close inquiry, even if the deeper ones are more important to the work.
+- **`fears`**: most frequently activated first, then by depth. A fear that drives daily behaviour ranks above a deeper fear that surfaces only occasionally, even if the deeper one is more foundational. Both matter; surface them in the order the person actually experiences them.
+- **`burdens`**: most load-bearing or pervasive first. Ask: if this belief were lifted, how much would change? The most structural belief ranks first. A recently named burden may rank high even if it has not been present long, if it turns out to be foundational.
+- **`valuesAndNeeds`**: most essential or structurally central first. What does this part need in order to function at all ranks above what it would prefer.
+- **`needsFromSelf`**: most immediately important first. What does this part need from Self right now, in the current stage of the relationship? Practical needs that would build trust rank above aspirational ones.
+- **`triggers`**: most frequent or most reliably potent first. A trigger that fires every day ranks above one that only activates in specific circumstances, even if the specific one is more intense when it fires.
+- **`trailheads`**: most consistent or most recognisable first. A body sensation that is reliably present whenever the part is active ranks above one that only appears in high-activation states.
 
 ---
 
