@@ -1,10 +1,11 @@
 # AI Privacy Guide
 
-This guide covers how the major AI providers handle your data: conversations, uploaded files, and exported JSON. It focuses on privacy and sensitive data protection for personal use.
+This guide covers how the major AI providers handle your data: conversations, uploaded files, and exported JSON depending on the specific provider and plan you use. It focuses on privacy and sensitive data protection for personal use. This info is non-prescriptive. The goal is to give you the information you need to make your own informed decisions.
 
-The guide is factual and non-prescriptive. The goal is to give you the information you need to make your own informed choice.
+**Note on accuracy:** Privacy policies change. This guide reflects publicly documented policies as of early 2026. Verify current terms at each provider before making privacy-sensitive decisions that depend on them.
 
-**Note on accuracy:** Privacy policies change. This guide reflects publicly documented policies as of early 2026. Verify current terms at each provider before making decisions that depend on them.
+Provider privacy policies: [Anthropic](https://www.anthropic.com/privacy) | [OpenAI](https://openai.com/policies/privacy-policy) | [Google](https://policies.google.com/privacy) | [Mistral](https://mistral.ai/privacy-policy/) | [Ollama](https://ollama.com/privacy)
+
 
 ---
 
@@ -19,6 +20,22 @@ The guide is factual and non-prescriptive. The goal is to give you the informati
 **Zero Data Retention (ZDR):** a developer-tier option where inputs and outputs are not stored after processing. Only available via API, not consumer plans.
 
 **Memory:** a cross-conversation feature (now offered by most providers) that stores facts about you across sessions. This is a separate storage layer from conversation history, with its own settings and retention.
+
+---
+
+## Considerations worth knowing
+
+**Your data.json is your most sensitive file.** It contains your full personal history accumulated across all previous sessions. Apply the same care to choosing where you send it as you would to the conversations themselves.
+
+**Training and retention are separate policies.** Opting out of model training does not reduce how long your data is stored. A provider can commit to never training on your data while still retaining conversation logs for 30-90 days. ZDR (only available at API tier) is the only non-local option that addresses both.
+
+**Memory features are a separate data layer.** All major providers now offer cross-conversation memory. These features create persistent storage distinct from conversation history, with their own retention timelines and potentially different training policies. Check and manage them separately from your main privacy settings.
+
+**Project knowledge vs. conversation history.** Files you upload to AI projects (such as `instructions.md` and `data.json`) are stored separately from conversation messages and may have different retention policies. Review current terms for this storage type specifically.
+
+**Browser extensions.** Extensions installed in your AI session browser can read everything you type and receive on that domain. A dedicated browser profile for AI sessions reduces this exposure.
+
+**Network context.** On networks managed by an employer, school, or institution, TLS inspection may allow the network operator to log HTTPS traffic including AI conversations, regardless of the provider's own privacy policy.
 
 ---
 
@@ -43,7 +60,7 @@ Ordered from most to least data control. Rows within each tier are not meaningfu
 | **Free** | Google Gemini Free | On by default | Yes | Yes (explicitly stated) | 18 months default | Free |
 | **Free** | Mistral Le Chat Free | On by default | Yes (less accessible than Pro) | Possible | Until deleted | Free |
 
-Enterprise and API-only options (AWS Bedrock, Google Vertex AI, Azure OpenAI, Claude for Work, ChatGPT Enterprise) offer stronger controls including configurable retention and no training. These are outside the scope of this guide but may be relevant for professional or organisational contexts.
+Enterprise and API-only options (AWS Bedrock, Google Vertex AI, Azure OpenAI, Claude for Work, ChatGPT Enterprise) offer stronger controls including configurable retention and no training.
 
 ---
 
@@ -113,7 +130,7 @@ Mistral is a French company. Data is stored in the EU under GDPR. EU residents h
 
 ---
 
-### Local models (Ollama, LM Studio)
+## Local models (Ollama, LM Studio)
 
 No conversation data leaves your device. Model weights are downloaded once from provider servers; the provider can see which models you downloaded but not conversation content. All inference runs offline after download.
 
@@ -121,11 +138,9 @@ No conversation data leaves your device. Model weights are downloaded once from 
 
 ---
 
-## Setting up Ollama
-
+### Hardware requirements
 Ollama runs AI models on your own computer, fully offline after a one-time model download.
 
-### Hardware requirements
 
 Models run at 4-bit quantization by default in Ollama, so memory requirements are roughly 4-5 GB per 7 billion parameters.
 
@@ -151,8 +166,6 @@ Models run at 4-bit quantization by default in Ollama, so memory requirements ar
 | Phi-4 | 14B | 16 GB | Efficient for its size |
 | Llama 3.3 70B | 70B | 48 GB | Closest to frontier quality |
 
-The gap between a 7B local model and a frontier model is meaningful for deep reflective work. Local models are less nuanced and less consistent at complex instructions. The gap narrows significantly at 70B.
-
 ### Installation
 
 **1. Install Ollama**
@@ -171,29 +184,7 @@ The download happens once. After that, the model runs fully offline.
 ```
 ollama run llama3.1
 ```
-For a browser-based chat interface similar to commercial AI products, [Open WebUI](https://github.com/open-webui/open-webui) can be run locally via Docker — all data stays on your machine.
+For a browser-based chat interface similar to commercial AI products, [Open WebUI](https://github.com/open-webui/open-webui) can be run locally via Docker, all data stays on your machine.
 
 **4. Using with this app**
 Local models do not maintain persistent project context between sessions. At the start of each session, paste `instructions.md` and your current `data.json`. At the end, copy the updated JSON block and import it into the app. The workflow is more manual but the output format is identical.
-
----
-
-## Considerations worth knowing
-
-**Training and retention are separate policies.** Opting out of model training does not reduce how long your data is stored. A provider can commit to never training on your data while still retaining conversation logs for 30-90 days. ZDR (only available at API tier) is the only option that addresses both.
-
-**Memory features are a separate data layer.** All major providers now offer cross-conversation memory. These features create persistent storage distinct from conversation history, with their own retention timelines and potentially different training policies. Check and manage them separately from your main privacy settings.
-
-**Your data.json is your most sensitive file.** It contains your full personal history accumulated across all previous sessions. Apply the same care to choosing where you send it as you would to the conversations themselves.
-
-**Project knowledge vs. conversation history.** Files you upload to AI projects (such as `instructions.md` and `data.json`) are stored separately from conversation messages and may have different retention policies. Review current terms for this storage type specifically.
-
-**Browser extensions.** Extensions installed in your AI session browser can read everything you type and receive on that domain. A dedicated browser profile for AI sessions reduces this exposure.
-
-**Network context.** On networks managed by an employer, school, or institution, SSL inspection may allow the network operator to log HTTPS traffic including AI conversations, regardless of the provider's own privacy policy.
-
----
-
-*Verify current policies at each provider before making privacy-sensitive decisions.*
-
-Provider privacy policies: [Anthropic](https://www.anthropic.com/privacy) | [OpenAI](https://openai.com/policies/privacy-policy) | [Google](https://policies.google.com/privacy) | [Mistral](https://mistral.ai/privacy-policy/) | [Ollama](https://ollama.com/privacy)
