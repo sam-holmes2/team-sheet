@@ -12,6 +12,10 @@ No prior IFS experience needed. The app will introduce the concepts naturally th
 
 ---
 
+🗺️ **[Try the live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html)** (no download needed)
+
+---
+
 🔒 **Private by default.** A single `.html` file and some JSON — no server, no accounts, no telemetry. Your data stays on your machine. If you use an AI to journal, check your provider's privacy settings. Local models like [Ollama](https://ollama.com) work for fully offline journalling.
 
 ---
