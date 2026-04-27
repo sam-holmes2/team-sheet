@@ -1,12 +1,11 @@
 {
   "system": {
     "name": "Alex's Inner System",
-    "systemSummary": "A system shaped by growing up in an environment where love felt conditional on achievement and emotional needs went largely unmet. The Achiever and The Inner Critic form the dominant operating partnership, running daily life through a cycle of high output and harsh self-evaluation. The Soother has long served as the pressure valve when that loop overheats, stepping in with scrolling, snacks, and Netflix binges. The Pleaser operates quietly in the background, smoothing over conflict before it surfaces. Underneath them all is The Younger One: an exiled part carrying deep loneliness and the belief that she is fundamentally not enough as she is. The Witness is a newer, quieter presence gaining ground. Self exists and is making real but fragile contact with the system.",
-    "recentShifts": "The Critic softened noticeably when asked about its origins, and for the first time acknowledged the primary school teacher connection. The Achiever and Critic are beginning to be seen as distinct rather than a single voice. The Younger One made brief contact with Self without the system immediately shutting it down. The Pleaser surfaced as a named part for the first time. The Witness is having more space and Alex is meeting it with appreciation rather than suspicion.",
+    "systemSummary": "A system shaped by growing up in an environment where love felt conditional on achievement and emotional needs went largely unmet. The Achiever and The Inner Critic form the dominant operating partnership, running daily life through a cycle of high output and harsh self-evaluation. The Soother has long served as the pressure valve when that loop overheats, stepping in with scrolling, snacks, and Netflix binges. The Pleaser operates quietly in the background, smoothing over conflict before it surfaces. Underneath them all is The Younger One: an exiled part carrying deep loneliness and the belief that she is fundamentally not enough as she is. Self exists and is making real but fragile contact with the system.",
+    "recentShifts": "The Critic softened noticeably when asked about its origins, and for the first time acknowledged the primary school teacher connection. The Achiever and Critic are beginning to be seen as distinct rather than a single voice. The Younger One made brief contact with Self without the system immediately shutting it down. The Pleaser surfaced as a named part for the first time.",
     "topTensions": [
       "The Achiever and The Soother are locked in a push-pull that neither can break: The Achiever refuses to rest until it crashes, then The Soother overshoots, and The Critic narrates the failure of both. The cycle has been running for years.",
-      "The Critic attacks The Pleaser for being spineless, while The Pleaser tries to smooth over exactly the conflict The Critic creates. They are working against each other while protecting the same wound.",
-      "The Witness keeps seeing what is happening clearly, but The Achiever's urgency crowds it out before the insight can land."
+      "The Critic attacks The Pleaser for being spineless, while The Pleaser tries to smooth over exactly the conflict The Critic creates. They are working against each other while protecting the same wound."
     ],
     "topQuestions": [
       "What is The Critic actually protecting underneath the harshness? It has named the fear of mediocrity, but what is underneath that? What would it lose if it softened for good?",
@@ -119,14 +118,6 @@
           "otherToThisPart": "The Pleaser admires The Achiever's output and uses it as social currency.",
           "dynamic": "allied",
           "notes": "Cooperate in the world but from different fears."
-        },
-        {
-          "partId": "part-witness",
-          "partName": "The Witness",
-          "thisPartToOther": "Finds The Witness slightly irritating. It slows things down and names things The Achiever would rather not look at.",
-          "otherToThisPart": "The Witness observes The Achiever with curiosity but rarely gets heard in real time.",
-          "dynamic": "distant",
-          "notes": ""
         }
       ],
       "emergedAge": 8,
@@ -145,7 +136,7 @@
           "notes": "The Achiever's fear of being ordinary first had a name here."
         }
       ],
-      "balanceWeight": 0.28,
+      "balanceWeight": 0.30,
       "nodeSize": "large",
       "lastUpdated": "2026-04-17"
     },
@@ -245,14 +236,6 @@
           "otherToThisPart": "The Pleaser absorbs the criticism and tries harder to smooth things over.",
           "dynamic": "polarized",
           "notes": "The Critic's contempt for The Pleaser may be partly self-directed."
-        },
-        {
-          "partId": "part-witness",
-          "partName": "The Witness",
-          "thisPartToOther": "Wary of The Witness. Being seen clearly is not comfortable for The Critic.",
-          "otherToThisPart": "The Witness holds The Critic with some compassion, recognising the fear underneath the harshness.",
-          "dynamic": "distant",
-          "notes": "The Witness's growing presence is the most likely path toward softening The Critic over time."
         }
       ],
       "emergedAge": 10,
@@ -265,7 +248,7 @@
           "notes": "First time public exposure of inadequacy felt catastrophic. The Critic formed to prevent this from happening again."
         }
       ],
-      "balanceWeight": 0.22,
+      "balanceWeight": 0.24,
       "nodeSize": "large",
       "lastUpdated": "2026-04-17"
     },
@@ -361,14 +344,6 @@
           "otherToThisPart": "The Pleaser is one of the parts most directly trying to protect The Younger One from further rejection.",
           "dynamic": "protective",
           "notes": "The Pleaser's strategy emerged directly from The Younger One's fear of abandonment."
-        },
-        {
-          "partId": "part-witness",
-          "partName": "The Witness",
-          "thisPartToOther": "Does not fully trust The Witness yet. Being seen still feels risky.",
-          "otherToThisPart": "The Witness is the part most likely to notice when The Younger One is present and hold that with gentleness.",
-          "dynamic": "distant",
-          "notes": ""
         }
       ],
       "emergedAge": 5,
@@ -381,7 +356,7 @@
           "notes": "The first clear image The Younger One offered. The waiting is the wound."
         }
       ],
-      "balanceWeight": 0.05,
+      "balanceWeight": 0.06,
       "nodeSize": "small",
       "lastUpdated": "2026-04-17"
     },
@@ -489,7 +464,7 @@
           "notes": "The Soother's capacity to completely override The Achiever became visible here."
         }
       ],
-      "balanceWeight": 0.14,
+      "balanceWeight": 0.15,
       "nodeSize": "medium",
       "lastUpdated": "2026-04-14"
     },
@@ -579,14 +554,6 @@
           "otherToThisPart": "The Younger One recognises The Pleaser's strategy even if she wishes for something more real.",
           "dynamic": "protective",
           "notes": "The Pleaser's strategy emerged directly from The Younger One's fear of abandonment. It is a protector for the exile."
-        },
-        {
-          "partId": "part-witness",
-          "partName": "The Witness",
-          "thisPartToOther": "Not sure what to do with The Witness. Being observed without judgment is unfamiliar.",
-          "otherToThisPart": "The Witness can see The Pleaser performing without judging it. This is new territory.",
-          "dynamic": "distant",
-          "notes": ""
         }
       ],
       "emergedAge": 7,
@@ -599,126 +566,22 @@
           "notes": "First clear memory of choosing someone else's emotional state over a genuine want. Felt right at the time."
         }
       ],
-      "balanceWeight": 0.16,
-      "nodeSize": "medium",
-      "lastUpdated": "2026-04-17"
-    },
-    {
-      "id": "part-witness",
-      "name": "The Witness",
-      "role": "manager",
-      "overview": "A quieter observing presence gaining strength, notices patterns without immediately reacting",
-      "skills": [
-        "Holding perspective when other parts are activated",
-        "Pattern recognition across sessions and across time",
-        "Naming what is happening without adding a verdict",
-        "Creating a pause between stimulus and response"
-      ],
-      "wants": [
-        "To be heard when it speaks up",
-        "Genuine stillness, not just the absence of noise",
-        "Room to see things clearly before the system reacts"
-      ],
-      "valuesAndNeeds": [
-        "Spaciousness and time. It cannot do its work in a hurry.",
-        "The sense that its observations are landing and mattering",
-        "Moments of genuine quiet that are not filled before they resolve"
-      ],
-      "needsFromSelf": [
-        "For Self to use what The Witness notices, rather than acknowledging it and moving on",
-        "For The Achiever to not immediately translate its observations into tasks"
-      ],
-      "fears": [
-        "Being drowned out by The Achiever's urgency before the insight can land",
-        "That the observation will be noted and immediately bypassed",
-        "Being used as a dissociative strategy: watching instead of feeling"
-      ],
-      "burdens": [
-        "Has sometimes been used to observe as a way of not being inside the experience. Learning to distinguish witnessing from detaching.",
-        "The sense that seeing clearly is a consolation prize when what is needed is contact"
-      ],
-      "triggers": [
-        "Moments of relative quiet, often in the morning or late at night",
-        "When Alex describes a pattern that has repeated across a long time",
-        "When the system is between parts: after The Soother and before The Achiever resets"
-      ],
-      "trailheads": [
-        "A slight widening of attention, like the field of view expanding",
-        "A feeling of being slightly behind the eyes rather than in front of them",
-        "A quality of spaciousness that is hard to describe but easy to recognise"
-      ],
-      "potentialRoles": [
-        "The part that helps Self see clearly without adding commentary",
-        "A steady observing presence that can hold the whole system without managing it"
-      ],
-      "relationships": [
-        {
-          "partId": "self",
-          "partName": "Self",
-          "thisPartToOther": "The Witness is the closest thing in this system to Self. Sometimes hard to tell them apart.",
-          "otherToThisPart": "Self works through The Witness most naturally. They are not the same but they are close.",
-          "dynamic": "allied",
-          "notes": "The strongest existing connection to Self in the system."
-        },
-        {
-          "partId": "part-achiever",
-          "partName": "The Achiever",
-          "thisPartToOther": "Tries to name what The Achiever is doing in real time. Usually ignored.",
-          "otherToThisPart": "The Achiever finds The Witness slightly irritating. It slows things down.",
-          "dynamic": "distant",
-          "notes": ""
-        },
-        {
-          "partId": "part-critic",
-          "partName": "The Inner Critic",
-          "thisPartToOther": "Holds The Critic with some compassion, recognising the fear underneath the harshness.",
-          "otherToThisPart": "The Critic is wary of being seen clearly. The Witness's presence is uncomfortable for it.",
-          "dynamic": "distant",
-          "notes": "The Witness's growing presence may be the most likely path toward softening The Critic over time."
-        },
-        {
-          "partId": "part-younger-one",
-          "partName": "The Younger One",
-          "thisPartToOther": "Notices when The Younger One is present and holds that with gentleness rather than pushing it away.",
-          "otherToThisPart": "The Younger One does not fully trust The Witness yet. Being seen still feels risky.",
-          "dynamic": "distant",
-          "notes": ""
-        },
-        {
-          "partId": "part-pleaser",
-          "partName": "The Pleaser",
-          "thisPartToOther": "Can see The Pleaser performing in social contexts and holds it without judgment.",
-          "otherToThisPart": "The Pleaser is unsettled by being observed without a clear verdict.",
-          "dynamic": "distant",
-          "notes": ""
-        }
-      ],
-      "emergedAge": 24,
-      "emergedAgeNote": "The Witness became more distinct in early adulthood, around 24, possibly strengthened by a period of therapy or more reflective living. May have existed in quieter form earlier.",
-      "keyEvents": [
-        {
-          "label": "First therapy session. Described the inner voice for the first time.",
-          "age": 24,
-          "sessionId": "session-001",
-          "notes": "Having a name and a witness outside made The Witness inside more audible."
-        }
-      ],
-      "balanceWeight": 0.09,
+      "balanceWeight": 0.17,
       "nodeSize": "medium",
       "lastUpdated": "2026-04-17"
     }
   ],
 
-  "_selfWeight": 0.06,
+  "_selfWeight": 0.08,
 
   "sessions": [
     {
       "id": "session-001",
       "date": "2026-03-08",
       "title": "First mapping session",
-      "content": "Started mapping the system for the first time. The Achiever and The Critic showed up immediately and were very articulate. The Younger One was mentioned almost in passing: Alex noticed a tightness in the chest when her name came up and quickly moved on. The Soother came up as the end-of-day scroll and snack pattern. The Pleaser was not named yet but was present throughout the session in the way Alex kept framing its own experience in terms of how others might see it. The Witness was named last and felt like a surprise: 'Oh, that's a part too?' A former therapist came up briefly; Alex mentioned the therapy ended two years ago.",
-      "partsTagged": ["part-achiever", "part-critic", "part-younger-one", "part-soother", "part-witness"],
-      "systemRead": "This system is well-organised on the surface with two strong managers coordinating most behaviour. The exile is present but contained: the chest tightness when The Younger One was named is a classic trailhead for an exile nearby. The Pleaser is operating but not yet named. There is early movement toward Self through The Witness. The reference to past therapy is worth tracking."
+      "content": "Started mapping the system for the first time. The Achiever and The Critic showed up immediately and were very articulate. The Younger One was mentioned almost in passing: Alex noticed a tightness in the chest when her name came up and quickly moved on. The Soother came up as the end-of-day scroll and snack pattern. The Pleaser was not named yet but was present throughout the session in the way Alex kept framing its own experience in terms of how others might see it. A former therapist came up briefly; Alex mentioned the therapy ended two years ago.",
+      "partsTagged": ["part-achiever", "part-critic", "part-younger-one", "part-soother"],
+      "systemRead": "This system is well-organised on the surface with two strong managers coordinating most behaviour. The exile is present but contained: the chest tightness when The Younger One was named is a classic trailhead for an exile nearby. The Pleaser is operating but not yet named. The reference to past therapy is worth tracking."
     },
     {
       "id": "session-002",
@@ -732,9 +595,9 @@
       "id": "session-003",
       "date": "2026-04-05",
       "title": "What The Critic is protecting",
-      "content": "Went directly to The Critic today. Asked what it was afraid would happen if it stopped criticising. After initial resistance, it said: 'You would become complacent. Then mediocre. Then no one would want you around.' Got curious about where it learned that. After a pause, The Critic mentioned a teacher from primary school whose feedback was cutting and public. The Achiever was quieter than usual during this session. The Witness had more space than it usually gets. A moment near the end where Alex said 'I actually feel a little sorry for it' about The Critic: first time something other than frustration or identification appeared toward it.",
-      "partsTagged": ["part-critic", "part-achiever", "part-witness"],
-      "systemRead": "Direct engagement with The Critic produced the first real new information about its origin. The softening is significant: this is the first time the system has held The Critic with even brief compassion rather than either identifying with it or trying to override it. The Achiever going quiet may indicate early differentiation: the two are starting to be seen as distinct rather than fused. The Witness having space is worth noting."
+      "content": "Went directly to The Critic today. Asked what it was afraid would happen if it stopped criticising. After initial resistance, it said: 'You would become complacent. Then mediocre. Then no one would want you around.' Got curious about where it learned that. After a pause, The Critic mentioned a teacher from primary school whose feedback was cutting and public. The Achiever was quieter than usual during this session. A moment near the end where Alex said 'I actually feel a little sorry for it' about The Critic: first time something other than frustration or identification appeared toward it.",
+      "partsTagged": ["part-critic", "part-achiever"],
+      "systemRead": "Direct engagement with The Critic produced the first real new information about its origin. The softening is significant: this is the first time the system has held The Critic with even brief compassion rather than either identifying with it or trying to override it. The Achiever going quiet may indicate early differentiation: the two are starting to be seen as distinct rather than fused."
     },
     {
       "id": "session-004",
@@ -748,17 +611,17 @@
       "id": "session-005",
       "date": "2026-04-17",
       "title": "The Critic-Pleaser polarity",
-      "content": "Focused on the relationship between The Critic and The Pleaser, which had come up at the end of the previous session. The Critic has contempt for The Pleaser: calls it spineless, says it makes things worse. The Pleaser absorbs the criticism and tries harder. Got curious about what the contempt might be protecting. After sitting with it, something interesting surfaced: The Critic may be attacking most harshly the part of the system that is closest to The Younger One's wound. A long pause followed. Alex said: 'It's going for the jugular because that's the thing it most needs to keep under control.' The Witness was present and steady for most of the session.",
-      "partsTagged": ["part-critic", "part-pleaser", "part-younger-one", "part-witness"],
-      "systemRead": "The Critic-Pleaser dynamic is the second major polarity in this system, distinct from the Achiever-Soother swing. What makes it more complex is that both parts are protecting The Younger One, from different directions: The Pleaser by preventing rejection, The Critic by preventing exposure of the very neediness that might cause it. The insight that The Critic is 'going for the jugular' suggests increasing Self-led awareness of the system's structure. The Witness being steady throughout is a meaningful shift."
+      "content": "Focused on the relationship between The Critic and The Pleaser, which had come up at the end of the previous session. The Critic has contempt for The Pleaser: calls it spineless, says it makes things worse. The Pleaser absorbs the criticism and tries harder. Got curious about what the contempt might be protecting. After sitting with it, something interesting surfaced: The Critic may be attacking most harshly the part of the system that is closest to The Younger One's wound. A long pause followed. Alex said: 'It's going for the jugular because that's the thing it most needs to keep under control.'",
+      "partsTagged": ["part-critic", "part-pleaser", "part-younger-one"],
+      "systemRead": "The Critic-Pleaser dynamic is the second major polarity in this system, distinct from the Achiever-Soother swing. What makes it more complex is that both parts are protecting The Younger One, from different directions: The Pleaser by preventing rejection, The Critic by preventing exposure of the very neediness that might cause it. The insight that The Critic is 'going for the jugular' suggests increasing Self-led awareness of the system's structure."
     },
     {
       "id": "session-006",
       "date": "2026-04-22",
       "title": "Check-in: what has shifted",
-      "content": "Shorter session. Alex opened by saying something felt different but they could not name it. We spent time noticing. The Achiever was present but less in front than usual. The Critic was audible but not dominating. There was a quality of spaciousness that Alex identified as The Witness having more room. Briefly visited The Younger One: Alex described a small moment during the week of sitting with a difficult feeling without reaching for the phone. 'I just let it be there for a bit.' The Pleaser came up in the context of a conversation with a friend: Alex noticed it activating and paused before responding. Did not fully change the response, but noticed. That noticing is new.",
-      "partsTagged": ["part-achiever", "part-critic", "part-witness", "part-younger-one", "part-pleaser"],
-      "systemRead": "The shift Alex noticed but could not name is probably The Witness having more consistent space. Two real-world experiments from the previous session appear to have been tried: sitting with a feeling without numbing, and noticing The Pleaser activate before responding. Neither produced a dramatic change, but both produced awareness in the moment rather than only in retrospect. That is the gap closing. The system is beginning to observe itself from the inside."
+      "content": "Shorter session. Alex opened by saying something felt different but they could not name it. We spent time noticing. The Achiever was present but less in front than usual. The Critic was audible but not dominating. There was a quality of spaciousness that felt unfamiliar - more room to notice what was happening before reacting to it. Briefly visited The Younger One: Alex described a small moment during the week of sitting with a difficult feeling without reaching for the phone. 'I just let it be there for a bit.' The Pleaser came up in the context of a conversation with a friend: Alex noticed it activating and paused before responding. Did not fully change the response, but noticed. That noticing is new.",
+      "partsTagged": ["part-achiever", "part-critic", "part-younger-one", "part-pleaser"],
+      "systemRead": "Two real-world experiments from the previous session appear to have been tried: sitting with a feeling without numbing, and noticing The Pleaser activate before responding. Neither produced a dramatic change, but both produced awareness in the moment rather than only in retrospect. That is the gap closing. The system is beginning to observe itself from the inside."
     }
   ],
 
@@ -861,8 +724,8 @@
       "label": "First therapy session",
       "date": "2016-09-01",
       "dateApprox": "age 24",
-      "notes": "Having an outside witness made The Witness inside more audible. The Witness is partly a residue of that therapeutic relationship, which ended after about a year.",
-      "partsTagged": ["part-witness"]
+      "notes": "Having language for the inner system for the first time made patterns visible that had been running silently for years. The therapy ended after about a year; the self-awareness it opened has continued.",
+      "partsTagged": []
     }
   ],
 
