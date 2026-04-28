@@ -294,6 +294,11 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   text-transform:uppercase; color:var(--gold);
   margin-bottom:6px;
 }
+.part-section-hdr {
+  font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.10em;
+  text-transform:uppercase; color:var(--text-dim);
+  margin-bottom:6px;
+}
 .part-fields-grid {
   display:grid; grid-template-columns:1fr 1fr; gap:0 24px;
   margin-top:16px;
@@ -2478,7 +2483,8 @@ function renderMapEditor(s) {
     dynSel.addEventListener('change', () => {
       rel.dynamic = dynSel.value;
       const mirror = (target.relationships || []).find(r => r.partId === part.id);
-      if (mirror) mirror.dynamic = dynSel.value;
+      // Protective is one-directional: only the protector holds this dynamic, not the exile
+      if (mirror && dynSel.value !== 'protective') mirror.dynamic = dynSel.value;
       saveState(s); renderMap(s);
       if (dynSel.value === 'unknown') renderMapEditor(s);
     });
@@ -2542,10 +2548,12 @@ function renderMapEditor(s) {
         part.relationships.push({ partId: tid, partName: tgt ? tgt.name : '', thisPartToOther:'', otherToThisPart:'', dynamic: dyn, notes:'' });
       }
       if (tgt) {
+        // Protective is one-directional: mirror on the exile gets 'unknown', not 'protective'
+        const mirrorDyn = dyn === 'protective' ? 'unknown' : dyn;
         let mirror = (tgt.relationships || []).find(r => r.partId === part.id);
-        if (mirror) { mirror.dynamic = dyn; } else {
+        if (mirror) { mirror.dynamic = mirrorDyn; } else {
           if (!tgt.relationships) tgt.relationships = [];
-          tgt.relationships.push({ partId: part.id, partName: part.name||'', thisPartToOther:'', otherToThisPart:'', dynamic: dyn, notes:'' });
+          tgt.relationships.push({ partId: part.id, partName: part.name||'', thisPartToOther:'', otherToThisPart:'', dynamic: mirrorDyn, notes:'' });
         }
       }
       saveState(s); renderMap(s); renderMapEditor(s); updateNavCounts(s);
@@ -2925,72 +2933,10 @@ function buildPartCard(part, idx, s) {
   leftHdr.textContent = 'What this part carries';
   leftCol.appendChild(leftHdr);
 
-  // 1. Self relationship (most dynamic — top of left)
-  const selfRelSec = document.createElement('div');
-  selfRelSec.className = 'part-section';
-  selfRelSec.style.marginTop = '0';
-  const selfRelLbl = document.createElement('div');
-  selfRelLbl.className = 'part-section-label';
-  selfRelLbl.textContent = 'Self relationship';
-  selfRelLbl.title = 'How you and this part feel toward each other right now. The most clinically significant thing to track in IFS work. Changes as the relationship develops.';
-  const selfRelFields = document.createElement('div');
-  selfRelFields.className = 'self-rel-fields';
-
-  const srData = part.selfRelationship || {};
-
-  function makeSelfRelField(labelText, placeholder, currentVal, onSave, tooltipText) {
-    const wrap = document.createElement('div');
-    wrap.className = 'self-rel-field-wrap';
-    const sub = document.createElement('div');
-    sub.className = 'self-rel-sublabel';
-    sub.textContent = labelText;
-    if (tooltipText) sub.title = tooltipText;
-    const el = document.createElement('div');
-    el.className = 'self-rel-text';
-    el.contentEditable = 'true';
-    el.setAttribute('data-placeholder', placeholder);
-    el.textContent = currentVal || '';
-    el.addEventListener('blur', () => onSave(el.textContent.trim()));
-    el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } });
-    wrap.appendChild(sub);
-    wrap.appendChild(el);
-    return wrap;
-  }
-
-  selfRelFields.appendChild(makeSelfRelField(
-    'You toward this part',
-    'How do you feel toward this part when you bring attention to it?',
-    srData.selfTowardPart,
-    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.selfTowardPart = v; saveState(appState); },
-    'Progression: contempt or dismissal, frustration, fear or avoidance, distance or numbness, neutral observation, curiosity, compassion, genuine care'
-  ));
-  selfRelFields.appendChild(makeSelfRelField(
-    'This part toward you',
-    'Does this part trust Self to lead? Resistant, watchful, beginning to cooperate?',
-    srData.partTowardSelf,
-    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.partTowardSelf = v; saveState(appState); },
-    'Progression: unaware of or indifferent to Self, resistant or distrustful, watchful or cautious, cautiously cooperative, trusting'
-  ));
-
-  selfRelSec.appendChild(selfRelLbl);
-  selfRelSec.appendChild(selfRelFields);
-  leftCol.appendChild(selfRelSec);
-
-  // 2. Asks of Self
-  const asksOfSelfSec = document.createElement('div');
-  asksOfSelfSec.className = 'part-section';
-  const asksLbl = document.createElement('div');
-  asksLbl.className = 'part-section-label';
-  asksLbl.textContent = 'Asks of Self';
-  asksLbl.title = 'What this part specifically needs from Self in order to feel heard and begin to step back. Only populate from what the part itself has expressed.';
-  const asksList = buildBulletField(part, 'needsFromSelf', 'What would it take for this part to trust Self enough to step back...');
-  asksOfSelfSec.appendChild(asksLbl);
-  asksOfSelfSec.appendChild(asksList);
-  leftCol.appendChild(asksOfSelfSec);
-
-  // 3. Positive intent
+  // 1. Positive intent
   const intentSec = document.createElement('div');
   intentSec.className = 'part-section';
+  intentSec.style.marginTop = '0';
   const intentLbl = document.createElement('div');
   intentLbl.className = 'part-section-label';
   intentLbl.textContent = 'Positive intent';
@@ -3000,7 +2946,7 @@ function buildPartCard(part, idx, s) {
   intentSec.appendChild(intentList);
   leftCol.appendChild(intentSec);
 
-  // 4. Burdens
+  // 2. Burdens
   const burdensSec = document.createElement('div');
   burdensSec.className = 'part-section';
   const burdensLbl = document.createElement('div');
@@ -3220,13 +3166,83 @@ function buildPartCard(part, idx, s) {
   divider.className = 'part-divider';
   body.appendChild(divider);
 
-  // Relationships (full width)
-  const relHdr = document.createElement('div');
-  relHdr.className = 'part-section-label';
-  relHdr.style.marginTop = '14px';
-  relHdr.textContent = 'Relationships with other parts';
-  relHdr.title = 'How this part relates to other parts in the system. The Self relationship is tracked separately above.';
-  body.appendChild(relHdr);
+  // ── Relationships section (full width): Self relationship + Asks of Self + table ──
+  const relSectionHdr = document.createElement('div');
+  relSectionHdr.className = 'part-section-label';
+  relSectionHdr.style.marginTop = '14px';
+  relSectionHdr.textContent = 'Relationships';
+  body.appendChild(relSectionHdr);
+
+  // Self relationship subsection
+  const selfRelSec = document.createElement('div');
+  selfRelSec.className = 'part-section';
+  selfRelSec.style.marginTop = '10px';
+  const selfRelLbl = document.createElement('div');
+  selfRelLbl.className = 'part-section-hdr';
+  selfRelLbl.textContent = 'With Self';
+  selfRelLbl.title = 'How you and this part feel toward each other right now. The most clinically significant thing to track in IFS work. Changes as the relationship develops.';
+  const selfRelFields = document.createElement('div');
+  selfRelFields.className = 'self-rel-fields';
+
+  const srData = part.selfRelationship || {};
+
+  function makeSelfRelField(labelText, placeholder, currentVal, onSave, tooltipText) {
+    const wrap = document.createElement('div');
+    wrap.className = 'self-rel-field-wrap';
+    const sub = document.createElement('div');
+    sub.className = 'self-rel-sublabel';
+    sub.textContent = labelText;
+    if (tooltipText) sub.title = tooltipText;
+    const el = document.createElement('div');
+    el.className = 'self-rel-text';
+    el.contentEditable = 'true';
+    el.setAttribute('data-placeholder', placeholder);
+    el.textContent = currentVal || '';
+    el.addEventListener('blur', () => onSave(el.textContent.trim()));
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } });
+    wrap.appendChild(sub);
+    wrap.appendChild(el);
+    return wrap;
+  }
+
+  selfRelFields.appendChild(makeSelfRelField(
+    'You toward this part',
+    'How do you feel toward this part when you bring attention to it?',
+    srData.selfTowardPart,
+    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.selfTowardPart = v; saveState(appState); },
+    'Progression: contempt or dismissal, frustration, fear or avoidance, distance or numbness, neutral observation, curiosity, compassion, genuine care'
+  ));
+  selfRelFields.appendChild(makeSelfRelField(
+    'This part toward you',
+    'Does this part trust Self to lead? Resistant, watchful, beginning to cooperate?',
+    srData.partTowardSelf,
+    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.partTowardSelf = v; saveState(appState); },
+    'Progression: unaware of or indifferent to Self, resistant or distrustful, watchful or cautious, cautiously cooperative, trusting'
+  ));
+
+  selfRelSec.appendChild(selfRelLbl);
+  selfRelSec.appendChild(selfRelFields);
+  body.appendChild(selfRelSec);
+
+  // Asks of Self subsection
+  const asksOfSelfSec = document.createElement('div');
+  asksOfSelfSec.className = 'part-section';
+  const asksLbl = document.createElement('div');
+  asksLbl.className = 'part-section-hdr';
+  asksLbl.textContent = 'Asks of Self';
+  asksLbl.title = 'What this part specifically needs from Self in order to feel heard and begin to step back. Only populate from what the part itself has expressed.';
+  const asksList = buildBulletField(part, 'needsFromSelf', 'What would it take for this part to trust Self enough to step back...');
+  asksOfSelfSec.appendChild(asksLbl);
+  asksOfSelfSec.appendChild(asksList);
+  body.appendChild(asksOfSelfSec);
+
+  // With other parts
+  const withOthersLbl = document.createElement('div');
+  withOthersLbl.className = 'part-section-hdr';
+  withOthersLbl.style.marginTop = '14px';
+  withOthersLbl.textContent = 'With other parts';
+  withOthersLbl.title = 'How this part relates to each other part in the system.';
+  body.appendChild(withOthersLbl);
 
   const relTable = buildRelTable(part, idx, s);
   body.appendChild(relTable);
@@ -3264,8 +3280,9 @@ function buildRelTable(part, partIdx, s) {
   const table = document.createElement('table');
   table.className = 'rel-table';
 
+  const partLabel = part.name || 'This part';
   const thead = document.createElement('thead');
-  thead.innerHTML = '<tr><th>Part</th><th>How I relate to them</th><th>How they relate to me</th><th>Dynamic</th></tr>';
+  thead.innerHTML = `<tr><th>Part</th><th>How ${partLabel} relates to them</th><th>How they relate to ${partLabel}</th><th>Dynamic</th></tr>`;
   table.appendChild(thead);
 
   const tbody = document.createElement('tbody');
@@ -3292,13 +3309,13 @@ function buildRelTable(part, partIdx, s) {
     tdName.appendChild(badge);
 
     const tdToOther = document.createElement('td');
-    const toOtherEl = makeEditable(rel.thisPartToOther || '', 'How I relate to them...', v => {
+    const toOtherEl = makeEditable(rel.thisPartToOther || '', `How ${partLabel} relates to them...`, v => {
       rel.thisPartToOther = v; saveState(appState);
     });
     tdToOther.appendChild(toOtherEl);
 
     const tdToThis = document.createElement('td');
-    const toThisEl = makeEditable(rel.otherToThisPart || '', 'How they relate to me...', v => {
+    const toThisEl = makeEditable(rel.otherToThisPart || '', `How they relate to ${partLabel}...`, v => {
       rel.otherToThisPart = v; saveState(appState);
     });
     tdToThis.appendChild(toThisEl);
