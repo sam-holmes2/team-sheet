@@ -1143,7 +1143,10 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   <div id="timeline-alltime-section" style="display:none;margin-top:36px;">
     <div style="margin-bottom:14px;">
       <div class="section-heading">All time</div>
-      <p class="balance-note" style="margin:0;">Your full history of part leadership including pre-app memories. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll to them).</p>
+      <p class="balance-note" style="margin:0;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+        <span style="flex:1;">Your full history of part leadership including pre-app memories. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll to them).</span>
+        <label style="white-space:nowrap;color:var(--text-dim);font-size:12px;">Born: <input type="date" id="birth-date-input" style="background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:3px;padding:1px 4px;font-size:12px;font-family:inherit;" oninput="if(!appState.system)appState.system={};appState.system.birthDate=this.value;saveState(appState);renderTimeline(appState);" /></label>
+      </p>
     </div>
     <div id="balance-area-wrap" style="display:none;">
       <canvas id="balance-area-canvas" style="cursor:pointer;"></canvas>
@@ -1886,7 +1889,16 @@ function renderMap(s) {
       seen.add(key);
       const targetNode = mapNodes.find(n => n.id === rel.partId);
       if (!targetNode) return;
-      mapEdges.push({ a: p.id, b: rel.partId, dynamic: rel.dynamic, directed: rel.dynamic === 'protective' });
+      // For protective edges arrow must go FROM protector TO exile.
+      // If the iterating part is the exile and the target is not, flip so b=exile.
+      let edgeA = p.id, edgeB = rel.partId;
+      if (rel.dynamic === 'protective') {
+        const pNode = mapNodes.find(n => n.id === p.id);
+        if (pNode && pNode.role === 'exile' && targetNode.role !== 'exile') {
+          edgeA = rel.partId; edgeB = p.id;
+        }
+      }
+      mapEdges.push({ a: edgeA, b: edgeB, dynamic: rel.dynamic, directed: rel.dynamic === 'protective' });
     });
   });
 
@@ -2047,7 +2059,7 @@ function drawMap(canvas, W, H) {
     } else if (e.dynamic === 'allied') {
       ctx.strokeStyle = 'rgba(200,168,74,0.45)'; ctx.lineWidth = 2.5;
     } else if (e.dynamic === 'protective') {
-      ctx.strokeStyle = 'rgba(128,144,168,0.5)'; ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(128,144,168,0.7)'; ctx.lineWidth = 3;
     } else if (e.dynamic === 'distant') {
       ctx.setLineDash([5, 7]); ctx.strokeStyle = 'rgba(80,76,68,0.5)'; ctx.lineWidth = 1;
     } else {
@@ -2061,10 +2073,10 @@ function drawMap(canvas, W, H) {
       ctx.setLineDash([]);
       ctx.beginPath();
       ctx.moveTo(ex, ey);
-      ctx.lineTo(ex - 10 * Math.cos(arrowAngle - 0.4), ey - 10 * Math.sin(arrowAngle - 0.4));
-      ctx.lineTo(ex - 10 * Math.cos(arrowAngle + 0.4), ey - 10 * Math.sin(arrowAngle + 0.4));
+      ctx.lineTo(ex - 16 * Math.cos(arrowAngle - 0.4), ey - 16 * Math.sin(arrowAngle - 0.4));
+      ctx.lineTo(ex - 16 * Math.cos(arrowAngle + 0.4), ey - 16 * Math.sin(arrowAngle + 0.4));
       ctx.closePath();
-      ctx.fillStyle = 'rgba(128,144,168,0.7)';
+      ctx.fillStyle = 'rgba(128,144,168,0.85)';
       ctx.fill();
     }
     ctx.restore();
@@ -3116,11 +3128,17 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
   ctx.fillStyle = '#504c44';
   ctx.textAlign = 'center';
   if (isAllTime) {
-    // Evenly-spaced calendar dates across the full time range
+    const birthMs = s.system && s.system.birthDate ? new Date(s.system.birthDate).getTime() : null;
     const nLabels = Math.min(6, Math.max(2, n));
     for (let li = 0; li < nLabels; li++) {
       const ms = dateMin + dateRange * li / Math.max(nLabels - 1, 1);
-      const label = new Date(ms).toISOString().slice(0, 10);
+      let label;
+      if (birthMs && !isNaN(birthMs)) {
+        const age = (ms - birthMs) / (365.25 * 24 * 3600 * 1000);
+        label = age >= 0 ? Math.round(age) : new Date(ms).toISOString().slice(0, 10);
+      } else {
+        label = new Date(ms).toISOString().slice(0, 10);
+      }
       const x = PAD_L + (li / Math.max(nLabels - 1, 1)) * drawW;
       ctx.fillText(label, x, H - PAD_B + 16);
     }
@@ -3167,7 +3185,7 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
     ctx.setLineDash([3,3]);
     ctx.beginPath(); ctx.moveTo(x, PAD_T); ctx.lineTo(x, PAD_T+drawH); ctx.stroke();
     ctx.setLineDash([]);
-    canvas._eventPins.push({ x, type: 'session', sessionId: sess.id });
+    canvas._eventPins.push({ x, type: 'session', sessionId: sess.id, label: sess.title || sess.date || 'Session' });
   });
 
   // Memory pins (blue solid)
@@ -3179,10 +3197,10 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
     ctx.setLineDash([2,4]);
     ctx.beginPath(); ctx.moveTo(x, PAD_T); ctx.lineTo(x, PAD_T+drawH); ctx.stroke();
     ctx.setLineDash([]);
-    canvas._eventPins.push({ x, type: 'memory', memoryId: mem.id });
+    canvas._eventPins.push({ x, type: 'memory', memoryId: mem.id, label: mem.label || mem.dateApprox || mem.date || 'Memory' });
   });
 
-  // Click handler: sessions -> journal tab; memories -> scroll to memory card
+  // Click + hover handlers for pins
   canvas._chartW = W; // store current CSS width so the click handler always uses latest value
   if (!canvas._pinClickBound) {
     canvas._pinClickBound = true;
@@ -3204,6 +3222,25 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
       }
     });
     canvas.style.cursor = 'pointer';
+  }
+  if (!canvas._pinHoverBound) {
+    canvas._pinHoverBound = true;
+    const tt = document.getElementById('map-tooltip');
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = (e.clientX - rect.left) * ((canvas._chartW || rect.width) / rect.width);
+      const hit = (canvas._eventPins || []).find(p => Math.abs(p.x - mx) < 10);
+      if (hit) {
+        document.getElementById('tt-name').textContent = hit.label;
+        document.getElementById('tt-overview').textContent = '';
+        tt.style.display = 'block';
+        tt.style.left = (e.clientX + 14) + 'px';
+        tt.style.top  = (e.clientY - 10) + 'px';
+      } else {
+        tt.style.display = 'none';
+      }
+    });
+    canvas.addEventListener('mouseleave', () => { document.getElementById('map-tooltip').style.display = 'none'; });
   }
 
   // Legend
@@ -4046,6 +4083,8 @@ function renderTimeline(s) {
   if (hasOlderMemories) {
     alltimeSection.style.display = '';
     areaWrap.style.display = '';
+    const bdInput = document.getElementById('birth-date-input');
+    if (bdInput) bdInput.value = (s.system && s.system.birthDate) || '';
     renderBalanceAreaChart(s, hist);
   } else {
     alltimeSection.style.display = 'none';
