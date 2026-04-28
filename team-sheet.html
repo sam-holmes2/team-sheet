@@ -1579,6 +1579,30 @@ function saveBalHist(arr) {
 }
 
 // ══ EDITABLE HELPER ════════════════════════════════════════════
+
+// Single delegated handler: places cursor at the exact click position in any
+// contenteditable element rather than letting the browser jump to start/end.
+// Covers both dynamically-created fields and the static HTML contenteditable elements.
+document.addEventListener('mousedown', e => {
+  const el = e.target.closest('[contenteditable="true"]');
+  if (!el) return;
+  const range = document.caretRangeFromPoint
+    ? document.caretRangeFromPoint(e.clientX, e.clientY)
+    : (document.caretPositionFromPoint
+        ? (() => {
+            const cp = document.caretPositionFromPoint(e.clientX, e.clientY);
+            if (!cp) return null;
+            const r = document.createRange();
+            r.setStart(cp.offsetNode, cp.offset);
+            r.collapse(true);
+            return r;
+          })()
+        : null);
+  el.focus();
+  if (range) { const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range); }
+  e.preventDefault();
+});
+
 function makeEditable(text, placeholder, onSave, extraClass) {
   const el = document.createElement('div');
   el.className = 'editable' + (extraClass ? ' ' + extraClass : '');
@@ -3029,6 +3053,16 @@ function renderPartsDistribution(s) {
   buildBalancePie(hist[hist.length - 1], 100, latestEl);
 }
 
+function parseApproxDate(str, birthMs) {
+  if (!str) return null;
+  const ageMatch = str.match(/\b(?:age|aged)\s*(\d+(?:\.\d+)?)\b/i);
+  if (ageMatch && birthMs) return birthMs + parseFloat(ageMatch[1]) * 365.25 * 24 * 3600 * 1000;
+  const yearMatch = str.match(/\b(1[89]\d\d|20\d\d)\b/);
+  if (yearMatch) return new Date(yearMatch[1] + '-01-01').getTime();
+  const d = new Date(str);
+  return isNaN(d) ? null : d.getTime();
+}
+
 function renderBalanceAreaChart(s, hist, canvasId, legendId) {
   const canvas = document.getElementById(canvasId || 'balance-area-canvas');
   const legendEl = document.getElementById(legendId || 'balance-area-legend');
@@ -3074,12 +3108,17 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
   // Recent chart: even index-based spacing so each session is equally visible.
   const isAllTime = !canvasId || canvasId === 'balance-area-canvas';
 
+  const birthMs = s.system && s.system.birthDate ? new Date(s.system.birthDate).getTime() : null;
+
   const snapMs = snaps.map(sn => { const d = new Date(sn.date); return isNaN(d) ? 0 : d.getTime(); });
   let dateMin = snapMs.length ? Math.min(...snapMs) : Date.now();
   let dateMax = snapMs.length ? Math.max(...snapMs) : Date.now();
   if (isAllTime) {
-    const memMs = (s.memories || []).filter(m => m.date).map(m => new Date(m.date).getTime()).filter(t => !isNaN(t));
-    if (memMs.length) dateMin = Math.min(dateMin, ...memMs);
+    const allMemMs = (s.memories || []).map(m => {
+      return m.date ? new Date(m.date).getTime() : parseApproxDate(m.dateApprox, birthMs);
+    }).filter(t => t && !isNaN(t));
+    if (allMemMs.length) dateMin = Math.min(dateMin, ...allMemMs);
+    if (birthMs && !isNaN(birthMs)) dateMin = birthMs;
   }
   const dateRange = Math.max(dateMax - dateMin, 1);
 
@@ -3128,7 +3167,6 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
   ctx.fillStyle = '#504c44';
   ctx.textAlign = 'center';
   if (isAllTime) {
-    const birthMs = s.system && s.system.birthDate ? new Date(s.system.birthDate).getTime() : null;
     const nLabels = Math.min(6, Math.max(2, n));
     for (let li = 0; li < nLabels; li++) {
       const ms = dateMin + dateRange * li / Math.max(nLabels - 1, 1);
@@ -3188,13 +3226,36 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
     canvas._eventPins.push({ x, type: 'session', sessionId: sess.id, label: sess.title || sess.date || 'Session' });
   });
 
-  // Memory pins (blue solid)
-  (s.memories || []).filter(m => m.date).forEach(mem => {
-    const x = dateX(mem.date);
+  // Memory pins (blue): exact-dated + approx-dated
+  (s.memories || []).forEach(mem => {
+    let x;
+    let isApprox = false;
+    if (mem.date) {
+      x = dateX(mem.date);
+    } else if (mem.dateApprox) {
+      const ms = parseApproxDate(mem.dateApprox, birthMs);
+      if (!ms || isNaN(ms)) return;
+      const t = Math.min(Math.max((ms - dateMin) / dateRange, 0), 1);
+      if (!isAllTime && (ms < snapMs[0] || ms > snapMs[snapMs.length - 1])) return;
+      x = isAllTime ? PAD_L + t * drawW : (() => {
+        if (n === 0) return -1;
+        if (n === 1) return snapX(0);
+        for (let i = 0; i < n - 1; i++) {
+          if (ms >= snapMs[i] && ms <= snapMs[i + 1]) {
+            const tt = (ms - snapMs[i]) / (snapMs[i + 1] - snapMs[i]);
+            return snapX(i) + tt * (snapX(i + 1) - snapX(i));
+          }
+        }
+        return -1;
+      })();
+      isApprox = true;
+    } else {
+      return;
+    }
     if (x < 0) return;
-    ctx.strokeStyle = 'rgba(80,140,220,0.55)';
+    ctx.strokeStyle = isApprox ? 'rgba(80,140,220,0.3)' : 'rgba(80,140,220,0.55)';
     ctx.lineWidth = 1;
-    ctx.setLineDash([2,4]);
+    ctx.setLineDash(isApprox ? [1, 6] : [2, 4]);
     ctx.beginPath(); ctx.moveTo(x, PAD_T); ctx.lineTo(x, PAD_T+drawH); ctx.stroke();
     ctx.setLineDash([]);
     canvas._eventPins.push({ x, type: 'memory', memoryId: mem.id, label: mem.label || mem.dateApprox || mem.date || 'Memory' });
@@ -4075,12 +4136,16 @@ function renderTimeline(s) {
   recentSection.style.display = '';
   renderBalanceAreaChart(s, hist, 'balance-area-canvas-recent', 'balance-area-legend-recent');
 
-  // "All time" = sessions + memories extended back; only show if there are dated memories
-  // older than the earliest session snapshot
-  const memories = (s.memories || []).filter(m => m.date);
+  // "All time" = sessions + memories extended back; show when a birth date is set,
+  // or when there are memories (exact or approx) older than the earliest session snapshot.
+  const birthMs = s.system && s.system.birthDate ? new Date(s.system.birthDate).getTime() : null;
   const earliestSnap = hist[0]?.date || '';
-  const hasOlderMemories = memories.some(m => m.date < earliestSnap);
-  if (hasOlderMemories) {
+  const hasOlderMemories = (s.memories || []).some(m => {
+    if (m.date) return m.date < earliestSnap;
+    if (m.dateApprox) { const ms = parseApproxDate(m.dateApprox, birthMs); return ms && ms < new Date(earliestSnap).getTime(); }
+    return false;
+  });
+  if (hasOlderMemories || (birthMs && !isNaN(birthMs))) {
     alltimeSection.style.display = '';
     areaWrap.style.display = '';
     const bdInput = document.getElementById('birth-date-input');
