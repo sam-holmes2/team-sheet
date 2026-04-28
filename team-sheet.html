@@ -1990,18 +1990,54 @@ function drawMap(canvas, W, H) {
     if (!a || !b) return;
     ctx.save();
 
-    // Offset start/end to node surfaces so lines don't originate from centers
+    // Offset start/end to node surfaces
     const angle = Math.atan2(b.y - a.y, b.x - a.x);
     const sx = a.x + Math.cos(angle) * a.r;
     const sy = a.y + Math.sin(angle) * a.r;
     const ex = b.x - Math.cos(angle) * b.r;
     const ey = b.y - Math.sin(angle) * b.r;
+    const mx = (sx + ex) / 2, my = (sy + ey) / 2;
+    const perpX = -Math.sin(angle), perpY = Math.cos(angle);
 
-    // Quadratic bezier with a gentle perpendicular bow to separate crossing edges
-    const sign = (e.a < e.b) ? 1 : -1;
-    const curvature = 20;
-    const cpx = (sx + ex) / 2 - Math.sin(angle) * curvature * sign;
-    const cpy = (sy + ey) / 2 + Math.cos(angle) * curvature * sign;
+    // Returns signed bezier deflection needed to clear an obstacle circle at (cx,cy) radius cr.
+    // Positive = deflect toward +perp, negative = toward -perp. 0 = no conflict.
+    function obstacleDeflect(cx, cy, cr) {
+      const lx = ex - sx, ly = ey - sy, len2 = lx * lx + ly * ly;
+      if (len2 < 1) return 0;
+      const t = ((cx - sx) * lx + (cy - sy) * ly) / len2;
+      if (t <= 0.05 || t >= 0.95) return 0; // near endpoints — already handled by node surface trim
+      const clX = sx + t * lx, clY = sy + t * ly;
+      const dist = Math.hypot(cx - clX, cy - clY);
+      if (dist >= cr) return 0;
+      // For a quadratic bezier the curve midpoint shifts by cpDeflect/2, so to clear by cr
+      // we need cpDeflect >= 2*(cr - dist). Add 30px margin so the arc visibly clears.
+      const needed = 2 * (cr - dist) + 30;
+      const projPerp = (cx - mx) * perpX + (cy - my) * perpY;
+      return projPerp >= 0 ? -needed : needed; // deflect away from obstacle
+    }
+
+    // Test every node that is neither the source nor target
+    let cpDeflect = 0;
+    mapNodes.forEach(c => {
+      if (c.id === a.id || c.id === b.id) return;
+      const labelFontPx = Math.round(c.r * 0.42);
+      // Node circle clearance
+      const d1 = obstacleDeflect(c.x, c.y, c.r + 14);
+      // Label text zone: centred below the circle
+      const labelCy = c.y + c.r + 6 + labelFontPx * 0.55;
+      const d2 = obstacleDeflect(c.x, labelCy, labelFontPx * 0.6 + 16);
+      const d = Math.abs(d1) >= Math.abs(d2) ? d1 : d2;
+      if (Math.abs(d) > Math.abs(cpDeflect)) cpDeflect = d;
+    });
+
+    // No obstacles: small fixed bow so visually parallel edges separate slightly
+    if (cpDeflect === 0) {
+      const sign = (e.a < e.b) ? 1 : -1;
+      cpDeflect = 18 * sign;
+    }
+
+    const cpx = mx + perpX * cpDeflect;
+    const cpy = my + perpY * cpDeflect;
 
     ctx.beginPath();
     ctx.moveTo(sx, sy);
@@ -2019,7 +2055,7 @@ function drawMap(canvas, W, H) {
     }
     ctx.stroke();
 
-    // Arrow for protective: direction follows curve tangent at endpoint
+    // Arrow for protective: tangent direction at bezier endpoint
     if (e.dynamic === 'protective') {
       const arrowAngle = Math.atan2(ey - cpy, ex - cpx);
       ctx.setLineDash([]);
