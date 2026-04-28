@@ -4,6 +4,9 @@
 🗺️ **[Check out the live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html)** (no download needed)
 
 
+<img width="2710" height="1492" alt="image" src="https://github.com/user-attachments/assets/191430a2-95d1-4be6-8eba-5900615475e0" />
+
+
 ---
 
 Most self-help tools treat the mind as a single agent to be optimised. team-sheet treats it as a system of parts, each trying to help, each with its own history, perspective, values, fears, and skills.
