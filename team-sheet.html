@@ -277,7 +277,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .part-card-header:hover { background:rgba(255,255,255,0.02); }
 .part-card-name {
   font-family:'Cinzel',serif; font-size:15px; color:var(--text-b);
-  flex:0 1 auto; min-width:60px; max-width:220px; outline:none;
+  flex:0 1 auto; min-width:60px; max-width:200px; outline:none;
 }
 .part-card-name:empty::before { content:'Part name'; color:var(--text-dim); font-style:italic; }
 .part-card-name:focus { background:rgba(255,255,255,0.05); border-radius:3px; padding:0 4px; margin:0 -4px; }
@@ -387,6 +387,113 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .dynamic-badge.allied { background:rgba(200,168,74,0.1); color:var(--gold); border:1px solid rgba(200,168,74,0.25); }
 .dynamic-badge.distant { background:rgba(80,76,68,0.2); color:var(--text-dim); border:1px solid rgba(80,76,68,0.3); }
 .dynamic-badge.unknown { background:rgba(30,30,40,0.4); color:var(--text-dim); border:1px solid rgba(40,40,50,0.4); }
+.dynamic-badge.colluding { background:rgba(160,120,60,0.12); color:#b89050; border:1px solid rgba(160,120,60,0.3); }
+
+/* ── Part card: column headings ── */
+.part-col-heading {
+  font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--text-dim);
+  margin-bottom:10px; padding-bottom:6px;
+  border-bottom:1px solid var(--border);
+}
+
+/* ── Part card: Self relationship section ── */
+.self-rel-fields { display:flex; flex-direction:column; gap:8px; }
+.self-rel-field-wrap { display:flex; flex-direction:column; gap:3px; }
+.self-rel-sublabel {
+  font-size:10px; color:var(--text-dim); font-style:italic; line-height:1;
+}
+.self-rel-text {
+  font-size:13px; color:var(--text); outline:none; border-radius:3px;
+  padding:4px 6px; margin:-4px -6px;
+  min-height:1.5em; cursor:text; word-break:break-word;
+  transition:background 0.12s; line-height:1.5;
+}
+.self-rel-text:empty::before { content:attr(data-placeholder); color:var(--text-dim); font-style:italic; }
+.self-rel-text:hover { background:rgba(255,255,255,0.03); }
+.self-rel-text:focus { background:rgba(255,255,255,0.05); box-shadow:0 0 0 1px var(--border-hi); }
+
+/* ── Part card: protecting pills ── */
+.part-link-pills { display:flex; flex-wrap:wrap; gap:5px; flex:1; }
+.protecting-pill, .guarded-pill {
+  font-size:10px; font-family:var(--mono); padding:2px 7px; border-radius:3px;
+  cursor:pointer; transition:opacity 0.15s; white-space:nowrap;
+  text-decoration:none; display:inline-block;
+}
+.protecting-pill { color:var(--gold); border:1px solid rgba(200,168,74,0.35); background:rgba(200,168,74,0.07); }
+.protecting-pill:hover { background:rgba(200,168,74,0.15); }
+.guarded-pill { color:#8090b8; border:1px solid rgba(128,144,168,0.3); background:rgba(128,144,168,0.07); }
+.guarded-pill:hover { background:rgba(128,144,168,0.15); }
+
+/* ── Part card: secondary (below-fold) section ── */
+.part-secondary-toggle {
+  display:flex; align-items:center; gap:6px;
+  font-size:11px; color:var(--text-dim); cursor:pointer;
+  margin-top:14px; user-select:none; width:fit-content;
+}
+.part-secondary-toggle:hover { color:var(--text-mid); }
+.part-secondary-toggle::before {
+  content:'▶'; font-size:8px; transition:transform 0.15s; display:inline-block;
+}
+.part-secondary-toggle.open::before { transform:rotate(90deg); }
+.part-secondary-body { display:none; margin-top:10px; }
+.part-secondary-body.open { display:block; }
+.part-secondary-grid { display:grid; grid-template-columns:1fr 1fr; gap:0 24px; }
+.part-secondary-grid .part-section { margin-top:0; margin-bottom:14px; }
+
+/* ── Part card: key events list ── */
+.key-event-item {
+  display:flex; gap:6px; align-items:flex-start;
+  padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.key-event-item:last-of-type { border-bottom:none; }
+.key-event-age {
+  font-family:var(--mono); font-size:11px; color:var(--text-dim);
+  flex-shrink:0; width:38px; padding-top:2px;
+}
+.key-event-body { flex:1; min-width:0; }
+.key-event-label {
+  font-size:13px; outline:none; border-radius:3px;
+  padding:1px 4px; margin:-1px -4px; cursor:text; word-break:break-word;
+  transition:background 0.12s;
+}
+.key-event-label:empty::before { content:'Label...'; color:var(--text-dim); font-style:italic; }
+.key-event-label:hover { background:rgba(255,255,255,0.03); }
+.key-event-label:focus { background:rgba(255,255,255,0.05); box-shadow:0 0 0 1px var(--border-hi); }
+.key-event-notes {
+  font-size:11px; color:var(--text-dim); outline:none;
+  padding:1px 4px; margin:-1px -4px; cursor:text; word-break:break-word;
+  border-radius:3px; transition:background 0.12s; margin-top:1px;
+}
+.key-event-notes:empty::before { content:'Notes...'; font-style:italic; }
+.key-event-notes:hover { background:rgba(255,255,255,0.03); }
+.key-event-notes:focus { background:rgba(255,255,255,0.05); box-shadow:0 0 0 1px var(--border-hi); }
+.key-event-del {
+  background:none; border:none; cursor:pointer; color:var(--text-dim);
+  font-size:13px; padding:2px 3px; opacity:0; transition:opacity 0.12s; flex-shrink:0;
+}
+.key-event-item:hover .key-event-del { opacity:0.5; }
+.key-event-del:hover { opacity:1 !important; color:#c06060; }
+
+/* ── Bullet field: show-more link ── */
+.bullet-show-more {
+  font-size:11px; color:var(--text-dim); background:none; border:none;
+  cursor:pointer; padding:2px 4px; margin-top:1px; text-align:left;
+  font-family:var(--mono); transition:color 0.12s;
+}
+.bullet-show-more:hover { color:var(--gold); }
+
+/* ── Relationship table: notes row ── */
+.rel-notes-row td { padding-top:0 !important; padding-bottom:8px; }
+.rel-notes-text {
+  font-size:12px; color:var(--text-dim); outline:none; border-radius:3px;
+  padding:2px 5px; cursor:text; word-break:break-word; width:100%;
+  box-sizing:border-box; transition:background 0.12s; min-height:1em;
+  font-style:italic;
+}
+.rel-notes-text:empty::before { content:'Notes on this relationship...'; color:rgba(255,255,255,0.2); font-style:italic; }
+.rel-notes-text:hover { background:rgba(255,255,255,0.02); }
+.rel-notes-text:focus { background:rgba(255,255,255,0.04); box-shadow:0 0 0 1px var(--border-hi); }
 
 /* ── Add / delete buttons ── */
 .btn-ghost {
@@ -1014,6 +1121,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
       <span class="map-legend-heading">Relationships</span>
       <span class="map-legend-item"><svg class="map-legend-line" viewBox="0 0 40 10"><line x1="0" y1="5" x2="32" y2="5" stroke="rgba(128,144,168,0.8)" stroke-width="1.5"/><polygon points="32,5 22,2 22,8" fill="rgba(128,144,168,0.9)"/></svg>Protective</span>
       <span class="map-legend-item"><svg class="map-legend-line" viewBox="0 0 40 10"><line x1="0" y1="5" x2="40" y2="5" stroke="rgba(200,168,74,0.8)" stroke-width="2.5"/></svg>Allied</span>
+      <span class="map-legend-item"><svg class="map-legend-line" viewBox="0 0 40 10"><line x1="0" y1="5" x2="40" y2="5" stroke="rgba(160,120,60,0.7)" stroke-width="2" stroke-dasharray="4,4"/></svg>Colluding</span>
       <span class="map-legend-item"><svg class="map-legend-line" viewBox="0 0 40 10"><line x1="0" y1="5" x2="40" y2="5" stroke="rgba(192,64,64,0.8)" stroke-width="2"/></svg>Polarised</span>
       <span class="map-legend-item"><svg class="map-legend-line" viewBox="0 0 40 10"><line x1="0" y1="5" x2="40" y2="5" stroke="rgba(80,76,68,0.7)" stroke-width="1" stroke-dasharray="5,5"/></svg>Distant</span>
     </div>
@@ -1404,6 +1512,7 @@ const WELCOMED_KEY  = 'ts-welcomed-v1';
 const UNDO_KEY      = 'ts-undo-v1';
 const DEMO_NAME     = "Alex's Inner System";
 const IS_DEMO       = location.hostname.endsWith('github.io');
+function esc(str){ const d=document.createElement('div'); d.textContent=str??''; return d.innerHTML; }
 
 // Base role colors (can be overridden by appState.roleColors)
 const DEFAULT_ROLE_COLORS = {
@@ -1499,7 +1608,7 @@ let appState = {
   selfMoments: [],
   memories: [],
   roleColors: {},
-  _instructionsVersion: '1.8.0',
+  _instructionsVersion: '2.0.0',
 };
 
 // ══ SAVE / LOAD ════════════════════════════════════════════════
@@ -1741,10 +1850,30 @@ function buildBulletField(part, key, itemPlaceholder) {
     return row;
   }
 
+  let expanded = false;
+
   function rebuildList() {
     container.innerHTML = '';
     const items = getItems();
-    items.forEach((text, i) => container.appendChild(buildItem(text, i)));
+    const SHOW = 3;
+    const showAll = expanded || items.length <= SHOW;
+    const visibleItems = showAll ? items : items.slice(0, SHOW);
+
+    visibleItems.forEach((text, i) => container.appendChild(buildItem(text, i)));
+
+    if (!showAll && items.length > SHOW) {
+      const moreBtn = document.createElement('button');
+      moreBtn.className = 'bullet-show-more';
+      moreBtn.textContent = '... ' + (items.length - SHOW) + ' more';
+      moreBtn.addEventListener('click', () => { expanded = true; rebuildList(); });
+      container.appendChild(moreBtn);
+    } else if (expanded && items.length > SHOW) {
+      const lessBtn = document.createElement('button');
+      lessBtn.className = 'bullet-show-more';
+      lessBtn.textContent = 'Show less';
+      lessBtn.addEventListener('click', () => { expanded = false; rebuildList(); });
+      container.appendChild(lessBtn);
+    }
 
     const addBtn = document.createElement('button');
     addBtn.className = 'bullet-add';
@@ -1754,6 +1883,7 @@ function buildBulletField(part, key, itemPlaceholder) {
       items.push('');
       part[key] = items;
       saveState(appState);
+      expanded = true;
       rebuildList();
       const rows = container.querySelectorAll('.bullet-item');
       const lastRow = rows[rows.length - 1];
@@ -2084,6 +2214,8 @@ function drawMap(canvas, W, H) {
       ctx.strokeStyle = 'rgba(200,168,74,0.45)'; ctx.lineWidth = 2.5;
     } else if (e.dynamic === 'protective') {
       ctx.strokeStyle = 'rgba(128,144,168,0.7)'; ctx.lineWidth = 3;
+    } else if (e.dynamic === 'colluding') {
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = 'rgba(160,120,60,0.55)'; ctx.lineWidth = 2;
     } else if (e.dynamic === 'distant') {
       ctx.setLineDash([5, 7]); ctx.strokeStyle = 'rgba(80,76,68,0.5)'; ctx.lineWidth = 1;
     } else {
@@ -2390,7 +2522,7 @@ function renderMapEditor(s) {
 
     const dynSel2 = document.createElement('select');
     dynSel2.style.cssText = 'font-size:11px;padding:2px 3px;background:var(--bg);border:1px solid var(--border);border-radius:3px;color:var(--text);';
-    ['allied','protective','polarized','distant'].forEach(d => {
+    ['allied','protective','polarized','colluding','distant'].forEach(d => {
       const opt = document.createElement('option');
       opt.value = d; opt.textContent = d.charAt(0).toUpperCase() + d.slice(1);
       dynSel2.appendChild(opt);
@@ -2634,6 +2766,11 @@ function buildPartCard(part, idx, s) {
 
   const roleSelect = document.createElement('select');
   roleSelect.className = 'inline-select';
+  const ROLE_TIPS = {
+    manager: 'Proactive protector: keeps order and prevents pain before it arises. Planning, controlling, people-pleasing.',
+    firefighter: 'Reactive protector: steps in after pain is triggered to numb, distract, or escape. Impulsivity, bingeing, withdrawal.',
+    exile: 'Carries old pain, shame, or fear from the past. Rarely leads the day. Protectors work to keep exile feelings at bay.'
+  };
   ['manager','firefighter','exile'].forEach(r => {
     const opt = document.createElement('option');
     opt.value = r;
@@ -2641,9 +2778,11 @@ function buildPartCard(part, idx, s) {
     if (r === part.role) opt.selected = true;
     roleSelect.appendChild(opt);
   });
+  roleSelect.title = ROLE_TIPS[part.role] || '';
   roleSelect.addEventListener('change', e => {
     e.stopPropagation();
     part.role = roleSelect.value;
+    roleSelect.title = ROLE_TIPS[part.role] || '';
     saveState(appState);
     render(appState);
   });
@@ -2683,8 +2822,59 @@ function buildPartCard(part, idx, s) {
   chevron.textContent = '▶';
   chevron.style.cssText = 'font-size:10px;color:var(--text-dim);transition:transform 0.2s;flex-shrink:0;';
 
+  // Protecting / guarded-by pills
+  const pillsWrap = document.createElement('div');
+  pillsWrap.className = 'part-link-pills';
+  // This part protects another (has a protective relationship where this is the protector)
+  (part.relationships || []).forEach(rel => {
+    if (rel.dynamic === 'protective' && rel.partId !== 'self') {
+      const targetPart = (s.parts || []).find(p => p.id === rel.partId);
+      if (targetPart) {
+        const pill = document.createElement('a');
+        pill.className = 'protecting-pill';
+        pill.textContent = 'Protecting: ' + (targetPart.name || rel.partName || rel.partId);
+        pill.title = 'This part protects ' + (targetPart.name || rel.partName) + ' from having to be felt';
+        pill.href = '#';
+        pill.addEventListener('click', e => {
+          e.preventDefault(); e.stopPropagation();
+          const targetCard = document.querySelector(`.part-card[data-part-id="${rel.partId}"]`);
+          if (targetCard) { targetCard.classList.add('expanded'); targetCard.scrollIntoView({ behavior:'smooth', block:'start' }); }
+        });
+        pillsWrap.appendChild(pill);
+      }
+    }
+  });
+  // This part is guarded by another (another part has a protective relationship to this part)
+  (s.parts || []).forEach(otherPart => {
+    if (otherPart.id === part.id) return;
+    (otherPart.relationships || []).forEach(rel => {
+      if (rel.dynamic === 'protective' && rel.partId === part.id) {
+        const pill = document.createElement('a');
+        pill.className = 'guarded-pill';
+        pill.textContent = 'Guarded by: ' + (otherPart.name || rel.partName || otherPart.id);
+        pill.title = (otherPart.name || 'A protector') + ' works to prevent this part from being felt';
+        pill.href = '#';
+        pill.addEventListener('click', e => {
+          e.preventDefault(); e.stopPropagation();
+          const targetCard = document.querySelector(`.part-card[data-part-id="${otherPart.id}"]`);
+          if (targetCard) { targetCard.classList.add('expanded'); targetCard.scrollIntoView({ behavior:'smooth', block:'start' }); }
+        });
+        pillsWrap.appendChild(pill);
+      }
+    });
+  });
+
+  // Spacer pushes swatch+chevron to right when no pills present
+  const hdrSpacer = document.createElement('div');
+  hdrSpacer.style.cssText = 'flex:1;';
+
   hdr.appendChild(nameEl);
   hdr.appendChild(roleSelect);
+  if (pillsWrap.children.length > 0) {
+    hdr.appendChild(pillsWrap);
+  } else {
+    hdr.appendChild(hdrSpacer);
+  }
   hdr.appendChild(swatchWrap);
   hdr.appendChild(chevron);
   hdr.addEventListener('click', () => {
@@ -2723,53 +2913,307 @@ function buildPartCard(part, idx, s) {
   overviewSection.appendChild(overviewRow);
   body.appendChild(overviewSection);
 
-  // Two-column grid for detail fields
+  // Two-column grid
   const grid = document.createElement('div');
   grid.className = 'part-fields-grid';
+  grid.style.marginTop = '16px';
 
-  const LEFT_FIELDS = [
-    { key:'skills',        label:'Skills', placeholder:'Add a skill or weakness...' },
-    { key:'wants',         label:'Wants', placeholder:'Add something this part wants...' },
-    { key:'valuesAndNeeds',label:'Values & Needs', placeholder:'Add a value or need...' },
-    { key:'needsFromSelf', label:'Needs from Self', placeholder:'What would it take for this part to trust Self enough to step back...' },
-  ];
-  const RIGHT_FIELDS = [
-    { key:'fears',      label:'Fears',      placeholder:'Add a fear...' },
-    { key:'burdens',    label:'Burdens',    placeholder:'Add a burden...' },
-    { key:'triggers',   label:'Triggers',   placeholder:'Add a situation or state that activates this part...' },
-    { key:'trailheads', label:'Trailheads', placeholder:'Add a body sensation or signal for this part...' },
-  ];
+  // ── LEFT COLUMN: What this part carries ──
+  const leftCol = document.createElement('div');
+  const leftHdr = document.createElement('div');
+  leftHdr.className = 'part-col-heading';
+  leftHdr.textContent = 'What this part carries';
+  leftCol.appendChild(leftHdr);
 
-  [LEFT_FIELDS, RIGHT_FIELDS].forEach(col => {
-    const colEl = document.createElement('div');
-    col.forEach(f => {
-      const sec = document.createElement('div');
-      sec.className = 'part-section';
-      const lbl = document.createElement('div');
-      lbl.className = 'part-section-label';
-      lbl.textContent = f.label;
-      // migrate gifts → skills (legacy string migration handled inside buildBulletField via toArray)
-      if (f.key === 'skills' && !part.skills && part.gifts) part.skills = part.gifts;
-      const bulletList = buildBulletField(part, f.key, f.placeholder);
-      sec.appendChild(lbl);
-      sec.appendChild(bulletList);
-      colEl.appendChild(sec);
-    });
-    grid.appendChild(colEl);
-  });
+  // 1. Self relationship (most dynamic — top of left)
+  const selfRelSec = document.createElement('div');
+  selfRelSec.className = 'part-section';
+  selfRelSec.style.marginTop = '0';
+  const selfRelLbl = document.createElement('div');
+  selfRelLbl.className = 'part-section-label';
+  selfRelLbl.textContent = 'Self relationship';
+  selfRelLbl.title = 'How you and this part feel toward each other right now. The most clinically significant thing to track in IFS work. Changes as the relationship develops.';
+  const selfRelFields = document.createElement('div');
+  selfRelFields.className = 'self-rel-fields';
+
+  const srData = part.selfRelationship || {};
+
+  function makeSelfRelField(labelText, placeholder, currentVal, onSave, tooltipText) {
+    const wrap = document.createElement('div');
+    wrap.className = 'self-rel-field-wrap';
+    const sub = document.createElement('div');
+    sub.className = 'self-rel-sublabel';
+    sub.textContent = labelText;
+    if (tooltipText) sub.title = tooltipText;
+    const el = document.createElement('div');
+    el.className = 'self-rel-text';
+    el.contentEditable = 'true';
+    el.setAttribute('data-placeholder', placeholder);
+    el.textContent = currentVal || '';
+    el.addEventListener('blur', () => onSave(el.textContent.trim()));
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } });
+    wrap.appendChild(sub);
+    wrap.appendChild(el);
+    return wrap;
+  }
+
+  selfRelFields.appendChild(makeSelfRelField(
+    'You toward this part',
+    'How do you feel toward this part when you bring attention to it?',
+    srData.selfTowardPart,
+    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.selfTowardPart = v; saveState(appState); },
+    'Progression: contempt or dismissal, frustration, fear or avoidance, distance or numbness, neutral observation, curiosity, compassion, genuine care'
+  ));
+  selfRelFields.appendChild(makeSelfRelField(
+    'This part toward you',
+    'Does this part trust Self to lead? Resistant, watchful, beginning to cooperate?',
+    srData.partTowardSelf,
+    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.partTowardSelf = v; saveState(appState); },
+    'Progression: unaware of or indifferent to Self, resistant or distrustful, watchful or cautious, cautiously cooperative, trusting'
+  ));
+
+  selfRelSec.appendChild(selfRelLbl);
+  selfRelSec.appendChild(selfRelFields);
+  leftCol.appendChild(selfRelSec);
+
+  // 2. Asks of Self
+  const asksOfSelfSec = document.createElement('div');
+  asksOfSelfSec.className = 'part-section';
+  const asksLbl = document.createElement('div');
+  asksLbl.className = 'part-section-label';
+  asksLbl.textContent = 'Asks of Self';
+  asksLbl.title = 'What this part specifically needs from Self in order to feel heard and begin to step back. Only populate from what the part itself has expressed.';
+  const asksList = buildBulletField(part, 'needsFromSelf', 'What would it take for this part to trust Self enough to step back...');
+  asksOfSelfSec.appendChild(asksLbl);
+  asksOfSelfSec.appendChild(asksList);
+  leftCol.appendChild(asksOfSelfSec);
+
+  // 3. Positive intent
+  const intentSec = document.createElement('div');
+  intentSec.className = 'part-section';
+  const intentLbl = document.createElement('div');
+  intentLbl.className = 'part-section-label';
+  intentLbl.textContent = 'Positive intent';
+  intentLbl.title = 'What this part is trying to protect or achieve — its underlying motivation and values. Every part has a positive intent even when its strategy is harmful.';
+  const intentList = buildBulletField(part, 'valuesAndNeeds', 'What is this part trying to protect or achieve...');
+  intentSec.appendChild(intentLbl);
+  intentSec.appendChild(intentList);
+  leftCol.appendChild(intentSec);
+
+  // 4. Burdens
+  const burdensSec = document.createElement('div');
+  burdensSec.className = 'part-section';
+  const burdensLbl = document.createElement('div');
+  burdensLbl.className = 'part-section-label';
+  burdensLbl.textContent = 'Burdens';
+  burdensLbl.title = 'Beliefs or wounds carried from the past that are not truly this part\'s own. Most load-bearing burden first.';
+  const burdensList = buildBulletField(part, 'burdens', 'Add a burden or core belief carried from the past...');
+  burdensSec.appendChild(burdensLbl);
+  burdensSec.appendChild(burdensList);
+  leftCol.appendChild(burdensSec);
+
+  // ── RIGHT COLUMN: How this part shows up ──
+  const rightCol = document.createElement('div');
+  const rightHdr = document.createElement('div');
+  rightHdr.className = 'part-col-heading';
+  rightHdr.textContent = 'How this part shows up';
+  rightCol.appendChild(rightHdr);
+
+  // 1. Wants
+  const wantsSec = document.createElement('div');
+  wantsSec.className = 'part-section';
+  wantsSec.style.marginTop = '0';
+  const wantsLbl = document.createElement('div');
+  wantsLbl.className = 'part-section-label';
+  wantsLbl.textContent = 'Wants';
+  wantsLbl.title = 'What this part wants from others or the world — surface-level desires and immediate expressions. Most pressing first.';
+  const wantsList = buildBulletField(part, 'wants', 'Add something this part wants from the world...');
+  wantsSec.appendChild(wantsLbl);
+  wantsSec.appendChild(wantsList);
+  rightCol.appendChild(wantsSec);
+
+  // 2. Trailheads
+  const trailheadsSec = document.createElement('div');
+  trailheadsSec.className = 'part-section';
+  const trailheadsLbl = document.createElement('div');
+  trailheadsLbl.className = 'part-section-label';
+  trailheadsLbl.textContent = 'Trailheads';
+  trailheadsLbl.title = 'Body sensations and physical signals that indicate this part is present — doorways into the part. E.g. tightness across the chest, hollow feeling below the sternum, shoulders pulling in.';
+  const trailheadsList = buildBulletField(part, 'trailheads', 'Add a body sensation or physical signal...');
+  trailheadsSec.appendChild(trailheadsLbl);
+  trailheadsSec.appendChild(trailheadsList);
+  rightCol.appendChild(trailheadsSec);
+
+  // 3. Triggers
+  const triggersSec = document.createElement('div');
+  triggersSec.className = 'part-section';
+  const triggersLbl = document.createElement('div');
+  triggersLbl.className = 'part-section-label';
+  triggersLbl.textContent = 'Triggers';
+  triggersLbl.title = 'External situations, relationship contexts, or internal states that reliably activate this part. Most frequent or potent first.';
+  const triggersList = buildBulletField(part, 'triggers', 'Add a situation or state that activates this part...');
+  triggersSec.appendChild(triggersLbl);
+  triggersSec.appendChild(triggersList);
+  rightCol.appendChild(triggersSec);
+
+  // 4. Fears
+  const fearsSec = document.createElement('div');
+  fearsSec.className = 'part-section';
+  const fearsLbl = document.createElement('div');
+  fearsLbl.className = 'part-section-label';
+  fearsLbl.textContent = 'Fears';
+  fearsLbl.title = 'What this part is trying to prevent. Most frequently activated fear first. Often reveals which exile the part is protecting.';
+  const fearsList = buildBulletField(part, 'fears', 'Add a fear — what this part is trying to prevent...');
+  fearsSec.appendChild(fearsLbl);
+  fearsSec.appendChild(fearsList);
+  rightCol.appendChild(fearsSec);
+
+  grid.appendChild(leftCol);
+  grid.appendChild(rightCol);
   body.appendChild(grid);
 
-  // Potential Roles — full width below the grid (sparsely populated, only when the part has named something)
-  const potentialSection = document.createElement('div');
-  potentialSection.className = 'part-section';
-  potentialSection.style.marginTop = '4px';
+  // ── Secondary section (Skills, Emerged Age, Potential Roles, Key Events) ──
+  const secondaryToggle = document.createElement('div');
+  secondaryToggle.className = 'part-secondary-toggle';
+  secondaryToggle.textContent = ' More about this part';
+
+  const secondaryBody = document.createElement('div');
+  secondaryBody.className = 'part-secondary-body';
+  const secGrid = document.createElement('div');
+  secGrid.className = 'part-secondary-grid';
+
+  // Left: Skills + Emerged age
+  const secLeft = document.createElement('div');
+
+  if (!part.skills && part.gifts) part.skills = part.gifts;
+  const skillsSec = document.createElement('div');
+  skillsSec.className = 'part-section';
+  skillsSec.style.marginTop = '0';
+  const skillsLbl = document.createElement('div');
+  skillsLbl.className = 'part-section-label';
+  skillsLbl.textContent = 'Skills';
+  const skillsList = buildBulletField(part, 'skills', 'Add a skill or characteristic...');
+  skillsSec.appendChild(skillsLbl);
+  skillsSec.appendChild(skillsList);
+  secLeft.appendChild(skillsSec);
+
+  const emergedSec = document.createElement('div');
+  emergedSec.className = 'part-section';
+  const emergedLbl = document.createElement('div');
+  emergedLbl.className = 'part-section-label';
+  emergedLbl.textContent = 'Emerged around age';
+  emergedLbl.title = 'Approximate age when this part first developed. Use tentative language — rough window is more useful than false precision.';
+  const emergedRow = document.createElement('div');
+  emergedRow.style.cssText = 'display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;';
+  const emergedAgeInput = document.createElement('input');
+  emergedAgeInput.type = 'number';
+  emergedAgeInput.min = '0'; emergedAgeInput.max = '100';
+  emergedAgeInput.style.cssText = 'width:52px;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:3px;padding:2px 5px;font-size:12px;font-family:var(--mono);flex-shrink:0;';
+  emergedAgeInput.value = part.emergedAge != null ? part.emergedAge : '';
+  emergedAgeInput.placeholder = 'age';
+  emergedAgeInput.addEventListener('change', () => {
+    const v = parseInt(emergedAgeInput.value);
+    part.emergedAge = isNaN(v) ? null : v;
+    saveState(appState);
+  });
+  const emergedNoteEl = makeEditable(part.emergedAgeNote || '', 'Context for when and why...', v => { part.emergedAgeNote = v; saveState(appState); });
+  emergedNoteEl.style.cssText = 'flex:1;font-size:12px;color:var(--text-dim);min-width:80px;';
+  emergedRow.appendChild(emergedAgeInput);
+  emergedRow.appendChild(emergedNoteEl);
+  emergedSec.appendChild(emergedLbl);
+  emergedSec.appendChild(emergedRow);
+  secLeft.appendChild(emergedSec);
+  secGrid.appendChild(secLeft);
+
+  // Right: Potential Roles + Key Events
+  const secRight = document.createElement('div');
+
+  const potentialSec = document.createElement('div');
+  potentialSec.className = 'part-section';
+  potentialSec.style.marginTop = '0';
   const potentialLbl = document.createElement('div');
   potentialLbl.className = 'part-section-label';
-  potentialLbl.textContent = 'Potential Roles';
+  potentialLbl.textContent = 'Potential roles';
+  potentialLbl.title = 'What this part might do if it were no longer needed in its protective role. Only populate when the part itself has proposed something.';
   const potentialList = buildBulletField(part, 'potentialRoles', 'Add a potential role if this part were unburdened...');
-  potentialSection.appendChild(potentialLbl);
-  potentialSection.appendChild(potentialList);
-  body.appendChild(potentialSection);
+  potentialSec.appendChild(potentialLbl);
+  potentialSec.appendChild(potentialList);
+  secRight.appendChild(potentialSec);
+
+  const keyEventsSec = document.createElement('div');
+  keyEventsSec.className = 'part-section';
+  const keyEventsLbl = document.createElement('div');
+  keyEventsLbl.className = 'part-section-label';
+  keyEventsLbl.textContent = 'Key events';
+  keyEventsLbl.title = 'Significant moments in this part\'s history — experiences that shaped or activated it.';
+
+  function rebuildKeyEvents() {
+    let listEl = keyEventsSec.querySelector('.key-events-list');
+    if (!listEl) { listEl = document.createElement('div'); listEl.className = 'key-events-list'; }
+    listEl.innerHTML = '';
+    const events = Array.isArray(part.keyEvents) ? part.keyEvents : [];
+    events.forEach((ev, ei) => {
+      const item = document.createElement('div');
+      item.className = 'key-event-item';
+      const ageInput = document.createElement('input');
+      ageInput.type = 'number'; ageInput.min = '0'; ageInput.max = '100';
+      ageInput.style.cssText = 'width:38px;background:var(--card);border:1px solid var(--border);color:var(--text-dim);border-radius:3px;padding:1px 3px;font-size:11px;font-family:var(--mono);flex-shrink:0;';
+      ageInput.value = ev.age != null ? ev.age : '';
+      ageInput.placeholder = 'age';
+      ageInput.addEventListener('change', () => { const v = parseInt(ageInput.value); events[ei].age = isNaN(v) ? undefined : v; part.keyEvents = events; saveState(appState); });
+      const bodyEl = document.createElement('div');
+      bodyEl.className = 'key-event-body';
+      const labelEl = document.createElement('div');
+      labelEl.className = 'key-event-label';
+      labelEl.contentEditable = 'true';
+      labelEl.textContent = ev.label || '';
+      labelEl.setAttribute('data-placeholder', 'Event label...');
+      labelEl.addEventListener('blur', () => { events[ei].label = labelEl.textContent.trim(); part.keyEvents = events; saveState(appState); });
+      labelEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); labelEl.blur(); } });
+      const notesEl = document.createElement('div');
+      notesEl.className = 'key-event-notes';
+      notesEl.contentEditable = 'true';
+      notesEl.textContent = ev.notes || '';
+      notesEl.setAttribute('data-placeholder', 'Brief context...');
+      notesEl.addEventListener('blur', () => { events[ei].notes = notesEl.textContent.trim(); part.keyEvents = events; saveState(appState); });
+      notesEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); notesEl.blur(); } });
+      bodyEl.appendChild(labelEl);
+      bodyEl.appendChild(notesEl);
+      const delBtn = document.createElement('button');
+      delBtn.className = 'key-event-del';
+      delBtn.textContent = '×';
+      delBtn.title = 'Remove';
+      delBtn.addEventListener('click', () => { events.splice(ei, 1); part.keyEvents = events; saveState(appState); rebuildKeyEvents(); });
+      item.appendChild(ageInput);
+      item.appendChild(bodyEl);
+      item.appendChild(delBtn);
+      listEl.appendChild(item);
+    });
+    const addEvBtn = document.createElement('button');
+    addEvBtn.className = 'bullet-add';
+    addEvBtn.innerHTML = '<span style="font-size:14px;line-height:1">+</span> Add event';
+    addEvBtn.addEventListener('click', () => {
+      if (!part.keyEvents) part.keyEvents = [];
+      part.keyEvents.push({ label:'', age: undefined, notes:'' });
+      saveState(appState);
+      rebuildKeyEvents();
+      secondaryBody.classList.add('open');
+      secondaryToggle.classList.add('open');
+    });
+    listEl.appendChild(addEvBtn);
+    if (!keyEventsSec.contains(listEl)) keyEventsSec.appendChild(listEl);
+  }
+  rebuildKeyEvents();
+  secRight.appendChild(keyEventsSec);
+  secGrid.appendChild(secRight);
+  secondaryBody.appendChild(secGrid);
+
+  secondaryToggle.addEventListener('click', () => {
+    secondaryToggle.classList.toggle('open');
+    secondaryBody.classList.toggle('open');
+  });
+  body.appendChild(secondaryToggle);
+  body.appendChild(secondaryBody);
 
   // Divider before relationships
   const divider = document.createElement('hr');
@@ -2780,7 +3224,8 @@ function buildPartCard(part, idx, s) {
   const relHdr = document.createElement('div');
   relHdr.className = 'part-section-label';
   relHdr.style.marginTop = '14px';
-  relHdr.textContent = 'Relationships';
+  relHdr.textContent = 'Relationships with other parts';
+  relHdr.title = 'How this part relates to other parts in the system. The Self relationship is tracked separately above.';
   body.appendChild(relHdr);
 
   const relTable = buildRelTable(part, idx, s);
@@ -2804,6 +3249,15 @@ function buildPartCard(part, idx, s) {
   return card;
 }
 
+const DYNAMIC_TIPS = {
+  polarized: 'Parts in direct opposition, each trying to override the other.',
+  protective: 'One part shielding another from accessing painful exile material. Direction: protector references the exile it guards.',
+  allied: 'Parts working together toward a shared goal. The cooperation is genuinely helpful.',
+  colluding: 'Parts cooperating to maintain avoidance — often around the same exile. Seems allied but keeps the system stuck.',
+  distant: 'Little contact or awareness of each other.',
+  unknown: 'Relationship not yet explored.'
+};
+
 function buildRelTable(part, partIdx, s) {
   const wrapper = document.createElement('div');
   wrapper.style.overflowX = 'auto';
@@ -2816,13 +3270,8 @@ function buildRelTable(part, partIdx, s) {
 
   const tbody = document.createElement('tbody');
 
-  // Ensure Self row exists
-  const allRels = part.relationships || [];
-  const hasSelf = allRels.some(r => r.partId === 'self');
-  if (!hasSelf) {
-    allRels.unshift({ partId: 'self', partName: 'Self', thisPartToOther: '', otherToThisPart: '', dynamic: 'unknown', notes: '' });
-    part.relationships = allRels;
-  }
+  // Filter out any legacy Self row — Self relationship is now in selfRelationship field
+  const allRels = (part.relationships || []).filter(r => r.partId !== 'self');
 
   allRels.forEach((rel, relIdx) => {
     const tr = document.createElement('tr');
@@ -2830,7 +3279,16 @@ function buildRelTable(part, partIdx, s) {
     const tdName = document.createElement('td');
     const badge = document.createElement('span');
     badge.className = 'part-ref';
+    const targetPart = (s.parts || []).find(p => p.id === rel.partId);
     badge.textContent = rel.partName || rel.partId;
+    if (targetPart) {
+      badge.style.cursor = 'pointer';
+      badge.title = 'Go to ' + (targetPart.name || rel.partName);
+      badge.addEventListener('click', () => {
+        const targetCard = document.querySelector(`.part-card[data-part-id="${rel.partId}"]`);
+        if (targetCard) { targetCard.classList.add('expanded'); targetCard.scrollIntoView({ behavior:'smooth', block:'start' }); }
+      });
+    }
     tdName.appendChild(badge);
 
     const tdToOther = document.createElement('td');
@@ -2848,15 +3306,17 @@ function buildRelTable(part, partIdx, s) {
     const tdDynamic = document.createElement('td');
     const dynSelect = document.createElement('select');
     dynSelect.className = 'inline-select';
-    ['polarized','protective','allied','distant','unknown'].forEach(d => {
+    ['polarized','protective','allied','colluding','distant','unknown'].forEach(d => {
       const opt = document.createElement('option');
       opt.value = d;
       opt.textContent = d;
       if (d === rel.dynamic) opt.selected = true;
       dynSelect.appendChild(opt);
     });
+    dynSelect.title = DYNAMIC_TIPS[rel.dynamic] || '';
     dynSelect.addEventListener('change', () => {
       rel.dynamic = dynSelect.value;
+      dynSelect.title = DYNAMIC_TIPS[rel.dynamic] || '';
       saveState(appState);
       renderMap(appState);
     });
@@ -2864,6 +3324,22 @@ function buildRelTable(part, partIdx, s) {
 
     tr.appendChild(tdName); tr.appendChild(tdToOther); tr.appendChild(tdToThis); tr.appendChild(tdDynamic);
     tbody.appendChild(tr);
+
+    // Notes row (spans all columns, appears below the main row)
+    const notesTr = document.createElement('tr');
+    notesTr.className = 'rel-notes-row';
+    const notesTd = document.createElement('td');
+    notesTd.colSpan = 4;
+    const notesEl = document.createElement('div');
+    notesEl.className = 'rel-notes-text';
+    notesEl.contentEditable = 'true';
+    notesEl.textContent = rel.notes || '';
+    notesEl.setAttribute('data-placeholder', 'Notes on this relationship (context, nuance, how it varies)...');
+    notesEl.addEventListener('blur', () => { rel.notes = notesEl.textContent.trim(); saveState(appState); });
+    notesEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); notesEl.blur(); } });
+    notesTd.appendChild(notesEl);
+    notesTr.appendChild(notesTd);
+    tbody.appendChild(notesTr);
   });
 
   table.appendChild(tbody);
@@ -3532,7 +4008,7 @@ function _initWheelEvents() {
       const preview = (m.description || '').slice(0, 130) + ((m.description || '').length > 130 ? '...' : '');
       showTip(
         EIGHT_CS[dot.cIdx].name,
-        `<div class="tt-moment-date">${m.date || ''}</div><div class="tt-moment-text">${preview || '<em style="color:var(--text-dim)">No description yet</em>'}</div>`,
+        `<div class="tt-moment-date">${esc(m.date || '')}</div><div class="tt-moment-text">${preview ? esc(preview) : '<em style="color:var(--text-dim)">No description yet</em>'}</div>`,
         e
       );
       _setHubHover(false);
@@ -3656,8 +4132,8 @@ function _renderDetailPanel(s, cIdx) {
       const idx  = (s.selfMoments || []).indexOf(m);
       const desc = m.description || '';
       html += `<div class="moment-entry">
-        <div class="moment-date">${m.date || ''}</div>
-        <div class="moment-desc sdp-editable" data-midx="${idx}" contenteditable="true" spellcheck="false">${desc}</div>
+        <div class="moment-date">${esc(m.date || '')}</div>
+        <div class="moment-desc sdp-editable" data-midx="${idx}" contenteditable="true" spellcheck="false">${esc(desc)}</div>
       </div>`;
     });
   }
@@ -4206,10 +4682,49 @@ function importFromFile(event) {
 }
 
 // ══ APPLY UPDATE (IMPORT) ═════════════════════════════════════
+function sanitizeImportHTML(obj) {
+  const TAG_RE = /<\/?[a-zA-Z][^>]*\/?>/g;
+  let stripped = false;
+  function walk(v) {
+    if (typeof v === 'string') {
+      const clean = v.replace(TAG_RE, '');
+      if (clean !== v) stripped = true;
+      return clean;
+    }
+    if (Array.isArray(v)) return v.map(walk);
+    if (v !== null && typeof v === 'object') {
+      const out = {};
+      for (const k of Object.keys(v)) out[k] = walk(v[k]);
+      return out;
+    }
+    return v;
+  }
+  return { result: walk(obj), stripped };
+}
+
+function validateImport(p) {
+  const errs = [];
+  const chk = (bad, msg) => { if (bad) errs.push(msg); };
+  const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+  chk(p.system      !== undefined && !isObj(p.system),           '"system" must be an object, not an array');
+  chk(p._selfWeight !== undefined && (typeof p._selfWeight !== 'number' || !Number.isFinite(p._selfWeight) || p._selfWeight < 0 || p._selfWeight > 1), '"_selfWeight" must be a number 0–1');
+  ['parts','sessions','selfMoments','memories'].forEach(f => {
+    chk(p[f] !== undefined && !Array.isArray(p[f]), `"${f}" must be an array`);
+  });
+  if (Array.isArray(p.parts)) {
+    const bad = p.parts.find(pt => pt && typeof pt === 'object' && pt.id !== undefined && typeof pt.id !== 'string');
+    chk(bad, `part "${bad?.name || '?'}" has a non-string id`);
+  }
+  return errs.length ? errs[0] : null;
+}
+
 function applyUpdate() {
   const raw = document.getElementById('json-input').value.trim();
   try {
-    const p = JSON.parse(raw);
+    const { result: p, stripped } = sanitizeImportHTML(JSON.parse(raw));
+    if (stripped) showToast('HTML tags were removed from the import data.', 5000);
+    const _valErr = validateImport(p);
+    if (_valErr) { setModalStatus('Invalid data: ' + _valErr, 'err'); return; }
     const isPartial = p._partial === true || (!p.system && !p.parts);
     delete p._partial;
 
