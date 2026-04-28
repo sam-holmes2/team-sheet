@@ -1,4 +1,4 @@
-# Session Threat Model
+# Journalling Threat Model
 
 How private is your inner map, really? This document breaks down the trust and risk involved at each level of journalling, from pen and paper to frontier AI, and shows how team-sheet can fit into any of them.
 
