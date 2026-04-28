@@ -1,40 +1,39 @@
 # team-sheet
 
 *A map of your inner world 🌍*
+🗺️ **[Check out the live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html)** (no download needed)
+
 
 ---
 
-Most self-help tools treat the mind as a single agent to be optimised. team-sheet treats it as a system of parts, each trying to help, each with its own history, fears, and gifts.
+Most self-help tools treat the mind as a single agent to be optimised. team-sheet treats it as a system of parts, each trying to help, each with its own history, perspective, values, fears, and skills.
 
-team-sheet is a personal [IFS (Internal Family Systems)](https://ifs-institute.com/) mapping app. Journal with your AI, paste back the JSON, and watch your inner map take shape and grow more detailed over time. No AI? Edit fields directly. It works fully standalone too.
+team-sheet is a personal [IFS (Internal Family Systems)](https://ifs-institute.com/) mapping app. Journal with your AI, paste the data it produces into a local .html file and watch your inner map take shape and grow more detailed over time. No AI? Edit fields directly. It works fully standalone too.
 
 No prior IFS experience needed. The app will introduce the concepts naturally through journalling.
 
----
-
-🗺️ **[Try the live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html)** (no download needed)
 
 ---
 
-🔒 **Private by default.** A single `.html` file and some JSON. No server, no accounts, no telemetry. Your data stays on your machine. If you use an AI to journal, check your provider's privacy settings. Local models like [Ollama](https://ollama.com) work for fully offline journalling.
+🔒 **Private by default.** A single `.html` file and some JSON. No server, no accounts, no telemetry. If you do choose to use an AI to journal, check [`journalling-threat-model.md`](https://github.com/sam-holmes2/team-sheet/blob/master/journalling-threat-model.md) to understand the risks associated with different types of journalling and the [`ai-privacy-guide`](https://github.com/sam-holmes2/team-sheet/blob/master/ai-privacy-guide.md) file for details on how you can mitigate these risks, for example by reconfiguring your provider's privacy setting or setting up a local LLM using [Ollama](https://ollama.com) for fully offline AI journalling.
 
 ---
 
 ## Setup
-
+Follow these steps for your first session: 
 1. **Download [`team-sheet.html`](team-sheet.html) and [`instructions.md`](instructions.md):** click each link, then the download icon (top right).
 2. **Create (or open) your AI project:** e.g. [claude.ai](https://claude.ai) → New Project.
 3. **Upload `instructions.md` to project knowledge:** Project sidebar → Add content → Add files.
 4. **Paste the quickstart prompt** below and start talking.
-5. **At the end of your session, ask:** `"Update my data.json based on our conversation."`
+5. **At the end of your session, ask:** `"Update my data based on our conversation."`
 6. **Add `data.json` to project knowledge:** same as step 3. (If updating: remove the old version first, then upload the new one.)
-7. **Import into the app:** open `team-sheet.html`, click `↑` (top right), paste the JSON, Import.
+7. **Import your data into the app:** open `team-sheet.html`, click `↑` (top right), paste the JSON, Import.
 
-**No AI?** Open the app, edit fields directly, and export your data. The import/export workflow is optional.
+**No AI?** Just download and open `team-sheet.html` then edit fields directly. The import/export workflow is entirely optional.
 
 ---
 
-## Quickstart prompt
+### Quickstart prompt
 
 ```
 I'm setting up team-sheet, a personal IFS mapping app. I've attached instructions.md which explains the data format and how to work with me.
@@ -47,12 +46,13 @@ Once you have a reasonable picture, generate my initial data.json using the form
 ---
 
 ## Each session
-
-1. **Start a new chat** in your AI project. The AI already has your context from project knowledge.
-2. **Journal:** brain dump freely, or name a mode (see below).
-3. **End the session:** ask your AI to *"Update my data.json."*
-4. **Replace `data.json` in project knowledge:** remove the old version, upload the new one.
-5. **Sync the app:** click `↑`, paste the JSON, Import.
+Follow these steps for subsequent sessions: 
+1. **Export your data**: if you made any changes within the app, hit the `↓ EXPORT` button to download your data.
+2. **Start a new chat** in your AI project, double check your latest data.json file is attached as context.
+3. **Journal:** brain dump freely about whatever is on your mind, or name a mode you'd like the AI to follow initially (see below).
+4. **End the session:** ask your AI to *"Update my data"*.
+5. **Replace `data.json` in project knowledge:** remove the old version, upload your latest one produced in step 4. 
+6. **Sync the app:** click `↑ IMPORT`, paste the data from step 4 
 
 ---
 
@@ -148,8 +148,8 @@ If you want to go deeper before or alongside using the app, here are good starti
 
 **To listen first:**
 
-- **Podcast:** "How (and Why) to Hug Your Inner Dragons" (an interview with Richard Schwartz, the founder of IFS). A good first listen if you prefer audio.
-- **Podcast:** The Tim Ferriss Show #492, "Richard Schwartz: IFS, Psychedelic Experiences Without Drugs, and Finding Inner Peace for Our Many Parts". Wide-ranging and accessible.
+- **Podcast:** ["How (and Why) to Hug Your Inner Dragons"](https://open.spotify.com/episode/3St6LBbY32Tuck0XAuQQHE) (an interview with Richard Schwartz, the founder of IFS). 
+- **Podcast:** [The Tim Ferriss Show #492, "Richard Schwartz: IFS, Psychedelic Experiences Without Drugs, and Finding Inner Peace for Our Many Parts".](https://www.youtube.com/watch?v=ebLMeNiuoEo) 
 
 **To read first:**
 
@@ -176,7 +176,7 @@ If you want to go deeper before or alongside using the app, here are good starti
 - **Your `data.json` is the sensitive part.** `team-sheet.html` and `instructions.md` are identical for all users and safe to share freely.
 - **Think before syncing `data.json` to cloud storage.** Uploading to Google Drive, Dropbox, or iCloud means trusting that provider with your inner world material.
 - **AI is optional.** The app works fully offline as a plain tracker. Edit fields directly without any AI involved.
-- **Use [Firefox](https://www.firefox.com/) if possible.** It isolates each local HTML file's storage. In Chrome and Edge, all local files share the same origin.
+- **Use [Firefox](https://www.firefox.com/) and disable extensions for additional safety.** Firefox isolates each local HTML file's storage. In Chrome and Edge, all local files share the same origin.
 
 team-sheet is not a replacement for professional mental health support. IFS has a strong evidence base and is practised by trained therapists. If you are working with complex trauma or distressing material, please seek qualified support alongside using this app.
 
@@ -207,10 +207,11 @@ Contributions welcome: if you adapt the instructions in a way others might find 
 
 ## Why I built this
 
-IFS gave me a genuinely useful framework for understanding my inner world, but keeping track of it was hard. Insights from one session were forgotten by the next. Parts I had named would fade back into unnamed patterns. There was nowhere to hold the map.
+IFS gave me a genuinely useful framework for understanding my inner world, but keeping track of this understanding as it grew more complex over time became difficult. Insights from one therapy session were often forgotten by the next. I found it helpful to regularly check in with my parts between sessions, as IFS creator Richard Schwartz recommends, but this became far easier when it contributed to a growing, evolving map.
 
-team-sheet is that place. A single file, no server, no accounts. Your data stays on your machine. Pair it with an AI that has persistent project context and you have a reflective partner that remembers every part you have named, and can help you go deeper each time.
+I also noticed some parts were craving something more external and objective (clear evidence that I was "on the right track") to help recognise and appreciate the growth and healing that other skeptical parts tended to dismiss. Team-sheet became that place for me, and I hope it can benefit others too.
 
 ---
 
-*companion to [character-sheet](../README.md), a gamified life dashboard built on the same local-first, AI-optional architecture. If team-sheet is Animal Crossing for understanding and befriending your inner world, character-sheet is Skyrim where you are the main character: for when you need some accountability, encouragement, and a quest log to help you lock in, level up, and solve your problems.*
+*Companion to [character-sheet](../README.md), a gamified life dashboard built on the same local-first, AI-optional architecture. 
+If team-sheet is a cozy management game like Animal Crossing for understanding and befriending your inner world, then character-sheet is an intense RPG like Skyrim where you are the main character: for when you need some accountability, encouragement, and a quest log to help you lock in, level up, and solve external problems.*
