@@ -8,31 +8,31 @@
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --bg:        #07070b;
-  --surface:   #0b0b10;
-  --card:      #0e0e15;
-  --border:    #18181f;
-  --border-hi: #232332;
+  --bg:        #0e0b07;
+  --surface:   #130f09;
+  --card:      #1a1610;
+  --border:    #2a211a;
+  --border-hi: #3a2f24;
   --gold:      #c8a84a;
   --gold-dim:  rgba(200,168,74,0.09);
-  --text:      #d4cebb;
-  --text-b:    #eae4ce;
-  --text-mid:  #aba598;
-  --text-dim:  #605c52;
+  --text:      #e8dfc8;
+  --text-b:    #f0e8d0;
+  --text-mid:  #b8a890;
+  --text-dim:  #6e5e4a;
   --mono:      'JetBrains Mono', monospace;
-  --help:      #2da86a;
-  --help-dim:  rgba(45,168,106,0.12);
-  --help-border: rgba(45,168,106,0.35);
+  --help:      #3ab878;
+  --help-dim:  rgba(58,184,120,0.12);
+  --help-border: rgba(58,184,120,0.35);
   /* Role colours */
-  --manager:   #3a80c8;
-  --manager-bg: rgba(58,128,200,0.08);
-  --firefighter: #d07830;
-  --firefighter-bg: rgba(208,120,48,0.08);
-  --exile:     #60a838;
-  --exile-bg:  rgba(96,168,56,0.08);
+  --manager:   #5090cc;
+  --manager-bg: rgba(80,144,204,0.08);
+  --firefighter: #d07038;
+  --firefighter-bg: rgba(208,112,56,0.08);
+  --exile:     #70aa48;
+  --exile-bg:  rgba(112,170,72,0.08);
   --self-color: #e8dfc8;
   --self-bg:   rgba(232,223,200,0.06);
-  --part-color-popover-bg: #14141e;
+  --part-color-popover-bg: #1a1610;
 }
 html, body { height:100%; }
 html { background:var(--bg); overflow-x:hidden; }
@@ -99,6 +99,36 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .journal-overview { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(128,144,168,0.15); }
 .journal-overview-title { font-family:'Cinzel',serif; font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+
+/* ── Body diagram panel (Parts tab) ── */
+.body-diagram-panel { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid var(--border); }
+.bd-panel-title { font-family:'Cinzel',serif; font-size:11px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+.bd-controls { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:14px; }
+.bd-control-group { display:flex; align-items:center; gap:8px; }
+.bd-control-label { font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); white-space:nowrap; }
+.bd-segmented { display:flex; border:1px solid var(--border-hi); border-radius:5px; overflow:hidden; }
+.bd-seg-btn { background:none; border:none; border-right:1px solid var(--border-hi); color:var(--text-mid); font-family:var(--mono); font-size:11px; padding:3px 9px; cursor:pointer; transition:background 0.12s,color 0.12s; }
+.bd-seg-btn:last-child { border-right:none; }
+.bd-seg-btn:hover { background:var(--border); }
+.bd-seg-btn.active { background:var(--gold-dim); color:var(--gold); }
+.bd-slider { width:80px; accent-color:var(--gold); cursor:pointer; }
+.bd-main-area { display:flex; gap:24px; align-items:flex-start; }
+.bd-svg-wrap { flex-shrink:0; width:150px; }
+.body-diagram-svg { width:100%; height:auto; display:block; cursor:crosshair; user-select:none; }
+.bd-legend { flex:1; min-width:0; }
+.bd-legend-title { font-family:'Cinzel',serif; font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; }
+.bd-legend-item { display:flex; align-items:center; gap:7px; margin-top:9px; margin-bottom:1px; }
+.bd-legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.bd-legend-name { font-size:14px; font-weight:600; color:var(--text-b); }
+.bd-legend-trailhead { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-mid); margin-left:17px; margin-bottom:2px; line-height:1.4; }
+.bd-legend-trailhead.bd-unplaced { color:var(--text-dim); font-style:italic; }
+.bd-place-btn { background:var(--border); border:1px solid var(--border-hi); border-radius:3px; color:var(--text-mid); font-family:var(--mono); font-size:10px; padding:1px 6px; cursor:pointer; white-space:nowrap; }
+.bd-place-btn:hover { background:var(--border-hi); color:var(--text); }
+.bd-style-pill { display:inline-block; font-family:var(--mono); font-size:9px; padding:1px 5px; border-radius:3px; margin-left:4px; cursor:pointer; border:1px solid var(--border-hi); color:var(--text-dim); background:none; transition:color 0.12s,border-color 0.12s; }
+.bd-style-pill:hover { color:var(--gold); border-color:var(--gold); }
+.bd-note { font-size:12px; color:var(--text-dim); font-style:italic; margin-top:10px; font-family:var(--mono); }
+.bd-reset-btn { background:none; border:1px solid var(--border-hi); border-radius:4px; color:var(--text-dim); font-family:var(--mono); font-size:10px; padding:2px 8px; cursor:pointer; }
+.bd-reset-btn:hover { border-color:var(--border-hi); color:var(--text-mid); }
 
 /* ── Header ── */
 .sticky-top {
@@ -267,7 +297,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 /* ── Part cards (Parts tab) ── */
 .part-card {
   background:var(--card); border:1px solid var(--border);
-  border-radius:6px; margin-bottom:12px; overflow:hidden;
+  border-radius:10px; margin-bottom:12px; overflow:hidden;
+  box-shadow:0 1px 6px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.03);
 }
 .part-card-header {
   display:flex; align-items:center; gap:10px;
@@ -487,6 +518,18 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   font-family:var(--mono); transition:color 0.12s;
 }
 .bullet-show-more:hover { color:var(--gold); }
+
+/* ── System meta badges ── */
+.journey-stage-badge {
+  font-family:var(--mono); font-size:10px; padding:2px 8px; border-radius:4px;
+  background:rgba(200,168,74,0.1); color:var(--gold); border:1px solid rgba(200,168,74,0.28);
+  white-space:nowrap; letter-spacing:0.05em;
+}
+.professional-support-note {
+  font-family:var(--mono); font-size:10px; padding:2px 8px; border-radius:4px;
+  background:rgba(80,144,204,0.08); color:var(--manager); border:1px solid rgba(80,144,204,0.25);
+  white-space:nowrap; letter-spacing:0.03em;
+}
 
 /* ── Relationship table: notes row ── */
 .rel-notes-row td { padding-top:0 !important; padding-bottom:8px; }
@@ -708,7 +751,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 /* ── JOURNAL tab ── */
 .session-card {
   background:var(--card); border:1px solid var(--border-hi);
-  border-radius:6px; margin-bottom:12px; overflow:hidden;
+  border-radius:10px; margin-bottom:12px; overflow:hidden;
+  box-shadow:0 1px 6px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.03);
 }
 .session-header {
   display:flex; align-items:center; gap:12px;
@@ -807,8 +851,9 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .session-read-text-edit:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
 .memory-card {
   background:var(--card); border:1px solid var(--border-hi);
-  border-radius:6px; margin-bottom:10px; padding:14px 18px;
+  border-radius:10px; margin-bottom:10px; padding:14px 18px;
   display:flex; gap:14px; align-items:flex-start;
+  box-shadow:0 1px 4px rgba(0,0,0,0.22);
 }
 .memory-date-col {
   flex-shrink:0; min-width:96px; text-align:right;
@@ -861,8 +906,9 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .modal-overlay.open { display:flex; }
 .modal {
   background:var(--card); border:1px solid var(--border-hi);
-  border-radius:8px; padding:28px 32px; max-width:620px;
+  border-radius:12px; padding:28px 32px; max-width:620px;
   width:100%; position:relative; max-height:90vh; overflow-y:auto;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
 }
 .modal-close {
   position:absolute; top:12px; right:14px;
@@ -912,11 +958,40 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 #toast.show { opacity:1; }
 
 /* ── Welcome modal ── */
-#welcome-modal .modal { max-width:520px; }
-#welcome-modal h2 {
-  font-family:'Cinzel',serif; font-size:18px; color:var(--gold);
-  margin-bottom:12px; letter-spacing:0.08em;
+#welcome-modal { z-index:400; }
+#welcome-modal .modal { max-width:620px; width:96vw; border-top:3px solid var(--gold); }
+#welcome-modal .modal-title { color:var(--gold); }
+.welcome-modal-desc { font-size:16px; color:var(--text-mid); margin-bottom:18px; line-height:1.6; }
+.welcome-options { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+.welcome-opt-btn {
+  font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.1em; padding:9px 16px;
+  border-radius:4px; cursor:pointer; transition:all 0.15s; white-space:nowrap;
 }
+.welcome-opt-primary { background:var(--gold); border:none; color:#1a1208; }
+.welcome-opt-primary:hover { filter:brightness(1.1); }
+.welcome-opt-ghost { background:none; border:1px solid var(--border-hi); color:var(--text-dim); }
+.welcome-opt-ghost:hover { border-color:var(--text-dim); color:var(--text); }
+.welcome-opt-ghost.active { border-color:var(--gold); color:var(--gold); }
+#welcome-setup-steps { display:none; margin-top:18px; padding-top:18px; border-top:1px solid var(--border-hi); }
+.welcome-step { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+.welcome-step:last-child { border-bottom:none; }
+.welcome-step-num { font-family:var(--mono); font-size:15px; color:var(--gold); flex-shrink:0; width:22px; padding-top:2px; }
+.welcome-step-text { font-size:15px; color:var(--text-mid); line-height:1.55; flex:1; }
+.welcome-step-text strong { color:var(--text-b); font-weight:600; }
+/* ── Demo banner ── */
+#demo-banner {
+  display:none; align-items:center; gap:12px;
+  padding:9px 16px; background:rgba(80,140,200,0.08);
+  border:1px solid rgba(80,140,200,0.28); border-radius:6px;
+  margin-bottom:14px; font-size:16px; color:#6090c8;
+}
+#demo-banner .demo-banner-text { flex:1; }
+#demo-banner .demo-banner-dl { background:none; border:1px solid rgba(80,140,200,0.4); color:#6090c8; border-radius:4px; padding:3px 10px; font-size:14px; cursor:pointer; font-family:inherit; flex-shrink:0; }
+#demo-banner .demo-banner-dl:hover { background:rgba(80,140,200,0.12); }
+#demo-banner .demo-banner-dismiss { background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:18px; line-height:1; padding:0; flex-shrink:0; }
+#demo-banner .demo-banner-dismiss:hover { color:var(--text); }
+.btn-download { background:none; border:1px solid var(--border-hi); color:var(--text-dim); border-radius:3px; padding:2px 8px; font-size:14px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.btn-download:hover { border-color:var(--gold); color:var(--gold); }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width:6px; height:6px; }
@@ -1136,6 +1211,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 <!-- ══ TAB: PARTS ════════════════════════════════════════════════ -->
 <div id="tab-parts" class="tab-panel">
+  <div id="body-diagram-panel" class="body-diagram-panel"></div>
   <div id="parts-list"></div>
   <div style="margin-top:16px;">
     <button class="btn-primary" onclick="addPart()">+ Add Part</button>
@@ -1186,6 +1262,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
       <div style="flex:1;min-width:0;">
         <div class="journal-overview-title">Summary of system</div>
         <div class="system-desc" id="system-summary-display" contenteditable="true" spellcheck="false" data-placeholder="No summary yet. Your AI will fill this in after sessions."></div>
+        <div id="system-meta-row" style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;"></div>
       </div>
       <div id="parts-dist-alltime" class="parts-dist-pie-row" style="flex-shrink:0;"></div>
     </div>
@@ -1328,13 +1405,37 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 <!-- ══ WELCOME MODAL ════════════════════════════════════════════ -->
 <div class="modal-overlay" id="welcome-modal">
-  <div class="modal" style="border-top:3px solid var(--gold);">
-    <div class="modal-title" style="color:var(--gold);">Welcome to team-sheet</div>
-    <p>This is your IFS inner system map. Parts you discover through journalling with your AI live here.</p>
-    <p>You're currently viewing example data. Import your own data.json to get started, or explore the demo first.</p>
-    <div class="modal-row">
-      <button class="btn-primary" onclick="document.getElementById('welcome-modal').classList.remove('open');openModal()">Import my data</button>
-      <button class="btn-ghost" onclick="document.getElementById('welcome-modal').classList.remove('open')">Explore demo</button>
+  <div class="modal">
+    <div class="modal-title">WELCOME TO TEAM-SHEET</div>
+    <p class="welcome-modal-desc">Your mind is made up of <strong style="color:var(--text-b);">parts</strong>: the one that drives you forward, the one that shuts down, the one that numbs when things get hard. IFS (Internal Family Systems) is a therapeutic framework built on this insight. team-sheet maps your inner system as it grows through journalling — no prior IFS experience needed.</p>
+    <div class="welcome-options">
+      <button class="welcome-opt-btn welcome-opt-primary" id="welcome-setup-btn" onclick="toggleWelcomeSetup('manual')">Fill in manually</button>
+      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-ai-btn" onclick="toggleWelcomeSetup('ai')">Set up with AI</button>
+      <button class="welcome-opt-btn welcome-opt-ghost" onclick="dismissWelcome();openModal()">I already have data: Import it</button>
+    </div>
+    <div id="welcome-setup-steps" data-mode="">
+      <!-- Manual path -->
+      <div class="welcome-path" id="welcome-path-manual">
+        <div class="welcome-step"><div class="welcome-step-num">1</div><div class="welcome-step-text"><strong>Go to the Parts tab</strong> and click "+ Add part". Start with whatever you notice most in yourself: a voice, a pattern, a recurring tension.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num">2</div><div class="welcome-step-text"><strong>Give it a name and a role</strong> (Manager, Firefighter, or Exile). Fill in what you know: what it does, what it fears, when it shows up. You don't need to fill everything at once.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num">3</div><div class="welcome-step-text"><strong>Open the Map tab</strong> to see your parts visualised as nodes. Add connections between parts in each part's Relationships section.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num">4</div><div class="welcome-step-text"><strong>Export regularly.</strong> Use the Export button to save your data.json somewhere safe. It's the only copy.</div></div>
+        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:var(--text-dim);">✦</div><div class="welcome-step-text" style="color:var(--text-dim);">You can add AI journalling at any time. Download instructions.md from the Help screen and upload it to a project in your AI.</div></div>
+      </div>
+      <!-- AI path -->
+      <div class="welcome-path" id="welcome-path-ai" style="display:none;">
+        <div class="welcome-step"><div class="welcome-step-num">1</div><div class="welcome-step-text"><strong>Download instructions.md</strong> — the file that tells your AI how team-sheet works and what JSON to produce. <button class="btn-download" style="margin-left:6px;" onclick="downloadInstructionsMd(this)">↓ instructions.md</button></div></div>
+        <div class="welcome-step"><div class="welcome-step-num">2</div><div class="welcome-step-text"><strong>Create a project in your AI.</strong> Upload instructions.md to the project knowledge so it's always attached to every session.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Try: <em>"Here's what's been present for me lately..."</em> or use a Session Starter from the Journal tab.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num">4</div><div class="welcome-step-text"><strong>When you're done,</strong> ask your AI: <em>"Update my data"</em> and copy the output.</div></div>
+        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num">5</div><div class="welcome-step-text"><strong><button class="btn-ghost" style="font-size:inherit;padding:2px 7px;" onclick="dismissWelcome();openModal()">↑ Import</button></strong> your data, paste the output, and hit Apply. Your map updates instantly.</div></div>
+      </div>
+    </div>
+    <div style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+      <strong style="color:var(--text-mid);">Privacy:</strong> Your data is stored only in this browser — no server, no accounts, no telemetry. Export regularly and keep your data.json somewhere safe. If you journal with an AI, your provider may store what you share — check their privacy settings.
+    </div>
+    <div class="modal-row" style="margin-top:14px;">
+      <button class="btn-ghost" onclick="dismissWelcome()">Close</button>
     </div>
   </div>
 </div>
@@ -1507,6 +1608,13 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   <button onclick="document.getElementById('reset-undo-banner').classList.remove('visible');localStorage.removeItem('ts-reset-undo-v1')" style="background:none;border:none;opacity:0.6;font-size:18px;padding:0 4px;">&#215;</button>
 </div>
 
+<!-- ══ DEMO BANNER ════════════════════════════════════════════════ -->
+<div id="demo-banner">
+  <span class="demo-banner-text">You're viewing <strong>Alex's demo data</strong>. Nothing you do here is saved. Download the app to map your own inner system.</span>
+  <button class="demo-banner-dl" onclick="downloadApp()">&#8595; Download team-sheet.html</button>
+  <button class="demo-banner-dismiss" onclick="this.closest('#demo-banner').style.display='none'" title="Dismiss">&#215;</button>
+</div>
+
 <script>
 // ══ CONSTANTS ══════════════════════════════════════════════════
 const STATE_KEY     = 'ts-state-v1';
@@ -1613,6 +1721,7 @@ let appState = {
   selfMoments: [],
   memories: [],
   roleColors: {},
+  bodyDiagram: { silhouette: 'neutral', dotSize: 1.0, defaultStyle: 'glow', dotOverrides: {} },
   _instructionsVersion: '2.0.0',
 };
 
@@ -1621,9 +1730,11 @@ function saveState(s) {
   if (IS_DEMO) return;
   if (typeof _pinActive !== 'undefined' && _pinActive && _currentPIN) {
     _encryptAndSave(s, _currentPIN);
-    return;
+  } else {
+    try { localStorage.setItem(STATE_KEY, JSON.stringify(s)); } catch(e) { showToast('Storage full — data not saved'); }
   }
-  try { localStorage.setItem(STATE_KEY, JSON.stringify(s)); } catch(e) { showToast('Storage full — data not saved'); }
+  clearTimeout(saveState._dbt);
+  saveState._dbt = setTimeout(() => { if (typeof renderBodyDots === 'function') renderBodyDots(appState); }, 300);
 }
 function loadState() {
   const raw = localStorage.getItem(STATE_KEY);
@@ -1976,11 +2087,469 @@ function render(s) {
   }
   // Tabs
   renderMap(s);
+  renderBodyDiagramPanel(s);
   renderParts(s);
   renderSelf(s);
   renderJournal(s);
   renderTimeline(s);
   updateNavCounts(s);
+}
+
+// ══ BODY DIAGRAM ═════════════════════════════════════════════
+// Coordinate space: SVG viewBox "0 0 60 130"
+
+const BODY_REGIONS = {
+  'left shoulder':  { cx:16, cy:32 },
+  'right shoulder': { cx:44, cy:32 },
+  'left arm':       { cx:9,  cy:52 },
+  'right arm':      { cx:51, cy:52 },
+  'left hand':      { cx:12, cy:68 },
+  'right hand':     { cx:48, cy:68 },
+  'left leg':       { cx:20, cy:100 },
+  'right leg':      { cx:40, cy:100 },
+  'lower back':     { cx:30, cy:68 },
+  'upper back':     { cx:30, cy:42 },
+  'solar plexus':   { cx:30, cy:52 },
+  head:      { cx:30, cy:11 },
+  forehead:  { cx:30, cy:6  },
+  eyes:      { cx:30, cy:10 },
+  jaw:       { cx:30, cy:19 },
+  throat:    { cx:30, cy:24 },
+  neck:      { cx:30, cy:25 },
+  chest:     { cx:30, cy:42 },
+  heart:     { cx:25, cy:40 },
+  sternum:   { cx:30, cy:44 },
+  shoulders: { cx:30, cy:32 },
+  hands:     { cx:30, cy:68 },
+  stomach:   { cx:30, cy:55 },
+  belly:     { cx:30, cy:62 },
+  gut:       { cx:30, cy:58 },
+  abdomen:   { cx:30, cy:56 },
+  solar:     { cx:30, cy:52 },
+  hips:      { cx:30, cy:80 },
+  pelvis:    { cx:30, cy:82 },
+  back:      { cx:30, cy:54 },
+  spine:     { cx:30, cy:54 },
+  thigh:     { cx:30, cy:95 },
+  knee:      { cx:30, cy:107 },
+  calf:      { cx:30, cy:112 },
+  feet:      { cx:30, cy:119 },
+  foot:      { cx:30, cy:119 },
+};
+
+// Silhouettes as objects with named parts. __F__ = fill, __S__ = stroke.
+// Each body is traced as a single filled path for a natural human outline.
+const BODY_SILHOUETTES = {
+  neutral: {
+    head: `<ellipse cx="30" cy="11" rx="8" ry="9.5" fill="__F__" stroke="__S__" stroke-width="1.3"/>`,
+    neck: `<path d="M27.5,20 L27.5,22.5 Q29,25.5 30,25.5 Q31,25.5 32.5,22.5 L32.5,20 Z" fill="__F__" stroke="__S__" stroke-width="1.1"/>`,
+    // Balanced shoulders/hips, slight arm taper, rounded hands, natural legs
+    body: `<path d="M27.5,22 Q20,23 13.5,29 Q10,33 10,38 L9,54 Q8.5,58 10,62 Q10,67 12,70 Q13.5,71 14.5,69 Q14.5,64 13.5,61 L13.5,43 Q14,38 15,35 L15,70 Q14,77 15,82 Q16.5,86 17,90 L16,112 Q16,118 20,119 L23,119 Q27,118 27,114 L27.5,90 Q29.5,92 30,92 Q30.5,92 32.5,90 L33,114 Q33,118 37,119 L40,119 Q44,118 44,112 L43,90 Q43,86 45,82 Q46,77 45,70 L45,35 Q46,38 46.5,43 L46.5,61 Q45.5,64 46.5,68 Q47,71 48.5,69 Q48.5,64 47.5,62 Q50,58 51,54 L50,38 Q50,33 46.5,29 Q40,23 32.5,22 Z" fill="__F__" stroke="__S__" stroke-width="1.3"/>`,
+  },
+  female: {
+    head: `<ellipse cx="30" cy="11" rx="7.5" ry="9.5" fill="__F__" stroke="__S__" stroke-width="1.3"/>`,
+    neck: `<path d="M27.8,20 L27.5,23 Q29,26 30,26 Q31,26 32.5,23 L32.2,20 Z" fill="__F__" stroke="__S__" stroke-width="1.1"/>`,
+    // Narrower shoulders, waist indent at y~65, wider hips, wider leg spread
+    body: `<path d="M27.5,22.5 Q21.5,23.5 15.5,29.5 Q12,33 12,38 L11,53 Q10.5,58 12,61 Q11.5,67 13.5,70 Q15,70.5 15.5,68.5 Q15.5,64 14.5,61.5 L14.5,43 Q15.5,38 16.5,35.5 L17,65 Q15.5,72 16.5,78 Q14,84 13,90 L12,112 Q12,118 16,119 L19,119 Q23,118 23,114 L24,90 Q28,93 30,93 Q32,93 36,90 L37,114 Q37,118 41,119 L44,119 Q48,118 48,112 L47,90 Q46,84 43.5,78 Q44.5,72 43,65 L43.5,35.5 Q44.5,38 45.5,43 L45.5,61.5 Q44.5,64 44.5,68.5 Q45,70.5 46.5,70 Q48.5,67 48,61 Q49.5,58 49,53 L48,38 Q48,33 44,29.5 Q38,23.5 32.5,22.5 Z" fill="__F__" stroke="__S__" stroke-width="1.3"/>`,
+  },
+  male: {
+    head: `<ellipse cx="30" cy="11" rx="8.5" ry="10" fill="__F__" stroke="__S__" stroke-width="1.3"/>`,
+    neck: `<path d="M27,20 L27,23 Q28.5,26 30,26 Q31.5,26 33,23 L33,20 Z" fill="__F__" stroke="__S__" stroke-width="1.2"/>`,
+    // Broad shoulders, straight rectangular torso, narrow hips
+    body: `<path d="M27,22.5 Q19,23.5 12,29.5 Q8,33 8,38 L7,54 Q6.5,59 8.5,62 Q8,67.5 10.5,70 Q12,70.5 12.5,68.5 Q12.5,64 12,61 L12,43 Q13,38 14,35 L14,72 Q13,79 14,84 Q15,88 15,91 L14,112 Q14,118 18,119 L22,119 Q26,118 26,114 L26.5,91 Q29,93 30,93 Q31,93 33.5,91 L34,114 Q34,118 38,119 L42,119 Q46,118 46,112 L45,91 Q45,88 46,84 Q47,79 46,72 L46,35 Q47,38 48,43 L48,61 Q47.5,64 47.5,68.5 Q48,70.5 49.5,70 Q51.5,67.5 51,62 Q53.5,59 53,54 L52,38 Q52,33 48,29.5 Q41,23.5 33,22.5 Z" fill="__F__" stroke="__S__" stroke-width="1.3"/>`,
+  },
+};
+
+function buildSilhouetteSvg(variant, NS) {
+  const g = document.createElementNS(NS, 'g');
+  const sil = BODY_SILHOUETTES[variant] || BODY_SILHOUETTES.neutral;
+  const fill = 'rgba(200,178,138,0.07)';
+  const stroke = getComputedStyle(document.documentElement).getPropertyValue('--border-hi').trim() || '#3a2f24';
+  const html = Object.values(sil).join('').replace(/__F__/g, fill).replace(/__S__/g, stroke);
+  g.innerHTML = html;
+  return g;
+}
+
+function inferBodyRegion(text) {
+  const lower = text.toLowerCase();
+  const sorted = Object.keys(BODY_REGIONS).sort((a,b) => b.length - a.length);
+  for (const key of sorted) {
+    if (lower.includes(key)) return BODY_REGIONS[key];
+  }
+  return null;
+}
+
+function bdGetState() {
+  if (!appState.bodyDiagram) {
+    appState.bodyDiagram = { silhouette: 'neutral', dotSize: 1.0, defaultStyle: 'glow', dotOverrides: {}, partStyles: {} };
+  }
+  if (!appState.bodyDiagram.dotOverrides) appState.bodyDiagram.dotOverrides = {};
+  if (!appState.bodyDiagram.partStyles) appState.bodyDiagram.partStyles = {};
+  return appState.bodyDiagram;
+}
+
+function getDotStyle(bd, key, partId) {
+  if (bd.dotOverrides[key] && bd.dotOverrides[key].style) return bd.dotOverrides[key].style;
+  if (bd.partStyles && bd.partStyles[partId]) return bd.partStyles[partId];
+  return bd.defaultStyle || 'glow';
+}
+
+function renderBodyDiagramPanel(s) {
+  const panel = document.getElementById('body-diagram-panel');
+  if (!panel) return;
+  const bd = bdGetState();
+  const NS = 'http://www.w3.org/2000/svg';
+  panel.innerHTML = '';
+
+  // Title row
+  const titleRow = document.createElement('div');
+  titleRow.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;';
+  const title = document.createElement('div');
+  title.className = 'bd-panel-title';
+  title.textContent = 'Trailhead Map';
+  titleRow.appendChild(title);
+  const resetBtn = document.createElement('button');
+  resetBtn.className = 'bd-reset-btn';
+  resetBtn.textContent = 'Reset positions';
+  resetBtn.title = 'Clear all manually dragged positions — dots return to auto-inferred placement from trailhead text';
+  resetBtn.onclick = () => { bd.dotOverrides = {}; saveState(appState); renderBodyDiagramPanel(appState); };
+  titleRow.appendChild(resetBtn);
+  panel.appendChild(titleRow);
+
+  // Controls
+  const controls = document.createElement('div');
+  controls.className = 'bd-controls';
+
+  // Silhouette picker
+  const silGrp = document.createElement('div'); silGrp.className = 'bd-control-group';
+  const silLbl = document.createElement('span'); silLbl.className = 'bd-control-label'; silLbl.textContent = 'Silhouette';
+  silGrp.appendChild(silLbl);
+  const silSeg = document.createElement('div'); silSeg.className = 'bd-segmented';
+  [['neutral','Neutral'],['female','Female'],['male','Male']].forEach(([v,lbl]) => {
+    const btn = document.createElement('button');
+    btn.className = 'bd-seg-btn' + (bd.silhouette === v ? ' active' : '');
+    btn.textContent = lbl;
+    btn.onclick = () => { bd.silhouette = v; saveState(appState); renderBodyDiagramPanel(appState); };
+    silSeg.appendChild(btn);
+  });
+  silGrp.appendChild(silSeg);
+  controls.appendChild(silGrp);
+
+  // Node size
+  const szGrp = document.createElement('div'); szGrp.className = 'bd-control-group';
+  const szLbl = document.createElement('span'); szLbl.className = 'bd-control-label'; szLbl.textContent = 'Node size';
+  szGrp.appendChild(szLbl);
+  const szSlider = document.createElement('input');
+  szSlider.type = 'range'; szSlider.min = '0.4'; szSlider.max = '2.5'; szSlider.step = '0.1';
+  szSlider.value = bd.dotSize != null ? bd.dotSize : 1.0;
+  szSlider.className = 'bd-slider';
+  szSlider.oninput = () => { bd.dotSize = parseFloat(szSlider.value); saveState(appState); renderBodyDots(appState); };
+  szGrp.appendChild(szSlider);
+  controls.appendChild(szGrp);
+
+  // Global default aura
+  const styGrp = document.createElement('div'); styGrp.className = 'bd-control-group';
+  const styLbl = document.createElement('span'); styLbl.className = 'bd-control-label'; styLbl.textContent = 'Default aura';
+  styGrp.appendChild(styLbl);
+  const stySeg = document.createElement('div'); stySeg.className = 'bd-segmented';
+  [['glow','Soft glow'],['spiky','Spiky']].forEach(([v,lbl]) => {
+    const btn = document.createElement('button');
+    btn.className = 'bd-seg-btn' + (bd.defaultStyle === v ? ' active' : '');
+    btn.textContent = lbl;
+    btn.onclick = () => { bd.defaultStyle = v; saveState(appState); renderBodyDots(appState); };
+    stySeg.appendChild(btn);
+  });
+  styGrp.appendChild(stySeg);
+  controls.appendChild(styGrp);
+
+  panel.appendChild(controls);
+
+  // Main area: SVG + legend
+  const mainArea = document.createElement('div');
+  mainArea.className = 'bd-main-area';
+
+  // SVG
+  const svgWrap = document.createElement('div'); svgWrap.className = 'bd-svg-wrap';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.id = 'body-diagram-svg';
+  svg.setAttribute('class', 'body-diagram-svg');
+  svg.setAttribute('viewBox', '0 0 60 130');
+  svg.setAttribute('xmlns', NS);
+
+  // Defs: glow filter built programmatically (no innerHTML on defs)
+  const defs = document.createElementNS(NS, 'defs');
+  const filter = document.createElementNS(NS, 'filter');
+  filter.id = 'bd-glow-f';
+  filter.setAttribute('x','-100%'); filter.setAttribute('y','-100%');
+  filter.setAttribute('width','300%'); filter.setAttribute('height','300%');
+  const fblur = document.createElementNS(NS, 'feGaussianBlur');
+  fblur.setAttribute('stdDeviation','2.5'); fblur.setAttribute('result','blur');
+  const fcomp = document.createElementNS(NS, 'feComposite');
+  fcomp.setAttribute('in','SourceGraphic'); fcomp.setAttribute('in2','blur'); fcomp.setAttribute('operator','over');
+  filter.appendChild(fblur); filter.appendChild(fcomp);
+  defs.appendChild(filter);
+  svg.appendChild(defs);
+
+  // Silhouette group
+  svg.appendChild(buildSilhouetteSvg(bd.silhouette, NS));
+
+  // Aura + dot layers
+  const aurasG = document.createElementNS(NS, 'g');
+  aurasG.id = 'bd-auras';
+  svg.appendChild(aurasG);
+  const dotsG = document.createElementNS(NS, 'g');
+  dotsG.id = 'body-diagram-dots';
+  svg.appendChild(dotsG);
+
+  svgWrap.appendChild(svg);
+  mainArea.appendChild(svgWrap);
+
+  // Legend
+  const legend = document.createElement('div'); legend.className = 'bd-legend';
+  const legTitle = document.createElement('div'); legTitle.className = 'bd-legend-title';
+  legTitle.textContent = 'Parts and trailheads';
+  legend.appendChild(legTitle);
+
+  const parts = s.parts || [];
+  const hasParts = parts.some(p => (p.trailheads || []).length > 0);
+  if (!hasParts) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'font-size:14px;color:var(--text-dim);font-style:italic;margin-top:8px;';
+    empty.textContent = 'Add trailhead entries to parts to see dots appear here.';
+    legend.appendChild(empty);
+  }
+
+  parts.forEach(part => {
+    const trailheads = Array.isArray(part.trailheads) ? part.trailheads : [];
+    if (trailheads.length === 0) return;
+    const color = getPartColor(part, parts);
+    const partStyle = bd.partStyles[part.id] || '';
+
+    // Part header row with per-part aura control
+    const item = document.createElement('div');
+    item.style.cssText = 'display:flex;align-items:center;gap:7px;margin-top:10px;margin-bottom:2px;flex-wrap:wrap;';
+    const dotSw = document.createElement('span'); dotSw.className = 'bd-legend-dot';
+    dotSw.style.background = color; item.appendChild(dotSw);
+    const nameSp = document.createElement('span'); nameSp.className = 'bd-legend-name';
+    nameSp.textContent = part.name || 'Unnamed'; item.appendChild(nameSp);
+
+    // Per-part aura selector
+    const paSeg = document.createElement('div'); paSeg.className = 'bd-segmented';
+    paSeg.style.marginLeft = 'auto';
+    [['','Dflt'],['glow','Glow'],['spiky','Spiky']].forEach(([v,lbl]) => {
+      const btn = document.createElement('button');
+      btn.className = 'bd-seg-btn' + (partStyle === v ? ' active' : '');
+      btn.textContent = lbl; btn.style.fontSize = '10px'; btn.style.padding = '2px 7px';
+      btn.title = v === '' ? 'Use global default aura for all dots of this part'
+                           : `Set all dots of this part to "${lbl}" (can still be overridden per dot)`;
+      btn.onclick = () => {
+        if (v === '') delete bd.partStyles[part.id]; else bd.partStyles[part.id] = v;
+        saveState(appState); renderBodyDots(appState); renderBodyDiagramPanel(appState);
+      };
+      paSeg.appendChild(btn);
+    });
+    item.appendChild(paSeg);
+    legend.appendChild(item);
+
+    // Per-trailhead rows
+    trailheads.forEach((text, ti) => {
+      const key = `${part.id}|${ti}`;
+      const override = bd.dotOverrides[key];
+      const region = override && override.cx != null ? { cx: override.cx, cy: override.cy } : inferBodyRegion(text);
+
+      const thItem = document.createElement('div');
+      thItem.className = 'bd-legend-trailhead' + (region ? '' : ' bd-unplaced');
+      const thText = document.createElement('span');
+      thText.textContent = text; thItem.appendChild(thText);
+
+      if (region) {
+        const curStyle = getDotStyle(bd, key, part.id);
+        const pill = document.createElement('button');
+        pill.className = 'bd-style-pill';
+        pill.textContent = curStyle;
+        pill.title = 'Click to cycle aura style for this dot only (overrides part setting)';
+        pill.onclick = () => {
+          const styles = ['glow','spiky'];
+          const next = styles[(styles.indexOf(curStyle) + 1) % styles.length];
+          if (!bd.dotOverrides[key]) bd.dotOverrides[key] = { cx: region.cx, cy: region.cy };
+          bd.dotOverrides[key].style = next;
+          saveState(appState); renderBodyDots(appState); renderBodyDiagramPanel(appState);
+        };
+        thItem.appendChild(pill);
+      } else {
+        const placeBtn = document.createElement('button');
+        placeBtn.className = 'bd-place-btn';
+        placeBtn.textContent = 'Place on body';
+        placeBtn.title = 'Manually place this trailhead. Drag the dot to the right position.';
+        placeBtn.onclick = () => {
+          bd.dotOverrides[key] = { cx: 30, cy: 65, style: getDotStyle(bd, key, part.id) };
+          saveState(appState); renderBodyDots(appState); renderBodyDiagramPanel(appState);
+        };
+        thItem.appendChild(placeBtn);
+      }
+      legend.appendChild(thItem);
+    });
+  });
+
+  mainArea.appendChild(legend);
+  panel.appendChild(mainArea);
+
+  const note = document.createElement('div'); note.className = 'bd-note';
+  note.textContent = 'Drag dots to reposition. Use part-level buttons to set aura per part, or click a dot\'s pill to override individually.';
+  panel.appendChild(note);
+
+  renderBodyDots(s);
+  setupBodyDiagramDrag(svg);
+}
+
+function renderBodyDots(s) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const dotsG = document.getElementById('body-diagram-dots');
+  const aurasG = document.getElementById('bd-auras');
+  if (!dotsG || !aurasG) return;
+  dotsG.innerHTML = '';
+  aurasG.innerHTML = '';
+
+  const bd = bdGetState();
+  const parts = s.parts || [];
+  const placed = {};
+
+  parts.forEach(part => {
+    const trailheads = Array.isArray(part.trailheads) ? part.trailheads : [];
+    const color = getPartColor(part, parts);
+
+    trailheads.forEach((text, ti) => {
+      const key = `${part.id}|${ti}`;
+      const override = bd.dotOverrides[key];
+
+      let cx, cy;
+      if (override && override.cx != null && override.cy != null) {
+        cx = override.cx; cy = override.cy;
+      } else {
+        const reg = inferBodyRegion(text);
+        if (!reg) return;
+        cx = reg.cx; cy = reg.cy;
+        // Radial jitter: first dot sits at center, extras orbit at r=5
+        const bk = `${Math.round(cx)},${Math.round(cy)}`;
+        const n = placed[bk] || 0;
+        placed[bk] = n + 1;
+        if (n > 0) {
+          const angle = ((n - 1) / 6) * Math.PI * 2;
+          cx += parseFloat((Math.cos(angle) * 5).toFixed(1));
+          cy += parseFloat((Math.sin(angle) * 5).toFixed(1));
+        }
+      }
+
+      const dotStyle = getDotStyle(bd, key, part.id);
+      const r = (bd.dotSize != null ? bd.dotSize : 1.0) * 3.5;
+
+      // Aura
+      if (dotStyle === 'glow') {
+        const aura = document.createElementNS(NS, 'circle');
+        aura.setAttribute('cx', cx.toFixed(1)); aura.setAttribute('cy', cy.toFixed(1));
+        aura.setAttribute('r', (r * 3.0).toFixed(2));
+        aura.setAttribute('fill', color); aura.setAttribute('opacity', '0.22');
+        aura.setAttribute('filter', 'url(#bd-glow-f)');
+        aura.style.pointerEvents = 'none';
+        aurasG.appendChild(aura);
+        const ring = document.createElementNS(NS, 'circle');
+        ring.setAttribute('cx', cx.toFixed(1)); ring.setAttribute('cy', cy.toFixed(1));
+        ring.setAttribute('r', (r * 1.65).toFixed(2));
+        ring.setAttribute('fill', color); ring.setAttribute('opacity', '0.18');
+        ring.style.pointerEvents = 'none';
+        aurasG.appendChild(ring);
+      } else {
+        const spikeG = document.createElementNS(NS, 'g');
+        spikeG.style.pointerEvents = 'none';
+        const numSpikes = 14;
+        const innerR = r * 1.3, outerR = r * 3.5;
+        for (let i = 0; i < numSpikes; i++) {
+          const angle = (i / numSpikes) * Math.PI * 2;
+          const lenVar = 0.5 + Math.abs(Math.sin(i * 3.7 + 0.8)) * 1.0;
+          const x1 = cx + innerR * Math.cos(angle), y1 = cy + innerR * Math.sin(angle);
+          const x2 = cx + outerR * lenVar * Math.cos(angle), y2 = cy + outerR * lenVar * Math.sin(angle);
+          const spike = document.createElementNS(NS, 'line');
+          spike.setAttribute('x1', x1.toFixed(2)); spike.setAttribute('y1', y1.toFixed(2));
+          spike.setAttribute('x2', x2.toFixed(2)); spike.setAttribute('y2', y2.toFixed(2));
+          spike.setAttribute('stroke', color);
+          spike.setAttribute('stroke-width', ((bd.dotSize || 1) * 0.6).toFixed(2));
+          spike.setAttribute('opacity', '0.8');
+          spikeG.appendChild(spike);
+        }
+        aurasG.appendChild(spikeG);
+      }
+
+      // Dot
+      const dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('cx', cx.toFixed(1)); dot.setAttribute('cy', cy.toFixed(1));
+      dot.setAttribute('r', r.toFixed(2));
+      dot.setAttribute('fill', color); dot.setAttribute('opacity', '0.92');
+      dot.setAttribute('stroke', 'rgba(0,0,0,0.35)'); dot.setAttribute('stroke-width', '0.6');
+      dot.style.cursor = 'grab';
+      dot.dataset.key = key; dot.dataset.partId = part.id;
+      const titleEl = document.createElementNS(NS, 'title');
+      titleEl.textContent = `${part.name || 'Part'}: ${text}\nDrag to reposition`;
+      dot.appendChild(titleEl);
+      dotsG.appendChild(dot);
+    });
+  });
+}
+
+let _bdDrag = null;
+
+function setupBodyDiagramDrag(svg) {
+  function svgCoords(e) {
+    const rect = svg.getBoundingClientRect();
+    const vb = svg.viewBox.baseVal;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x:(clientX-rect.left)/rect.width*vb.width, y:(clientY-rect.top)/rect.height*vb.height };
+  }
+  function onStart(e) {
+    const t = e.target;
+    if (!t.dataset || !t.dataset.key) return;
+    e.preventDefault();
+    const pt = svgCoords(e);
+    _bdDrag = { dot:t, key:t.dataset.key, startPt:pt,
+      startCx:parseFloat(t.getAttribute('cx')), startCy:parseFloat(t.getAttribute('cy')), moved:false };
+    t.style.cursor = 'grabbing';
+  }
+  function onMove(e) {
+    if (!_bdDrag) return;
+    e.preventDefault();
+    const pt = svgCoords(e);
+    const dx = pt.x - _bdDrag.startPt.x, dy = pt.y - _bdDrag.startPt.y;
+    if (Math.abs(dx) > 0.3 || Math.abs(dy) > 0.3) _bdDrag.moved = true;
+    _bdDrag.dot.setAttribute('cx', Math.max(1,Math.min(59,_bdDrag.startCx+dx)).toFixed(1));
+    _bdDrag.dot.setAttribute('cy', Math.max(1,Math.min(129,_bdDrag.startCy+dy)).toFixed(1));
+  }
+  function onEnd(e) {
+    if (!_bdDrag) return;
+    const src = e.changedTouches ? {clientX:e.changedTouches[0].clientX,clientY:e.changedTouches[0].clientY} : e;
+    const pt = svgCoords(src);
+    if (_bdDrag.moved) {
+      const dx = pt.x-_bdDrag.startPt.x, dy = pt.y-_bdDrag.startPt.y;
+      const newCx = parseFloat(Math.max(1,Math.min(59,_bdDrag.startCx+dx)).toFixed(1));
+      const newCy = parseFloat(Math.max(1,Math.min(129,_bdDrag.startCy+dy)).toFixed(1));
+      const bd = bdGetState();
+      if (!bd.dotOverrides[_bdDrag.key]) {
+        bd.dotOverrides[_bdDrag.key] = { style: getDotStyle(bd, _bdDrag.key, _bdDrag.dot.dataset.partId) };
+      }
+      bd.dotOverrides[_bdDrag.key].cx = newCx;
+      bd.dotOverrides[_bdDrag.key].cy = newCy;
+      saveState(appState);
+      renderBodyDots(appState);
+    }
+    _bdDrag.dot.style.cursor = 'grab';
+    _bdDrag = null;
+  }
+  svg.addEventListener('mousedown', onStart);
+  svg.addEventListener('mousemove', onMove);
+  svg.addEventListener('mouseup',   onEnd);
+  svg.addEventListener('mouseleave', () => { if (_bdDrag) { _bdDrag = null; renderBodyDots(appState); } });
+  svg.addEventListener('touchstart', onStart, { passive:false });
+  svg.addEventListener('touchmove',  onMove,  { passive:false });
+  svg.addEventListener('touchend',   onEnd);
 }
 
 // ══ TAB: MAP ══════════════════════════════════════════════════
@@ -2933,7 +3502,48 @@ function buildPartCard(part, idx, s) {
   leftHdr.textContent = 'What this part carries';
   leftCol.appendChild(leftHdr);
 
-  // 1. Positive intent
+  // 1. Self relationship
+  const srData = part.selfRelationship || {};
+  const selfRelSecL = document.createElement('div');
+  selfRelSecL.className = 'part-section';
+  selfRelSecL.style.marginTop = '0';
+  const selfRelLblL = document.createElement('div');
+  selfRelLblL.className = 'part-section-label';
+  selfRelLblL.textContent = 'Self relationship';
+  selfRelLblL.title = 'How you and this part feel toward each other right now. The most clinically significant thing to track in IFS work. Changes as the relationship develops.';
+  const selfRelFieldsL = document.createElement('div');
+  selfRelFieldsL.className = 'self-rel-fields';
+  selfRelFieldsL.appendChild(makeSelfRelField(
+    'You toward this part',
+    'How do you feel toward this part when you bring attention to it?',
+    srData.selfTowardPart,
+    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.selfTowardPart = v; saveState(appState); },
+    'Progression: contempt or dismissal, frustration, fear or avoidance, distance or numbness, neutral observation, curiosity, compassion, genuine care'
+  ));
+  selfRelFieldsL.appendChild(makeSelfRelField(
+    'This part toward you',
+    'Does this part trust Self to lead? Resistant, watchful, beginning to cooperate?',
+    srData.partTowardSelf,
+    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.partTowardSelf = v; saveState(appState); },
+    'Progression: unaware of or indifferent to Self, resistant or distrustful, watchful or cautious, cautiously cooperative, trusting'
+  ));
+  selfRelSecL.appendChild(selfRelLblL);
+  selfRelSecL.appendChild(selfRelFieldsL);
+  leftCol.appendChild(selfRelSecL);
+
+  // 2. Asks of Self
+  const asksOfSelfSecL = document.createElement('div');
+  asksOfSelfSecL.className = 'part-section';
+  const asksLblL = document.createElement('div');
+  asksLblL.className = 'part-section-label';
+  asksLblL.textContent = 'Asks of Self';
+  asksLblL.title = 'What this part specifically needs from Self in order to feel heard and begin to step back. Only populate from what the part itself has expressed.';
+  const asksListL = buildBulletField(part, 'needsFromSelf', 'What would it take for this part to trust Self enough to step back...');
+  asksOfSelfSecL.appendChild(asksLblL);
+  asksOfSelfSecL.appendChild(asksListL);
+  leftCol.appendChild(asksOfSelfSecL);
+
+  // 3. Positive intent
   const intentSec = document.createElement('div');
   intentSec.className = 'part-section';
   intentSec.style.marginTop = '0';
@@ -3166,25 +3776,13 @@ function buildPartCard(part, idx, s) {
   divider.className = 'part-divider';
   body.appendChild(divider);
 
-  // ── Relationships section (full width): Self relationship + Asks of Self + table ──
+  // ── With other parts (full-width relationship table) ──
   const relSectionHdr = document.createElement('div');
   relSectionHdr.className = 'part-section-label';
   relSectionHdr.style.marginTop = '14px';
-  relSectionHdr.textContent = 'Relationships';
+  relSectionHdr.textContent = 'With other parts';
+  relSectionHdr.title = 'How this part relates to each other part in the system.';
   body.appendChild(relSectionHdr);
-
-  // Self relationship subsection
-  const selfRelSec = document.createElement('div');
-  selfRelSec.className = 'part-section';
-  selfRelSec.style.marginTop = '10px';
-  const selfRelLbl = document.createElement('div');
-  selfRelLbl.className = 'part-section-hdr';
-  selfRelLbl.textContent = 'With Self';
-  selfRelLbl.title = 'How you and this part feel toward each other right now. The most clinically significant thing to track in IFS work. Changes as the relationship develops.';
-  const selfRelFields = document.createElement('div');
-  selfRelFields.className = 'self-rel-fields';
-
-  const srData = part.selfRelationship || {};
 
   function makeSelfRelField(labelText, placeholder, currentVal, onSave, tooltipText) {
     const wrap = document.createElement('div');
@@ -3204,45 +3802,6 @@ function buildPartCard(part, idx, s) {
     wrap.appendChild(el);
     return wrap;
   }
-
-  selfRelFields.appendChild(makeSelfRelField(
-    'You toward this part',
-    'How do you feel toward this part when you bring attention to it?',
-    srData.selfTowardPart,
-    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.selfTowardPart = v; saveState(appState); },
-    'Progression: contempt or dismissal, frustration, fear or avoidance, distance or numbness, neutral observation, curiosity, compassion, genuine care'
-  ));
-  selfRelFields.appendChild(makeSelfRelField(
-    'This part toward you',
-    'Does this part trust Self to lead? Resistant, watchful, beginning to cooperate?',
-    srData.partTowardSelf,
-    v => { if (!part.selfRelationship) part.selfRelationship = {}; part.selfRelationship.partTowardSelf = v; saveState(appState); },
-    'Progression: unaware of or indifferent to Self, resistant or distrustful, watchful or cautious, cautiously cooperative, trusting'
-  ));
-
-  selfRelSec.appendChild(selfRelLbl);
-  selfRelSec.appendChild(selfRelFields);
-  body.appendChild(selfRelSec);
-
-  // Asks of Self subsection
-  const asksOfSelfSec = document.createElement('div');
-  asksOfSelfSec.className = 'part-section';
-  const asksLbl = document.createElement('div');
-  asksLbl.className = 'part-section-hdr';
-  asksLbl.textContent = 'Asks of Self';
-  asksLbl.title = 'What this part specifically needs from Self in order to feel heard and begin to step back. Only populate from what the part itself has expressed.';
-  const asksList = buildBulletField(part, 'needsFromSelf', 'What would it take for this part to trust Self enough to step back...');
-  asksOfSelfSec.appendChild(asksLbl);
-  asksOfSelfSec.appendChild(asksList);
-  body.appendChild(asksOfSelfSec);
-
-  // With other parts
-  const withOthersLbl = document.createElement('div');
-  withOthersLbl.className = 'part-section-hdr';
-  withOthersLbl.style.marginTop = '14px';
-  withOthersLbl.textContent = 'With other parts';
-  withOthersLbl.title = 'How this part relates to each other part in the system.';
-  body.appendChild(withOthersLbl);
 
   const relTable = buildRelTable(part, idx, s);
   body.appendChild(relTable);
@@ -4302,6 +4861,46 @@ function renderJournal(s) {
       el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); } });
     }
   });
+  // System meta row: journeyStage badge, professionalSupport note, currentAge input
+  const metaRow = document.getElementById('system-meta-row');
+  if (metaRow) {
+    metaRow.innerHTML = '';
+    const stage = s.system?.journeyStage;
+    if (stage) {
+      const stageBadge = document.createElement('span');
+      stageBadge.className = 'journey-stage-badge';
+      stageBadge.textContent = stage.charAt(0).toUpperCase() + stage.slice(1);
+      stageBadge.title = 'Journey stage (set by your AI after sessions): early, developing, or established.';
+      metaRow.appendChild(stageBadge);
+    }
+    if (s.system?.professionalSupport) {
+      const suppNote = document.createElement('span');
+      suppNote.className = 'professional-support-note';
+      suppNote.textContent = 'Working with a therapist';
+      suppNote.title = 'This system is being explored alongside a qualified IFS therapist.';
+      metaRow.appendChild(suppNote);
+    }
+    const ageWrap = document.createElement('label');
+    ageWrap.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim);font-family:var(--mono);';
+    const ageLabel = document.createTextNode('Age: ');
+    ageWrap.appendChild(ageLabel);
+    const ageInput = document.createElement('input');
+    ageInput.type = 'number'; ageInput.min = '1'; ageInput.max = '120';
+    ageInput.style.cssText = 'width:46px;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:2px 5px;font-size:12px;font-family:var(--mono);';
+    ageInput.value = s.system?.currentAge != null ? s.system.currentAge : '';
+    ageInput.placeholder = '--';
+    ageInput.title = 'Current age — used to calculate age on the timeline axis.';
+    ageInput.addEventListener('change', () => {
+      const v = parseInt(ageInput.value);
+      if (!appState.system) appState.system = {};
+      appState.system.currentAge = isNaN(v) ? null : v;
+      saveState(appState);
+      renderTimeline(appState);
+    });
+    ageWrap.appendChild(ageInput);
+    metaRow.appendChild(ageWrap);
+  }
+
   const list = document.getElementById('sessions-list');
   const empty = document.getElementById('sessions-empty');
   list.innerHTML = '';
@@ -5279,6 +5878,64 @@ async function _initPINCheck(){
   }
 }
 
+// ══ WELCOME MODAL ═══════════════════════════════════════════
+function dismissWelcome() {
+  document.getElementById('welcome-modal').classList.remove('open');
+  if (!IS_DEMO) localStorage.setItem(WELCOMED_KEY, '1');
+}
+
+function toggleWelcomeSetup(mode) {
+  const steps = document.getElementById('welcome-setup-steps');
+  const manualBtn = document.getElementById('welcome-setup-btn');
+  const aiBtn = document.getElementById('welcome-ai-btn');
+  const current = steps.getAttribute('data-mode');
+  if (current === mode) {
+    steps.style.display = 'none';
+    steps.setAttribute('data-mode', '');
+    manualBtn.classList.remove('active');
+    aiBtn.classList.remove('active');
+    return;
+  }
+  steps.setAttribute('data-mode', mode);
+  steps.style.display = 'block';
+  document.getElementById('welcome-path-manual').style.display = mode === 'manual' ? 'block' : 'none';
+  document.getElementById('welcome-path-ai').style.display = mode === 'ai' ? 'block' : 'none';
+  manualBtn.classList.toggle('active', mode === 'manual');
+  aiBtn.classList.toggle('active', mode === 'ai');
+}
+
+function downloadInstructionsMd(btn) {
+  const url = 'https://raw.githubusercontent.com/sam-holmes2/team-sheet/master/instructions.md';
+  const orig = btn.textContent;
+  btn.textContent = 'Downloading…'; btn.disabled = true;
+  fetch(url)
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(text => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], { type: 'text/markdown' }));
+      a.download = 'instructions.md';
+      document.body.appendChild(a); a.click();
+      setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+      btn.textContent = '✓ Downloaded'; btn.disabled = false;
+      setTimeout(() => { btn.textContent = orig; }, 2500);
+    })
+    .catch(() => {
+      btn.textContent = '✗ Failed — check connection'; btn.disabled = false;
+      setTimeout(() => { btn.textContent = orig; }, 3000);
+    });
+}
+
+function downloadApp() {
+  let html = document.documentElement.outerHTML;
+  html = html.replace(/(<div id="demo-banner"[^>]*?)style="[^"]*display\s*:\s*flex[^"]*"/, '$1');
+  const blob = new Blob([html], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'team-sheet.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
 // ══ INIT ════════════════════════════════════════════════════
 function init() {
   _initPINCheck().then(() => {
@@ -5316,7 +5973,10 @@ function _doInit() {
         saveBalHist([]);
         snapshotBalance(data);
       }
-      if (!IS_DEMO) {
+      if (IS_DEMO) {
+        const b = document.getElementById('demo-banner');
+        if (b) b.style.display = 'flex';
+      } else {
         // Don't save demo data into localStorage; show welcome
         const welcomed = localStorage.getItem(WELCOMED_KEY);
         if (!welcomed) {

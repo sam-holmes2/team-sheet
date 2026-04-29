@@ -1,29 +1,39 @@
 # team-sheet
 
-*A map of your inner world 🌍*
-🗺️ **[Check out the live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html)** (no download needed)
+*Every part of you is on the same team.*
 
+Your mind is made up of **parts**: the Achiever that drives you, the Critic that cuts you down, the Soother that numbs when things get hard. [IFS (Internal Family Systems)](https://ifs-institute.com/) is a widely-used therapeutic framework built on this insight — that inner conflict is not a flaw to fix, but a system of parts to understand. team-sheet maps your inner system as it grows more detailed over time, session by session.
+
+🗺️ **[Try the live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html)** (no download needed)
 
 <img width="2710" height="1492" alt="image" src="https://github.com/user-attachments/assets/191430a2-95d1-4be6-8eba-5900615475e0" />
-
 
 ---
 
 Most self-help tools treat the mind as a single agent to be optimised. team-sheet treats it as a system of parts, each trying to help, each with its own history, perspective, values, fears, and skills.
 
-team-sheet is a personal [IFS (Internal Family Systems)](https://ifs-institute.com/) mapping app. Journal with your AI, paste the data it produces into a local .html file and watch your inner map take shape and grow more detailed over time. No AI? Edit fields directly. It works fully standalone too.
-
-No prior IFS experience needed. The app will introduce the concepts naturally through journalling.
-
+Journal with your AI, paste the data it produces into a local `.html` file, and watch your inner map take shape over time. No AI? Edit fields directly — the app works fully standalone. **No prior IFS experience needed.** The app introduces the concepts naturally.
 
 ---
 
-🔒 **Private by default.** A single `.html` file and some JSON. No server, no accounts, no telemetry. If you do choose to use an AI to journal, check [`journalling-threat-model.md`](https://github.com/sam-holmes2/team-sheet/blob/master/journalling-threat-model.md) to understand the risks associated with different types of journalling and the [`ai-privacy-guide`](https://github.com/sam-holmes2/team-sheet/blob/master/ai-privacy-guide.md) file for details on how you can mitigate these risks, for example by reconfiguring your provider's privacy setting or setting up a local LLM using [Ollama](https://ollama.com) for fully offline AI journalling.
+**After a few sessions you'll have:**
+- A visual map of your parts: named, sized by prominence, connected by relationship edges
+- Profiles for each part: what it does, what it fears, when it shows up, what it carries from the past
+- A log of Self-led moments, tagged by quality (calm, curiosity, compassion, etc.)
+- A timeline showing when each part emerged and how the balance between parts and Self has shifted
+
+---
+
+🔒 **Private by default.** A single `.html` file. No server, no accounts, no telemetry. Your data is a local file you own — nothing leaves your device unless you choose to send it. If you journal with an AI, check their privacy settings (see [ai-privacy-guide.md](ai-privacy-guide.md) for a full breakdown).
+
+🤖 **Works with any AI.** Any AI that supports project knowledge (Claude Projects, ChatGPT Projects, Gemini Gems) works. Prefer no AI? Edit everything directly in the app.
+
+🚧 **Early work in progress.** Feedback welcome: [open an issue](https://github.com/sam-holmes2/team-sheet/issues) or [start a discussion](https://github.com/sam-holmes2/team-sheet/discussions).
 
 ---
 
 ## Setup
-Follow these steps for your first session: 
+Follow these steps for your first session:
 1. **Download [`team-sheet.html`](team-sheet.html) and [`instructions.md`](instructions.md):** click each link, then the download icon (top right).
 2. **Create (or open) your AI project:** e.g. [claude.ai](https://claude.ai) → New Project.
 3. **Upload `instructions.md` to project knowledge:** Project sidebar → Add content → Add files.
@@ -32,7 +42,7 @@ Follow these steps for your first session:
 6. **Add `data.json` to project knowledge:** same as step 3. (If updating: remove the old version first, then upload the new one.)
 7. **Import your data into the app:** open `team-sheet.html`, click `↑` (top right), paste the JSON, Import.
 
-**No AI?** Just download and open `team-sheet.html` then edit fields directly. The import/export workflow is entirely optional.
+**No AI?** Download and open `team-sheet.html`, go to the Parts tab, and click "+ Add part". Fill in what you notice about each part — what it does, what it fears, when it shows up. The Map tab updates as you go.
 
 ---
 
@@ -49,13 +59,13 @@ Once you have a reasonable picture, generate my initial data.json using the form
 ---
 
 ## Each session
-Follow these steps for subsequent sessions: 
-1. **Export your data**: if you made any changes within the app, hit the `↓ EXPORT` button to download your data.
-2. **Start a new chat** in your AI project, double check your latest data.json file is attached as context.
-3. **Journal:** brain dump freely about whatever is on your mind, or name a mode you'd like the AI to follow initially (see below).
+Follow these steps for subsequent sessions:
+1. **Export your data:** if you made any changes within the app, hit the `↓ EXPORT` button first.
+2. **Start a new chat** in your AI project. Check your latest `data.json` is in the project knowledge.
+3. **Journal:** brain dump freely, or name a mode to start with (see below).
 4. **End the session:** ask your AI to *"Update my data"*.
-5. **Replace `data.json` in project knowledge:** remove the old version, upload your latest one produced in step 4. 
-6. **Sync the app:** click `↑ IMPORT`, paste the data from step 4 
+5. **Replace `data.json` in project knowledge:** remove the old version, upload the new one.
+6. **Sync the app:** click `↑ IMPORT`, paste the JSON from step 4, hit Apply.
 
 ---
 
@@ -75,7 +85,7 @@ Name any mode at the start of a session to direct the conversation.
 
 ## The 6 Fs: working with a part
 
-When focusing on a specific part, the AI will use the 6 Fs as a loose guide. You do not need to know these in advance; the AI will lead the conversation naturally. They describe a direction of inquiry, not a rigid script.
+When focusing on a specific part, your AI will use the 6 Fs as a loose guide. You do not need to know these in advance — the AI will lead naturally. They describe a direction of inquiry, not a rigid script.
 
 1. **Find:** locate the part; where do you feel it in your body?
 2. **Focus:** turn attention toward it without trying to change it
@@ -94,7 +104,7 @@ When focusing on a specific part, the AI will use the 6 Fs as a loose guide. You
 | **Parts** | The full roster of your parts: role, overview, wants, fears, skills, and relationships |
 | **Self** | The 8 Cs and 5 Ps of Self-energy; a log of Self-led moments |
 | **Journal** | Session entries: what was explored, which parts were active, what shifted |
-| **Timeline** | A horizontal chart showing when each part emerged, key memories in their history, and how the balance between parts and Self has shifted over time |
+| **Timeline** | A chart showing when each part emerged and how the balance between parts and Self has shifted over time |
 
 ---
 
@@ -127,61 +137,45 @@ IFS is widely practised by trained therapists and is one of the few approaches r
 - [IFS Institute Practitioner Directory](https://ifs-institute.com/practitioners): the official directory maintained by Richard Schwartz's own organisation
 - [IFS Training UK Therapist Directory](https://directory-uk.internalfamilysystemstraining.co.uk/): for UK-based practitioners
 
-Outside the US and UK, search for "IFS therapist" with your country or city, or filter by "Internal Family Systems" on your national therapist directory, to find trained practitioners.
-
----
-
-## What the app gives you
-
-- **A parts map:** a visual overview of your parts as nodes, sized by prominence, connected by relationship edges
-- **Part profiles:** for each part: role, overview, wants, fears, skills, triggers, body sensations, and relationships to other parts
-- **A Self log:** moments of genuine Self-leadership, tagged by quality (curiosity, compassion, calm, etc.)
-- **Session journal:** narrative summaries of what was explored each session and which parts were active
-- **A timeline:** when each part emerged, key memories in their history, and how the balance between parts and Self has shifted over time
-
-Over sessions, the map is drawn and refined. Parts that were unnamed and tangled become distinct and understood. Relationships between parts become visible. Self-led moments start to outweigh part-driven ones. The app holds what would otherwise be forgotten between sessions.
+Outside the US and UK, search for "IFS therapist" with your country or city, or filter by "Internal Family Systems" on your national therapist directory.
 
 ---
 
 ## Do I need to know IFS first?
 
-No. The quickstart prompt is designed to let you journal freely about what's going on, and the AI will introduce IFS concepts only when they become useful. You do not need to read anything before starting.
+No. The quickstart prompt is designed to let you journal freely about what's going on, and your AI will introduce IFS concepts only when they become useful. You do not need to read anything before starting.
 
-If you want to go deeper before or alongside using the app, here are good starting points.
+If you want to go deeper before or alongside using the app:
 
 **To listen first:**
-
-- **Podcast:** ["How (and Why) to Hug Your Inner Dragons"](https://open.spotify.com/episode/3St6LBbY32Tuck0XAuQQHE) (an interview with Richard Schwartz, the founder of IFS). 
-- **Podcast:** [The Tim Ferriss Show #492, "Richard Schwartz: IFS, Psychedelic Experiences Without Drugs, and Finding Inner Peace for Our Many Parts".](https://www.youtube.com/watch?v=ebLMeNiuoEo) 
+- **Podcast:** ["How (and Why) to Hug Your Inner Dragons"](https://open.spotify.com/episode/3St6LBbY32Tuck0XAuQQHE) (an interview with Richard Schwartz, the founder of IFS)
+- **Podcast:** [The Tim Ferriss Show #492, "Richard Schwartz: IFS, Psychedelic Experiences Without Drugs, and Finding Inner Peace for Our Many Parts"](https://www.youtube.com/watch?v=ebLMeNiuoEo)
 
 **To read first:**
-
-- **Book:** *Introduction to the Internal Family Systems Model* by Richard Schwartz. A friendly 140-page overview with examples, and the shortest path to understanding the whole model.
+- **Book:** *Introduction to the Internal Family Systems Model* by Richard Schwartz. A 140-page overview with examples, and the shortest path to understanding the whole model.
 - **Book:** *Self-Therapy* by Jay Earley. A comprehensive step-by-step guide aimed at people doing IFS on themselves or with a friend.
-- **Article:** "Introduction to Internal Family Systems Therapy" by Jay Earley, a free shorter overview of the same ground.
 
 **To go further:**
-
-- **Book:** *No Bad Parts* by Richard Schwartz. His newest book, applying IFS not just to personal healing but to relationships and broader societal change.
-- **Book:** *You Are the One You've Been Waiting For* by Richard Schwartz. Applies IFS to romantic relationships: how two people's exiles and protectors trigger each other.
-- **Book:** *Somatic Internal Family Systems Therapy* by Susan McConnell. Unifies IFS with somatic experiencing; useful if body-based work resonates with you.
+- **Book:** *No Bad Parts* by Richard Schwartz. Applies IFS not just to personal healing but to relationships and broader societal change.
+- **Book:** *You Are the One You've Been Waiting For* by Richard Schwartz. Applies IFS to romantic relationships.
+- **Book:** *Somatic Internal Family Systems Therapy* by Susan McConnell. Unifies IFS with somatic experiencing.
 - **Book:** *Self-Therapy, Vol. 2* by Jay Earley. Advanced techniques: switching focus between parts, working with polarized parts, and more.
-
-**Online:**
-
-- [The IFS Institute](https://ifs-institute.com/): free articles, videos, and the official practitioner directory. Richard Schwartz's own organisation.
+- [The IFS Institute](https://ifs-institute.com/): free articles, videos, and the official practitioner directory.
 
 ---
 
 ## Privacy and security
 
+Your data stays on your device. The copy-paste JSON workflow is not just a technical convenience — it is the privacy model. Nothing is transmitted automatically. You decide what leaves your machine and when.
+
 - **`data.json` is your private diary.** Nothing leaves your machine unless you send it. Any AI provider you journal with may store or use what you share. Check their privacy settings.
-- **Your `data.json` is the sensitive part.** `team-sheet.html` and `instructions.md` are identical for all users and safe to share freely.
 - **Think before syncing `data.json` to cloud storage.** Uploading to Google Drive, Dropbox, or iCloud means trusting that provider with your inner world material.
 - **AI is optional.** The app works fully offline as a plain tracker. Edit fields directly without any AI involved.
-- **Use [Firefox](https://www.firefox.com/) and disable extensions for additional safety.** Firefox isolates each local HTML file's storage. In Chrome and Edge, all local files share the same origin.
+- **Use [Firefox](https://www.firefox.com/) if possible.** Firefox isolates each local HTML file's storage. In Chrome and Edge, all local files share the same origin.
 
-team-sheet is not a replacement for professional mental health support. IFS has a strong evidence base and is practised by trained therapists. If you are working with complex trauma or distressing material, please seek qualified support alongside using this app.
+Set a password in Security (top-right gear icon) to encrypt your data at rest in the browser.
+
+**[Full journalling threat model](journalling-threat-model.md)** — a detailed breakdown of privacy risks across every journalling approach.
 
 ---
 
@@ -192,19 +186,25 @@ team-sheet is not a replacement for professional mental health support. IFS has 
 | **[team-sheet.html](team-sheet.html)** | The app. Open in your browser. |
 | **[instructions.md](instructions.md)** | Upload to your AI project knowledge. Defines the data format and all session guidance. |
 | **[alex-example-data.json](alex-example-data.json)** | Example data so you can see what a mapped system looks like. |
-| **[session-threat-model.md](session-threat-model.md)** | Privacy risk breakdown across all levels of AI journalling. |
+| **[journalling-threat-model.md](journalling-threat-model.md)** | Privacy risk breakdown across all levels of AI journalling. |
 | **[ai-privacy-guide.md](ai-privacy-guide.md)** | Full provider comparison: training policies, retention, ZDR options, local model setup. |
 
 ---
 
 ## Customising
 
-team-sheet is free and open source. The app and instructions are both designed to be modified. IFS is a rich model and no two people's inner worlds look the same. There is no one-size-fits-all approach to how you name parts, what you track, or how you want your AI to guide sessions.
+team-sheet is free and open source. The app and instructions are both designed to be modified. IFS is a rich model and no two people's inner worlds look the same.
 
-- **Edit `instructions.md`** to change how your AI communicates, which part properties it focuses on, how it phrases questions, how it leads the 6 Fs sequence, or what session modes are available. All changes stay in your own copy of the file.
+- **Edit `instructions.md`** to change how your AI communicates, which part properties it focuses on, how it phrases questions, how it leads the 6 Fs sequence, or what session modes are available. All changes stay in your own copy.
 - **Edit `team-sheet.html`** directly to rename fields, add new part properties, adjust the visual map, or remove sections that don't suit your approach. It's a single file with no build step.
 
 Contributions welcome: if you adapt the instructions in a way others might find useful, or build something new into the app, [open a pull request](https://github.com/sam-holmes2/team-sheet/pulls) or share it in issues.
+
+---
+
+## Support
+
+team-sheet is free and always will be. If it's been useful to you, you can [sponsor the project on GitHub](https://github.com/sponsors/sam-holmes2).
 
 ---
 
@@ -212,9 +212,8 @@ Contributions welcome: if you adapt the instructions in a way others might find 
 
 IFS gave me a genuinely useful framework for understanding my inner world, but keeping track of this understanding as it grew more complex over time became difficult. Insights from one therapy session were often forgotten by the next. I found it helpful to regularly check in with my parts between sessions, as IFS creator Richard Schwartz recommends, but this became far easier when it contributed to a growing, evolving map.
 
-I also noticed some parts were craving something more external and objective (clear evidence that I was "on the right track") to help recognise and appreciate the growth and healing that other skeptical parts tended to dismiss. Team-sheet became that place for me, and I hope it can benefit others too.
+I also noticed some parts were craving something more external and objective — clear evidence that I was "on the right track" — to help recognise and appreciate the growth and healing that other skeptical parts tended to dismiss. team-sheet became that place for me, and I hope it can benefit others too.
 
 ---
 
-*Companion to [character-sheet](../README.md), a gamified life dashboard built on the same local-first, AI-optional architecture. 
-If team-sheet is a cozy management game like Animal Crossing for understanding and befriending your inner world, then character-sheet is an intense RPG like Skyrim where you are the main character: for when you need some accountability, encouragement, and a quest log to help you lock in, level up, and solve external problems.*
+*Companion to [character-sheet](https://sam-holmes2.github.io/character-sheet/character-sheet.html), a gamified life dashboard built on the same local-first, AI-optional architecture. If team-sheet is a cozy management game like Animal Crossing for understanding and befriending your inner world, character-sheet is an intense RPG like Skyrim where you are the main character: for when you need accountability, encouragement, and a quest log to help you lock in, level up, and tackle the external world.*
