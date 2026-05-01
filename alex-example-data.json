@@ -1,21 +1,21 @@
 {
   "system": {
     "name": "Alex's Inner System",
-    "systemSummary": "A system shaped by growing up in an environment where love felt conditional on achievement and emotional needs went largely unmet. The Achiever and The Inner Critic form the dominant operating partnership, running daily life through a cycle of high output and harsh self-evaluation. The Soother has long served as the pressure valve when that loop overheats, stepping in with scrolling, snacks, and Netflix binges. The Pleaser operates quietly in the background, smoothing over conflict before it surfaces. Underneath them all is The Younger One: an exiled part carrying deep loneliness and the belief that she is fundamentally not enough as she is. Self exists and is making real but fragile contact with the system.",
-    "recentShifts": "The Critic softened noticeably when asked about its origins, and for the first time acknowledged the primary school teacher connection. The Achiever and Critic are beginning to be seen as distinct rather than a single voice. The Younger One made brief contact with Self without the system immediately shutting it down. The Pleaser surfaced as a named part for the first time.",
+    "systemSummary": "A system shaped by an environment where love felt conditional on achievement and emotional needs went largely unmet. The Achiever and The Inner Critic form the dominant operating partnership, running daily life through high output and harsh self-evaluation.\n\nThe Soother serves as the pressure valve when the Achiever-Critic loop overheats, stepping in with distraction and numbing. The Pleaser operates quietly in the background, smoothing over conflict before it surfaces.\n\nUnderneath them all is The Younger One, carrying deep loneliness and the belief that she is fundamentally not enough as she is. Self exists and is making real but fragile contact.",
+    "recentShifts": "The Critic softened when asked about its origins and acknowledged the primary school teacher connection for the first time. The Achiever and Critic are beginning to be seen as distinct. The Younger One made brief contact with Self, and The Pleaser was named for the first time.",
     "topTensions": [
-      "The Achiever and The Soother are locked in a push-pull that neither can break: The Achiever refuses to rest until it crashes, then The Soother overshoots, and The Critic narrates the failure of both. The cycle has been running for years.",
-      "The Critic attacks The Pleaser for being spineless, while The Pleaser tries to smooth over exactly the conflict The Critic creates. They are working against each other while protecting the same wound."
+      "The Achiever and The Soother are locked in a push-pull: The Achiever refuses to rest until it crashes, The Soother overshoots, and The Critic narrates the failure of both.",
+      "The Critic attacks The Pleaser for being spineless while The Pleaser tries to smooth over exactly the conflict The Critic creates, both working against each other while protecting the same wound."
     ],
     "topQuestions": [
-      "What is The Critic actually protecting underneath the harshness? It has named the fear of mediocrity, but what is underneath that? What would it lose if it softened for good?",
-      "What does The Younger One need from Self before she will allow real contact? She is moving closer but still testing whether it is safe.",
+      "What is The Critic actually protecting underneath the fear of mediocrity, and what would it lose if it softened for good?",
+      "What does The Younger One need from Self before she will allow real contact, given that she is moving closer but still testing whether it is safe?",
       "Is The Pleaser willing to try expressing a genuine preference in a low-stakes situation, and what does it expect will happen?"
     ],
     "topExperiments": [
-      "When The Critic fires after finishing something, pause before the next task and ask it: what are you afraid will happen in this gap? Just listen. Do not argue.",
-      "Notice The Pleaser the moment it activates in a conversation. What is the exact trigger? What does it prevent by stepping in?",
-      "Spend two minutes with The Younger One before sleep, without reassuring or fixing. Just acknowledge she is there."
+      "When The Critic fires after finishing something, pause before the next task and ask it what it is afraid will happen in that gap, then just listen without arguing.",
+      "Notice The Pleaser the moment it activates in a conversation, and ask what the exact trigger was and what it prevented by stepping in.",
+      "Spend two minutes with The Younger One before sleep, acknowledging she is there without reassuring or fixing."
     ],
     "journeyStage": "developing",
     "currentAge": 34
@@ -739,5 +739,5 @@
   ],
 
   "_partial": false,
-  "_instructionsVersion": "1.8.0"
+  "_instructionsVersion": "2.0.0"
 }
