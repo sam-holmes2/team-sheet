@@ -18,7 +18,8 @@
       "Spend two minutes with The Younger One before sleep, acknowledging she is there without reassuring or fixing."
     ],
     "journeyStage": "developing",
-    "currentAge": 34
+    "currentAge": 34,
+    "birthDate": "1992-03-14"
   },
 
   "parts": [
@@ -572,15 +573,33 @@
     }
   ],
 
-  "_selfWeight": 0.08,
+  "_selfWeight": 0.10,
 
   "_balanceHistory": [
-    { "date": "2026-03-08", "weights": { "self": 0.03, "part-achiever": 0.38, "part-critic": 0.30, "part-soother": 0.18, "part-younger-one": 0.05, "part-pleaser": 0.06 } },
-    { "date": "2026-03-22", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.28, "part-soother": 0.18, "part-younger-one": 0.05, "part-pleaser": 0.09 } },
-    { "date": "2026-04-05", "weights": { "self": 0.05, "part-achiever": 0.34, "part-critic": 0.26, "part-soother": 0.18, "part-younger-one": 0.05, "part-pleaser": 0.12 } },
-    { "date": "2026-04-14", "weights": { "self": 0.06, "part-achiever": 0.32, "part-critic": 0.25, "part-soother": 0.17, "part-younger-one": 0.05, "part-pleaser": 0.15 } },
-    { "date": "2026-04-17", "weights": { "self": 0.07, "part-achiever": 0.31, "part-critic": 0.24, "part-soother": 0.17, "part-younger-one": 0.06, "part-pleaser": 0.15 } },
-    { "date": "2026-04-22", "weights": { "self": 0.08, "part-achiever": 0.30, "part-critic": 0.24, "part-soother": 0.17, "part-younger-one": 0.06, "part-pleaser": 0.15 } }
+    { "date": "2024-10-19", "weights": { "self": 0.02, "part-achiever": 0.44, "part-critic": 0.33, "part-soother": 0.13, "part-younger-one": 0.03, "part-pleaser": 0.05 } },
+    { "date": "2024-11-16", "weights": { "self": 0.02, "part-achiever": 0.46, "part-critic": 0.33, "part-soother": 0.11, "part-younger-one": 0.03, "part-pleaser": 0.05 } },
+    { "date": "2024-12-07", "weights": { "self": 0.02, "part-achiever": 0.42, "part-critic": 0.35, "part-soother": 0.13, "part-younger-one": 0.03, "part-pleaser": 0.05 } },
+    { "date": "2025-01-18", "weights": { "self": 0.03, "part-achiever": 0.38, "part-critic": 0.27, "part-soother": 0.22, "part-younger-one": 0.04, "part-pleaser": 0.06 } },
+    { "date": "2025-02-15", "weights": { "self": 0.02, "part-achiever": 0.37, "part-critic": 0.40, "part-soother": 0.12, "part-younger-one": 0.03, "part-pleaser": 0.06 } },
+    { "date": "2025-03-08", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.28, "part-soother": 0.19, "part-younger-one": 0.05, "part-pleaser": 0.08 } },
+    { "date": "2025-03-29", "weights": { "self": 0.05, "part-achiever": 0.34, "part-critic": 0.26, "part-soother": 0.18, "part-younger-one": 0.07, "part-pleaser": 0.10 } },
+    { "date": "2025-04-26", "weights": { "self": 0.03, "part-achiever": 0.30, "part-critic": 0.25, "part-soother": 0.29, "part-younger-one": 0.05, "part-pleaser": 0.08 } },
+    { "date": "2025-06-07", "weights": { "self": 0.03, "part-achiever": 0.32, "part-critic": 0.28, "part-soother": 0.27, "part-younger-one": 0.03, "part-pleaser": 0.07 } },
+    { "date": "2025-07-19", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.29, "part-soother": 0.18, "part-younger-one": 0.05, "part-pleaser": 0.08 } },
+    { "date": "2025-08-30", "weights": { "self": 0.06, "part-achiever": 0.34, "part-critic": 0.25, "part-soother": 0.17, "part-younger-one": 0.07, "part-pleaser": 0.11 } },
+    { "date": "2025-10-04", "weights": { "self": 0.09, "part-achiever": 0.31, "part-critic": 0.23, "part-soother": 0.16, "part-younger-one": 0.09, "part-pleaser": 0.12 } },
+    { "date": "2025-10-25", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.34, "part-soother": 0.15, "part-younger-one": 0.03, "part-pleaser": 0.08 } },
+    { "date": "2025-11-15", "weights": { "self": 0.07, "part-achiever": 0.32, "part-critic": 0.26, "part-soother": 0.17, "part-younger-one": 0.07, "part-pleaser": 0.11 } },
+    { "date": "2025-12-06", "weights": { "self": 0.05, "part-achiever": 0.39, "part-critic": 0.30, "part-soother": 0.13, "part-younger-one": 0.05, "part-pleaser": 0.08 } },
+    { "date": "2026-01-10", "weights": { "self": 0.08, "part-achiever": 0.33, "part-critic": 0.25, "part-soother": 0.17, "part-younger-one": 0.06, "part-pleaser": 0.11 } },
+    { "date": "2026-01-31", "weights": { "self": 0.06, "part-achiever": 0.34, "part-critic": 0.28, "part-soother": 0.18, "part-younger-one": 0.05, "part-pleaser": 0.09 } },
+    { "date": "2026-02-21", "weights": { "self": 0.08, "part-achiever": 0.31, "part-critic": 0.25, "part-soother": 0.18, "part-younger-one": 0.06, "part-pleaser": 0.12 } },
+    { "date": "2026-03-08", "weights": { "self": 0.07, "part-achiever": 0.33, "part-critic": 0.26, "part-soother": 0.18, "part-younger-one": 0.06, "part-pleaser": 0.10 } },
+    { "date": "2026-03-22", "weights": { "self": 0.09, "part-achiever": 0.31, "part-critic": 0.24, "part-soother": 0.17, "part-younger-one": 0.07, "part-pleaser": 0.12 } },
+    { "date": "2026-04-05", "weights": { "self": 0.08, "part-achiever": 0.30, "part-critic": 0.24, "part-soother": 0.18, "part-younger-one": 0.08, "part-pleaser": 0.12 } },
+    { "date": "2026-04-14", "weights": { "self": 0.11, "part-achiever": 0.28, "part-critic": 0.22, "part-soother": 0.17, "part-younger-one": 0.08, "part-pleaser": 0.14 } },
+    { "date": "2026-04-17", "weights": { "self": 0.10, "part-achiever": 0.29, "part-critic": 0.23, "part-soother": 0.17, "part-younger-one": 0.09, "part-pleaser": 0.12 } },
+    { "date": "2026-04-22", "weights": { "self": 0.12, "part-achiever": 0.27, "part-critic": 0.21, "part-soother": 0.16, "part-younger-one": 0.09, "part-pleaser": 0.15 } }
   ],
 
   "sessions": [

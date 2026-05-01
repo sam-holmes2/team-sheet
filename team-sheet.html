@@ -5438,6 +5438,13 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId) {
   }
   const dateRange = Math.max(dateMax - dateMin, 1);
 
+  // For all-time chart, anchor the first balance snapshot to dateMin so stacked areas
+  // fill the full chart width instead of painting a thin sliver near the right edge.
+  if (isAllTime && snaps.length > 0 && snapMs[0] > dateMin) {
+    snaps.unshift({ date: '', props: { ...snaps[0].props } });
+    snapMs.unshift(dateMin);
+  }
+
   function snapX(i) {
     if (isAllTime) return PAD_L + ((snapMs[i] - dateMin) / dateRange) * drawW;
     return PAD_L + (n <= 1 ? drawW / 2 : (i / (n - 1)) * drawW);
