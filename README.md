@@ -10,17 +10,17 @@ Your mind is made up of **parts**: the Achiever that drives you, the Critic that
 
 ---
 
-Most self-help tools treat the mind as a single agent to be optimised. team-sheet treats it as a system of parts, each trying to help, each with its own history, perspective, values, fears, and skills.
+Most self-help tools treat the mind as a single agent to be optimised. team-sheet recognises that each of us have a system of "parts", each trying to help using its own history, perspective, values, fears, and skills.
 
-Journal with your AI, paste the data it produces into a local `.html` file, and watch your inner map take shape over time. No AI? Edit fields directly — the app works fully standalone. **No prior IFS experience needed.** The app introduces the concepts naturally.
+team-sheet allows you to map this internal territory, to understand and connect with all parts of you on a deeper level. Free flow or structured journalling with or without an AI can be used to populate a local `.html` file. You can then edit fields directly in the app to continually refine your map with new insights. **No prior IFS experience needed.** 
 
 ---
 
 **After a few sessions you'll have:**
 - A visual map of your parts: named, sized by prominence, connected by relationship edges
-- Profiles for each part: what it does, what it fears, when it shows up, what it carries from the past
+- Profiles for each part: what it does, what it wants and fears, when it shows up, what it carries from the past
 - A log of Self-led moments, tagged by quality (calm, curiosity, compassion, etc.)
-- A timeline showing when each part emerged and how the balance between parts and Self has shifted
+- A timeline showing when each part emerged and how the balance between parts and Self has shifted 
 
 ---
 
