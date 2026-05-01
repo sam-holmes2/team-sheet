@@ -6,7 +6,7 @@ Your mind is made up of **parts**: the Achiever that drives you, the Critic that
 
 🗺️ **[Try the live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html)** (no download needed)
 
-<img width="2710" height="1492" alt="image" src="https://github.com/user-attachments/assets/191430a2-95d1-4be6-8eba-5900615475e0" />
+<img width="2708" height="1258" alt="image" src="https://github.com/user-attachments/assets/82689abe-04d2-4823-b230-b51c6b18b4a7" />
 
 ---
 
