@@ -19,6 +19,8 @@ Provider privacy policies: [Anthropic](https://www.anthropic.com/privacy) | [Ope
 
 **Zero Data Retention (ZDR):** a developer-tier option where inputs and outputs are not stored after processing. Only available via API, not consumer plans.
 
+**Confidential computing / secure enclave:** hardware-enforced privacy where inference runs inside a Trusted Execution Environment (TEE) inaccessible even to provider staff. Offers cryptographic attestation rather than policy-based promises. Currently limited to open-source models.
+
 **Memory:** a cross-conversation feature (now offered by most providers) that stores facts about you across sessions. This is a separate storage layer from conversation history, with its own settings and retention.
 
 ---
@@ -47,6 +49,7 @@ Ordered from most to least data control. Rows within each tier are not meaningfu
 |---|---|---|---|---|---|---|
 | **Local** | Ollama | N/A. stays on device | N/A | Never | On device only | Free |
 | **Local** | LM Studio | N/A. stays on device | N/A | Never | On device only | Free |
+| **Confidential cloud** | Tinfoil, ExpressAI, NEAR Private Chat | Never | N/A | No (hardware-enforced) | Not stored (hardware-enforced) | Free to ~$20/mo |
 | **ZDR (developer API)** | Anthropic API + ZDR | Never | N/A | No | Not stored | Usage-based |
 | **ZDR (developer API)** | OpenAI API + ZDR | Never | N/A | No | Not stored | Usage-based |
 | **Standard API** | Anthropic API | Never | N/A | Possible (safety review) | 30 days | Usage-based |
@@ -127,6 +130,29 @@ Conversations are retained until you delete them or delete your account. (Earlie
 
 **EU jurisdiction:**
 Mistral is a French company. Data is stored in the EU under GDPR. EU residents have stronger statutory rights, and government data access requires compliance with EU legal process.
+
+---
+
+## Confidential cloud providers
+
+A newer category of consumer AI products built on hardware Trusted Execution Environments (TEEs). In standard cloud AI, privacy depends on the provider's policies and contractual promises. TEE-based services enforce isolation in hardware: the provider's own staff cannot access conversation content, and each inference can generate a cryptographic attestation signed by the CPU manufacturer (Intel or AMD) proving a specific, unmodified model ran in a genuine enclave. Some providers include browser-based tools to verify these attestations yourself.
+
+**Current providers:**
+- [Tinfoil](https://tinfoil.sh) — consumer chat and API, iOS and web, $20/month. SOC 2 Type II. Open-source attestation verifier.
+- ExpressAI (by ExpressVPN, launched March 2026) — consumer chat using confidential enclaves, included with ExpressVPN Pro. [More info](https://www.expressvpn.com/blog/expressai-private-ai-platform/)
+- [NEAR Private Chat](https://near.ai) — uses Intel TDX and NVIDIA Confidential Computing. Open-source model focus.
+
+This category is early-stage. New providers are appearing; search "confidential AI chat" to find current options.
+
+**Limitations:**
+
+**Frontier models are not available.** Claude, GPT-4, and Gemini cannot run in confidential infrastructure because their weights are proprietary. All current providers use open-source models: Llama, Gemma, Mistral, and similar. For IFS work in particular, the quality gap is worth weighing carefully. Open-source models handle structured tasks well but are not yet equivalent to frontier models for nuanced, emotionally complex material.
+
+**Metadata is not protected.** Account details, IP address, and billing information are still collected and governed by standard privacy policies. Confidential computing protects conversation content, not identity. Third-party sub-processors for auth, billing, and infrastructure also receive some of this metadata.
+
+**Trust shifts rather than disappears.** TEE attestation requires trusting the hardware manufacturer. Intel SGX and AMD SEV-SNP have had documented side-channel vulnerabilities. These are high-difficulty attacks rather than mass-exploitation threats, and providers mitigate against known vectors, but hardware isolation is not perfectly immune.
+
+**Limited track record.** Most providers in this space are early-stage companies. SOC 2 certification and open-source verifiers are positive signals, but do not substitute for years of audited operation. Consider this alongside how sensitive your material is.
 
 ---
 

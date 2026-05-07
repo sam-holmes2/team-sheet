@@ -24,16 +24,79 @@ team-sheet allows you to map this internal territory, to understand and connect 
 
 ---
 
-🔒 **Private by default.** A single `.html` file. No server, no accounts, no telemetry. Your data is a local file you own — nothing leaves your device unless you choose to send it. If you journal with an AI, check their privacy settings (see [ai-privacy-guide.md](ai-privacy-guide.md) for a full breakdown).
+🔒 **Private by default.** A single `.html` file. No server, no accounts, no telemetry. Your data is a local file you own — nothing leaves your device unless you choose to send it.
 
-🤖 **Works with any AI.** Any AI that supports project knowledge (Claude Projects, ChatGPT Projects, Gemini Gems) works. Prefer no AI? Edit everything directly in the app.
+🤖 **Works with any AI.** Local models via [Ollama](https://ollama.com) (fully offline), or cloud models via Claude, ChatGPT, and Gemini. Prefer no AI? Edit everything directly in the app.
 
 🚧 **Early work in progress.** Feedback welcome: [open an issue](https://github.com/sam-holmes2/team-sheet/issues) or [start a discussion](https://github.com/sam-holmes2/team-sheet/discussions).
 
 ---
 
-## Setup
-Follow these steps for your first session:
+## Choose your path
+
+| | **Local (recommended)** | **Cloud** |
+|---|---|---|
+| **Privacy** | Fully offline. Nothing ever leaves your device | Your session data is sent to your AI provider |
+| **Cost** | Free | Pay per API use (Anthropic) or use a free tier |
+| **Setup** | ~5 minutes, one-time | Instant |
+
+### Path A: Local with Ollama (recommended)
+
+IFS sessions involve sensitive personal material. A local model means nothing is sent anywhere.
+
+**1. Download the app**
+
+Go to [`team-sheet.html`](team-sheet.html) on GitHub, click the download icon (top right). Open it in your browser.
+
+**2. Install Ollama**
+
+| OS | Command |
+|----|---------|
+| **Mac** | `brew install ollama` or [download from ollama.com](https://ollama.com/download) |
+| **Windows** | [Download the installer from ollama.com](https://ollama.com/download) and run it |
+| **Linux** | `curl -fsSL https://ollama.com/install.sh \| sh` |
+
+**3. Pull a model**
+
+```
+ollama pull gemma3:4b
+```
+
+`gemma3:4b` is a good starting point: fast, capable, runs on 8 GB RAM. See the in-app Chat Settings for more options.
+
+**4. Run Ollama with CORS enabled**
+
+The browser needs permission to talk to Ollama. Quit the Ollama menu bar app if it is running, then:
+
+| OS | Command |
+|----|---------|
+| **Mac / Linux** | `OLLAMA_ORIGINS="*" ollama serve` |
+| **Windows (PowerShell)** | `$env:OLLAMA_ORIGINS="*"; ollama serve` |
+
+Keep that terminal open while using chat.
+
+**5. Open the app and start a session**
+
+Open `team-sheet.html` in your browser. Click the chat icon, open Settings (gear icon), confirm your model is selected, and start talking.
+
+---
+
+### Path B: Cloud with an Anthropic API key
+
+Use the [live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html) (HTTPS) or your downloaded `team-sheet.html`.
+
+1. Go to [console.anthropic.com](https://console.anthropic.com) — create an account if needed (separate from Claude.ai)
+2. Open **API Keys** and create a new key
+3. In the app: set a **security password** first (Settings tab), then open Chat Settings (gear icon in the chat panel), select a Claude model, and paste your key
+
+> Your session data is sent to Anthropic with each chat message. IFS material is personal — use a local model if this concerns you.
+
+---
+
+### External AI workflow (copy-paste)
+
+Use any AI — Claude, ChatGPT, Gemini — without an API key. No in-app chat needed.
+
 1. **Download [`team-sheet.html`](team-sheet.html) and [`instructions.md`](instructions.md):** click each link, then the download icon (top right).
 2. **Create (or open) your AI project:** e.g. [claude.ai](https://claude.ai) → New Project.
 3. **Upload `instructions.md` to project knowledge:** Project sidebar → Add content → Add files.
@@ -42,7 +105,7 @@ Follow these steps for your first session:
 6. **Add `data.json` to project knowledge:** same as step 3. (If updating: remove the old version first, then upload the new one.)
 7. **Import your data into the app:** open `team-sheet.html`, click `↑` (top right), paste the JSON, Import.
 
-**No AI?** Download and open `team-sheet.html`, go to the Parts tab, and click "+ Add part". Fill in what you notice about each part — what it does, what it fears, when it shows up. The Map tab updates as you go.
+**No AI?** Download and open `team-sheet.html`, go to the Parts tab, and click "+ Add part".
 
 ---
 
@@ -58,8 +121,8 @@ Once you have a reasonable picture, generate my initial data.json using the form
 
 ---
 
-## Each session
-Follow these steps for subsequent sessions:
+## Each session (copy-paste workflow)
+
 1. **Export your data:** if you made any changes within the app, hit the `↓ EXPORT` button first.
 2. **Start a new chat** in your AI project. Check your latest `data.json` is in the project knowledge.
 3. **Journal:** brain dump freely, or name a mode to start with (see below).
@@ -166,11 +229,11 @@ If you want to go deeper before or alongside using the app:
 
 ## Privacy and security
 
-Your data stays on your device. The copy-paste JSON workflow is not just a technical convenience — it is the privacy model. Nothing is transmitted automatically. You decide what leaves your machine and when.
+Your data stays on your device. The copy-paste JSON workflow is not just a technical convenience: it is the privacy model. Nothing is transmitted automatically. You decide what leaves your machine and when.
 
 - **`data.json` is your private diary.** Nothing leaves your machine unless you send it. Any AI provider you journal with may store or use what you share. Check their privacy settings.
 - **Think before syncing `data.json` to cloud storage.** Uploading to Google Drive, Dropbox, or iCloud means trusting that provider with your inner world material.
-- **AI is optional.** The app works fully offline as a plain tracker. Edit fields directly without any AI involved.
+- **AI is optional.** The app works fully offline as a plain tracker. For stronger privacy with AI, options range from local models like [Ollama](https://ollama.com) (nothing leaves your device) to confidential cloud services with hardware-enforced privacy. See [ai-privacy-guide.md](ai-privacy-guide.md) for a full breakdown.
 - **Use [Firefox](https://www.firefox.com/) if possible.** Firefox isolates each local HTML file's storage. In Chrome and Edge, all local files share the same origin.
 
 Set a password in Security (top-right gear icon) to encrypt your data at rest in the browser.

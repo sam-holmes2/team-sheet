@@ -12,8 +12,9 @@ How private is your inner map, really? This document breaks down the trust and r
 | **1** | Local digital (no AI) | On your device only | Anyone with device access | Device theft, no backups by default, loss if device fails | Full-disk encryption, strong login password, local backups | Store `team-sheet.html` locally; edit fields directly; import/export JSON manually; no internet required |
 | **2** | Cloud storage (no AI) | On your device + provider servers | Provider (Google, iCloud, Dropbox...) + anyone who compromises your account | Provider access, account breach, government requests, terms-of-service changes | Strong password + 2FA, review provider privacy policy, end-to-end encrypted options (e.g. Cryptomator) | Store `team-sheet.html` in Google Drive or iCloud; syncs across devices while data stays in localStorage |
 | **3** | AI-assisted (local model) | On your device only | Anyone with device access | Model capability limits (smaller parameter counts = less nuanced reflection), higher technical setup bar | Same as level 1; model weights stay local | Journal with a local LLM (e.g. [Ollama](https://ollama.com), LM Studio); paste AI output into team-sheet manually |
-| **4** | AI-assisted (frontier model) | On your device + AI provider's servers | AI provider (Anthropic, OpenAI...) + anyone who compromises your account | Provider data retention, potential training data use, account breach, jurisdiction-dependent legal access | Opt out of training data in provider settings, review retention policy, use a pseudonym, keep entries vague | The default setup: journal with an AI using `instructions.md`; `data.json` lives in project knowledge |
-| **5** | AI-assisted (frontier model + 3rd-party wrapper) | On your device + AI provider + 3rd-party app's servers | All of the above, plus the wrapper company | All level-4 risks, plus the wrapper storing your data independently, narrower control over how it's used | Read the wrapper's privacy policy carefully; prefer providers that are explicit about not storing journal content | Third-party apps built on frontier model APIs; team-sheet avoids this layer entirely |
+| **4** | AI-assisted (confidential cloud) | In secure hardware enclaves on provider servers; conversation content inaccessible even to provider staff | Hardware manufacturer (Intel/AMD); anyone who compromises your account | Open-source models only: quality gap vs. frontier AI; metadata (IP, account, billing) still collected; nascent providers with limited track records; hardware side-channel attack surface | Verify cryptographic attestations; choose providers with open-source verifiers; use a pseudonym | Use a confidential cloud service (e.g. Tinfoil, ExpressAI); paste `instructions.md` and `data.json` at session start; import JSON output at the end |
+| **5** | AI-assisted (frontier model) | On your device + AI provider's servers | AI provider (Anthropic, OpenAI...) + anyone who compromises your account | Provider data retention, potential training data use, account breach, jurisdiction-dependent legal access | Opt out of training data in provider settings, review retention policy, use a pseudonym, keep entries vague | The default setup: journal with an AI using `instructions.md`; `data.json` lives in project knowledge |
+| **6** | AI-assisted (frontier model + 3rd-party wrapper) | On your device + AI provider + 3rd-party app's servers | All of the above, plus the wrapper company | All level-5 risks, plus the wrapper storing your data independently, narrower control over how it's used | Read the wrapper's privacy policy carefully; prefer providers that are explicit about not storing journal content | Third-party apps built on frontier model APIs; team-sheet avoids this layer entirely |
 
 ---
 
@@ -31,12 +32,19 @@ Adds device sync and automatic backup at the cost of storing data on a provider'
 ### Level 3: Local AI (e.g. Ollama, LM Studio)
 Running a model locally means no data leaves your machine. The practical tradeoff is capability: models that run on consumer hardware (7B-34B parameters) are less nuanced than frontier models at deep reflection tasks, though the gap is narrowing quickly. Setup is more technical. This is the highest-privacy option that still gives you AI assistance.
 
-### Level 4: Frontier AI (Claude, GPT-4, Gemini)
+### Level 4: Confidential cloud AI
+A newer category: consumer chat services running inference inside hardware Trusted Execution Environments (TEEs). Unlike standard cloud AI where your privacy depends on a provider's policies, TEE-based services enforce isolation in hardware: the provider's own staff cannot access conversation content. Each request can generate a cryptographic attestation proving which model ran and that it ran in a genuine, unmodified enclave.
+
+**The main tradeoff is model quality.** All current confidential cloud services use open-source models (Llama, Gemma, Mistral). Frontier models (Claude, GPT-4, Gemini) cannot run in this infrastructure because their weights are not public. For inner work like IFS sessions, this gap is worth weighing carefully. Open-source models are increasingly capable, but are not yet equivalent to frontier models for nuanced, emotionally complex material.
+
+Metadata is not protected by the enclave: account details, IP address, and billing information remain subject to the provider's standard policies. Trust shifts rather than disappears: you are trusting the hardware manufacturer (Intel or AMD) rather than the cloud provider.
+
+### Level 5: Frontier AI (Claude, GPT-4, Gemini)
 The most capable reflection partner available. The cost is trust: your session content travels to the provider's servers and is subject to their data retention and privacy policies. Most providers offer a way to opt out of using your data for model training. Find and enable this setting if it matters to you. Note that opting out of training doesn't necessarily mean your data isn't stored at all; the retention period and legal access policies are separate questions.
 
 **What Anthropic says:** Claude has an opt-out for model training, but stored conversations are still retained according to their standard policy. Check [Anthropic's privacy policy](https://www.anthropic.com/privacy) for current details.
 
-### Level 5: Frontier AI via 3rd-party apps
+### Level 6: Frontier AI via 3rd-party apps
 Apps that use frontier model APIs under the hood. You're trusting the AI provider *and* the app company. The app often stores your journal content in its own database for features like search and history. Check whether it does. team-sheet deliberately avoids this layer: it talks to no server, stores nothing remotely, and the only third party in the chain is the AI provider you choose.
 
 ---
@@ -49,8 +57,9 @@ Apps that use frontier model APIs under the hood. You're trusting the AI provide
 | **1** | Download `team-sheet.html`, open locally in Firefox, use as a standalone offline tracker. Edit fields directly. No AI needed. |
 | **2** | Store the file in Google Drive or iCloud to enable sync across devices |
 | **3** | Journal with a local model (Ollama + Open WebUI); paste the AI's JSON output into team-sheet manually |
-| **4** | The default setup: AI project + `instructions.md` + `data.json` in project knowledge |
-| **5** | Use a journalling app that connects to a frontier model; import its output into team-sheet if it can produce compatible JSON |
+| **4** | Use a confidential cloud service (e.g. Tinfoil, ExpressAI); paste `instructions.md` and `data.json` at session start; import JSON output at the end. No persistent project context between sessions. |
+| **5** | The default setup: AI project + `instructions.md` + `data.json` in project knowledge |
+| **6** | Use a journalling app that connects to a frontier model; import its output into team-sheet if it can produce compatible JSON |
 
 ---
 
@@ -76,7 +85,7 @@ The material in team-sheet is more sensitive than most personal data. A parts ma
 
 **The stakes of exposure are higher.** A leaked character-sheet might reveal your goals and habits. A leaked team-sheet could reveal things you've never told anyone. Apply the same care to your `data.json` that you'd apply to therapy notes.
 
-**Frontier AI sessions carry this weight too.** When you journal with an AI at level 4, you may share exile-level material in the course of the conversation. This content reaches the provider's servers, not just the JSON output. If this concerns you, consider a local model (level 3), a pseudonym, or staying at a more surface level with frontier AI and reserving deeper material for offline reflection.
+**Frontier AI sessions carry this weight too.** When you journal with an AI at level 5, you may share exile-level material in the course of the conversation. This content reaches the provider's servers, not just the JSON output. If this concerns you: a local model (level 3) means nothing leaves your machine; confidential cloud services (level 4) provide hardware-enforced privacy with a consumer interface at the cost of open-source model quality; or stay surface-level with frontier AI and reserve deeper material for offline reflection.
 
 ---
 
