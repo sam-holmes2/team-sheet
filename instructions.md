@@ -287,6 +287,8 @@ At the end of each session, update `topTensions`, `topQuestions`, and `topExperi
 
 **Rank by importance.** Put the most pressing item first. Reorder each session. Drop items that have resolved; add new ones as they emerge. The goal is a live, prioritised read of the system, not a growing archive.
 
+**Keep these current.** The app surfaces `topTensions`, `topQuestions`, and `topExperiments` as personalised chat entry points each time the user opens a session. Stale or generic entries produce generic chips. Specific, freshly inferred items produce prompts the user actually wants to click.
+
 The previous `keyQuestion` and `keyExperiment` fields are deprecated; do not output them.
 
 ---

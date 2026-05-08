@@ -64,16 +64,34 @@ ollama pull gemma3:4b
 
 `gemma3:4b` is a good starting point: fast, capable, runs on 8 GB RAM. See the in-app Chat Settings for more options.
 
-**4. Run Ollama with CORS enabled**
+**Which model should I choose?**
 
-The browser needs permission to talk to Ollama. Quit the Ollama menu bar app if it is running, then:
+Pick the largest model your RAM comfortably fits:
+
+| Your RAM | Recommended model | Command |
+|----------|-------------------|---------|
+| 8 GB | `gemma3:4b` | `ollama pull gemma3:4b` |
+| 16 GB | `qwen2.5:7b` | `ollama pull qwen2.5:7b` |
+| 32 GB | `qwen2.5:14b` | `ollama pull qwen2.5:14b` |
+| 64 GB+ | `qwen2.5:32b` | `ollama pull qwen2.5:32b` |
+
+**Context window:** your parts map grows as you add more sessions. The model's context window must fit your full data plus the conversation. Export your JSON (click `↓ EXPORT`), check its size: a 50 KB file is roughly 12,000 tokens. Set Context Window in Chat Settings to at least twice that. The app shows your compact and full token counts in Chat Settings.
+
+**For a precise fit to your hardware:** [llmfit](https://github.com/AlexsJones/llmfit) detects your RAM, GPU, and speed, then scores every model. Mac/Linux: `brew install llmfit` then `llmfit fit`.
+
+**4. Run Ollama with browser access enabled**
+
+By default Ollama blocks browser pages from reaching it. You need to restart it with that restriction lifted. If Ollama is already running, this command stops it first and restarts it correctly:
 
 | OS | Command |
 |----|---------|
-| **Mac / Linux** | `OLLAMA_ORIGINS="*" ollama serve` |
-| **Windows (PowerShell)** | `$env:OLLAMA_ORIGINS="*"; ollama serve` |
+| **Mac** | `pkill -f "Ollama.app/Contents/MacOS" 2>/dev/null; pkill -f "ollama serve" 2>/dev/null; sleep 1; OLLAMA_ORIGINS="*" ollama serve` |
+| **Linux** | `pkill -f "ollama serve" 2>/dev/null; sleep 1; OLLAMA_ORIGINS="*" ollama serve` |
+| **Windows (PowerShell)** | `Stop-Process -Name "ollama" -Force -ErrorAction SilentlyContinue; Start-Sleep 1; $env:OLLAMA_ORIGINS="*"; ollama serve` |
 
-Keep that terminal open while using chat.
+Keep that terminal open while using chat. **Close it when you are done** — this stops Ollama and is the simplest way to limit its exposure while not in use.
+
+> `OLLAMA_ORIGINS="*"` lets any local webpage reach Ollama while it is running. Closing the terminal when you are finished is the easiest way to keep this tidy.
 
 **5. Open the app and start a session**
 
