@@ -7911,7 +7911,30 @@ function renderTimeline(s) {
   const recentSection = document.getElementById('timeline-recent-section');
   const alltimeSection = document.getElementById('timeline-alltime-section');
   const areaWrap = document.getElementById('balance-area-wrap');
-  const hist = loadBalHist();
+  let hist = loadBalHist();
+
+  // Ensure every session date has a balance entry. Parts may have changed since the
+  // history was last written (e.g. after import on a new device), so fill any gaps
+  // using the current parts' balanceWeight as the best available approximation.
+  if (Array.isArray(s.sessions) && Array.isArray(s.parts)) {
+    const fallbackW = {};
+    s.parts.forEach(p => { if (p.id && p.balanceWeight) fallbackW[p.id] = p.balanceWeight; });
+    if (s._selfWeight) fallbackW['self'] = s._selfWeight;
+    if (Object.keys(fallbackW).length > 0) {
+      const datesInHist = new Set(hist.map(e => e.date));
+      let added = false;
+      s.sessions.forEach(sess => {
+        if (!sess.date || datesInHist.has(sess.date)) return;
+        hist.push({ date: sess.date, weights: Object.assign({}, fallbackW) });
+        datesInHist.add(sess.date);
+        added = true;
+      });
+      if (added) {
+        hist.sort((a, b) => a.date < b.date ? -1 : 1);
+        saveBalHist(hist);
+      }
+    }
+  }
 
   renderMemories(s);
 
