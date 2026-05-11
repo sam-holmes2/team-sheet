@@ -967,7 +967,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .modal {
   background:var(--card); border:1px solid var(--border-hi);
   border-radius:12px; padding:28px 32px; max-width:620px;
-  width:100%; position:relative; max-height:90vh; overflow-y:auto;
+  width:100%; position:relative; max-height:90vh; overflow-y:auto; overflow-x:hidden;
   box-shadow:0 8px 32px rgba(0,0,0,0.5);
 }
 .modal-close {
@@ -1035,7 +1035,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 /* ── Welcome modal ── */
 #welcome-modal { z-index:400; }
-#welcome-modal .modal { max-width:620px; width:96vw; border-top:3px solid var(--gold); }
+#welcome-modal .modal { max-width:620px; width:100%; border-top:3px solid var(--gold); }
 #welcome-modal .modal-title { color:var(--gold); }
 .welcome-modal-desc { font-size:16px; color:var(--text-mid); margin-bottom:18px; line-height:1.6; }
 .welcome-options { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
@@ -1311,13 +1311,16 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .chat-cloud-warn { display:none; align-items:center; gap:7px; padding:7px 14px; background:rgba(180,40,40,0.12); border-bottom:1px solid rgba(200,60,60,0.35); font-size:12px; color:#e07070; flex-shrink:0; }
 .chat-cloud-warn.visible { display:flex; }
 .chat-cloud-warn-dot { font-size:10px; color:#e05050; animation:pulse-dot 2s infinite; }
+.chat-cloud-warn-text { flex:1; }
+.chat-cloud-warn-dismiss { background:none; border:none; color:#e07070; cursor:pointer; font-size:17px; line-height:1; padding:0; flex-shrink:0; opacity:0.7; }
+.chat-cloud-warn-dismiss:hover { opacity:1; }
 .chat-demo-banner { padding:7px 14px; background:rgba(180,130,20,0.15); border-bottom:1px solid rgba(200,168,74,0.3); font-size:12px; color:var(--gold); flex-shrink:0; }
 @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
 .chat-hdr-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
 .chat-cost-display { font-size:12px; font-family:var(--mono); color:var(--text-dim); opacity:0.8; }
 .chat-sync-options { display:flex; flex-direction:column; gap:7px; margin-top:4px; }
-.chat-sync-radio { display:flex; align-items:center; gap:7px; font-size:13px; color:var(--text); cursor:pointer; }
-.chat-sync-radio input[type=radio] { margin:0; cursor:pointer; flex-shrink:0; }
+.chat-sync-radio { display:flex; align-items:center; gap:7px; font-size:13px; color:var(--text); cursor:pointer; flex-wrap:wrap; }
+.chat-sync-radio input[type=radio], .chat-sync-radio input[type=checkbox] { margin:0; cursor:pointer; flex-shrink:0; }
 .chat-sync-n { width:44px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:var(--text); border-radius:3px; padding:2px 4px; text-align:center; font-size:12px; }
 .chat-icon-btn { background:none; border:1px solid var(--border-hi); color:var(--text-dim); font-size:14px; width:28px; height:28px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
 .chat-icon-btn:hover { border-color:var(--gold); color:var(--gold); }
@@ -1347,9 +1350,98 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .chat-delete-session-btn { font-size:13px; padding:6px 14px; color:#c84040; border-color:rgba(200,64,64,0.4); }
 .chat-delete-session-btn:hover { background:rgba(200,64,64,0.12); border-color:#c84040; }
 .chat-new-session-btn { font-size:13px; padding:6px 14px; }
-/* Chat session bar + picker */
-.chat-session-bar { padding:4px 14px 0; display:flex; align-items:center; }
-.chat-session-picker { font-size:12px; padding:3px 6px; height:26px; background:var(--surface); border:1px solid rgba(255,255,255,0.12); color:var(--text-dim); border-radius:4px; max-width:100%; }
+.chat-update-review {
+  background:rgba(42,144,144,0.07); border:1px solid rgba(42,144,144,0.25);
+  border-radius:6px; padding:14px 16px; margin:8px 0; display:flex; flex-direction:column; gap:10px;
+}
+.chat-review-narrative { font-size:13px; color:var(--text); line-height:1.6; }
+.chat-review-header { font-size:12px; font-family:var(--mono); color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; }
+.chat-review-list { margin:0; padding:0 0 0 18px; font-size:13px; color:var(--text); line-height:1.8; }
+.chat-review-details summary { font-size:12px; color:var(--text-dim); cursor:pointer; user-select:none; }
+.chat-review-details summary:hover { color:var(--text); }
+.chat-review-json {
+  font-family:var(--mono); font-size:11px; color:var(--text-dim);
+  background:rgba(0,0,0,0.2); border-radius:4px; padding:10px; margin-top:6px;
+  max-height:200px; overflow-y:auto; white-space:pre-wrap; word-break:break-all;
+}
+.chat-review-btns { display:flex; gap:8px; }
+.chat-review-btns .btn-primary { font-size:13px; padding:6px 18px; }
+.chat-review-btns .btn-ghost  { font-size:13px; padding:6px 14px; }
+.chat-compact-divider {
+  display:flex; align-items:center; gap:10px;
+  padding:6px 16px; font-size:11px; font-family:var(--mono);
+  color:var(--text-dim); opacity:0.7; flex-shrink:0;
+  border-top:1px dashed rgba(255,255,255,0.1);
+  border-bottom:1px dashed rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.015); user-select:none;
+}
+.chat-compact-divider::before,.chat-compact-divider::after {
+  content:''; flex:1; height:1px; background:rgba(255,255,255,0.08);
+}
+.chat-summarize-btn { font-size:13px; padding:6px 14px; color:var(--text-dim); border-color:rgba(255,255,255,0.15); }
+.chat-summarize-btn:hover { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.3); }
+/* Chat sidebar mode */
+#chat-overlay.compact {
+  inset:0 0 0 auto; width:420px; height:100%;
+  background:rgba(14,11,7,0.99); border-top:none; border-left:3px solid rgba(200,168,74,0.4);
+  backdrop-filter:none; -webkit-backdrop-filter:none;
+}
+body.chat-sidebar { padding-right:calc(40px + 420px); }
+@media (max-width:900px) {
+  #chat-overlay.compact { width:100%; border-left:none; border-top:3px solid rgba(200,168,74,0.4); }
+  body.chat-sidebar { padding-right:40px; }
+}
+/* Chat session picker dropdown */
+.chat-sess-picker-wrap { position:relative; }
+.chat-sess-picker-btn {
+  font-size:12px; padding:3px 10px; height:26px; background:none;
+  border:1px solid rgba(255,255,255,0.12); color:var(--text-dim);
+  border-radius:4px; cursor:pointer; display:flex; align-items:center; gap:5px; transition:all 0.15s;
+}
+.chat-sess-picker-btn:hover { background:rgba(200,168,74,0.08); border-color:rgba(200,168,74,0.35); color:var(--text); }
+.chat-sess-picker-btn .picker-arrow { font-size:9px; opacity:0.6; }
+.chat-sess-picker-panel {
+  display:none; position:absolute; right:0; top:calc(100% + 4px); z-index:200;
+  background:rgba(19,15,9,0.98); border:1px solid var(--border-hi); border-radius:6px;
+  min-width:200px; max-width:300px; max-height:300px; overflow-y:auto; box-shadow:0 4px 16px rgba(0,0,0,0.5);
+}
+.chat-sess-picker-panel.open { display:block; }
+.chat-sess-picker-row {
+  display:flex; align-items:center; gap:8px; padding:8px 10px;
+  border-bottom:1px solid rgba(255,255,255,0.06); cursor:pointer;
+}
+.chat-sess-picker-row:last-child { border-bottom:none; }
+.chat-sess-picker-row:hover { background:rgba(200,168,74,0.06); }
+.chat-sess-picker-row.picker-row--current { background:rgba(200,168,74,0.04); }
+.chat-sess-picker-info { flex:1; min-width:0; }
+.chat-sess-picker-label { font-size:12px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.chat-sess-picker-sub { font-size:11px; color:var(--text-dim); margin-top:1px; }
+.chat-sess-picker-del {
+  background:none; border:none; color:rgba(200,80,80,0.5); cursor:pointer;
+  font-size:12px; padding:2px 5px; border-radius:3px; flex-shrink:0;
+}
+.chat-sess-picker-del:hover { color:#c84040; background:rgba(200,64,64,0.12); }
+.chat-sess-picker-del-confirm {
+  display:flex; gap:4px; flex-shrink:0;
+}
+.chat-sess-picker-del-yes {
+  font-size:11px; padding:1px 7px; border-radius:3px;
+  background:rgba(200,64,64,0.2); border:1px solid rgba(200,64,64,0.4); color:#c84040; cursor:pointer;
+}
+.chat-sess-picker-del-yes:hover { background:rgba(200,64,64,0.35); }
+.chat-sess-picker-del-no {
+  font-size:11px; padding:1px 7px; border-radius:3px;
+  background:none; border:1px solid rgba(255,255,255,0.15); color:var(--text-dim); cursor:pointer;
+}
+.chat-sess-picker-del-no:hover { background:rgba(255,255,255,0.06); }
+.chat-sess-picker-empty { padding:12px; font-size:12px; color:var(--text-dim); text-align:center; }
+/* Chat header lock button */
+.chat-hdr-lock-btn {
+  background:none; border:none; cursor:pointer; font-size:14px; padding:0 2px;
+  opacity:0.4; transition:opacity 0.15s, color 0.15s; flex-shrink:0;
+}
+.chat-hdr-lock-btn:hover { opacity:1; color:#2a9090; }
+.chat-hdr-lock-btn.locked { color:var(--gold); opacity:1; }
 /* Transcript in journal session cards */
 .session-chat-toggle { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
 .session-chat-toggle-btn { font-size:12px; color:var(--text-dim); background:none; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:3px 10px; cursor:pointer; }
@@ -1718,7 +1810,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 <!-- ══ EXPORT MODAL ══════════════════════════════════════════════ -->
 <div class="modal-overlay" id="export-modal" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="modal" style="border-top:3px solid var(--help);max-width:700px;width:95vw;">
+  <div class="modal" style="border-top:3px solid var(--help);max-width:700px;width:100%;">
     <button class="modal-close" onclick="document.getElementById('export-modal').classList.remove('open')">&#215;</button>
     <div class="modal-title" style="color:var(--help);">&#8595;&nbsp; Export</div>
     <div style="padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(160,60,60,0.12);border:1px solid rgba(160,60,60,0.4);color:#c07070;margin:0 0 10px;">This file contains your private data. Treat it like a diary.</div>
@@ -1739,7 +1831,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 <!-- ══ CONFIRM DELETE MODAL ════════════════════════════════════════ -->
 <div class="modal-overlay" id="confirm-modal" onclick="if(event.target===this)closeConfirm()">
-  <div class="modal" style="border-top:3px solid #c84040;max-width:380px;">
+  <div class="modal" style="border-top:3px solid #c84040;max-width:380px;width:100%;">
     <div class="modal-title" style="color:#c84040;">Delete?</div>
     <p id="confirm-msg" style="color:var(--text);"></p>
     <div class="modal-row">
@@ -1803,7 +1895,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 <!-- ══ HELP MODAL ═══════════════════════════════════════════════ -->
 <div class="modal-overlay" id="help-modal" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="modal" id="help-modal-box" style="border-top:3px solid var(--help);max-width:860px;width:96vw;">
+  <div class="modal" id="help-modal-box" style="border-top:3px solid var(--help);max-width:860px;width:100%;">
     <button class="modal-close" onclick="document.getElementById('help-modal').classList.remove('open')">&#215;</button>
     <div class="modal-title" style="color:var(--help);margin-bottom:16px;">? &nbsp;HOW TEAM-SHEET WORKS</div>
     <div class="help-cols">
@@ -1970,7 +2062,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 <!-- ══ GIT SYNC MODAL ═══════════════════════════════════════════ -->
 <div class="modal-overlay" id="git-sync-modal" onclick="if(event.target===this)closeGitSyncModal()">
-  <div class="modal" style="border-top:3px solid rgba(200,168,74,0.5);position:relative;max-width:420px;">
+  <div class="modal" style="border-top:3px solid rgba(200,168,74,0.5);position:relative;max-width:420px;width:100%;">
     <button class="modal-close" onclick="closeGitSyncModal()" title="Close">&#x2715;</button>
     <div class="modal-title" style="color:var(--gold);">&#x2195;&nbsp; SYNC TO GITHUB</div>
     <p style="font-size:14px;color:var(--text-dim);line-height:1.6;margin:0 0 14px;">Back up your encrypted data to a private GitHub repo. Pull it on another device to restore.</p>
@@ -6203,7 +6295,7 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
   canvas.style.height = H + 'px';
 
   const ctx = canvas.getContext('2d');
-  ctx.scale(DPR, DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   ctx.clearRect(0, 0, W, H);
 
   const PAD_L = 40, PAD_R = 16, PAD_T = 12, PAD_B = 28;
@@ -6831,8 +6923,8 @@ function _renderDetailPanel(s, cIdx) {
   } else {
     const sorted = moments.slice().sort((a, b) => {
       if (a.date && b.date) return b.date.localeCompare(a.date);
-      if (a.date) return 1;
-      if (b.date) return -1;
+      if (a.date) return -1;
+      if (b.date) return 1;
       return 0;
     });
     sorted.forEach(m => {
@@ -6896,8 +6988,8 @@ function _renderAllMoments(s) {
 
   const allMoments = (s.selfMoments || []).slice().sort((a, b) => {
     if (a.date && b.date) return b.date.localeCompare(a.date);
-    if (a.date) return 1;
-    if (b.date) return -1;
+    if (a.date) return -1;
+    if (b.date) return 1;
     return 0;
   });
 
@@ -7380,8 +7472,8 @@ function renderMemories(s) {
 
   const memories = (s.memories || []).slice().sort((a, b) => {
     if (a.date && b.date) return b.date.localeCompare(a.date);
-    if (a.date) return 1;
-    if (b.date) return -1;
+    if (a.date) return -1;
+    if (b.date) return 1;
     return (a.label || '').localeCompare(b.label || '');
   });
 
@@ -8039,15 +8131,25 @@ function applyUpdate(chatData) {
       // Full import without embedded history: clear stale history
       saveBalHist([]);
     }
-    // Fill gaps: seed balance history from session weights for any date not already covered
-    if (Array.isArray(merged.sessions)) {
+    // Fill gaps: seed balance history from session dates not already covered.
+    // First try sess.weights (if present), then fall back to current parts' balanceWeight
+    // so that imports without per-session weights still populate the timeline.
+    if (Array.isArray(merged.sessions) && Array.isArray(merged.parts)) {
       const hist = loadBalHist();
       const datesInHist = new Set(hist.map(e => e.date));
+      // Build a fallback weights map from the current parts (best approximation available)
+      const fallbackWeights = {};
+      merged.parts.forEach(p => { if (p.id && p.balanceWeight) fallbackWeights[p.id] = p.balanceWeight; });
+      if (merged._selfWeight) fallbackWeights['self'] = merged._selfWeight;
+      const hasFallback = Object.keys(fallbackWeights).length > 0;
       merged.sessions.forEach(sess => {
-        if (sess.date && sess.weights && Object.keys(sess.weights).length > 0 && !datesInHist.has(sess.date)) {
+        if (!sess.date || datesInHist.has(sess.date)) return;
+        if (sess.weights && Object.keys(sess.weights).length > 0) {
           hist.push({ date: sess.date, weights: sess.weights });
-          datesInHist.add(sess.date);
+        } else if (hasFallback) {
+          hist.push({ date: sess.date, weights: Object.assign({}, fallbackWeights) });
         }
+        datesInHist.add(sess.date);
       });
       hist.sort((a, b) => a.date < b.date ? -1 : 1);
       saveBalHist(hist);
@@ -8095,6 +8197,9 @@ function applyUpdate(chatData) {
 
     // Restore locked fields
     applyLockedFields(merged, prevSnapshot);
+    // Preserve chat session history — the AI never includes chatSessions in data.json,
+    // so a full (non-partial) import would otherwise wipe all chat history on save.
+    if(!merged.chatSessions && prevSnapshot.chatSessions) merged.chatSessions = prevSnapshot.chatSessions;
 
     saveState(merged);
     appState = merged;
@@ -8794,11 +8899,18 @@ function _doInit() {
       if (Array.isArray(appState.sessions)) {
         const fromSessions = [];
         const seen = new Set();
+        const fallbackW = {};
+        (appState.parts || []).forEach(p => { if (p.id && p.balanceWeight) fallbackW[p.id] = p.balanceWeight; });
+        if (appState._selfWeight) fallbackW['self'] = appState._selfWeight;
+        const hasFallback = Object.keys(fallbackW).length > 0;
         appState.sessions.forEach(sess => {
-          if (sess.date && sess.weights && Object.keys(sess.weights).length > 0 && !seen.has(sess.date)) {
+          if (!sess.date || seen.has(sess.date)) return;
+          if (sess.weights && Object.keys(sess.weights).length > 0) {
             fromSessions.push({ date: sess.date, weights: sess.weights });
-            seen.add(sess.date);
+          } else if (hasFallback) {
+            fromSessions.push({ date: sess.date, weights: Object.assign({}, fallbackW) });
           }
+          seen.add(sess.date);
         });
         if (fromSessions.length > 0) {
           fromSessions.sort((a, b) => a.date < b.date ? -1 : 1);
@@ -8878,6 +8990,10 @@ function _defaultNumCtx() {
   return ctx;
 }
 
+function _defaultAutoCompactThreshold() {
+  return Math.round(_defaultNumCtx() * 4 * 0.75);
+}
+
 const CHAT_SETTINGS_KEY    = 'ts-chat-settings-v1';
 const ANTHROPIC_PRICING = {
   'claude-opus-4-7':           { in: 15.00, out: 75.00 },
@@ -8893,20 +9009,23 @@ const chatState = {
   tokenUsage: { input: 0, output: 0 },
   currentSessionId: null,
   sessionStartedAt: null,
+  _displaySessionId: null,
 };
 
 function loadChatSettings() {
   if (IS_DEMO) return { model: 'qwen2.5:7b' };
   try { const r = localStorage.getItem(CHAT_SETTINGS_KEY); return r ? JSON.parse(r) : {}; } catch { return {}; }
 }
-function saveChatSettings(s) {
+async function saveChatSettings(s) {
   if (IS_DEMO) return;
   if (s.apiKey && !_isLocalModel(s.model) && !(typeof _pinActive !== 'undefined' && _pinActive)) {
     console.warn('saveChatSettings: refusing to store cloud API key without active encryption');
     return;
   }
   try { localStorage.setItem(CHAT_SETTINGS_KEY, JSON.stringify(s)); } catch {}
-  _reencryptIfActive();
+  // Await directly so _clearSensitiveKeys() runs before returning, preventing plaintext API key persistence on crash
+  if (_pinActive && _currentKey) await _encryptAndSave(appState, null);
+  else if (_pinActive && _currentPIN) await _encryptAndSave(appState, _currentPIN);
 }
 
 function buildCompactContext() {
@@ -9122,14 +9241,14 @@ function chatAddInfoCard(htmlOrNode) {
 
 function chatSetLoading(v) {
   chatState.isLoading = v;
-  const send = document.getElementById('chat-send-btn');
-  const inp  = document.getElementById('chat-input');
-  const end  = document.getElementById('chat-end-btn');
-  const sync = document.getElementById('chat-sync-btn');
+  const send    = document.getElementById('chat-send-btn');
+  const inp     = document.getElementById('chat-input');
+  const end     = document.getElementById('chat-update-btn');
+  const compact = document.getElementById('chat-summarize-btn');
   if (send) { send.disabled = v; send.textContent = v ? '...' : 'Send'; }
-  if (inp)  inp.disabled = v;
-  if (end)  end.disabled = v;
-  if (sync) sync.disabled = v;
+  if (inp)     inp.disabled     = v;
+  if (end)     end.disabled     = v;
+  if (compact) compact.disabled = v;
   const _overlay = document.getElementById('chat-overlay');
   const _chatBtn = document.getElementById('chat-btn');
   if (_chatBtn) _chatBtn.classList.toggle('chat-btn-loading', v && !_overlay?.classList.contains('open'));
@@ -9249,6 +9368,14 @@ function _openChatOverlay() {
   const overlay = document.getElementById('chat-overlay');
   if (!overlay) return;
   overlay.classList.add('open');
+  const savedCompact = localStorage.getItem('ts-chat-compact') === '1';
+  overlay.classList.toggle('compact', savedCompact);
+  document.body.classList.toggle('chat-sidebar', savedCompact);
+  const compactBtn = document.getElementById('chat-compact-btn');
+  if (compactBtn) {
+    compactBtn.innerHTML = savedCompact ? '&#x2922;' : '&#x2921;';
+    compactBtn.title = savedCompact ? 'Expand to fullscreen' : 'Sidebar mode';
+  }
   _warmPromptCache();
   document.getElementById('chat-btn')?.classList.remove('chat-btn-loading');
   const s = loadChatSettings();
@@ -9261,38 +9388,42 @@ function _openChatOverlay() {
   if (inp) setTimeout(() => inp.focus(), 80);
   const container = document.getElementById('chat-msgs');
   const hasMessages = container && container.querySelectorAll('.chat-msg, .chat-msg-ai, .chat-msg-user').length > 0;
-  if (!hasMessages) {
+  if (container && container.children.length === 0) {
     if (IS_DEMO) {
-      probeOllamaStatus().then(status => {
-        const os = detectOS();
-        if (!status.running) chatAddInfoCard(_ollamaInstallHTML(os, 'qwen2.5:7b'));
-        else if (!status.corsOk) chatAddInfoCard(_ollamaCorsHTML(os));
-      });
+      chatAddInfoCard(_ollamaInstallHTML(detectOS(), 'qwen2.5:7b'));
     } else {
       const currentModel = loadChatSettings().model || '';
-      if (currentModel && !currentModel.startsWith('claude-')) {
-        probeOllamaStatus().then(status => {
-          const os = detectOS();
-          if (!status.running) chatAddInfoCard(_ollamaInstallHTML(os, currentModel));
-          else if (!status.corsOk) chatAddInfoCard(_ollamaCorsHTML(os));
-        });
+      if (window.location.protocol === 'file:' && currentModel && !currentModel.startsWith('claude-')) {
+        chatAddInfoCard(_ollamaInstallHTML(detectOS(), currentModel));
       }
     }
   }
+  const hasInfoCard = container && container.querySelector('.chat-info-card');
   renderChatQuickstarts();
-  _chatShowQuickstarts(!hasMessages);
+  _chatShowQuickstarts(!hasMessages && !IS_DEMO && !hasInfoCard);
 }
 
 function closeChat() {
   document.getElementById('chat-overlay')?.classList.remove('open');
+  document.body.classList.remove('chat-sidebar');
   if (chatState.isLoading) document.getElementById('chat-btn')?.classList.add('chat-btn-loading');
 }
 
+function chatToggleCompact() {
+  const overlay = document.getElementById('chat-overlay');
+  if (!overlay) return;
+  const isCompact = overlay.classList.toggle('compact');
+  document.body.classList.toggle('chat-sidebar', isCompact);
+  try { localStorage.setItem('ts-chat-compact', isCompact ? '1' : '0'); } catch {}
+  const btn = document.getElementById('chat-compact-btn');
+  if (btn) {
+    btn.innerHTML = isCompact ? '&#x2922;' : '&#x2921;';
+    btn.title = isCompact ? 'Expand to fullscreen' : 'Sidebar mode';
+  }
+}
+
 function _updateChatSyncBtn() {
-  const s = loadChatSettings();
-  const mode = s.syncMode || (s.autoApply ? 'always' : 'manual');
-  const btn = document.getElementById('chat-sync-btn');
-  if (btn) btn.style.display = mode === 'manual' ? '' : 'none';
+  // Sync button removed; kept as no-op so old call sites don't error.
 }
 
 async function _warmPromptCache() {
@@ -9375,8 +9506,12 @@ async function callAnthropicAPI(messages, systemPrompt, streamCallback = null) {
   const decoder = new TextDecoder();
   let fullText = '';
   let inputTokens = 0, outputTokens = 0;
+  const SILENCE_MS = 30000;
   while (true) {
-    const { done, value } = await reader.read();
+    let timeoutId;
+    const timeoutPromise = new Promise((_, rej) => { timeoutId = setTimeout(() => { reader.cancel(); rej(new Error('No response from model for 30 seconds. The model may be stuck or overloaded. Try again or switch models.')); }, SILENCE_MS); });
+    const { done, value } = await Promise.race([reader.read(), timeoutPromise]);
+    clearTimeout(timeoutId);
     if (done) break;
     const lines = decoder.decode(value, { stream: true }).split('\n');
     for (const line of lines) {
@@ -9419,6 +9554,7 @@ async function callOllamaAPI(messages, systemPrompt, streamCallback = null) {
   } catch(e) {
     invalidateOllamaCache();
     const probe = await probeOllamaStatus();
+    if (!_isLocalModel(loadChatSettings().model)) throw new Error('');
     const os = detectOS();
     if (!probe.running) {
       chatAddInfoCard(_ollamaInstallHTML(os, model));
@@ -9453,8 +9589,12 @@ async function callOllamaAPI(messages, systemPrompt, streamCallback = null) {
   const decoder = new TextDecoder();
   let fullText = '';
   let buf = '';
+  const SILENCE_MS_O = 30000;
   while (true) {
-    const { done, value } = await reader.read();
+    let timeoutId;
+    const timeoutPromise = new Promise((_, rej) => { timeoutId = setTimeout(() => { reader.cancel(); rej(new Error('No response from model for 30 seconds. The model may be stuck or overloaded. Try again or switch models.')); }, SILENCE_MS_O); });
+    const { done, value } = await Promise.race([reader.read(), timeoutPromise]);
+    clearTimeout(timeoutId);
     if (done) break;
     buf += decoder.decode(value, { stream: true });
     const lines = buf.split('\n');
@@ -9491,13 +9631,15 @@ function _chatHandleReply(reply, streamingEl = null) {
   chatState.pendingJSON = detected;
   const s = loadChatSettings();
   const syncMode = s.syncMode || (s.autoApply ? 'always' : 'manual');
-  if (syncMode !== 'manual') {
-    const display = reply.replace(/```json[\s\S]*?```/, '').replace(/\n{3,}/g, '\n\n').trim();
-    if (display) chatAddMsg('assistant', display);
-    chatApplyUpdate();
+  const narrative = reply.replace(/```json[\s\S]*?```/, '').replace(/\n{3,}/g, '\n\n').trim();
+  if (syncMode === 'manual') {
+    chatAddMsg('assistant', reply, '✶ Changes noted. Use "Update map" to save them.');
+  } else if (s.reviewBeforeSave) {
+    if (narrative) chatAddMsg('assistant', narrative);
+    chatShowUpdateReview(detected, null);
   } else {
-    chatAddMsg('assistant', reply, '✶ Update detected. Click Apply Update to apply it.');
-    chatShowApply(true);
+    if (narrative) chatAddMsg('assistant', narrative);
+    chatApplyUpdate();
   }
 }
 
@@ -9510,6 +9652,50 @@ function _chatAddLoadingBubble() {
   container.appendChild(el);
   chatScrollBottom();
   return el;
+}
+
+function _chatInsertCompactDivider() {
+  const container = document.getElementById('chat-msgs');
+  if (!container) return;
+  const div = document.createElement('div');
+  div.className = 'chat-compact-divider';
+  div.textContent = 'Older messages summarised to save context space';
+  container.appendChild(div);
+  chatScrollBottom();
+}
+
+async function chatCompactContext() {
+  if (chatState.isLoading) return;
+  const msgs = chatState.messages;
+  if (msgs.length < 4) {
+    chatAddMsg('system', 'Not enough conversation history to summarise yet. Keep chatting and try again.');
+    return;
+  }
+  const KEEP_TAIL = 4;
+  const toSummarize = msgs.slice(0, msgs.length - KEEP_TAIL);
+  const tail = msgs.slice(msgs.length - KEEP_TAIL);
+  const summaryPrompt = 'Summarize the conversation so far in 3-6 concise bullet points. Focus on: topics discussed, emotional themes, insights reached, and any data updates agreed on. Write in third person past tense. Be specific, not vague.';
+  chatSetLoading(true);
+  try {
+    const summaryMsgs = [...toSummarize, { role: 'user', content: summaryPrompt }];
+    const summary = await callChatAPI(summaryMsgs, chatState.systemPrompt || buildChatSystemPrompt());
+    const summaryMsg = { role: 'assistant', content: '[Conversation summary]\n' + summary };
+    chatState.messages = [summaryMsg, ...tail];
+    _chatInsertCompactDivider();
+    _chatSaveLiveSession();
+  } catch(err) {
+    if (err.message) chatAddMsg('error', 'Could not summarise history: ' + err.message);
+  } finally {
+    chatSetLoading(false);
+  }
+}
+
+function _chatMaybeAutoCompact() {
+  const s = loadChatSettings();
+  if (!s.autoCompact) return;
+  const threshold = s.autoCompactThreshold || _defaultAutoCompactThreshold();
+  const usage = chatState.tokenUsage;
+  if ((usage.input || 0) >= threshold) chatCompactContext();
 }
 
 async function chatSend() {
@@ -9552,6 +9738,8 @@ async function chatSend() {
     chatState.messages.push({ role: 'assistant', content: reply });
     _chatHandleReply(reply, streamStarted ? loadEl : null);
     _chatSaveLiveSession();
+    _chatGenerateTitle(chatState.currentSessionId, chatState.messages.slice());
+    _chatMaybeAutoCompact();
   } catch (err) {
     if (loadEl) loadEl.remove();
     if (err.message) chatAddMsg('error', err.message);
@@ -9571,8 +9759,137 @@ function chatApplyUpdate() {
     chatState.pendingJSON = null;
     chatShowApply(false);
     chatAddMsg('system', 'Map updated.');
+    _chatSaveLiveSession();
   } else {
     chatAddMsg('error', 'Could not apply the update: ' + (statusEl ? statusEl.textContent.replace(/^[^\s]+\s*/, '') : 'the data from your AI did not pass validation. Try asking it to resend the full data.json.'));
+  }
+}
+
+function _buildUpdateSummaryLines(prev, next) {
+  const lines = [];
+  const parts = next.parts || [];
+  const prevParts = prev.parts || [];
+  const newParts = parts.filter(p => !prevParts.find(pp => pp.id === p.id));
+  if (newParts.length) lines.push('New part' + (newParts.length > 1 ? 's' : '') + ': ' + newParts.map(p => p.name || 'unnamed').join(', '));
+  parts.forEach(np => {
+    const pp = prevParts.find(p => p.id === np.id);
+    if (!pp) return;
+    if (pp.name !== np.name) lines.push('Renamed: ' + pp.name + ' to ' + np.name);
+    if (pp.role !== np.role) lines.push((np.name || 'Part') + ' role: ' + (np.role || 'none'));
+    if (pp.trailsScore !== np.trailsScore) lines.push((np.name || 'Part') + ' TRAILS: ' + pp.trailsScore + ' to ' + np.trailsScore);
+    if (pp.activated !== np.activated) lines.push((np.name || 'Part') + ': ' + (np.activated ? 'activated' : 'deactivated'));
+  });
+  const removedParts = prevParts.filter(p => !parts.find(np => np.id === p.id));
+  if (removedParts.length) lines.push('Removed part' + (removedParts.length > 1 ? 's' : '') + ': ' + removedParts.map(p => p.name || 'unnamed').join(', '));
+  if ((next.sessions || []).length > (prev.sessions || []).length) lines.push('New session recorded');
+  return lines;
+}
+
+function chatShowUpdateReview(json, narrativeText) {
+  document.getElementById('chat-update-review')?.remove();
+  chatState.pendingJSON = json;
+  const container = document.getElementById('chat-msgs');
+  if (!container) return;
+
+  const card = document.createElement('div');
+  card.id = 'chat-update-review';
+  card.className = 'chat-update-review';
+
+  if (narrativeText) {
+    const narDiv = document.createElement('div');
+    narDiv.className = 'chat-review-narrative';
+    _renderMarkdown(narrativeText, narDiv);
+    card.appendChild(narDiv);
+  }
+
+  let simMerged;
+  try {
+    const { result: p } = sanitizeImportHTML(JSON.parse(JSON.stringify(json)));
+    const isPartial = p._partial === true;
+    delete p._partial;
+    if (isPartial) {
+      simMerged = Object.assign({}, appState);
+      for (const [k, v] of Object.entries(p)) { simMerged[k] = v; }
+    } else { simMerged = p; }
+  } catch(e) { simMerged = appState; }
+
+  const summaryLines = _buildUpdateSummaryLines(appState, simMerged);
+
+  const header = document.createElement('div');
+  header.className = 'chat-review-header';
+  header.textContent = summaryLines.length ? 'What will change:' : 'No data changes detected.';
+  card.appendChild(header);
+
+  if (summaryLines.length) {
+    const ul = document.createElement('ul');
+    ul.className = 'chat-review-list';
+    summaryLines.forEach(line => {
+      const li = document.createElement('li');
+      li.textContent = line;
+      ul.appendChild(li);
+    });
+    card.appendChild(ul);
+  }
+
+  const details = document.createElement('details');
+  details.className = 'chat-review-details';
+  const summary = document.createElement('summary');
+  summary.textContent = 'View raw JSON';
+  details.appendChild(summary);
+  const pre = document.createElement('pre');
+  pre.className = 'chat-review-json';
+  pre.textContent = JSON.stringify(json, null, 2);
+  details.appendChild(pre);
+  card.appendChild(details);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'chat-review-btns';
+  const applyBtn = document.createElement('button');
+  applyBtn.className = 'btn-primary';
+  applyBtn.textContent = 'Apply';
+  applyBtn.onclick = () => { chatApplyUpdate(); card.remove(); };
+  const discardBtn = document.createElement('button');
+  discardBtn.className = 'btn-ghost';
+  discardBtn.textContent = 'Discard';
+  discardBtn.onclick = () => { chatState.pendingJSON = null; card.remove(); chatAddMsg('system', 'Update discarded.'); };
+  btnRow.appendChild(applyBtn);
+  btnRow.appendChild(discardBtn);
+  card.appendChild(btnRow);
+
+  container.appendChild(card);
+  chatScrollBottom();
+}
+
+async function chatUpdateMap() {
+  if (chatState.isLoading) return;
+  if (!chatState.systemPrompt) chatState.systemPrompt = buildChatSystemPrompt();
+  const updateBtn = document.getElementById('chat-update-btn');
+  if (updateBtn) { updateBtn.disabled = true; updateBtn.textContent = '...'; }
+  const prompt = 'Briefly summarise what you are recording, then output a ```json block with only the fields that have changed (partial update with "_partial": true).';
+  chatState.messages.push({ role: 'user', content: prompt });
+  chatSetLoading(true);
+  const loadEl = _chatAddLoadingBubble();
+  try {
+    const reply = await callChatAPI(chatState.messages, chatState.systemPrompt);
+    if (loadEl) loadEl.remove();
+    chatState.messages.push({ role: 'assistant', content: reply });
+    const detected = detectChatJSON(reply);
+    if (detected) {
+      const narrative = reply.replace(/```json[\s\S]*?```/, '').replace(/\n{3,}/g, '\n\n').trim();
+      chatShowUpdateReview(detected, narrative);
+    } else {
+      chatAddMsg('assistant', reply);
+      chatAddMsg('system', 'No data changes found. Ask your AI to make changes before updating.');
+    }
+    _chatSaveLiveSession();
+    _chatGenerateTitle(chatState.currentSessionId, chatState.messages.slice());
+  } catch (err) {
+    if (loadEl) loadEl.remove();
+    if (err.message) chatAddMsg('error', err.message);
+    _chatSaveLiveSession();
+  } finally {
+    chatSetLoading(false);
+    if (updateBtn) { updateBtn.disabled = false; updateBtn.textContent = 'Update map'; }
   }
 }
 
@@ -9620,11 +9937,12 @@ async function chatSync() {
       const failed = statusEl && statusEl.classList.contains('err');
       if (!failed) {
         chatAddMsg('system', 'Synced.');
+        _chatSaveLiveSession();
       } else {
         chatAddMsg('error', 'Update failed to apply: ' + (statusEl?.textContent.replace(/^[^\s]+\s*/, '') || 'the data from your AI did not pass validation. Try asking it to resend the full data.json.'));
       }
     } else {
-      chatAddMsg('error', 'Your AI did not return any data. Try using "End session" to ask it for a final update, or ask it directly to output your data.json.');
+      chatAddMsg('error', 'Your AI did not return any data. Try using "Update map" to ask it for a final update, or ask it directly to output your data.json.');
     }
   } catch (err) {
     if (loadEl) loadEl.remove();
@@ -9655,28 +9973,29 @@ function chatNewSession() {
   chatState.tokenUsage = { input: 0, output: 0 };
   chatState.currentSessionId = null;
   chatState.sessionStartedAt = null;
+  chatState._displaySessionId = null;
   const container = document.getElementById('chat-msgs');
   if (container) container.innerHTML = '';
   chatShowApply(false);
-  _chatShowQuickstarts(true);
+  _chatShowQuickstarts(!IS_DEMO);
   const costEl = document.getElementById('chat-cost-display');
   if (costEl) costEl.style.display = 'none';
+  const _ns = loadChatSettings();
+  if (_ns.defaultModel && _ns.model !== _ns.defaultModel) {
+    _ns.model = _ns.defaultModel;
+    saveChatSettings(_ns);
+    _updateModelUI(_ns.defaultModel);
+  }
   renderChatSessionPicker();
 }
 
 function chatDeleteCurrentSession() {
-  const id = chatState.currentSessionId;
+  const id = chatState.currentSessionId || chatState._displaySessionId;
   if (!id && chatState.messages.length === 0) return;
-  confirmDelete('Delete this chat session? This cannot be undone.', () => _doChatDeleteCurrentSession());
-  return;
-}
-function _doChatDeleteCurrentSession() {
-  const id = chatState.currentSessionId;
-  if (!id && chatState.messages.length === 0) return;
+  if (!confirm('Delete this chat session? This cannot be undone.')) return;
   if (id) {
     appState.chatSessions = (appState.chatSessions || []).filter(s => s.id !== id);
     saveState(appState);
-    renderChatSessionPicker();
   }
   chatState.messages = [];
   chatState.pendingJSON = null;
@@ -9684,14 +10003,13 @@ function _doChatDeleteCurrentSession() {
   chatState.tokenUsage = { input: 0, output: 0 };
   chatState.currentSessionId = null;
   chatState.sessionStartedAt = null;
+  chatState._displaySessionId = null;
   const container = document.getElementById('chat-msgs');
   if (container) container.innerHTML = '';
   chatShowApply(false);
-  _chatShowQuickstarts(true);
   const costEl = document.getElementById('chat-cost-display');
   if (costEl) costEl.style.display = 'none';
-  const deleteBtn = document.getElementById('chat-delete-session-btn');
-  if (deleteBtn) deleteBtn.style.display = 'none';
+  renderChatSessionPicker();
 }
 
 function _chatFormatCost(c) {
@@ -9762,6 +10080,7 @@ function _chatFinalizeSession(summary, systemRead, highlights) {
   saveState(appState);
   chatState.currentSessionId = null;
   chatState.sessionStartedAt = null;
+  chatState._displaySessionId = null;
   renderChatSessionPicker();
   renderJournal(appState);
 }
@@ -9771,9 +10090,30 @@ function _chatExtractSummaryFromReply(reply) {
   return text.length > 500 ? text.slice(0, 497) + '...' : text;
 }
 
+async function _chatGenerateTitle(sessionId, messages) {
+  if (IS_DEMO || !sessionId) return;
+  const existingSession = (appState.chatSessions || []).find(s => s.id === sessionId);
+  if (existingSession && existingSession.titleLocked) return;
+  const convo = messages.filter(m => m.role === 'user' || m.role === 'assistant');
+  if (convo.length < 2) return;
+  const transcript = convo.map(m => (m.role === 'user' ? 'User: ' : 'AI: ') + m.content.slice(0, 400)).join('\n\n');
+  const titleMessages = [{ role: 'user', content: 'Conversation so far:\n\n' + transcript + '\n\nReply with only a short title (max 8 words). Multiple topics: separate with " | ". No punctuation at end. No quotes.' }];
+  try {
+    const title = (await callChatAPI(titleMessages, 'You generate concise chat titles.')).trim().replace(/^["']|["']$/g, '').replace(/\.$/, '');
+    if (!title || title.length > 120) return;
+    if (!appState.chatSessions) return;
+    const idx = appState.chatSessions.findIndex(s => s.id === sessionId);
+    if (idx < 0) return;
+    appState.chatSessions[idx] = Object.assign({}, appState.chatSessions[idx], { title });
+    if (!IS_DEMO) saveState(appState);
+    renderChatSessionPicker();
+  } catch {}
+}
+
 function _chatSessionLabel(session) {
   const d = session.startedAt ? new Date(session.startedAt) : null;
   const dateStr = d ? d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown';
+  if (session.title) return dateStr + ': ' + session.title;
   const firstUser = (session.messages || []).find(m => m.role === 'user');
   const snippet = firstUser ? firstUser.content.slice(0, 45) + (firstUser.content.length > 45 ? '...' : '') : '';
   return snippet ? dateStr + ': ' + snippet : dateStr;
@@ -9827,6 +10167,7 @@ function chatLoadSession(sessionId) {
   chatState.tokenUsage = Object.assign({}, source.tokenUsage || { input: 0, output: 0 });
   chatState.currentSessionId = null;
   chatState.sessionStartedAt = null;
+  chatState._displaySessionId = sessionId;
 
   if (!isJournalSession && source.model) {
     const cs = loadChatSettings();
@@ -9839,39 +10180,189 @@ function chatLoadSession(sessionId) {
   if (container) {
     container.innerHTML = '';
     const endedAt = source.endedAt || (isJournalSession ? source.endedAt : null);
+    const elapsed = endedAt ? _chatFormatElapsed(source.startedAt, endedAt) : null;
     const timeSince = endedAt ? _chatFormatElapsed(endedAt, new Date().toISOString()) : null;
     const sessionDate = source.startedAt ? new Date(source.startedAt).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }) : 'Unknown date';
-    chatAddMsg('system', 'Resumed session from ' + sessionDate + (timeSince ? ', ' + timeSince + ' ago' : '') + '. Context loaded. Continue or use End session to finalize.');
+    chatAddMsg('system', 'Resumed session from ' + sessionDate + (timeSince ? ', ' + timeSince + ' ago' : '') + (elapsed ? ' (session lasted ' + elapsed + ')' : '') + '. Context loaded. Continue below or use Update map to save changes.');
     chatState.messages.forEach(m => {
       if (m.role === 'user') chatAddMsg('user', m.content);
       else if (m.role === 'assistant') chatAddMsg('assistant', m.content);
     });
   }
-  _chatShowQuickstarts(false);
   chatShowApply(false);
+  _chatShowQuickstarts(false);
   _updateCostDisplay();
   renderChatSessionPicker();
 }
 
 function renderChatSessionPicker() {
-  const sel = document.getElementById('chat-session-picker');
-  if (!sel) return;
-  const drafts = (appState.chatSessions || []).filter(s => !s.endedAt && s.id !== chatState.currentSessionId).slice().reverse();
-  const journalWithChat = (appState.sessions || []).filter(s => s.chatMessages && s.chatMessages.length > 0).slice().reverse();
-  const entries = [
-    ...drafts.map(s => ({ id: s.id, label: _chatSessionLabel(s) + (s._hasUnread ? ' (new response)' : ' (unfinished)'), source: 'draft' })),
-    ...journalWithChat.map(s => ({ id: s.id, label: _chatSessionLabel({ startedAt: s.startedAt, messages: s.chatMessages }), source: 'journal' })),
-  ];
-  sel.innerHTML = '<option value="">Past sessions...</option>';
-  entries.forEach(e => {
-    const opt = document.createElement('option');
-    opt.value = e.id;
-    opt.textContent = e.label;
-    sel.appendChild(opt);
+  const wrap  = document.getElementById('chat-sess-picker-wrap');
+  const panel = document.getElementById('chat-sess-picker-panel');
+  if (!wrap || !panel) return;
+  const sessions = (appState.chatSessions || []).slice().reverse();
+  wrap.style.display = sessions.length > 0 ? '' : 'none';
+  _renderPickerPanel(panel, sessions);
+  _updateChatHeader();
+}
+
+function _renderPickerPanel(panel, sessions) {
+  panel.innerHTML = '';
+  if (!sessions || sessions.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'chat-sess-picker-empty';
+    empty.textContent = 'No past sessions.';
+    panel.appendChild(empty);
+    return;
+  }
+  sessions.forEach(s => {
+    const inProg = !s.endedAt && s.id !== chatState.currentSessionId;
+    const isCurrent = s.id === chatState.currentSessionId;
+    const row = document.createElement('div');
+    row.className = 'chat-sess-picker-row' + (isCurrent ? ' picker-row--current' : '');
+    const info = document.createElement('div');
+    info.className = 'chat-sess-picker-info';
+    const label = document.createElement('div');
+    label.className = 'chat-sess-picker-label';
+    label.textContent = _chatSessionLabel(s);
+    info.appendChild(label);
+    const suffix = s._hasUnread ? 'new response' : isCurrent ? 'live' : inProg ? 'unfinished' : '';
+    if (suffix) {
+      const sub = document.createElement('div');
+      sub.className = 'chat-sess-picker-sub';
+      sub.textContent = suffix;
+      info.appendChild(sub);
+    }
+    const delBtn = document.createElement('button');
+    delBtn.className = 'chat-sess-picker-del';
+    delBtn.title = 'Delete session';
+    delBtn.textContent = '✕';
+    const confirmWrap = document.createElement('div');
+    confirmWrap.className = 'chat-sess-picker-del-confirm';
+    confirmWrap.style.display = 'none';
+    const yesBtn = document.createElement('button');
+    yesBtn.className = 'chat-sess-picker-del-yes';
+    yesBtn.textContent = 'Delete';
+    const noBtn = document.createElement('button');
+    noBtn.className = 'chat-sess-picker-del-no';
+    noBtn.textContent = 'Cancel';
+    confirmWrap.appendChild(yesBtn);
+    confirmWrap.appendChild(noBtn);
+    delBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      delBtn.style.display = 'none';
+      confirmWrap.style.display = 'flex';
+    });
+    noBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      confirmWrap.style.display = 'none';
+      delBtn.style.display = '';
+    });
+    yesBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      chatDeleteSession(s.id);
+    });
+    info.addEventListener('click', () => { chatLoadSession(s.id); chatPickerToggle(false); });
+    row.appendChild(info);
+    row.appendChild(delBtn);
+    row.appendChild(confirmWrap);
+    panel.appendChild(row);
   });
-  sel.style.display = entries.length > 0 ? '' : 'none';
+}
+
+function chatPickerToggle(forceClose) {
+  const panel = document.getElementById('chat-sess-picker-panel');
+  if (!panel) return;
+  const open = panel.classList.contains('open');
+  if (forceClose === false || open) {
+    panel.classList.remove('open');
+    return;
+  }
+  const sessions = (appState.chatSessions || []).slice().reverse();
+  _renderPickerPanel(panel, sessions);
+  panel.classList.add('open');
+}
+
+function chatDeleteSession(sessionId) {
+  appState.chatSessions = (appState.chatSessions || []).filter(s => s.id !== sessionId);
+  if (chatState.currentSessionId === sessionId) {
+    chatState.currentSessionId = null;
+    chatState.sessionStartedAt = null;
+  }
+  saveState(appState);
+  renderChatSessionPicker();
+}
+
+function _updateChatHeader() {
+  const sessions = appState.chatSessions || [];
+  const displayId = chatState.currentSessionId || chatState._displaySessionId;
+  let sessionNum, sessionTitle;
+  if (!displayId) {
+    sessionNum = sessions.length + 1;
+    sessionTitle = '';
+  } else {
+    const idx = sessions.findIndex(s => s.id === displayId);
+    sessionNum = idx >= 0 ? idx + 1 : sessions.length + 1;
+    const session = idx >= 0 ? sessions[idx] : null;
+    sessionTitle = (session && session.title) ? session.title : '';
+  }
+  const titleEl = document.getElementById('chat-hdr-title');
   const deleteBtn = document.getElementById('chat-delete-session-btn');
-  if (deleteBtn) deleteBtn.style.display = (chatState.currentSessionId || chatState.messages.length > 0) ? '' : 'none';
+  const lockBtn = document.getElementById('chat-hdr-lock-btn');
+  if (titleEl && document.activeElement !== titleEl) {
+    titleEl.textContent = sessionTitle ? 'Session #' + sessionNum + '  –  ' + sessionTitle : 'Session #' + sessionNum;
+  }
+  if (deleteBtn) deleteBtn.style.display = (displayId || chatState.messages.length > 0) ? '' : 'none';
+  if (lockBtn) {
+    const sess = displayId ? (appState.chatSessions || []).find(s => s.id === displayId) : null;
+    const locked = sess ? !!sess.titleLocked : false;
+    lockBtn.classList.toggle('locked', locked);
+    lockBtn.title = locked ? 'Title locked: your AI will not update it. Click to unlock.' : 'Lock title to prevent your AI from updating it';
+    lockBtn.textContent = locked ? '🔒' : '🔓';
+  }
+}
+
+let _chatTitleOriginal = null;
+
+function chatTitleFocus(el) {
+  _chatTitleOriginal = el.textContent;
+}
+
+function chatTitleAbort(el) {
+  if (_chatTitleOriginal !== null) el.textContent = _chatTitleOriginal;
+  _chatTitleOriginal = null;
+}
+
+function chatTitleSave(el) {
+  const raw = el.textContent.trim();
+  _chatTitleOriginal = null;
+  const displayId = chatState.currentSessionId || chatState._displaySessionId;
+  if (!displayId || !appState.chatSessions) { _updateChatHeader(); return; }
+  const idx = appState.chatSessions.findIndex(s => s.id === displayId);
+  if (idx < 0) { _updateChatHeader(); return; }
+  const session = appState.chatSessions[idx];
+  const prefixRe = /^Session #\d+\s+[–-]\s+/i;
+  const title = raw.replace(prefixRe, '').trim();
+  const changed = title !== (session.title || '');
+  if (changed) {
+    appState.chatSessions[idx] = Object.assign({}, session, {
+      title,
+      titleLocked: title ? true : session.titleLocked,
+    });
+    if (!IS_DEMO) saveState(appState);
+    renderChatSessionPicker();
+  }
+  _updateChatHeader();
+}
+
+function chatTitleToggleLock() {
+  const displayId = chatState.currentSessionId || chatState._displaySessionId;
+  if (!displayId || !appState.chatSessions) return;
+  const idx = appState.chatSessions.findIndex(s => s.id === displayId);
+  if (idx < 0) return;
+  const session = appState.chatSessions[idx];
+  appState.chatSessions[idx] = Object.assign({}, session, { titleLocked: !session.titleLocked });
+  if (!IS_DEMO) saveState(appState);
+  _updateChatHeader();
 }
 
 // ── Git sync (multi-device via private GitHub repo) ───────
@@ -10105,6 +10596,19 @@ function openChatSettings() {
   if (compactSpan) compactSpan.textContent = `(~${compactEst.toLocaleString()} tokens)`;
   if (fullSpan)    fullSpan.textContent    = `(~${fullEst.toLocaleString()} tokens)`;
   onChatModelPresetChange();
+  const defModelEl = document.getElementById('ts-chat-default-model');
+  if (defModelEl) defModelEl.checked = !!(s.defaultModel && s.defaultModel === model);
+  const reviewEl = document.getElementById('ts-chat-review-before-save');
+  if (reviewEl) reviewEl.checked = !!s.reviewBeforeSave;
+  const acRadio = s.autoCompact ? 'on' : 'off';
+  document.querySelectorAll('input[name="ts-chat-autocompact"]').forEach(r => { r.checked = (r.value === acRadio); });
+  const acThreshEl = document.getElementById('ts-chat-compact-threshold');
+  if (acThreshEl) acThreshEl.value = s.autoCompactThreshold || _defaultAutoCompactThreshold();
+  const tokEstEl = document.getElementById('ts-ctx-token-est');
+  if (tokEstEl) {
+    const estTok = Math.round(JSON.stringify(appState).length / 4);
+    tokEstEl.textContent = '~' + estTok.toLocaleString();
+  }
   if (IS_DEMO) {
     if (keyEl) { keyEl.disabled = true; keyEl.style.opacity = '0.4'; keyEl.style.pointerEvents = 'none'; }
     const errEl = document.getElementById('ts-apikey-error');
@@ -10164,9 +10668,21 @@ function saveChatSettingsFromForm() {
   s.syncEvery = syncNEl ? (parseInt(syncNEl.value) || 5) : 5;
   const depthRadio = document.querySelector('input[name="ts-chat-contextdepth"]:checked');
   s.contextDepth = depthRadio ? depthRadio.value : 'compact';
+  const acEl = document.querySelector('input[name="ts-chat-autocompact"]:checked');
+  s.autoCompact = acEl ? (acEl.value === 'on') : false;
+  const acThEl = document.getElementById('ts-chat-compact-threshold');
+  s.autoCompactThreshold = acThEl ? (parseInt(acThEl.value) || 40000) : 40000;
+  const reviewSaveEl = document.getElementById('ts-chat-review-before-save');
+  s.reviewBeforeSave = reviewSaveEl ? reviewSaveEl.checked : false;
+  const defModelSaveEl = document.getElementById('ts-chat-default-model');
+  if (defModelSaveEl && defModelSaveEl.checked) s.defaultModel = modelId;
+  else delete s.defaultModel;
   saveChatSettings(s);
   _updateChatSyncBtn();
   _updatePrivacyBanner(s.model);
+  if (!_isLocalModel(modelId)) {
+    document.getElementById('chat-msgs')?.querySelectorAll('.chat-info-card').forEach(el => el.remove());
+  }
   closeChatSettings();
   const overlay = document.getElementById('chat-overlay');
   if (overlay?.classList.contains('open')) chatAddMsg('system', 'Settings saved.');
@@ -10400,7 +10916,7 @@ document.addEventListener('keydown', function(e) {
 
 <!-- ══ CHAT PRIVACY MODAL ════════════════════════════════════════ -->
 <div class="modal-overlay" id="chat-privacy-modal" onclick="if(event.target===this)chatPrivacyDecline()">
-  <div class="modal" style="border-top:3px solid var(--gold);position:relative;max-width:460px;">
+  <div class="modal" style="border-top:3px solid var(--gold);position:relative;max-width:460px;width:100%;">
     <div class="modal-title" style="color:var(--gold);">Before you start</div>
     <p style="font-size:15px;color:var(--text);line-height:1.65;margin:0 0 12px;">Your messages will be sent to your AI provider and are subject to their privacy policy. team-sheet never stores or sees your data.</p>
     <p style="font-size:14px;color:var(--text-dim);line-height:1.6;margin:0 0 18px;">IFS sessions can involve sensitive personal material. Use a provider and model you trust. For full privacy, use a local model via Ollama (no data leaves your device).</p>
@@ -10417,56 +10933,63 @@ document.addEventListener('keydown', function(e) {
     <div class="chat-hdr-left">
       <div class="chat-hdr-app">team-sheet</div>
       <div class="chat-hdr-title-row">
-        <div class="chat-hdr-title">IFS Session</div>
+        <div id="chat-hdr-title" class="chat-hdr-title" contenteditable="true" spellcheck="false"
+          title="Click to edit session title"
+          onblur="chatTitleSave(this)"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}else if(event.key==='Escape'){chatTitleAbort(this);this.blur()}"
+          onfocus="chatTitleFocus(this)">IFS Session</div>
+        <button id="chat-hdr-lock-btn" class="chat-hdr-lock-btn" onclick="chatTitleToggleLock()" title="Lock title to prevent your AI from updating it">&#128275;</button>
         <span id="chat-hdr-model" class="chat-hdr-model"></span>
       </div>
     </div>
     <div class="chat-hdr-right">
+      <div class="chat-sess-picker-wrap" id="chat-sess-picker-wrap" style="display:none">
+        <button class="chat-sess-picker-btn" id="chat-sess-picker-btn" onclick="chatPickerToggle()" title="Load a past session">Past sessions <span class="picker-arrow">&#9660;</span></button>
+        <div class="chat-sess-picker-panel" id="chat-sess-picker-panel"></div>
+      </div>
       <span id="chat-cost-display" class="chat-cost-display" style="display:none"></span>
+      <button class="chat-icon-btn" id="chat-compact-btn" onclick="chatToggleCompact()" title="Sidebar mode">&#x2922;</button>
       <button class="chat-icon-btn" onclick="openChatSettings()" title="Settings">&#9881;</button>
       <button class="chat-icon-btn" onclick="closeChat()" title="Close (Esc)">&#x2715;</button>
     </div>
   </div>
   <div id="chat-cloud-warn" class="chat-cloud-warn">
     <span class="chat-cloud-warn-dot">&#9888;</span>
-    <span>Cloud model active: your messages and IFS session data are sent to an external server and subject to your provider's privacy policy. For full privacy, use a local Ollama model (free, nothing leaves your device).</span>
+    <span class="chat-cloud-warn-text">Cloud model active: your messages and IFS session data are sent to an external server and subject to your provider's privacy policy. For full privacy, use a local Ollama model (free, nothing leaves your device).</span>
+    <button class="chat-cloud-warn-dismiss" onclick="this.closest('#chat-cloud-warn').classList.remove('visible')" title="Dismiss">&#x2715;</button>
   </div>
   <div id="chat-demo-banner" class="chat-demo-banner" style="display:none">Demo mode: chatting with Alex's data. Sessions won't be saved. Download the app to journal with your own data.</div>
-  <div id="chat-session-bar" class="chat-session-bar">
-    <select id="chat-session-picker" class="chat-session-picker" style="display:none" title="Load a past session" onchange="if(this.value){chatLoadSession(this.value);this.value=''}"></select>
-  </div>
-  <div id="chat-quickstarts" class="chat-quickstarts"></div>
+  <div id="chat-quickstarts" class="chat-quickstarts" style="display:none"></div>
   <div id="chat-msgs" class="chat-msgs"></div>
   <div class="chat-input-bar">
     <textarea id="chat-input" class="chat-textarea" placeholder="What's present for you right now? (Enter to send, Ctrl+Enter for new line)" rows="3"></textarea>
     <button id="chat-send-btn" class="btn-primary chat-send-btn" onclick="chatSend()">Send</button>
   </div>
   <div class="chat-action-bar">
-    <button id="chat-apply-btn" class="chat-apply-btn" onclick="chatApplyUpdate()" style="display:none" title="Apply the AI's suggested changes to your map now">&#10022; Apply Update</button>
-    <button id="chat-sync-btn" class="btn-ghost chat-sync-btn" onclick="chatSync()" title="Save progress mid-session: ask your AI to output the current changes and apply them now, then keep chatting.">&#8635; Sync</button>
+    <button id="chat-summarize-btn" class="btn-ghost chat-summarize-btn" onclick="chatCompactContext()" title="Compress old messages into a summary to free up context space. Use this if the AI starts forgetting earlier parts of the conversation.">&#9636; Compact</button>
     <button class="btn-ghost chat-new-session-btn" onclick="chatNewSession()" title="Start fresh: clear this conversation and begin a new session. The current session stays in the Journal tab.">New session</button>
-    <button id="chat-end-btn" class="btn-ghost chat-end-btn" onclick="chatEndSession()" title="Wrap up: your AI writes a session summary, applies all changes to your map, and closes the session.">End session</button>
+    <button id="chat-update-btn" class="btn-ghost chat-end-btn" onclick="chatUpdateMap()" title="Ask your AI to summarise and save any changes from this conversation. You can review before applying.">Update map</button>
     <button id="chat-delete-session-btn" class="btn-ghost chat-delete-session-btn" onclick="chatDeleteCurrentSession()" title="Delete this session permanently" style="display:none">Delete session</button>
   </div>
 </div>
 
 <!-- ══ CHAT SETTINGS MODAL ════════════════════════════════════════ -->
-<div class="modal-overlay" id="chat-settings-modal" onclick="if(event.target===this)closeChatSettings()">
-  <div class="modal" style="border-top:3px solid var(--gold);position:relative;max-width:440px;">
+<div class="modal-overlay" id="chat-settings-modal" style="padding:12px;" onclick="if(event.target===this)closeChatSettings()">
+  <div class="modal" style="border-top:3px solid var(--gold);position:relative;max-width:560px;width:100%;padding:18px 22px;">
     <button class="modal-close" onclick="closeChatSettings()" title="Close">&#x2715;</button>
-    <div class="modal-title" style="color:var(--gold);">Chat Settings</div>
-    <p style="font-size:13px;color:var(--text-dim);line-height:1.5;margin:0 0 14px;">Local models keep all data on your device. Recommended for privacy. Cloud models (Anthropic) send your session data to their servers.</p>
-    <div id="ts-apikey-section" class="chat-field">
+    <div class="modal-title" style="color:var(--gold);margin-bottom:6px;">Chat Settings</div>
+    <p style="font-size:12px;color:var(--text-dim);line-height:1.4;margin:0 0 10px;">Local models keep all data on your device. Recommended for privacy. Cloud models (Anthropic) send your session data to their servers.</p>
+    <div id="ts-apikey-section" class="chat-field" style="margin-bottom:10px;">
       <label class="chat-field-lbl" for="ts-chat-apikey">Anthropic API Key</label>
-      <div id="ts-pin-gate" style="display:none;padding:10px 12px;background:rgba(200,168,74,0.07);border:1px solid rgba(200,168,74,0.25);border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.6;">
+      <div id="ts-pin-gate" style="display:none;padding:8px 10px;background:rgba(200,168,74,0.07);border:1px solid rgba(200,168,74,0.25);border-radius:6px;font-size:12px;color:var(--text-dim);line-height:1.5;">
         A security password is required before storing an API key.<br>
-        <button onclick="closeChatSettings();openSettings();setTimeout(()=>document.getElementById('settings-pin-new')?.focus(),300)" style="margin-top:8px;padding:5px 14px;background:rgba(200,168,74,0.12);border:1px solid rgba(200,168,74,0.4);color:var(--gold);border-radius:4px;cursor:pointer;font-size:13px;">Set up password in Settings</button>
+        <button onclick="closeChatSettings();openSettings();setTimeout(()=>document.getElementById('settings-pin-new')?.focus(),300)" style="margin-top:6px;padding:4px 12px;background:rgba(200,168,74,0.12);border:1px solid rgba(200,168,74,0.4);color:var(--gold);border-radius:4px;cursor:pointer;font-size:12px;">Set up password in Settings</button>
       </div>
       <div id="ts-apikey-inputs">
         <input type="password" id="ts-chat-apikey" placeholder="sk-ant-..." autocomplete="off">
-        <div id="ts-apikey-error" style="font-size:13px;color:#c84040;min-height:0;margin-top:5px;"></div>
-        <div class="chat-api-note">
-          <ol style="margin:4px 0 0 16px;padding:0;line-height:1.9;font-size:12px;">
+        <div id="ts-apikey-error" style="font-size:12px;color:#c84040;min-height:0;margin-top:3px;"></div>
+        <div class="chat-api-note" style="margin-top:3px;">
+          <ol style="margin:2px 0 0 14px;padding:0;line-height:1.6;font-size:12px;">
             <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in (separate from Claude.ai)</li>
             <li>Open <strong>API Keys</strong> and create a new key</li>
             <li>Paste it above</li>
@@ -10474,10 +10997,10 @@ document.addEventListener('keydown', function(e) {
         </div>
       </div>
     </div>
-    <div id="ts-ollama-note" class="ollama-note chat-api-note" style="display:none;margin-bottom:10px;">
+    <div id="ts-ollama-note" class="ollama-note chat-api-note" style="display:none;margin-bottom:8px;">
       <div id="ts-ollama-install"></div>
     </div>
-    <div class="chat-field">
+    <div class="chat-field" style="margin-bottom:10px;">
       <label class="chat-field-lbl" for="ts-chat-model-preset">Model</label>
       <select id="ts-chat-model-preset" onchange="onChatModelPresetChange()">
         <optgroup label="Ollama (local)">
@@ -10497,35 +11020,46 @@ document.addEventListener('keydown', function(e) {
         <option value="custom">Custom model ID...</option>
       </select>
       <input type="text" id="ts-chat-model-custom" placeholder="e.g. qwen2.5:14b or llama3.3:latest" style="display:none;margin-top:6px">
-      <p class="chat-api-note" style="margin-top:7px;"><button onclick="openModelGuide()" style="background:none;border:none;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit;">Not sure which model fits your computer?</button></p>
+      <label class="chat-sync-radio" style="margin-top:6px;"><input type="checkbox" id="ts-chat-default-model"> Save as default for new chats</label>
+      <p class="chat-api-note" style="margin-top:4px;"><button onclick="openModelGuide()" style="background:none;border:none;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit;">Not sure which model fits your computer?</button></p>
     </div>
-    <div class="chat-field">
-      <label class="chat-field-lbl" for="ts-chat-maxtokens">Max response tokens</label>
-      <input type="number" id="ts-chat-maxtokens" min="256" max="32000" step="256" value="4096">
-    </div>
-    <div class="chat-field">
-      <label class="chat-field-lbl" for="ts-chat-numctx">Context window (local models)</label>
-      <input type="number" id="ts-chat-numctx" min="2048" max="131072" step="1024" value="8192">
-      <p class="chat-api-note" style="margin-top:5px;">Set to at least 2x your data size. The token estimates for each context depth are shown in the "Context sent to AI" section just below.</p>
-    </div>
-    <div class="chat-field">
-      <label class="chat-field-lbl">Context sent to AI</label>
-      <div class="chat-sync-options">
-        <label class="chat-sync-radio"><input type="radio" name="ts-chat-contextdepth" value="compact" checked> Compact summary <span id="ts-ctx-compact-est" style="color:var(--text-dim);font-size:12px;margin-left:6px;"></span></label>
-        <label class="chat-sync-radio"><input type="radio" name="ts-chat-contextdepth" value="full"> Full data <span id="ts-ctx-full-est" style="color:var(--text-dim);font-size:12px;margin-left:6px;"></span></label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      <div>
+        <label class="chat-field-lbl" for="ts-chat-maxtokens" style="display:block;margin-bottom:4px;">Max response tokens</label>
+        <input type="number" id="ts-chat-maxtokens" min="256" max="32000" step="256" value="4096" style="width:100%;box-sizing:border-box;">
       </div>
-      <p class="chat-api-note" style="margin-top:6px;">Use full data with models that have 32k+ context. Sent once at session start.</p>
+      <div>
+        <label class="chat-field-lbl" for="ts-chat-numctx" style="display:block;margin-bottom:4px;">Context window (local)</label>
+        <input type="number" id="ts-chat-numctx" min="2048" max="131072" step="1024" value="8192" style="width:100%;box-sizing:border-box;">
+      </div>
     </div>
-    <div class="chat-field" style="margin-top:10px;">
-      <label class="chat-field-lbl" style="display:block;margin-bottom:8px;">Data sync</label>
-      <div class="chat-sync-options">
+    <div class="chat-field" style="margin-bottom:10px;">
+      <label class="chat-field-lbl">Context sent to AI</label>
+      <div class="chat-sync-options" style="gap:4px;margin-top:4px;">
+        <label class="chat-sync-radio"><input type="radio" name="ts-chat-contextdepth" value="compact" checked> Compact summary <span id="ts-ctx-compact-est" style="color:var(--text-dim);font-size:12px;margin-left:4px;"></span></label>
+        <label class="chat-sync-radio"><input type="radio" name="ts-chat-contextdepth" value="full"> Full data <span id="ts-ctx-full-est" style="color:var(--text-dim);font-size:12px;margin-left:4px;"></span></label>
+      </div>
+      <p class="chat-api-note" style="margin-top:3px;">Use full data with models that have 32k+ context. Set context window to at least 2x your data size.</p>
+    </div>
+    <div class="chat-field" style="margin-bottom:10px;">
+      <label class="chat-field-lbl" style="display:block;margin-bottom:4px;">Data sync</label>
+      <div class="chat-sync-options" style="gap:4px;">
         <label class="chat-sync-radio"><input type="radio" name="ts-chat-syncmode" value="always"> After every reply</label>
         <label class="chat-sync-radio"><input type="radio" name="ts-chat-syncmode" value="every-n"> Every <input type="number" id="ts-chat-syncevery" class="chat-sync-n" min="2" max="50" value="5"> replies</label>
-        <label class="chat-sync-radio"><input type="radio" name="ts-chat-syncmode" value="manual" checked> Manual (use the Sync button or ask your AI)</label>
+        <label class="chat-sync-radio"><input type="radio" name="ts-chat-syncmode" value="manual" checked> Manual (use Update map or ask your AI)</label>
+        <label class="chat-sync-radio" style="margin-top:2px;"><input type="checkbox" id="ts-chat-review-before-save"> Review changes before saving</label>
       </div>
-      <p class="chat-api-note" style="margin-top:8px;">Controls when updated data is written back to the app. Frequent sync costs more tokens with cloud models.</p>
+      <p class="chat-api-note" style="margin-top:3px;">Controls when updated data is written back to the app.</p>
     </div>
-    <div class="modal-row" style="margin-top:18px;">
+    <div class="chat-field" style="margin-bottom:6px;">
+      <label class="chat-field-lbl" style="display:block;margin-bottom:4px;">Context compaction</label>
+      <div class="chat-sync-options" style="gap:4px;">
+        <label class="chat-sync-radio"><input type="radio" name="ts-chat-autocompact" value="off" checked> Off (use the Compact button manually)</label>
+        <label class="chat-sync-radio"><input type="radio" name="ts-chat-autocompact" value="on"> Auto-compact when session exceeds <input type="number" id="ts-chat-compact-threshold" class="chat-sync-n" min="10000" max="500000" step="5000" value="40000" style="width:66px"> input tokens</label>
+      </div>
+      <p class="chat-api-note" style="margin-top:3px;">Compaction summarises older messages so the session can continue without hitting context limits.</p>
+    </div>
+    <div class="modal-row" style="margin-top:12px;">
       <button class="btn-primary" onclick="saveChatSettingsFromForm()">Save</button>
       <button class="btn-ghost" onclick="closeChatSettings()">Cancel</button>
     </div>
@@ -10534,7 +11068,7 @@ document.addEventListener('keydown', function(e) {
 
 <!-- ══ MODEL GUIDE MODAL ═════════════════════════════════════ -->
 <div class="modal-overlay" id="ts-model-guide-modal" onclick="if(event.target===this)closeModelGuide()">
-  <div class="modal" style="border-top:3px solid var(--gold);position:relative;max-width:480px;">
+  <div class="modal" style="border-top:3px solid var(--gold);position:relative;max-width:480px;width:100%;">
     <button class="modal-close" onclick="closeModelGuide()" title="Close">&#x2715;</button>
     <div class="modal-title" style="color:var(--gold);">Which model is best for me?</div>
 
