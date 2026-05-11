@@ -9039,16 +9039,14 @@ function loadChatSettings() {
   if (IS_DEMO) return { model: 'qwen2.5:7b' };
   try { const r = localStorage.getItem(CHAT_SETTINGS_KEY); return r ? JSON.parse(r) : {}; } catch { return {}; }
 }
-async function saveChatSettings(s) {
+function saveChatSettings(s) {
   if (IS_DEMO) return;
   if (s.apiKey && !_isLocalModel(s.model) && !(typeof _pinActive !== 'undefined' && _pinActive)) {
     console.warn('saveChatSettings: refusing to store cloud API key without active encryption');
     return;
   }
   try { localStorage.setItem(CHAT_SETTINGS_KEY, JSON.stringify(s)); } catch {}
-  // Await directly so _clearSensitiveKeys() runs before returning, preventing plaintext API key persistence on crash
-  if (_pinActive && _currentKey) await _encryptAndSave(appState, null);
-  else if (_pinActive && _currentPIN) await _encryptAndSave(appState, _currentPIN);
+  _reencryptIfActive();
 }
 
 function buildCompactContext() {
@@ -9577,7 +9575,7 @@ async function callOllamaAPI(messages, systemPrompt, streamCallback = null) {
   } catch(e) {
     invalidateOllamaCache();
     const probe = await probeOllamaStatus();
-    if (!_isLocalModel(loadChatSettings().model)) throw new Error('');
+    if (!_isLocalModel(model)) throw new Error('');
     const os = detectOS();
     if (!probe.running) {
       chatAddInfoCard(_ollamaInstallHTML(os, model));
