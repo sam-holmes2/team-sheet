@@ -1319,8 +1319,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .chat-hdr-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
 .chat-cost-display { font-size:12px; font-family:var(--mono); color:var(--text-dim); opacity:0.8; }
 .chat-sync-options { display:flex; flex-direction:column; gap:7px; margin-top:4px; }
-.chat-sync-radio { display:flex; align-items:center; gap:7px; font-size:13px; color:var(--text); cursor:pointer; flex-wrap:wrap; }
-.chat-sync-radio input[type=radio], .chat-sync-radio input[type=checkbox] { margin:0; cursor:pointer; flex-shrink:0; }
+.chat-sync-radio { display:flex; align-items:flex-start; gap:7px; font-size:13px; color:var(--text); cursor:pointer; flex-wrap:wrap; }
+.chat-sync-radio input[type=radio], .chat-sync-radio input[type=checkbox] { margin:3px 0 0; cursor:pointer; flex-shrink:0; }
 .chat-sync-n { width:44px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:var(--text); border-radius:3px; padding:2px 4px; text-align:center; font-size:12px; }
 .chat-icon-btn { background:none; border:1px solid var(--border-hi); color:var(--text-dim); font-size:14px; width:28px; height:28px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
 .chat-icon-btn:hover { border-color:var(--gold); color:var(--gold); }
@@ -2096,6 +2096,10 @@ body.chat-sidebar { padding-right:calc(40px + 420px); }
           <button class="btn-ghost" style="font-size:13px;padding:5px 14px;" onclick="document.getElementById('ts-git-pull-confirm').style.display='none'">Cancel</button>
         </div>
       </div>
+      <label id="ts-git-autosync-label" style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-top:10px;">
+        <input type="checkbox" id="ts-git-autosync" onchange="gitSyncToggleAuto(this.checked)">
+        <span id="ts-git-autosync-text">Auto-sync: push changes automatically</span>
+      </label>
       <p class="chat-api-note" style="margin:12px 0 0;">Push after each session to keep a backup accessible from another device.</p>
     </div>
     <div class="modal-row" style="margin-top:16px;">
@@ -2124,7 +2128,6 @@ const LOCKS_KEY            = 'ts-locks-v1';
 const SESSIONS_KEY         = 'ts-sessions-v1';
 const BAL_HIST_KEY         = 'ts-balance-hist-v1';
 const WELCOMED_KEY         = 'ts-welcomed-v1';
-const UNDO_KEY             = 'ts-undo-v1';
 const HIDE_DIRTY_BANNER_KEY = 'ts-hide-dirty-banner-v1';
 const CLOSE_CONFIRM_KEY     = 'ts-close-confirm-v1';
 const HIDE_DISC_BANNER_KEY  = 'ts-hide-disc-banner-v1';
@@ -2819,6 +2822,9 @@ function saveState(s) {
     const b = document.getElementById('dirty-banner');
     if (b) b.style.display = 'flex';
   }
+  // Auto-sync debounce
+  clearTimeout(_autoSyncTimer);
+  _autoSyncTimer = setTimeout(_autoSyncPushSilent, 30000);
   clearTimeout(saveState._dbt);
   saveState._dbt = setTimeout(() => { if (typeof renderBodyDiagramPanel === 'function') renderBodyDiagramPanel(appState); }, 300);
 }
@@ -2942,6 +2948,7 @@ function loadBalHist() {
 function saveBalHist(arr) {
   if (IS_DEMO) { _memBalHist = arr; return; }
   localStorage.setItem(BAL_HIST_KEY, JSON.stringify(arr));
+  _reencryptIfActive();
 }
 
 // ══ EDITABLE HELPER ════════════════════════════════════════════
@@ -8086,9 +8093,7 @@ function applyUpdate(chatData) {
     _undoStack.push({ label: isPartial ? 'Partial import' : 'Import', snap: prevSnapshot });
     if (_undoStack.length > _UNDO_MAX) _undoStack.shift();
     _showUndoToast(isPartial ? 'Partial import' : 'Import');
-    if (!IS_DEMO) {
-      localStorage.setItem(UNDO_KEY, JSON.stringify(prevSnapshot));
-    }
+    // prevSnapshot held in _undoStack (in-memory) — no plaintext write needed
 
     let merged;
     if (isPartial) {
@@ -8486,6 +8491,8 @@ function _clearSensitiveKeys(){
 
 async function _encryptAndSave(s, pin){
   if(IS_DEMO) return;
+  // Snapshot synchronously before any await so concurrent calls don't lose keys cleared by _clearSensitiveKeys.
+  const blobStr = JSON.stringify(_collectBlob(s));
   let enc;
   if(_currentKey && !pin){
     // Re-use the salt from PIN_CHECK so _decrypt can re-derive the same key at next unlock.
@@ -8493,10 +8500,10 @@ async function _encryptAndSave(s, pin){
     const {salt: pinSalt} = checkRaw ? JSON.parse(checkRaw) : {};
     if(!pinSalt) return; // PIN_CHECK gone — bail
     const iv = crypto.getRandomValues(new Uint8Array(12));
-    const data = await crypto.subtle.encrypt({name:'AES-GCM',iv}, _currentKey, new TextEncoder().encode(JSON.stringify(_collectBlob(s))));
+    const data = await crypto.subtle.encrypt({name:'AES-GCM',iv}, _currentKey, new TextEncoder().encode(blobStr));
     enc = JSON.stringify({salt:pinSalt, iv:_b64(iv), data:_b64(data)});
   } else {
-    enc = await _encrypt(pin, JSON.stringify(_collectBlob(s)));
+    enc = await _encrypt(pin, blobStr);
   }
   localStorage.setItem(ENC_KEY, enc);
   _clearSensitiveKeys();
@@ -8728,10 +8735,11 @@ async function settingsChangePIN(){
   if(newPin.length < 8){ _setSettingsStatus('New password must be at least 8 characters','err'); return; }
   if(_zxcvbn(newPin).score <= 1){ _setSettingsStatus('New password is too weak. Use a longer passphrase or a password manager.','err'); return; }
   if(newPin!==conf){ _setSettingsStatus('New passwords do not match','err'); return; }
+  // Snapshot before any await so concurrent _encryptAndSave calls can't clear keys first.
+  const blob = _collectBlob(appState);
   const sentinel = await _decrypt(oldPin, localStorage.getItem(PIN_CHECK_KEY));
   if(sentinel!==SENTINEL){ _setSettingsStatus('Incorrect current password','err'); return; }
   _setSettingsStatus('Encrypting... (this takes a few seconds)','');
-  const blob = _collectBlob(appState);
   const [check, enc] = await Promise.all([
     _encrypt(newPin, SENTINEL),
     _encrypt(newPin, JSON.stringify(blob))
@@ -9366,7 +9374,7 @@ function openChat() {
   }
   if (!IS_DEMO) {
     const s = loadChatSettings();
-    const activeModel = s.model || 'gemma3:4b';
+    const activeModel = s.model || s.defaultModel || 'gemma3:4b';
     if (!_isLocalModel(activeModel) && !localStorage.getItem(CHAT_PRIVACY_ACK_KEY)) {
       document.getElementById('chat-privacy-modal')?.classList.add('open');
       return;
@@ -9399,7 +9407,12 @@ function _openChatOverlay() {
   }
   _warmPromptCache();
   document.getElementById('chat-btn')?.classList.remove('chat-btn-loading');
-  const s = loadChatSettings();
+  let s = loadChatSettings();
+  if (s.defaultModel && s.model !== s.defaultModel) {
+    s.model = s.defaultModel;
+    saveChatSettings(s);
+    _updateModelUI(s.defaultModel);
+  }
   _updatePrivacyBanner(s.model);
   _updateChatSyncBtn();
   const demoBanner = document.getElementById('chat-demo-banner');
@@ -9631,8 +9644,8 @@ async function callOllamaAPI(messages, systemPrompt, streamCallback = null) {
 
 async function callChatAPI(messages, systemPrompt, streamCallback = null) {
   const s = loadChatSettings();
-  const model = s.model || 'gemma3:4b';
-  if (!model.startsWith('claude-')) return callOllamaAPI(messages, systemPrompt, streamCallback);
+  const model = s.model || s.defaultModel || 'gemma3:4b';
+if (!model.startsWith('claude-')) return callOllamaAPI(messages, systemPrompt, streamCallback);
   return callAnthropicAPI(messages, systemPrompt, streamCallback);
 }
 
@@ -10451,6 +10464,16 @@ function openGitSyncModal() {
     if (patEl)  patEl.value  = gs.pat  || '';
     if (repoEl) repoEl.value = (gs.owner && gs.repo) ? gs.owner + '/' + gs.repo : '';
     if (pathEl) pathEl.value = gs.path || 'ts-data.enc';
+    const autoEl  = document.getElementById('ts-git-autosync');
+    const autoLbl = document.getElementById('ts-git-autosync-label');
+    const autoTxt = document.getElementById('ts-git-autosync-text');
+    const pinOn   = typeof _pinActive !== 'undefined' && _pinActive;
+    if (autoEl) { autoEl.checked = !!gs.autoSync; autoEl.disabled = !pinOn; }
+    if (autoLbl) autoLbl.style.opacity = pinOn ? '' : '0.45';
+    if (autoLbl) autoLbl.style.cursor  = pinOn ? 'pointer' : 'default';
+    if (autoTxt) autoTxt.textContent = pinOn
+      ? 'Auto-sync: push changes automatically'
+      : 'Auto-sync: push changes automatically (unlock your password first)';
     _updateGitSyncStatus();
   }
   document.getElementById('git-sync-modal').classList.add('open');
@@ -10549,6 +10572,49 @@ async function gitSyncPull() {
     if (btn) { btn.disabled = false; btn.textContent = 'Pull ↓'; }
     const c = document.getElementById('ts-git-pull-confirm');
     if (c) c.style.display = 'none';
+  }
+}
+
+async function gitSyncToggleAuto(enabled) {
+  const gs = loadGitSyncSettings();
+  gs.autoSync = enabled;
+  await saveGitSyncSettings(gs);
+}
+
+let _autoSyncTimer = null;
+let _autoSyncInFlight = false;
+
+async function _autoSyncPushSilent() {
+  if (IS_DEMO) return;
+  if (_autoSyncInFlight) return;
+  if (typeof _pinActive === 'undefined' || !_pinActive) return;
+  const gs = loadGitSyncSettings();
+  if (!gs.autoSync || !gs.pat || !gs.owner || !gs.repo) return;
+  const encData = localStorage.getItem(ENC_KEY);
+  const pinCheck = localStorage.getItem(PIN_CHECK_KEY);
+  if (!encData || !pinCheck) return;
+  _autoSyncInFlight = true;
+  const statusEl = document.getElementById('ts-git-sync-status');
+  try {
+    const pushPayload = JSON.stringify({ _v: 2, enc: encData, check: pinCheck });
+    const apiBase = `https://api.github.com/repos/${encodeURIComponent(gs.owner)}/${encodeURIComponent(gs.repo)}/contents/${encodeURIComponent(gs.path || 'ts-data.enc')}`;
+    const headers = { Authorization: 'Bearer ' + gs.pat, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' };
+    let sha;
+    const check = await fetch(apiBase, { headers });
+    if (check.ok) sha = (await check.json()).sha;
+    else if (check.status === 404) {} // first push
+    else throw new Error('GitHub ' + check.status);
+    const body = { message: 'sync: team-sheet', content: btoa(unescape(encodeURIComponent(pushPayload))) };
+    if (sha) body.sha = sha;
+    const put = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body) });
+    if (!put.ok) { const e = await put.json().catch(() => ({})); throw new Error(e.message || 'status ' + put.status); }
+    gs.lastPushed = new Date().toISOString();
+    await saveGitSyncSettings(gs);
+    _updateGitSyncStatus();
+  } catch (err) {
+    if (statusEl) statusEl.textContent = 'Auto-sync failed: ' + err.message;
+  } finally {
+    _autoSyncInFlight = false;
   }
 }
 
