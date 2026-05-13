@@ -1451,8 +1451,8 @@ body.chat-sidebar { padding-right:calc(40px + 420px); }
 .session-transcript-msg { font-size:13px; line-height:1.5; padding:6px 10px; border-radius:4px; white-space:pre-wrap; word-break:break-word; }
 .session-transcript-user { background:rgba(200,168,74,0.08); border:1px solid rgba(200,168,74,0.2); color:var(--text); text-align:right; }
 .session-transcript-assistant { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); color:var(--text-mid); }
-.chat-quickstarts { padding:10px 16px 0; display:flex; gap:8px; flex-wrap:wrap; }
-.chat-qs-chip { background:rgba(200,168,74,0.07); border:1px solid rgba(200,168,74,0.25); color:var(--text-mid); font-size:13px; padding:5px 11px; border-radius:20px; cursor:pointer; transition:all 0.15s; }
+.chat-quickstarts { padding:10px 16px 0; display:flex; flex-direction:column; gap:6px; }
+.chat-qs-chip { background:rgba(200,168,74,0.07); border:1px solid rgba(200,168,74,0.25); color:var(--text-mid); font-size:13px; padding:5px 11px; border-radius:20px; cursor:pointer; transition:all 0.15s; width:100%; text-align:left; }
 .chat-qs-chip:hover { background:rgba(200,168,74,0.14); border-color:var(--gold); color:var(--gold); }
 .chat-field { margin-bottom:14px; }
 .chat-field-lbl { display:block; font-size:13px; color:var(--text-mid); margin-bottom:5px; font-family:'Cinzel',serif; letter-spacing:0.08em; text-transform:uppercase; }
@@ -1471,6 +1471,17 @@ body.chat-sidebar { padding-right:calc(40px + 420px); }
 .ollama-copy-btn:hover { color:var(--text); border-color:rgba(255,255,255,0.25); }
 .ollama-use-btn  { color:var(--gold); border-color:rgba(200,168,74,0.22); }
 .ollama-use-btn:hover { background:rgba(200,168,74,0.12); }
+.ollama-status-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:7px; }
+.ollama-conn-ok  { font-size:12px; font-family:var(--mono); color:#50c878; }
+.ollama-conn-err { font-size:12px; font-family:var(--mono); color:#c07050; }
+.ollama-model-row { display:flex; align-items:center; gap:6px; padding:3px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.ollama-model-row:last-child { border-bottom:none; }
+.ollama-badge { min-width:14px; font-size:11px; }
+.ollama-badge-ok { color:#50c878; }
+.ollama-badge-no { color:#505060; }
+.ollama-model-name { font-family:var(--mono); font-size:12px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ollama-cmd-tag { font-size:11px; color:#8090a8; background:rgba(255,255,255,0.05); padding:2px 5px; border-radius:3px; font-family:var(--mono); white-space:nowrap; max-width:180px; overflow:hidden; text-overflow:ellipsis; }
+.ollama-extra-lbl { font-size:11px; color:var(--text-dim); margin-top:7px; margin-bottom:3px; }
 
 /* ── App footer ── */
 #app-footer {
@@ -1480,6 +1491,22 @@ body.chat-sidebar { padding-right:calc(40px + 420px); }
 }
 #app-footer a { color:var(--text-dim); text-underline-offset:2px; }
 #app-footer a:hover { color:var(--text-mid); }
+
+/* ── Daily Pulse modal ── */
+#pulse-modal { z-index:300; }
+#pulse-modal .modal { max-width:480px; border-top:3px solid var(--gold); }
+#pulse-modal .modal-title { color:var(--gold); }
+.pulse-subtitle { font-size:14px; color:var(--text-dim); margin-bottom:14px; line-height:1.5; }
+.pulse-parts-list { display:flex; flex-direction:column; gap:0; margin-bottom:16px; }
+.pulse-part-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--border); }
+.pulse-part-row:last-child { border-bottom:none; }
+.pulse-part-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.pulse-part-name { font-size:15px; color:var(--text-b); flex-shrink:0; min-width:90px; max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pulse-part-slider { flex:1; accent-color:var(--gold); cursor:pointer; }
+.pulse-part-val { font-size:13px; color:var(--text-dim); min-width:24px; text-align:right; font-family:var(--mono); }
+.pulse-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.pulse-done-btn { background:var(--gold-dim); border:1px solid rgba(200,168,74,0.45); color:var(--gold); font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; padding:7px 18px; border-radius:4px; cursor:pointer; transition:all 0.15s; }
+.pulse-done-btn:hover { background:rgba(200,168,74,0.18); }
 </style>
 </head>
 <body>
@@ -1772,9 +1799,18 @@ body.chat-sidebar { padding-right:calc(40px + 420px); }
   <div id="snapshot-table-section" style="margin-top:28px;display:none;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap;">
       <div class="section-heading" style="margin-bottom:0;">Snapshot history</div>
-      <button class="btn-primary" style="font-size:13px;padding:3px 12px;" onclick="openBackfillPanel('recent', null)">+ Add snapshot</button>
+      <button class="btn-primary" style="font-size:13px;padding:3px 12px;" onclick="openBackfillPanel('table', null)">+ Add snapshot</button>
     </div>
     <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">All composition snapshots. Session-sourced rows are marked and have protected dates. Manual rows are fully editable.</p>
+    <div class="backfill-panel" id="backfill-panel-table">
+      <div class="backfill-panel-heading">Add snapshot</div>
+      <div class="backfill-date-row">
+        <label>Date: <input type="date" id="backfill-date-table" /></label>
+        <button class="btn-primary" style="font-size:13px;padding:4px 12px;" onclick="saveBackfillPanel('table')">Save</button>
+        <button class="btn-ghost" style="font-size:13px;padding:4px 10px;" onclick="closeBackfillPanel('table')">Cancel</button>
+      </div>
+      <div id="backfill-sliders-table"></div>
+    </div>
     <div id="snapshot-table-container"></div>
   </div>
 
@@ -1877,6 +1913,20 @@ body.chat-sidebar { padding-right:calc(40px + 420px); }
     </div>
     <div class="modal-row" style="margin-top:14px;">
       <button class="btn-ghost" onclick="dismissWelcome()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DAILY PULSE MODAL ═════════════════════════════════════════ -->
+<div class="modal-overlay" id="pulse-modal" onclick="if(event.target===this)_closePulseModal(false)">
+  <div class="modal">
+    <button class="modal-close" onclick="_closePulseModal(false)">&#215;</button>
+    <div class="modal-title">Daily Pulse</div>
+    <div class="pulse-subtitle">How blended are you with each part right now?</div>
+    <div class="pulse-parts-list" id="pulse-parts-list"></div>
+    <div class="pulse-actions">
+      <button class="pulse-done-btn" onclick="_submitPulseModal()">Done for today</button>
+      <button class="btn-ghost" onclick="_closePulseModal(false)">Skip</button>
     </div>
   </div>
 </div>
@@ -6390,9 +6440,11 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
   [0, 0.5, 1].forEach(v => {
     const y = propY(v);
     ctx.fillText(Math.round(v*100)+'%', PAD_L - 5, y + 3);
-    ctx.strokeStyle = 'rgba(35,35,50,0.8)';
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(PAD_L+drawW, y); ctx.stroke();
+    if (v !== 0.5) {
+      ctx.strokeStyle = 'rgba(35,35,50,0.8)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(PAD_L+drawW, y); ctx.stroke();
+    }
   });
 
   // X axis date labels
@@ -6583,19 +6635,110 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
 }
 
 function _tsLocalDate(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+// Returns the "effective date" for pulse/checkin purposes: treats midnight-2am as still the previous day.
+function _pulseEffectiveDate(){
+  const d=new Date();
+  if(d.getHours()<2){d.setDate(d.getDate()-1);}
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
 
 const BAL_CHECKIN_KEY = 'ts-balance-checkin-v1';
 function _balCheckinDoneToday(){
-  try{const d=JSON.parse(localStorage.getItem(BAL_CHECKIN_KEY)||'{}');return d.date===_tsLocalDate();}catch{return false;}
+  try{const d=JSON.parse(localStorage.getItem(BAL_CHECKIN_KEY)||'{}');return d.date===_pulseEffectiveDate();}catch{return false;}
 }
 function _markBalCheckin(){
   if(IS_DEMO) return;
-  try{localStorage.setItem(BAL_CHECKIN_KEY,JSON.stringify({date:_tsLocalDate()}));}catch{}
+  try{localStorage.setItem(BAL_CHECKIN_KEY,JSON.stringify({date:_pulseEffectiveDate()}));}catch{}
 }
 function _applyBalCheckinGlow(){
   const needs = (appState.parts||[]).length > 0 && !_balCheckinDoneToday();
   const el = document.getElementById('parts-dist-now');
   if(el) el.classList.toggle('bal-needs-checkin', needs);
+}
+
+const PULSE_DISMISS_KEY = 'ts-pulse-dismissed-v1';
+function _pulseDismissedToday(){
+  try{const d=JSON.parse(localStorage.getItem(PULSE_DISMISS_KEY)||'{}');return d.date===_pulseEffectiveDate();}catch{return false;}
+}
+function _markPulseDismissed(){
+  if(IS_DEMO) return;
+  try{localStorage.setItem(PULSE_DISMISS_KEY,JSON.stringify({date:_pulseEffectiveDate()}));}catch{}
+}
+
+function _showPulseModal(){
+  if(IS_DEMO) return;
+  const parts = appState.parts || [];
+  if(parts.length === 0) return;
+  if(_balCheckinDoneToday() || _pulseDismissedToday()) return;
+  const list = document.getElementById('pulse-parts-list');
+  if(!list) return;
+  list.innerHTML = '';
+  parts.forEach(part => {
+    const row = document.createElement('div');
+    row.className = 'pulse-part-row';
+
+    const dot = document.createElement('div');
+    dot.className = 'pulse-part-dot';
+    dot.style.background = _partColor(part.id);
+
+    const nameLbl = document.createElement('div');
+    nameLbl.className = 'pulse-part-name';
+    nameLbl.textContent = part.name || 'Unnamed part';
+    nameLbl.title = part.name || 'Unnamed part';
+
+    const initVal = part.blendedNow != null ? part.blendedNow : (part.balanceWeight != null ? Math.round(part.balanceWeight * 20) / 2 : 5);
+    const slider = document.createElement('input');
+    slider.type = 'range'; slider.min = '0'; slider.max = '10'; slider.step = '0.5';
+    slider.className = 'pulse-part-slider';
+    slider.value = String(initVal);
+    slider.dataset.partId = part.id;
+
+    const valLbl = document.createElement('span');
+    valLbl.className = 'pulse-part-val';
+    valLbl.textContent = parseFloat(slider.value).toFixed(1);
+
+    slider.addEventListener('input', () => {
+      const v = parseFloat(slider.value);
+      valLbl.textContent = v.toFixed(1);
+      // Live sync: update state and re-render pie/area chart immediately
+      const p = (appState.parts || []).find(x => x.id === part.id);
+      if(p){ p.blendedNow = v; saveState(appState); renderPartsTabPies(appState); renderPartsDistribution(appState); }
+    });
+
+    row.appendChild(dot);
+    row.appendChild(nameLbl);
+    row.appendChild(slider);
+    row.appendChild(valLbl);
+    list.appendChild(row);
+  });
+  document.getElementById('pulse-modal').classList.add('open');
+}
+
+function _closePulseModal(completed){
+  document.getElementById('pulse-modal').classList.remove('open');
+  if(!completed) _markPulseDismissed();
+}
+
+function _submitPulseModal(){
+  if(IS_DEMO){ _closePulseModal(true); return; }
+  const list = document.getElementById('pulse-parts-list');
+  if(!list) return;
+  list.querySelectorAll('.pulse-part-slider').forEach(slider => {
+    const id = slider.dataset.partId;
+    const part = (appState.parts || []).find(p => p.id === id);
+    if(!part) return;
+    const v = parseFloat(slider.value);
+    part.blendedNow = v;
+    const old = part.balanceWeight != null ? part.balanceWeight : v / 10;
+    part.balanceWeight = old * 0.85 + (v / 10) * 0.15;
+  });
+  saveState(appState);
+  snapshotBalance(appState);
+  _markBalCheckin();
+  _applyBalCheckinGlow();
+  renderPartsTabPies(appState);
+  renderPartsDistribution(appState);
+  _closePulseModal(true);
 }
 
 function snapshotBalance(s) {
@@ -7675,13 +7818,19 @@ function _buildBackfillSliders(slidersEl, dateStr) {
   });
 }
 
+function _backfillPanelIds(chartId) {
+  if (chartId === 'alltime') return { panelId: 'backfill-panel-alltime', dateInputId: 'backfill-date-alltime', slidersId: 'backfill-sliders-alltime' };
+  if (chartId === 'table')   return { panelId: 'backfill-panel-table',   dateInputId: 'backfill-date-table',   slidersId: 'backfill-sliders-table' };
+  return { panelId: 'backfill-panel', dateInputId: 'backfill-date', slidersId: 'backfill-sliders' };
+}
+
 function openBackfillPanel(chartId, dateStr) {
-  const panelId = chartId === 'alltime' ? 'backfill-panel-alltime' : 'backfill-panel';
-  const otherId = chartId === 'alltime' ? 'backfill-panel' : 'backfill-panel-alltime';
-  const dateInputId = chartId === 'alltime' ? 'backfill-date-alltime' : 'backfill-date';
-  const slidersId = chartId === 'alltime' ? 'backfill-sliders-alltime' : 'backfill-sliders';
-  document.getElementById(otherId).style.display = 'none';
+  const { panelId, dateInputId, slidersId } = _backfillPanelIds(chartId);
+  ['backfill-panel', 'backfill-panel-alltime', 'backfill-panel-table'].forEach(id => {
+    if (id !== panelId) { const el = document.getElementById(id); if (el) el.style.display = 'none'; }
+  });
   const panel = document.getElementById(panelId);
+  if (!panel) return;
   panel.style.display = '';
   const dateInput = document.getElementById(dateInputId);
   dateInput.value = dateStr || _tsLocalDate();
@@ -7691,12 +7840,13 @@ function openBackfillPanel(chartId, dateStr) {
 }
 
 function closeBackfillPanel(chartId) {
-  const panelId = chartId === 'alltime' ? 'backfill-panel-alltime' : 'backfill-panel';
-  document.getElementById(panelId).style.display = 'none';
+  const { panelId } = _backfillPanelIds(chartId);
+  const el = document.getElementById(panelId);
+  if (el) el.style.display = 'none';
 }
 
 function saveBackfillPanel(chartId) {
-  const dateInputId = chartId === 'alltime' ? 'backfill-date-alltime' : 'backfill-date';
+  const { dateInputId } = _backfillPanelIds(chartId);
   const dateStr = document.getElementById(dateInputId).value;
   if (!dateStr) return;
   pushUndo('Add snapshot');
@@ -7787,8 +7937,56 @@ function renderSnapshotTable(s) {
     ids.forEach(id => {
       const td = document.createElement('td');
       const v = snap.weights[id] || 0;
-      td.textContent = Math.round((v / total) * 100) + '%';
-      td.style.color = 'var(--text-dim)';
+      const pct = Math.round((v / total) * 100);
+      if (isSession) {
+        td.textContent = pct + '%';
+        td.style.color = 'var(--text-dim)';
+      } else {
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.value = pct + '%';
+        inp.style.cssText = 'width:42px;background:transparent;border:none;border-radius:3px;color:var(--text-dim);font:inherit;font-size:inherit;text-align:right;padding:2px 4px;margin:-2px -4px;cursor:text;outline:none;transition:background 0.15s,box-shadow 0.15s;';
+        inp.addEventListener('focus', () => {
+          inp.style.background = 'rgba(255,255,255,0.05)';
+          inp.style.boxShadow = '0 0 0 1px var(--border-hi)';
+          inp.select();
+        });
+        inp.addEventListener('blur', () => {
+          inp.style.background = 'transparent';
+          inp.style.boxShadow = 'none';
+          const raw = inp.value.replace('%', '').trim();
+          const newPct = Math.max(0, Math.min(100, parseInt(raw, 10) || 0));
+          inp.value = newPct + '%';
+          pushUndo('Edit snapshot %');
+          const h = loadBalHist();
+          const pos = h.findIndex(x => x.date === snap.date);
+          if (pos >= 0) {
+            const cur = h[pos].weights || {};
+            const otherSum = Object.entries(cur).filter(([k]) => k !== id).reduce((a, [, w]) => a + w, 0);
+            const newWeights = {};
+            const newPctFrac = newPct / 100;
+            if (newPctFrac >= 1) {
+              newWeights[id] = 1;
+            } else if (otherSum === 0) {
+              newWeights[id] = newPct || 0;
+            } else {
+              newWeights[id] = (newPctFrac / (1 - newPctFrac)) * otherSum;
+              Object.entries(cur).filter(([k]) => k !== id).forEach(([k, w]) => { newWeights[k] = w; });
+            }
+            Object.keys(newWeights).forEach(k => { if (newWeights[k] <= 0.005) delete newWeights[k]; });
+            h[pos].weights = newWeights;
+            saveBalHist(h);
+          }
+          renderTimeline(appState);
+        });
+        inp.addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+          if (e.key === 'Escape') { inp.value = pct + '%'; inp.blur(); }
+        });
+        inp.addEventListener('mouseover', () => { if (document.activeElement !== inp) inp.style.background = 'rgba(255,255,255,0.03)'; });
+        inp.addEventListener('mouseout', () => { if (document.activeElement !== inp) inp.style.background = 'transparent'; });
+        td.appendChild(inp);
+      }
       dataRow.appendChild(td);
     });
 
@@ -8905,14 +9103,19 @@ function init() {
 }
 
 function _doInit() {
-  // Re-arm balance check-in glow when the day rolls over while the tab is open
-  let _balInitDate = _tsLocalDate();
-  function _handleBalDayRollover() {
-    const today = _tsLocalDate();
-    if (today !== _balInitDate) { _balInitDate = today; _applyBalCheckinGlow(); }
+  // Re-arm balance check-in glow and re-show pulse modal when the day rolls over while the tab is open.
+  // Uses a 2am cutoff so late-night users aren't interrupted mid-session.
+  let _pulseWatchDate = _pulseEffectiveDate();
+  function _handlePulseDayRollover() {
+    const today = _pulseEffectiveDate();
+    if (today !== _pulseWatchDate) {
+      _pulseWatchDate = today;
+      _applyBalCheckinGlow();
+      _showPulseModal();
+    }
   }
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) _handleBalDayRollover(); if (document.hidden && _pinActive) lockApp(); });
-  setInterval(_handleBalDayRollover, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) _handlePulseDayRollover(); if (document.hidden && _pinActive) lockApp(); });
+  setInterval(_handlePulseDayRollover, 60000);
 
   const saved = loadState();
   if (saved) {
@@ -8952,6 +9155,7 @@ function _doInit() {
     }
     render(appState);
     maybeShowResetUndoBanner();
+    _showPulseModal();
     // Show disclaimer banner on first load (dismissable; persists until "Don't show again")
     if (!localStorage.getItem(HIDE_DISC_BANNER_KEY)) {
       const db = document.getElementById('disclaimer-banner');
@@ -9299,6 +9503,12 @@ function chatQuickstart(text) {
   if (inp) { inp.value = text; inp.focus(); }
 }
 
+function _chipTrunc(text, max) {
+  if (!text) return '';
+  text = text.trim();
+  return text.length > max ? text.slice(0, max).trimEnd() + '...' : text;
+}
+
 function renderChatQuickstarts() {
   const el = document.getElementById('chat-quickstarts');
   if (!el) return;
@@ -9306,37 +9516,40 @@ function renderChatQuickstarts() {
   const parts = appState.parts || [];
   const chips = [];
 
-  // Top tensions from system data
-  const tensions = [1,2,3].map(i => sys[`topTension${i}`] || (sys.topTensions && sys.topTensions[i-1])).filter(Boolean);
-  if (tensions[0]) {
-    chips.push({ label: 'Explore top tension', prompt: `I want to explore this tension: ${tensions[0]}` });
+  // Active tensions: show truncated text of each as its own chip
+  const tensions = [1,2,3].map(i => (sys[`topTension${i}`] || (sys.topTensions && sys.topTensions[i-1]) || '').trim()).filter(Boolean);
+  for (const t of tensions) {
+    if (chips.length >= 5) break;
+    chips.push({ label: _chipTrunc(t, 80), prompt: `I want to explore this active tension: ${t}` });
   }
 
-  // Top questions
-  const questions = [1,2,3].map(i => sys[`keyQuestion${i}`] || (sys.topQuestions && sys.topQuestions[i-1])).filter(Boolean);
-  if (questions[0]) {
-    chips.push({ label: 'Sit with a key question', prompt: `I want to sit with this question: ${questions[0]}` });
+  // Key questions: show truncated question text
+  const questions = [1,2,3].map(i => (sys[`keyQuestion${i}`] || (sys.topQuestions && sys.topQuestions[i-1]) || '').trim()).filter(Boolean);
+  for (const q of questions) {
+    if (chips.length >= 5) break;
+    chips.push({ label: _chipTrunc(q, 80), prompt: `I want to sit with this key question: ${q}` });
   }
 
-  // Top experiment
-  const exps = [1,2,3].map(i => sys[`keyExperiment${i}`] || (sys.topExperiments && sys.topExperiments[i-1])).filter(Boolean);
-  if (exps[0]) {
-    chips.push({ label: 'Debrief an experiment', prompt: `I want to debrief this experiment: ${exps[0]}` });
+  // Key experiments: show truncated experiment text
+  const exps = [1,2,3].map(i => (sys[`keyExperiment${i}`] || (sys.topExperiments && sys.topExperiments[i-1]) || '').trim()).filter(Boolean);
+  for (const e of exps) {
+    if (chips.length >= 5) break;
+    chips.push({ label: _chipTrunc(e, 80), prompt: `I want to debrief this experiment: ${e}` });
   }
 
   // A part that needs attention (thin profile, no fears yet)
   const thinPart = parts.find(p => !p.fears || !p.fears.length);
-  if (thinPart) {
+  if (thinPart && chips.length < 5) {
     chips.push({ label: `Get curious about ${thinPart.name}`, prompt: `I want to get curious about ${thinPart.name} today.` });
   }
 
   // Fill with generic IFS chips to always show at least 4
   const generic = [
+    { label: 'Help me map out my parts', prompt: "I'm new to IFS and want to start mapping my inner parts. Help me identify what's present." },
     { label: 'Check in with all parts', prompt: 'Check in with all parts: what is each one carrying right now?' },
     { label: 'Focus on a part (6 Fs)', prompt: "I want to do a 6 Fs focus on a specific part. Let's start." },
     { label: 'Review recent shifts', prompt: 'Review what has shifted recently for me and my parts.' },
     { label: 'Explore a Self-led moment', prompt: 'I want to explore a recent Self-led moment.' },
-    { label: 'Free journal', prompt: 'Free journal: here is what has been present for me lately...' },
   ];
   for (const g of generic) {
     if (chips.length >= 5) break;
@@ -9348,6 +9561,7 @@ function renderChatQuickstarts() {
     const btn = document.createElement('button');
     btn.className = 'chat-qs-chip';
     btn.textContent = chip.label;
+    btn.title = chip.prompt;
     btn.onclick = () => chatQuickstart(chip.prompt);
     el.appendChild(btn);
   }
@@ -9407,7 +9621,7 @@ function _openChatOverlay() {
   }
   _warmPromptCache();
   document.getElementById('chat-btn')?.classList.remove('chat-btn-loading');
-  let s = loadChatSettings();
+  const s = loadChatSettings();
   if (s.defaultModel && s.model !== s.defaultModel) {
     s.model = s.defaultModel;
     saveChatSettings(s);
@@ -9586,16 +9800,16 @@ async function callOllamaAPI(messages, systemPrompt, streamCallback = null) {
       }),
     });
   } catch(e) {
-    invalidateOllamaCache();
+    if (!_isLocalModel(loadChatSettings().model)) throw new Error('');
+    const onFile = window.location.protocol === 'file:';
+    if (onFile) {
+      chatAddInfoCard(_ollamaInstallHTML(detectOS(), model));
+      throw new Error('');
+    }
     const probe = await probeOllamaStatus();
-    if (!_isLocalModel(model)) throw new Error('');
     const os = detectOS();
     if (!probe.running) {
       chatAddInfoCard(_ollamaInstallHTML(os, model));
-      throw new Error('');
-    }
-    if (!probe.corsOk) {
-      chatAddInfoCard(_ollamaCorsHTML(os));
       throw new Error('');
     }
     if (!probe.models.includes(model)) {
@@ -9605,9 +9819,9 @@ async function callOllamaAPI(messages, systemPrompt, streamCallback = null) {
     throw new Error('Could not connect to Ollama. Make sure it is running with CORS enabled. Use the restart command shown in Chat Settings (gear icon).');
   }
   if (!resp.ok) {
+    if (!_isLocalModel(loadChatSettings().model)) throw new Error('');
     let msg = 'Ollama error ' + resp.status;
     try { const e = await resp.json(); msg = (typeof e?.error === 'string' ? e.error : e?.error?.message) || msg; } catch {}
-    invalidateOllamaCache();
     const probe = await probeOllamaStatus();
     if (probe.running && !probe.models.includes(model)) {
       chatAddInfoCard(_ollamaMissingModelHTML(model, probe.models));
@@ -10786,25 +11000,11 @@ function onChatModelPresetChange() {
   const customVal = custom ? custom.value.trim() : '';
   const customIsOllama = isCustom && customVal && !customVal.startsWith('claude-');
   const showOllama = isOllama || customIsOllama;
-  if (custom)     custom.style.display     = isCustom   ? 'block' : 'none';
-  if (apiSec)     apiSec.style.display     = showOllama ? 'none'  : 'block';
-  if (ollamaNote) ollamaNote.style.display = showOllama ? 'block' : 'none';
-  if (showOllama) {
-    const model = sel.value === 'custom' ? (document.getElementById('ts-chat-model-custom')?.value.trim() || 'gemma3:4b') : sel.value;
-    invalidateOllamaCache();
-    probeOllamaStatus().then(status => {
-      const installEl = document.getElementById('ts-ollama-install');
-      if (!installEl) return;
-      const os = detectOS();
-      if (status.running && status.corsOk) {
-        installEl.innerHTML = '';
-      } else if (status.running && !status.corsOk) {
-        installEl.innerHTML = _ollamaCorsHTML(os);
-      } else {
-        installEl.innerHTML = _ollamaInstallHTML(os, model);
-      }
-    });
-  }
+  if (custom)     custom.style.display     = isCustom    ? 'block' : 'none';
+  if (apiSec)     apiSec.style.display     = showOllama  ? 'none'  : 'block';
+  const wasHidden = !ollamaNote || ollamaNote.style.display === 'none';
+  if (ollamaNote) ollamaNote.style.display = showOllama  ? 'block' : 'none';
+  if (showOllama && wasHidden) checkOllamaModels();
 }
 
 
@@ -10881,6 +11081,106 @@ function _ollamaUseModel(modelId) {
     if (customEl) customEl.value = modelId;
   }
   onChatModelPresetChange();
+}
+
+const OLLAMA_KNOWN_MODELS = [
+  { id: 'gemma3:4b',       ram: '4 GB'  },
+  { id: 'qwen2.5:7b',      ram: '8 GB'  },
+  { id: 'qwen3:8b',        ram: '8 GB'  },
+  { id: 'gemma3:12b',      ram: '12 GB' },
+  { id: 'qwen2.5:14b',     ram: '16 GB' },
+  { id: 'qwen2.5:32b',     ram: '32 GB' },
+  { id: 'llama3.3:latest', ram: '48 GB' },
+];
+
+function renderOllamaStatus(result) {
+  const listEl  = document.getElementById('ts-ollama-model-list');
+  const badgeEl = document.getElementById('ts-ollama-conn-badge');
+  if (!listEl) return;
+  listEl.innerHTML = '';
+
+  if (!result.running) {
+    if (badgeEl) { badgeEl.textContent = '● Ollama not running'; badgeEl.className = 'ollama-conn-err'; }
+    const row = document.createElement('div');
+    row.className = 'ollama-model-row';
+    const badge = document.createElement('span');
+    badge.className = 'ollama-badge ollama-badge-no'; badge.textContent = '○';
+    const name = document.createElement('span');
+    name.className = 'ollama-model-name'; name.style.color = 'var(--text-dim)';
+    name.textContent = 'not running';
+    const os = detectOS();
+    const cmd = os === 'win'
+      ? 'Stop-Process -Name ollama -Force -ErrorAction SilentlyContinue; Start-Sleep 1; $env:OLLAMA_ORIGINS="*"; ollama serve'
+      : os === 'linux'
+        ? 'pkill -f "ollama serve" 2>/dev/null; sleep 1; OLLAMA_ORIGINS="*" ollama serve'
+        : 'pkill -f "Ollama.app/Contents/MacOS" 2>/dev/null; pkill -f "ollama serve" 2>/dev/null; sleep 1; OLLAMA_ORIGINS="*" ollama serve';
+    const cmdTag  = document.createElement('code'); cmdTag.className = 'ollama-cmd-tag'; cmdTag.textContent = cmd;
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'ollama-mini-btn ollama-copy-btn'; copyBtn.textContent = 'copy';
+    copyBtn.onclick = () => _ollamaCopyCmd(cmd, copyBtn);
+    row.append(badge, name, cmdTag, copyBtn);
+    listEl.appendChild(row);
+    return;
+  }
+
+  if (badgeEl) { badgeEl.textContent = '● Ollama running'; badgeEl.className = 'ollama-conn-ok'; }
+
+  OLLAMA_KNOWN_MODELS.forEach(m => {
+    const installed = result.models.some(n => n === m.id || n === m.id.split(':')[0]);
+    const row = document.createElement('div');
+    row.className = 'ollama-model-row';
+    const badge = document.createElement('span');
+    badge.className = 'ollama-badge ' + (installed ? 'ollama-badge-ok' : 'ollama-badge-no');
+    badge.textContent = installed ? '✓' : '✗';
+    const name = document.createElement('span');
+    name.className = 'ollama-model-name';
+    name.textContent = m.id + (m.ram ? '  (' + m.ram + ')' : '');
+    if (!installed) name.style.color = 'var(--text-dim)';
+    row.append(badge, name);
+    if (installed) {
+      const useBtn = document.createElement('button');
+      useBtn.className = 'ollama-mini-btn ollama-use-btn'; useBtn.textContent = 'use';
+      useBtn.onclick = () => _ollamaUseModel(m.id);
+      row.appendChild(useBtn);
+    } else {
+      const cmd     = 'ollama pull ' + m.id;
+      const cmdTag  = document.createElement('code'); cmdTag.className = 'ollama-cmd-tag'; cmdTag.textContent = cmd;
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'ollama-mini-btn ollama-copy-btn'; copyBtn.textContent = 'copy';
+      copyBtn.onclick = () => _ollamaCopyCmd(cmd, copyBtn);
+      row.append(cmdTag, copyBtn);
+    }
+    listEl.appendChild(row);
+  });
+
+  const knownIds = OLLAMA_KNOWN_MODELS.map(m => m.id);
+  const extras   = result.models.filter(n => !knownIds.includes(n));
+  if (extras.length) {
+    const lbl = document.createElement('div');
+    lbl.className = 'ollama-extra-lbl'; lbl.textContent = 'Other installed:';
+    listEl.appendChild(lbl);
+    extras.forEach(modelId => {
+      const row   = document.createElement('div'); row.className = 'ollama-model-row';
+      const badge = document.createElement('span');
+      badge.className = 'ollama-badge ollama-badge-ok'; badge.textContent = '✓';
+      const name  = document.createElement('span');
+      name.className = 'ollama-model-name'; name.textContent = modelId;
+      const useBtn = document.createElement('button');
+      useBtn.className = 'ollama-mini-btn ollama-use-btn'; useBtn.textContent = 'use';
+      useBtn.onclick = () => _ollamaUseModel(modelId);
+      row.append(badge, name, useBtn);
+      listEl.appendChild(row);
+    });
+  }
+}
+
+async function checkOllamaModels() {
+  const listEl  = document.getElementById('ts-ollama-model-list');
+  const badgeEl = document.getElementById('ts-ollama-conn-badge');
+  if (!listEl) return;
+  if (badgeEl) { badgeEl.textContent = '● Checking...'; badgeEl.className = 'ollama-conn-err'; }
+  listEl.textContent = '';
+  renderOllamaStatus(await fetchOllamaModels());
 }
 
 async function fetchOllamaModels() {
@@ -11061,33 +11361,12 @@ document.addEventListener('keydown', function(e) {
 </div>
 
 <!-- ══ CHAT SETTINGS MODAL ════════════════════════════════════════ -->
-<div class="modal-overlay" id="chat-settings-modal" style="padding:12px;" onclick="if(event.target===this)closeChatSettings()">
-  <div class="modal" style="border-top:3px solid var(--gold);position:relative;max-width:560px;width:100%;padding:18px 22px;">
+<div class="modal-overlay" id="chat-settings-modal" onclick="if(event.target===this)closeChatSettings()">
+  <div class="modal" style="border-top:3px solid var(--gold);position:relative;max-width:560px;">
     <button class="modal-close" onclick="closeChatSettings()" title="Close">&#x2715;</button>
-    <div class="modal-title" style="color:var(--gold);margin-bottom:6px;">Chat Settings</div>
-    <p style="font-size:12px;color:var(--text-dim);line-height:1.4;margin:0 0 10px;">Local models keep all data on your device. Recommended for privacy. Cloud models (Anthropic) send your session data to their servers.</p>
-    <div id="ts-apikey-section" class="chat-field" style="margin-bottom:10px;">
-      <label class="chat-field-lbl" for="ts-chat-apikey">Anthropic API Key</label>
-      <div id="ts-pin-gate" style="display:none;padding:8px 10px;background:rgba(200,168,74,0.07);border:1px solid rgba(200,168,74,0.25);border-radius:6px;font-size:12px;color:var(--text-dim);line-height:1.5;">
-        A security password is required before storing an API key.<br>
-        <button onclick="closeChatSettings();openSettings();setTimeout(()=>document.getElementById('settings-pin-new')?.focus(),300)" style="margin-top:6px;padding:4px 12px;background:rgba(200,168,74,0.12);border:1px solid rgba(200,168,74,0.4);color:var(--gold);border-radius:4px;cursor:pointer;font-size:12px;">Set up password in Settings</button>
-      </div>
-      <div id="ts-apikey-inputs">
-        <input type="password" id="ts-chat-apikey" placeholder="sk-ant-..." autocomplete="off">
-        <div id="ts-apikey-error" style="font-size:12px;color:#c84040;min-height:0;margin-top:3px;"></div>
-        <div class="chat-api-note" style="margin-top:3px;">
-          <ol style="margin:2px 0 0 14px;padding:0;line-height:1.6;font-size:12px;">
-            <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in (separate from Claude.ai)</li>
-            <li>Open <strong>API Keys</strong> and create a new key</li>
-            <li>Paste it above</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-    <div id="ts-ollama-note" class="ollama-note chat-api-note" style="display:none;margin-bottom:8px;">
-      <div id="ts-ollama-install"></div>
-    </div>
-    <div class="chat-field" style="margin-bottom:10px;">
+    <div class="modal-title" style="color:var(--gold);">Chat Settings</div>
+    <p style="font-size:13px;color:var(--text-dim);line-height:1.5;margin:0 0 14px;"><strong style="color:#50c878;">Local models (Ollama)</strong> keep everything on your device. Free, private, no account. Recommended. <strong style="color:#f09090;">Cloud models (Anthropic)</strong> send your session data to their servers.</p>
+    <div class="chat-field">
       <label class="chat-field-lbl" for="ts-chat-model-preset">Model</label>
       <select id="ts-chat-model-preset" onchange="onChatModelPresetChange()">
         <optgroup label="Ollama (local)">
@@ -11107,46 +11386,76 @@ document.addEventListener('keydown', function(e) {
         <option value="custom">Custom model ID...</option>
       </select>
       <input type="text" id="ts-chat-model-custom" placeholder="e.g. qwen2.5:14b or llama3.3:latest" style="display:none;margin-top:6px">
-      <label class="chat-sync-radio" style="margin-top:6px;"><input type="checkbox" id="ts-chat-default-model"> Save as default for new chats</label>
-      <p class="chat-api-note" style="margin-top:4px;"><button onclick="openModelGuide()" style="background:none;border:none;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font-size:inherit;">Not sure which model fits your computer?</button></p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-      <div>
-        <label class="chat-field-lbl" for="ts-chat-maxtokens" style="display:block;margin-bottom:4px;">Max response tokens</label>
-        <input type="number" id="ts-chat-maxtokens" min="256" max="32000" step="256" value="4096" style="width:100%;box-sizing:border-box;">
-      </div>
-      <div>
-        <label class="chat-field-lbl" for="ts-chat-numctx" style="display:block;margin-bottom:4px;">Context window (local)</label>
-        <input type="number" id="ts-chat-numctx" min="2048" max="131072" step="1024" value="8192" style="width:100%;box-sizing:border-box;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:6px;">
+        <label class="chat-sync-radio" style="display:flex;align-items:center;gap:6px;"><input type="checkbox" id="ts-chat-default-model"> Save as default for new chats</label>
+        <button onclick="openModelGuide()" style="background:none;border:none;padding:0;color:var(--text-dim);text-decoration:underline;cursor:pointer;font-size:11px;white-space:nowrap;">Not sure which local model fits your computer?</button>
       </div>
     </div>
-    <div class="chat-field" style="margin-bottom:10px;">
+    <div id="ts-ollama-note" class="ollama-note" style="display:none;margin-bottom:14px;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:10px 12px;">
+      <div class="ollama-status-hdr">
+        <span id="ts-ollama-conn-badge" class="ollama-conn-err">&#9679; Ollama</span>
+        <button class="ollama-mini-btn ollama-copy-btn" onclick="checkOllamaModels()">&#8635; Check</button>
+      </div>
+      <div id="ts-ollama-model-list"></div>
+      <div id="ts-ollama-install" class="chat-api-note" style="margin-top:9px;font-size:12px;"></div>
+    </div>
+    <div id="ts-apikey-section" class="chat-field">
+      <label class="chat-field-lbl" for="ts-chat-apikey">Anthropic API Key</label>
+      <div id="ts-pin-gate" style="display:none;padding:10px 12px;background:rgba(200,168,74,0.07);border:1px solid rgba(200,168,74,0.25);border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.6;">
+        A security password is required before storing an API key.<br>
+        <button onclick="closeChatSettings();openSettings();setTimeout(()=>document.getElementById('settings-pin-new')?.focus(),300)" style="margin-top:8px;padding:5px 14px;background:rgba(200,168,74,0.12);border:1px solid rgba(200,168,74,0.4);color:var(--gold);border-radius:4px;cursor:pointer;font-size:13px;">Set up password in Settings</button>
+      </div>
+      <div id="ts-apikey-inputs">
+        <input type="password" id="ts-chat-apikey" placeholder="sk-ant-..." autocomplete="off">
+        <div id="ts-apikey-error" style="font-size:13px;color:#c84040;min-height:0;margin-top:5px;"></div>
+        <div class="chat-api-note">
+          <ol style="margin:4px 0 0 16px;padding:0;line-height:1.9;font-size:12px;">
+            <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in (separate from Claude.ai)</li>
+            <li>Open <strong>API Keys</strong> and create a new key</li>
+            <li>Paste it above</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="chat-field">
+      <label class="chat-field-lbl" for="ts-chat-maxtokens">Max response tokens</label>
+      <input type="number" id="ts-chat-maxtokens" min="256" max="32000" step="256" value="4096">
+    </div>
+    <div class="chat-field">
+      <label class="chat-field-lbl" for="ts-chat-numctx">Context window (local models)</label>
+      <input type="number" id="ts-chat-numctx" min="2048" max="131072" step="1024" value="8192">
+      <p class="chat-api-note" style="margin-top:5px;">Your current data is about <strong id="ts-ctx-token-est">...</strong> tokens. Set this to at least 2x that, plus headroom for the conversation.</p>
+    </div>
+    <div class="chat-field">
       <label class="chat-field-lbl">Context sent to AI</label>
-      <div class="chat-sync-options" style="gap:4px;margin-top:4px;">
+      <div class="chat-sync-options" style="margin-top:4px;">
         <label class="chat-sync-radio"><input type="radio" name="ts-chat-contextdepth" value="compact" checked> Compact summary <span id="ts-ctx-compact-est" style="color:var(--text-dim);font-size:12px;margin-left:4px;"></span></label>
         <label class="chat-sync-radio"><input type="radio" name="ts-chat-contextdepth" value="full"> Full data <span id="ts-ctx-full-est" style="color:var(--text-dim);font-size:12px;margin-left:4px;"></span></label>
       </div>
-      <p class="chat-api-note" style="margin-top:3px;">Use full data with models that have 32k+ context. Set context window to at least 2x your data size.</p>
+      <p class="chat-api-note" style="margin-top:8px;">Use full data with models that have 32k+ context. Set context window to at least 2x your data size.</p>
     </div>
-    <div class="chat-field" style="margin-bottom:10px;">
-      <label class="chat-field-lbl" style="display:block;margin-bottom:4px;">Data sync</label>
-      <div class="chat-sync-options" style="gap:4px;">
+    <div class="chat-field" style="margin-top:10px;">
+      <label class="chat-field-lbl" style="display:block;margin-bottom:8px;">Data sync</label>
+      <div class="chat-sync-options">
         <label class="chat-sync-radio"><input type="radio" name="ts-chat-syncmode" value="always"> After every reply</label>
         <label class="chat-sync-radio"><input type="radio" name="ts-chat-syncmode" value="every-n"> Every <input type="number" id="ts-chat-syncevery" class="chat-sync-n" min="2" max="50" value="5"> replies</label>
         <label class="chat-sync-radio"><input type="radio" name="ts-chat-syncmode" value="manual" checked> Manual (use Update map or ask your AI)</label>
-        <label class="chat-sync-radio" style="margin-top:2px;"><input type="checkbox" id="ts-chat-review-before-save"> Review changes before saving</label>
       </div>
-      <p class="chat-api-note" style="margin-top:3px;">Controls when updated data is written back to the app.</p>
+      <p class="chat-api-note" style="margin-top:8px;">Controls when updated data is written back to the app.</p>
     </div>
-    <div class="chat-field" style="margin-bottom:6px;">
-      <label class="chat-field-lbl" style="display:block;margin-bottom:4px;">Context compaction</label>
-      <div class="chat-sync-options" style="gap:4px;">
+    <div class="chat-field" style="margin-top:10px;">
+      <label class="chat-sync-radio"><input type="checkbox" id="ts-chat-review-before-save"> Review changes before saving</label>
+      <p class="chat-api-note" style="margin-top:4px;">When on, any data update shows a summary of what will change with an Apply button. When off, auto-sync applies silently. Has no effect in Manual mode.</p>
+    </div>
+    <div class="chat-field" style="margin-top:10px;">
+      <label class="chat-field-lbl" style="display:block;margin-bottom:8px;">Context compaction</label>
+      <div class="chat-sync-options">
         <label class="chat-sync-radio"><input type="radio" name="ts-chat-autocompact" value="off" checked> Off (use the Compact button manually)</label>
         <label class="chat-sync-radio"><input type="radio" name="ts-chat-autocompact" value="on"> Auto-compact when session exceeds <input type="number" id="ts-chat-compact-threshold" class="chat-sync-n" min="10000" max="500000" step="5000" value="40000" style="width:66px"> input tokens</label>
       </div>
-      <p class="chat-api-note" style="margin-top:3px;">Compaction summarises older messages so the session can continue without hitting context limits.</p>
+      <p class="chat-api-note" style="margin-top:8px;">Compaction summarises older messages so the session can continue without hitting context limits.</p>
     </div>
-    <div class="modal-row" style="margin-top:12px;">
+    <div class="modal-row" style="margin-top:18px;">
       <button class="btn-primary" onclick="saveChatSettingsFromForm()">Save</button>
       <button class="btn-ghost" onclick="closeChatSettings()">Cancel</button>
     </div>
