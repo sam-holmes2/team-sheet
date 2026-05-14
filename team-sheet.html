@@ -1507,6 +1507,8 @@ body.chat-sidebar { padding-right:calc(40px + 420px); }
 .pulse-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 .pulse-done-btn { background:var(--gold-dim); border:1px solid rgba(200,168,74,0.45); color:var(--gold); font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; padding:7px 18px; border-radius:4px; cursor:pointer; transition:all 0.15s; }
 .pulse-done-btn:hover { background:rgba(200,168,74,0.18); }
+.btn-gold-ghost { background:rgba(200,168,74,0.1);border:1px solid rgba(200,168,74,0.45);color:var(--gold);transition:background 0.15s; }
+.btn-gold-ghost:hover { background:rgba(200,168,74,0.18); }
 </style>
 </head>
 <body>
@@ -1888,7 +1890,7 @@ body.chat-sidebar { padding-right:calc(40px + 420px); }
       <button class="welcome-opt-btn welcome-opt-ghost" onclick="dismissWelcome();openModal()">Import existing data</button>
     </div>
     <div style="margin:10px 0 2px;border-top:1px solid var(--border);padding-top:12px;">
-      <button onclick="dismissWelcome();openChat()" style="width:100%;padding:11px 16px;background:rgba(200,168,74,0.1);border:1px solid rgba(200,168,74,0.45);color:var(--gold);font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;border-radius:5px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.background='rgba(200,168,74,0.18)'" onmouseout="this.style.background='rgba(200,168,74,0.1)'">&#10022; Chat: journal with an Anthropic API key or Ollama, no copy-paste</button>
+      <button onclick="dismissWelcome();openChat()" class="btn-gold-ghost" style="width:100%;padding:11px 16px;font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;border-radius:5px;cursor:pointer;">&#10022; Chat: journal with an Anthropic API key or Ollama, no copy-paste</button>
     </div>
     <div id="welcome-setup-steps" data-mode="">
       <!-- Manual path -->
