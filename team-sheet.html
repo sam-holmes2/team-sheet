@@ -1294,7 +1294,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .fbar-btn.synced::after { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:#3a8050; margin-left:2px; }
 @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
 #data-popover {
-  display:none; position:fixed; bottom:76px; right:26px;
+  display:none; position:fixed; bottom:76px; left:0;
   background:rgba(14,11,7,0.97); border:1px solid var(--border-hi);
   border-radius:10px; padding:8px; box-shadow:0 -4px 24px rgba(0,0,0,0.6);
   z-index:299; min-width:160px;
@@ -4110,10 +4110,20 @@ function mapHighlightRedraw() {
   if (c && c.width > 0 && c.height > 0) drawMap(c, c.width, c.height);
 }
 
-function partVolume(p) {
+function partVolume(p, allParts) {
   if (p.nodeVolume != null) return p.nodeVolume;
   if (p.nodeSize === 'large') return 8;
   if (p.nodeSize === 'small') return 3;
+  // Auto-size from all-time balance weight when available
+  if (allParts && p.balanceWeight > 0) {
+    const weights = allParts.map(x => x.balanceWeight || 0).filter(w => w > 0);
+    if (weights.length > 1) {
+      const maxW = Math.max(...weights);
+      const minW = Math.min(...weights);
+      if (maxW > minW) return Math.round(1 + (p.balanceWeight - minW) / (maxW - minW) * 9);
+    }
+    return 5;
+  }
   return 5;
 }
 function nodeVolumeToRadius(vol, minDim) {
@@ -4154,7 +4164,7 @@ function renderMap(s) {
   mapNodes = parts.map((p, i) => {
     const angle = (i / parts.length) * Math.PI * 2;
     const ring = minDim * 0.36;
-    const r = nodeVolumeToRadius(partVolume(p), minDim);
+    const r = nodeVolumeToRadius(partVolume(p, parts), minDim);
     const pinned = p.pinnedXFrac != null;
     return {
       id: p.id,
@@ -4974,7 +4984,7 @@ function renderMapEditor(s) {
   const volSlider = document.createElement('input');
   volSlider.type = 'range';
   volSlider.min = '1'; volSlider.max = '10'; volSlider.step = '1';
-  volSlider.value = String(partVolume(part));
+  volSlider.value = String(partVolume(part, s.parts));
   volSlider.style.cssText = 'flex:1;accent-color:var(--gold);cursor:pointer;';
   const volVal = document.createElement('span');
   volVal.style.cssText = 'font-size:13px;color:var(--text-dim);min-width:14px;text-align:right;';
@@ -5179,7 +5189,7 @@ function mapApplyGlobalSize(mult) {
   const minDim = Math.min(canvas.width, canvas.height);
   mapNodes.forEach(n => {
     const part = (appState.parts || []).find(p => p.id === n.id);
-    n.r = Math.round(nodeVolumeToRadius(part ? partVolume(part) : 5, minDim) * m);
+    n.r = Math.round(nodeVolumeToRadius(part ? partVolume(part, appState.parts) : 5, minDim) * m);
   });
   drawMap(canvas, parseInt(canvas.width), parseInt(canvas.height));
 }
@@ -8391,6 +8401,25 @@ function toggleDataPopover(e){
     pop.classList.remove('open');
     btn && btn.classList.remove('active');
   } else {
+    // Position popover centred above the Data button
+    if (btn) {
+      const r = btn.getBoundingClientRect();
+      pop.style.left = '';
+      pop.style.right = '';
+      // Temporarily show to measure width, then reposition
+      pop.style.visibility = 'hidden';
+      pop.style.display = 'block';
+      const pw = pop.offsetWidth;
+      pop.style.display = '';
+      pop.style.visibility = '';
+      const centre = r.left + r.width / 2;
+      const margin = 8;
+      let left = centre - pw / 2;
+      left = Math.max(margin, Math.min(left, window.innerWidth - pw - margin));
+      pop.style.left = left + 'px';
+      const barBottom = window.innerHeight - r.top + 8;
+      pop.style.bottom = barBottom + 'px';
+    }
     pop.classList.add('open');
     btn && btn.classList.add('active');
     setTimeout(()=>document.addEventListener('click', _closeDataPopoverOutside, {once:true}), 0);
