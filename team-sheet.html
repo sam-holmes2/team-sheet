@@ -60,6 +60,15 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .app-left {
   display:flex; flex-direction:column; gap:3px; min-width:0;
 }
+.hdr-util { display:flex; align-items:center; gap:6px; margin-top:3px; }
+.hdr-util-btn {
+  background:none; border:none; cursor:pointer; border-radius:8px;
+  width:48px; height:48px; display:flex; align-items:center; justify-content:center;
+  font-size:28px; color:var(--text-dim); transition:color 0.15s, background 0.15s;
+  padding:0; line-height:1;
+}
+.hdr-util-btn { color:rgba(200,168,74,0.45); }
+.hdr-util-btn:hover { color:var(--gold); background:var(--gold-dim); }
 .app-brand {
   font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.22em;
   text-transform:uppercase; color:var(--text-dim); opacity:0.6;
@@ -574,13 +583,13 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .btn-ghost:hover { color:var(--text-b); border-color:var(--gold); }
 .btn-primary {
-  background:var(--help-dim); border:1px solid var(--help-border);
-  color:var(--help); font-family:'Cinzel',serif; font-size:13px;
+  background:var(--gold-dim); border:1px solid rgba(200,168,74,0.45);
+  color:var(--gold); font-family:'Cinzel',serif; font-size:13px;
   letter-spacing:0.1em; text-transform:uppercase;
   padding:6px 14px; border-radius:4px; cursor:pointer;
   transition:all 0.15s;
 }
-.btn-primary:hover { background:rgba(45,168,106,0.2); }
+.btn-primary:hover { background:rgba(200,168,74,0.18); }
 .btn-danger {
   background:none; border:1px solid rgba(192,64,64,0.4); color:#c06060;
   font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.1em;
@@ -1011,14 +1020,18 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 /* ── Toast ── */
 #toast {
-  position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
-  background:var(--card); border:1px solid var(--help-border);
-  color:var(--help); font-family:var(--mono); font-size:14px;
-  padding:10px 20px; border-radius:4px; z-index:2000;
-  opacity:0; transition:opacity 0.3s; pointer-events:none;
-  white-space:nowrap;
+  position:fixed; bottom:32px; left:32px; z-index:2000;
+  background:rgba(14,14,22,0.97); border:1px solid rgba(160,144,100,0.3);
+  border-left:3px solid var(--gold); border-radius:8px;
+  color:var(--text-mid); font-family:'Cinzel',serif; font-size:13px;
+  letter-spacing:0.05em; padding:11px 18px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.55);
+  max-width:360px; white-space:normal; line-height:1.4;
+  opacity:0; transform:translateY(12px);
+  transition:opacity 0.3s, transform 0.3s;
+  pointer-events:none;
 }
-#toast.show { opacity:1; }
+#toast.show { opacity:1; transform:translateY(0); }
 
 /* ── Undo toast ── */
 #undo-toast {
@@ -1065,8 +1078,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   font-size:16px; color:#6090c8;
 }
 #demo-banner .demo-banner-text { flex:1; }
-#demo-banner .demo-banner-dl { background:none; border:1px solid rgba(80,140,200,0.4); color:#6090c8; border-radius:4px; padding:3px 10px; font-size:14px; cursor:pointer; font-family:inherit; flex-shrink:0; }
-#demo-banner .demo-banner-dl:hover { background:rgba(80,140,200,0.12); }
+#demo-banner .demo-banner-dl { background:none; border:1px solid rgba(200,168,74,0.4); color:var(--gold); border-radius:4px; padding:3px 10px; font-size:14px; cursor:pointer; font-family:inherit; flex-shrink:0; }
+#demo-banner .demo-banner-dl:hover { background:var(--gold-dim); }
 #demo-banner .demo-banner-dismiss { background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:18px; line-height:1; padding:0; flex-shrink:0; }
 #demo-banner .demo-banner-dismiss:hover { color:var(--text); }
 .btn-download { background:none; border:1px solid var(--border-hi); color:var(--text-dim); border-radius:3px; padding:2px 8px; font-size:14px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
@@ -1168,6 +1181,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   color:var(--help); margin-bottom:12px; padding-bottom:8px;
   border-bottom:1px solid var(--help-border);
 }
+.help-col-sub { font-size:14px; color:var(--text-dim); font-style:italic; margin-bottom:10px; line-height:1.4; text-transform:none; letter-spacing:0; font-family:inherit; }
 .help-step { display:flex; gap:9px; padding:7px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
 .help-step:last-child { border-bottom:none; }
 .help-step-num { font-family:var(--mono); font-size:14px; color:var(--help); flex-shrink:0; width:18px; padding-top:2px; opacity:0.7; }
@@ -1284,9 +1298,9 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .fbar-btn.fbar-import { color:var(--gold); }
 .fbar-btn.fbar-chat { color:var(--gold); }
 .fbar-btn.fbar-daily { color:var(--gold); }
-.fbar-btn.fbar-data { color:#6090c8; }
-.fbar-btn.fbar-data:hover { background:rgba(80,120,180,0.18); color:#88b0e0; }
-.fbar-btn.fbar-data.active { background:rgba(80,120,180,0.14); color:#88b0e0; }
+.fbar-btn.fbar-data { color:var(--gold); }
+.fbar-btn.fbar-data:hover { background:var(--border); color:var(--text-b); }
+.fbar-btn.fbar-data.active { background:var(--gold-dim); color:var(--gold); }
 .fbar-btn.fbar-lock { color:#c84040; }
 .fbar-btn.fbar-lock:hover { background:rgba(200,64,64,0.18); color:#e05050; }
 .fbar-btn.dirty::after { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:#c84040; margin-left:2px; }
@@ -1307,11 +1321,11 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.08em;
   cursor:pointer; transition:background 0.15s, color 0.15s;
 }
-.data-popover-btn:hover { background:rgba(80,120,180,0.18); color:#fff; }
-.data-popover-icon { font-size:16px; width:20px; text-align:center; flex-shrink:0; color:#6090c8; }
+.data-popover-btn:hover { background:var(--gold-dim); color:var(--gold); }
+.data-popover-icon { font-size:16px; width:20px; text-align:center; flex-shrink:0; color:var(--gold); }
 .data-popover-lbl { flex:1; text-align:left; }
 #chat-btn.chat-btn-loading { position:relative; }
-#chat-btn.chat-btn-loading::after { content:''; position:absolute; top:5px; right:5px; width:6px; height:6px; background:#2a9090; border-radius:50%; animation:chatBtnPulse 1.2s ease-in-out infinite; }
+#chat-btn.chat-btn-loading::after { content:''; position:absolute; top:5px; right:5px; width:6px; height:6px; background:var(--gold); border-radius:50%; animation:chatBtnPulse 1.2s ease-in-out infinite; }
 @keyframes chatBtnPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.35;transform:scale(0.65)} }
 
 /* ── Session preview ── */
@@ -1481,7 +1495,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   background:none; border:none; cursor:pointer; font-size:14px; padding:0 2px;
   opacity:0.4; transition:opacity 0.15s, color 0.15s; flex-shrink:0;
 }
-.chat-hdr-lock-btn:hover { opacity:1; color:#2a9090; }
+.chat-hdr-lock-btn:hover { opacity:1; color:var(--gold); }
 .chat-hdr-lock-btn.locked { color:var(--gold); opacity:1; }
 /* Transcript in journal session cards */
 .session-chat-toggle { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
@@ -1568,6 +1582,11 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 <header class="app-header">
   <div class="app-left">
     <span class="app-brand">team-sheet</span>
+    <div class="hdr-util">
+      <button class="hdr-util-btn hdr-util-help" onclick="openHelpModal()" title="Help: how team-sheet works, setup guide for AI-assisted IFS work, and first-time instructions.">?</button>
+      <button class="hdr-util-btn hdr-util-settings" onclick="openSettingsModal()" title="Security: set a password to encrypt all your data in this browser with AES-256. Nothing leaves your machine unless you send it.">&#9881;</button>
+      <button class="hdr-util-btn hdr-util-support" onclick="openSupportModal()" title="Support: share team-sheet with a friend or star it on GitHub.">&#9829;</button>
+    </div>
   </div>
   <div class="header-phrase"><span>Every part of</span><span class="system-title" id="system-title-display" contenteditable="true" spellcheck="false" data-placeholder="you"></span><span>is on the same team.</span></div>
   <div class="app-right">
@@ -1579,8 +1598,6 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <button class="fbar-btn fbar-chat" id="chat-btn" onclick="openChat()" title="Chat: open a session with your AI to explore your parts. Requires an API key for a cloud model, or a local Ollama model for full privacy.">&#10022; Chat</button>
   <div class="fbar-sep"></div>
   <button class="fbar-btn fbar-data" id="data-btn" onclick="toggleDataPopover(event)" title="Data: import, export, or sync your data.">&#9776; Data</button>
-  <button class="fbar-btn" onclick="openHelpModal()" title="Help: how team-sheet works, setup guide for AI-assisted IFS work, and first-time instructions.">? Help</button>
-  <button class="fbar-btn" onclick="openSettingsModal()" title="Security: set a password to encrypt all your data in this browser with AES-256. Nothing leaves your machine unless you send it.">&#9881; Security</button>
   <button class="fbar-btn fbar-lock" id="lock-btn" onclick="lockApp()" title="Lock: hide your data and require your password to continue. Use when stepping away." style="display:none;">&#11042; Lock</button>
 </div>
 <div id="data-popover">
@@ -1676,10 +1693,14 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <div id="parts-dist-top" class="parts-dist-top" style="display:none;">
     <div style="width:100%;">
       <div class="parts-dist-section-hdr">Team Composition</div>
-      <div style="display:flex;gap:28px;align-items:flex-start;">
+      <div style="display:flex;justify-content:space-between;gap:24px;align-items:flex-start;max-width:560px;">
         <div>
           <div class="parts-dist-pie-title" id="parts-dist-now-label">Latest</div>
           <div id="parts-dist-now" class="parts-dist-pie-row"></div>
+        </div>
+        <div>
+          <div class="parts-dist-pie-title">This week</div>
+          <div id="parts-dist-week" class="parts-dist-pie-row"></div>
         </div>
         <div>
           <div class="parts-dist-pie-title">All time</div>
@@ -1812,7 +1833,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <div id="timeline-recent-section" style="display:none;">
     <div style="margin-bottom:14px;">
       <div class="section-heading">Since you started</div>
-      <p class="balance-note" style="margin:0;">Part leadership across all sessions. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll to them). Proportions reflect session balance weights.</p>
+      <p class="balance-note" style="margin:0;">Part leadership across all sessions. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll). Faint vertical lines show distribution snapshots, colored by source (see key below).</p>
     </div>
     <div style="position:relative;width:100%;margin-bottom:8px;">
       <canvas id="balance-area-canvas-recent" style="cursor:pointer;display:block;width:100%;"></canvas>
@@ -1834,7 +1855,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     <div style="margin-bottom:14px;">
       <div class="section-heading">All time</div>
       <p class="balance-note" style="margin:0;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
-        <span style="flex:1;">Your full history of part leadership including pre-app memories. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll to them).</span>
+        <span style="flex:1;">Your full history of part leadership including pre-app memories. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll). Faint vertical lines show distribution snapshots, colored by source (see key below).</span>
         <label style="white-space:nowrap;color:var(--text-dim);font-size:13px;">Born: <input type="date" id="birth-date-input" style="background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:3px;padding:1px 4px;font-size:13px;font-family:inherit;" oninput="if(!appState.system)appState.system={};appState.system.birthDate=this.value;saveState(appState);renderTimeline(appState);" /></label>
       </p>
     </div>
@@ -1856,10 +1877,10 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 
   <div id="snapshot-table-section" style="margin-top:28px;display:none;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap;">
-      <div class="section-heading" style="margin-bottom:0;">Snapshot history</div>
+      <div class="section-heading" style="margin-bottom:0;">Team composition history</div>
       <button class="btn-primary" style="font-size:13px;padding:3px 12px;" onclick="openBackfillPanel('table', null)">+ Add snapshot</button>
     </div>
-    <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">All composition snapshots. Every row is editable. Source shows where each snapshot came from: chat, check-in, import, or blank for manual.</p>
+    <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">All composition snapshots. Every row is editable. Source shows where each snapshot came from: check-in (pulse modal), your AI (chat), entry (manual slider), import, or blank for older entries.</p>
     <div class="backfill-panel" id="backfill-panel-table">
       <div class="backfill-panel-heading">Add snapshot</div>
       <div class="backfill-date-row">
@@ -1908,7 +1929,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     <button class="modal-close" onclick="document.getElementById('export-modal').classList.remove('open')">&#215;</button>
     <div class="modal-title" style="color:var(--modal-brown);">&#8595;&nbsp; Export</div>
     <div id="export-enc-row" style="display:none;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border);">
-      <div style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.15em;color:#6090c8;text-transform:uppercase;margin-bottom:6px;">Encrypted backup</div>
+      <div style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">Encrypted backup</div>
       <p style="margin:0 0 10px;font-size:14px;color:var(--text-dim);line-height:1.5;">Downloads the same encrypted file that GitHub sync uses. Safe to store anywhere: AES-256-GCM encrypted with your password and unreadable without it. Use as an offline backup or to move to a new device.</p>
       <button class="btn-ghost" style="font-size:14px;" onclick="downloadEncryptedJson()">&#8595; ts-data.enc</button>
     </div>
@@ -2014,76 +2035,104 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 <div id="toast"></div>
 <div id="undo-toast"><span id="undo-toast-label"></span><button class="undo-toast-btn" onclick="doUndo()">Undo</button></div>
 
+<!-- ══ SUPPORT MODAL ════════════════════════════════════════════ -->
+<div class="modal-overlay" id="support-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" style="border-top:3px solid var(--modal-brown-border);max-width:520px;width:100%;position:relative;">
+    <button class="modal-close" onclick="document.getElementById('support-modal').classList.remove('open')" title="Close">x</button>
+    <div class="modal-title" style="color:var(--modal-brown);margin-bottom:16px;">&#9829; &nbsp;SUPPORT THIS PROJECT</div>
+    <p style="line-height:1.7;margin:0 0 14px;">team-sheet is free, open source, and always will be. If it has been useful to you, the best way to support it is to share it with someone who might benefit.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+      <button onclick="(()=>{if(navigator.share){navigator.share({title:'team-sheet',text:'A private IFS inner parts mapping app. Free and open source.',url:'https://sam-holmes2.github.io/team-sheet/team-sheet.html'}).catch(()=>{})}else{navigator.clipboard.writeText('https://sam-holmes2.github.io/team-sheet/team-sheet.html').then(()=>document.getElementById('support-copy-msg').textContent='Link copied!').catch(()=>document.getElementById('support-copy-msg').textContent='Copy the URL from your address bar.')}})()" style="background:rgba(58,184,120,0.15);border:1px solid rgba(58,184,120,0.4);color:var(--help);padding:8px 18px;border-radius:6px;font-family:var(--mono);font-size:14px;letter-spacing:0.08em;cursor:pointer;">&#9829; Share with a friend</button>
+      <a href="https://github.com/sam-holmes2/team-sheet" target="_blank" rel="noopener" style="text-decoration:none;padding:8px 18px;border-radius:6px;font-family:var(--mono);font-size:14px;letter-spacing:0.08em;display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border-hi);color:var(--text-mid);"><svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> Star on GitHub</a>
+    </div>
+    <span id="support-copy-msg" style="font-size:13px;color:var(--help);min-height:18px;display:block;margin-top:-12px;margin-bottom:12px;"></span>
+    <p style="font-size:13px;color:var(--text);line-height:1.6;margin:0;font-style:italic;">team-sheet is a supplement to IFS therapy, not a replacement for professional care. If you are struggling, please reach out to a qualified therapist or a service like <a href="https://www.befrienders.org" target="_blank" rel="noopener" style="color:var(--text);">Befrienders Worldwide</a>.</p>
+  </div>
+</div>
+
 <!-- ══ HELP MODAL ═══════════════════════════════════════════════ -->
 <div class="modal-overlay" id="help-modal" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="modal" id="help-modal-box" style="border-top:3px solid var(--modal-brown-border);max-width:860px;width:100%;">
+  <div class="modal" id="help-modal-box" style="border-top:3px solid var(--modal-brown-border);max-width:900px;width:100%;">
     <button class="modal-close" onclick="document.getElementById('help-modal').classList.remove('open')">&#215;</button>
-    <div class="modal-title" style="color:var(--modal-brown);margin-bottom:16px;">? &nbsp;HOW TEAM-SHEET WORKS</div>
+    <div class="modal-title" style="color:var(--modal-brown);margin-bottom:4px;">? &nbsp;HOW TEAM-SHEET WORKS</div>
+    <div style="font-size:14px;color:var(--text-dim);margin-bottom:16px;">Pick the approach that fits your setup. You can switch anytime.</div>
     <div class="help-cols">
 
-      <!-- Column 1: Setup with AI -->
+      <!-- Column 1: Fill it in yourself -->
       <div class="help-col">
-        <div class="help-col-hdr">Setup with your AI</div>
-        <span style="display:block;font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:10px;">team-sheet is designed for ongoing IFS journalling. Your AI reads your sessions and updates your inner system map.</span>
+        <div class="help-col-hdr">Fill it in yourself
+          <div class="help-col-sub">No AI needed. Just you and the app.</div>
+        </div>
         <div class="help-step">
           <div class="help-step-num">1</div>
-          <div class="help-step-text"><strong>Download instructions.md</strong> from the same folder as team-sheet.html. This tells your AI how the app works and what JSON to produce.</div>
+          <div class="help-step-text"><strong>Go to the Parts tab</strong> and click "+ Add part". Start with whatever you notice most: a voice, a pattern, a recurring tension.</div>
         </div>
         <div class="help-step">
           <div class="help-step-num">2</div>
-          <div class="help-step-text"><strong>Create a project in your AI.</strong> Upload instructions.md to the project knowledge so it's always attached to every session.</div>
+          <div class="help-step-text"><strong>Edit fields directly.</strong> Click any name, role, description, or note to update it. You don't need to fill everything at once.</div>
         </div>
         <div class="help-step">
           <div class="help-step-num">3</div>
-          <div class="help-step-text"><strong>Start a session.</strong> Try: <em>"Here's what's been present lately..."</em> or use a Session Starter on the Journal tab.</div>
+          <div class="help-step-text"><strong>Use the Map tab</strong> to see your parts as a visual map. Add connections between parts in each part's Relationships section.</div>
         </div>
         <div class="help-step">
           <div class="help-step-num">4</div>
-          <div class="help-step-text"><strong>At the end,</strong> ask your AI: <em>"Update my data.json"</em> and copy the output.</div>
+          <div class="help-step-text"><strong>Export regularly.</strong> Your data lives only in this browser. Use Export to save a backup you can restore later.
+            <span style="display:block;margin-top:7px;"><button class="btn-primary" style="font-size:13px;padding:4px 13px;" onclick="document.getElementById('help-modal').classList.remove('open');openExport()">&#8595; Export</button></span>
+          </div>
         </div>
-        <p class="help-note" style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">Your AI infers which parts were present, how relationships shifted, and whether any Self-led moments occurred. Lock any field to protect your own writing from being overwritten.</p>
       </div>
 
-      <!-- Column 2: Import -->
+      <!-- Column 2: Journal with any AI -->
       <div class="help-col">
-        <div class="help-col-hdr">&#8593; &nbsp;Import</div>
-        <span style="display:block;font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:10px;">Load your data into team-sheet after a session, or restore a backup from another device.</span>
+        <div class="help-col-hdr">Journal with any AI
+          <div class="help-col-sub">Use any AI app you already have. Copy and paste to update your map.</div>
+        </div>
         <div class="help-step">
           <div class="help-step-num">1</div>
-          <div class="help-step-text"><strong>Open Import:</strong>
-            <span style="display:block;margin-top:6px;"><button class="btn-primary" style="font-size:13px;padding:4px 14px;" onclick="document.getElementById('help-modal').classList.remove('open');openModal()">&#8593; Import</button></span>
+          <div class="help-step-text"><strong>Download instructions.md.</strong> This tells your AI how team-sheet works and what data to produce.
+            <span style="display:block;margin-top:7px;"><button class="btn-download" style="font-size:13px;padding:3px 10px;border:1px solid var(--border-hi);background:none;color:var(--text-dim);border-radius:4px;cursor:pointer;" onclick="downloadInstructionsMd(this)">&#8595; instructions.md</button></span>
           </div>
         </div>
         <div class="help-step">
           <div class="help-step-num">2</div>
-          <div class="help-step-text"><strong>Paste your data.json</strong> into the text area and hit Apply. Or use the file picker to load directly from disk.</div>
+          <div class="help-step-text"><strong>Create a project in your AI</strong> (Claude Projects, ChatGPT Projects, Gemini Gems, etc.) and upload instructions.md so it is included in every session.</div>
         </div>
         <div class="help-step">
           <div class="help-step-num">3</div>
-          <div class="help-step-text"><strong>The app updates instantly.</strong> New parts appear on the Map. Session entries appear in the Journal tab. Balance history grows over time.</div>
+          <div class="help-step-text"><strong>Journal with your AI.</strong> Try: <em>"Here's what's been present lately..."</em> or use a Session Starter on the Journal tab. At the end, ask: <em>"Update my data.json"</em> and copy the output.</div>
         </div>
-        <p class="help-note" style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;"><strong style="color:var(--text);">Lock icons</strong> protect individual fields from being overwritten. Click &#8857; on any field to protect it, so your own writing survives future imports.</p>
+        <div class="help-step">
+          <div class="help-step-num">4</div>
+          <div class="help-step-text"><strong>Paste into Import</strong> to apply the update.
+            <span style="display:block;margin-top:7px;"><button class="btn-primary" style="font-size:13px;padding:4px 13px;" onclick="document.getElementById('help-modal').classList.remove('open');openModal()">&#8593; Import</button></span>
+          </div>
+        </div>
+        <p class="help-note">Your AI infers which parts were present, how relationships shifted, and whether any Self-led moments occurred. Lock any field to protect your own writing from being overwritten.</p>
+        <p class="help-note">Before each new session, Export your latest data.json and paste it into your AI project so it has your current state.</p>
       </div>
 
-      <!-- Column 3: Export -->
+      <!-- Column 3: Chat inside the app -->
       <div class="help-col">
-        <div class="help-col-hdr">&#8595; &nbsp;Export</div>
-        <span style="display:block;font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:10px;">Your data lives in browser storage. Export regularly so you have a backup and so your AI stays up to date.</span>
+        <div class="help-col-hdr">Chat inside the app
+          <div class="help-col-sub">Connect your AI directly. No copy-paste needed.</div>
+        </div>
         <div class="help-step">
           <div class="help-step-num">1</div>
-          <div class="help-step-text"><strong>Export your data:</strong>
-            <span style="display:block;margin-top:6px;"><button class="btn-primary" style="font-size:13px;padding:4px 14px;" onclick="document.getElementById('help-modal').classList.remove('open');openExport()">&#8595; Export</button></span>
-          </div>
+          <div class="help-step-text"><strong>Open Chat</strong> using the Chat button in the bottom bar.</div>
         </div>
         <div class="help-step">
           <div class="help-step-num">2</div>
-          <div class="help-step-text"><strong>Store it somewhere safe.</strong> data.json contains your private journal and inner system map. Treat it like a diary.</div>
+          <div class="help-step-text"><strong>Choose how to connect:</strong>
+            <span style="display:block;margin-top:6px;font-size:14px;"><strong style="color:var(--text-b);">API key</strong> — enter a key from Anthropic, OpenAI, or another provider. You pay for usage directly (usually a few cents per session). Fastest setup.</span>
+            <span style="display:block;margin-top:6px;font-size:14px;"><strong style="color:var(--text-b);">Ollama</strong> — a free app that runs an AI model on your own computer. Nothing leaves your device. Requires a one-time install and model download (4-10 GB).</span>
+          </div>
         </div>
         <div class="help-step">
           <div class="help-step-num">3</div>
-          <div class="help-step-text"><strong>Before a new session,</strong> paste this JSON into your AI project to replace the old data.json. Your AI then has your latest state.</div>
+          <div class="help-step-text"><strong>Journal and let the app update itself.</strong> When your AI produces updated data, an Apply button appears. Tap it to save the changes instantly.</div>
         </div>
-        <p class="help-note" style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">Set a password in Security to encrypt your data at rest in the browser. Good practice if you share a device or browser profile.</p>
+        <p class="help-note">The Chat button walks you through setup the first time you open it.</p>
       </div>
 
     </div>
@@ -2142,6 +2191,10 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <option value="30">30 minutes</option>
         <option value="60">1 hour</option>
       </select>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:var(--text-dim);margin-top:10px;">
+        <input type="checkbox" id="settings-lock-on-hide" onchange="settingsSaveLockOnHide()" style="width:16px;height:16px;cursor:pointer;">
+        Lock when switching tabs or minimising
+      </label>
     </div>
 
     <div class="settings-section">
@@ -2254,6 +2307,7 @@ const CHECKIN_INTERVAL_KEY = 'ts-checkin-interval-v1'; // hours between auto-pro
 const WELCOMED_KEY         = 'ts-welcomed-v1';
 const HIDE_DIRTY_BANNER_KEY = 'ts-hide-dirty-banner-v1';
 const CLOSE_CONFIRM_KEY     = 'ts-close-confirm-v1';
+const LOCK_ON_HIDE_KEY      = 'ts-lock-on-hide-v1';
 const HIDE_DISC_BANNER_KEY  = 'ts-hide-disc-banner-v1';
 const HIDE_MAP_HINT_KEY     = 'ts-hide-map-hint-v1';
 const DEMO_NAME     = "Alex's Inner System";
@@ -4092,9 +4146,9 @@ function setupBodyDiagramDrag(svg) {
 
 // ══ TAB: MAP ══════════════════════════════════════════════════
 const MAP_PHYSICS = {
-  repulsion: 16000,
+  repulsion: 8000,
   damping: 0.80,
-  overlapGap: 22,
+  overlapGap: 18,
   iterations: 350,
 };
 let mapNodes = [];
@@ -4104,6 +4158,7 @@ let mapVx = {}, mapVy = {};
 let mapEditorSelectedId = null;
 let mapSelectedAnnotationId = null;
 let mapFocusHighlightId = null;
+let mapViewTransform = { scale: 1, tx: 0, ty: 0 };
 
 function mapHighlightRedraw() {
   const c = document.getElementById('map-canvas');
@@ -4138,6 +4193,27 @@ function getAnnotationPos(ann, W, H) {
   return { x: (ann.xFrac != null ? ann.xFrac : 0.5) * W, y: (ann.yFrac != null ? ann.yFrac : 0.5) * H };
 }
 
+function fitMapView(W, H) {
+  if (!mapNodes.length) { mapViewTransform = { scale: 1, tx: 0, ty: 0 }; return; }
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  mapNodes.forEach(n => {
+    const labelFontPx = Math.max(10, Math.round(n.r * 0.42));
+    const labelH = labelFontPx + 6;
+    const approxLabelW = (n.name || '').length * labelFontPx * 0.68;
+    minX = Math.min(minX, n.x - Math.max(n.r, approxLabelW / 2));
+    maxX = Math.max(maxX, n.x + Math.max(n.r, approxLabelW / 2));
+    minY = Math.min(minY, n.y - n.r);
+    maxY = Math.max(maxY, n.y + n.r + labelH);
+  });
+  const pad = 28;
+  const bboxW = maxX - minX + pad * 2;
+  const bboxH = maxY - minY + pad * 2;
+  const scale = Math.min(2.4, W / bboxW, H / bboxH); // cap at 2.4x to avoid absurd zoom on 1-2 nodes
+  const tx = (W - (maxX + minX) * scale) / 2;
+  const ty = (H - (maxY + minY) * scale) / 2;
+  mapViewTransform = { scale, tx, ty };
+}
+
 function renderMap(s) {
   renderRoleColorsEditor(s);
   const canvas = document.getElementById('map-canvas');
@@ -4158,6 +4234,9 @@ function renderMap(s) {
     ctx.fillText('Add parts to see your system map', W / 2, H / 2);
     return;
   }
+
+  // Reset view transform; will be fitted after physics settles
+  mapViewTransform = { scale: 1, tx: 0, ty: 0 };
 
   // Build nodes
   const minDim = Math.min(W, H);
@@ -4213,7 +4292,7 @@ function renderMap(s) {
     drawMap(canvas, W, H);
     iter++;
     if (iter < MAP_PHYSICS.iterations) mapAnimFrame = requestAnimationFrame(step);
-    else { drawMap(canvas, W, H); } // final draw
+    else { fitMapView(W, H); drawMap(canvas, W, H); } // final draw
   }
   step();
   renderMapEditor(s);
@@ -4260,7 +4339,7 @@ function simulateStep() {
     if (!a || !b) return;
     const dx = b.x - a.x, dy = b.y - a.y;
     const dist = Math.sqrt(dx * dx + dy * dy) || 0.1;
-    const targetLen = (a.r + b.r) * 2.4 + minDim * 0.04;
+    const targetLen = (a.r + b.r) * 1.8 + minDim * 0.02;
     const stretch = dist - targetLen;
     const f = stretch * 0.022;
     forces[a.id].x += (dx / dist) * f;
@@ -4290,12 +4369,17 @@ function drawMap(canvas, W, H) {
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, W, H);
 
-  // Self ambient glow
+  // Self ambient glow (canvas space, always fills background)
   const grd = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.min(W, H) * 0.5);
   grd.addColorStop(0, 'rgba(232,223,200,0.06)');
   grd.addColorStop(1, 'rgba(232,223,200,0)');
   ctx.fillStyle = grd;
   ctx.fillRect(0, 0, W, H);
+
+  // Apply auto-zoom transform so all content fits the canvas
+  const mvt = mapViewTransform;
+  ctx.save();
+  ctx.setTransform(mvt.scale, 0, 0, mvt.scale, mvt.tx, mvt.ty);
 
   // Edges
   mapEdges.forEach(e => {
@@ -4537,6 +4621,9 @@ function drawMap(canvas, W, H) {
     ann._bbox = { x: bx, y: by, w: bw, h: bh };
     ctx.restore();
   });
+
+  // Restore canvas transform
+  ctx.restore();
 }
 
 // Map interactivity
@@ -4551,10 +4638,10 @@ function drawMap(canvas, W, H) {
 
   function canvasPos(e) {
     const rect = canvas.getBoundingClientRect();
-    return {
-      mx: (e.clientX - rect.left) * (canvas.width / rect.width),
-      my: (e.clientY - rect.top)  * (canvas.height / rect.height),
-    };
+    const cx = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const cy = (e.clientY - rect.top)  * (canvas.height / rect.height);
+    const mvt = mapViewTransform;
+    return { mx: (cx - mvt.tx) / mvt.scale, my: (cy - mvt.ty) / mvt.scale };
   }
   function getHoveredNode(mx, my) {
     return mapNodes.find(n => {
@@ -4667,6 +4754,7 @@ function drawMap(canvas, W, H) {
           dragNode.pinned = true;
         }
         saveState(appState);
+        fitMapView(W, H);
         drawMap(canvas, W, H);
         if (mapEditorSelectedId === dragNode.id) renderMapEditor(appState);
       }
@@ -5191,6 +5279,7 @@ function mapApplyGlobalSize(mult) {
     const part = (appState.parts || []).find(p => p.id === n.id);
     n.r = Math.round(nodeVolumeToRadius(part ? partVolume(part, appState.parts) : 5, minDim) * m);
   });
+  fitMapView(parseInt(canvas.width), parseInt(canvas.height));
   drawMap(canvas, parseInt(canvas.width), parseInt(canvas.height));
 }
 
@@ -5590,7 +5679,7 @@ function buildPartCard(part, idx, s) {
     atSlider.value = String(Math.round(part.balanceWeight * 20) / 2);
     atVal.textContent = parseFloat(atSlider.value).toFixed(1);
     saveState(appState);
-    snapshotBalance(appState);
+    snapshotBalance(appState, 'entry');
     renderPartsTabPies(appState);
     renderPartsDistribution(appState);
   });
@@ -5621,7 +5710,7 @@ function buildPartCard(part, idx, s) {
   });
   atSlider.addEventListener('change', () => {
     saveState(appState);
-    snapshotBalance(appState);
+    snapshotBalance(appState, 'entry');
     renderPartsTabPies(appState);
     renderPartsDistribution(appState);
   });
@@ -6288,11 +6377,32 @@ function buildBalancePie(snap, size, container, editOpts) {
   container.appendChild(panel);
 }
 
+// Returns averaged check-in weights across all entries in the past 7 days.
+function _getWeekAvgWeights() {
+  const log = _loadCheckinLog();
+  const cutoff = Date.now() - 7 * 24 * 3600 * 1000;
+  const sums = {}, counts = {};
+  Object.values(log).forEach(day => {
+    (day.entries || []).forEach(e => {
+      if (e.ts >= cutoff) {
+        Object.entries(e.weights || {}).forEach(([id, v]) => {
+          sums[id] = (sums[id] || 0) + v;
+          counts[id] = (counts[id] || 0) + 1;
+        });
+      }
+    });
+  });
+  const avg = {};
+  Object.keys(sums).forEach(id => { avg[id] = sums[id] / counts[id]; });
+  return avg;
+}
+
 // Two pies at the top of the Parts tab: "Latest" (blendedNow) and "All time" (balanceWeight running avg).
 function renderPartsTabPies(s) {
-  const topEl = document.getElementById('parts-dist-top');
-  const nowEl = document.getElementById('parts-dist-now');
-  const atEl  = document.getElementById('parts-dist-alltime-parts');
+  const topEl  = document.getElementById('parts-dist-top');
+  const nowEl  = document.getElementById('parts-dist-now');
+  const weekEl = document.getElementById('parts-dist-week');
+  const atEl   = document.getElementById('parts-dist-alltime-parts');
   if (!nowEl || !atEl) return;
 
   const partsList = (s.parts || []).map(p => ({ id: p.id, name: p.name || p.id, role: p.role }));
@@ -6310,9 +6420,13 @@ function renderPartsTabPies(s) {
   (s.parts || []).forEach(p => { if (p.balanceWeight > 0) atWeights[p.id] = p.balanceWeight; });
   if (s._selfWeight) atWeights.self = s._selfWeight;
 
-  const hasNow = Object.keys(nowWeights).length > 0;
-  const hasAt  = Object.keys(atWeights).length > 0;
-  if (topEl) topEl.style.display = (hasNow || hasAt) ? '' : 'none';
+  // "This week" averages all check-in entries from the past 7 days
+  const weekWeights = _getWeekAvgWeights();
+
+  const hasNow  = Object.keys(nowWeights).length > 0;
+  const hasWeek = Object.keys(weekWeights).length > 0;
+  const hasAt   = Object.keys(atWeights).length > 0;
+  if (topEl) topEl.style.display = (hasNow || hasWeek || hasAt) ? '' : 'none';
 
   nowEl.innerHTML = '';
   if (hasNow) buildBalancePie({ date: 'Latest', weights: nowWeights }, 120, nowEl, {
@@ -6340,12 +6454,17 @@ function renderPartsTabPies(s) {
       (appState.parts||[]).forEach(p=>{ if(p.blendedNow!=null) directWeights[p.id]=p.blendedNow/10; });
       if(appState._selfWeightNow!=null) directWeights['self']=appState._selfWeightNow;
       if(Object.keys(directWeights).length>0) _appendCheckinEntry(directWeights);
-      snapshotBalance(appState);
+      snapshotBalance(appState, 'check-in');
       _applyBalCheckinGlow();
       renderPartsDistribution(appState);
       renderPartsTabPies(appState);
     }
   });
+
+  if (weekEl) {
+    weekEl.innerHTML = '';
+    if (hasWeek) buildBalancePie({ date: 'This week', weights: weekWeights }, 120, weekEl, null);
+  }
 
   atEl.innerHTML = '';
   if (hasAt) buildBalancePie({ date: 'All time', weights: atWeights }, 120, atEl, {
@@ -6363,7 +6482,7 @@ function renderPartsTabPies(s) {
       }
       saveState(appState);
     },
-    onClose: () => { snapshotBalance(appState); renderPartsDistribution(appState); renderPartsTabPies(appState); }
+    onClose: () => { snapshotBalance(appState, 'entry'); renderPartsDistribution(appState); renderPartsTabPies(appState); }
   });
 
   // Apply glow after pies are built
@@ -6418,7 +6537,7 @@ function renderPartsDistribution(s) {
       else { const p = (appState.parts || []).find(x => x.id === id); if (p) p.balanceWeight = v01; }
       saveState(appState);
     },
-    onClose: () => { snapshotBalance(appState); renderPartsDistribution(appState); renderPartsTabPies(appState); }
+    onClose: () => { snapshotBalance(appState, 'entry'); renderPartsDistribution(appState); renderPartsTabPies(appState); }
   });
 }
 
@@ -6462,6 +6581,9 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     const rB = b==='self'?'self':((s.parts||[]).find(p=>p.id===b)||{}).role||'zzz';
     return (roleOrder[rA]??9)-(roleOrder[rB]??9);
   });
+
+  // Preserve original hist entries (with source) before unshift mutates snaps
+  const origHist = hist.slice();
 
   // Normalise each snapshot to proportions (sum to 1)
   const snaps = hist.map(snap => {
@@ -6641,6 +6763,26 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     canvas._eventPins.push({ x, type: 'memory', memoryId: mem.id, label: mem.label || mem.dateApprox || mem.date || 'Memory' });
   });
 
+  // Snapshot distribution lines: vertical tick per balHist entry, styled by source
+  const _snapLineStyles = {
+    'check-in': { stroke: 'rgba(200,168,74,0.65)', dash: [],    width: 1.5 },
+    'chat':     { stroke: 'rgba(160,100,200,0.55)', dash: [4,3], width: 1 },
+    'entry':    { stroke: 'rgba(58,184,120,0.55)',  dash: [3,3], width: 1 },
+    'import':   { stroke: 'rgba(110,94,74,0.45)',   dash: [2,4], width: 1 },
+  };
+  origHist.forEach(snap => {
+    const x = dateX(snap.date);
+    if (x < 0) return;
+    const style = _snapLineStyles[snap.source] || { stroke: 'rgba(110,94,74,0.35)', dash: [2,4], width: 1 };
+    ctx.strokeStyle = style.stroke;
+    ctx.lineWidth = style.width;
+    ctx.setLineDash(style.dash);
+    ctx.beginPath(); ctx.moveTo(x, PAD_T); ctx.lineTo(x, PAD_T + drawH); ctx.stroke();
+    ctx.setLineDash([]);
+    canvas._eventPins.push({ x, type: 'snapshot', date: snap.date, source: snap.source || '',
+      label: (snap.source || 'manual') + ' snapshot: ' + snap.date });
+  });
+
   // Click + hover handlers for pins
   canvas._chartW = W; // store current CSS width so the click handler always uses latest value
   // Store chart geometry so the single-bound click handler can compute clicked dates
@@ -6712,7 +6854,7 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     canvas.addEventListener('mouseleave', () => { document.getElementById('map-tooltip').style.display = 'none'; });
   }
 
-  // Legend
+  // Parts legend
   legendEl.innerHTML = '';
   ids.forEach(id => {
     const part = id==='self' ? null : (s.parts||[]).find(p=>p.id===id);
@@ -6726,6 +6868,40 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     item.appendChild(document.createTextNode(name));
     legendEl.appendChild(item);
   });
+
+  // Source line key: one entry per source type present in this chart's history
+  const _sourcesPresent = new Set(origHist.map(h => h.source || ''));
+  const _sourceKeyDefs = [
+    { source: 'check-in', label: 'check-in', color: 'rgba(200,168,74,0.8)',   dash: '',    width: '1.5' },
+    { source: 'chat',     label: 'your AI',  color: 'rgba(160,100,200,0.75)', dash: '4 3', width: '1' },
+    { source: 'entry',    label: 'entry',    color: 'rgba(58,184,120,0.7)',    dash: '3 3', width: '1' },
+    { source: 'import',   label: 'import',   color: 'rgba(130,110,90,0.6)',    dash: '2 4', width: '1' },
+    { source: '',         label: 'manual',   color: 'rgba(130,110,90,0.5)',    dash: '2 4', width: '1' },
+  ];
+  const _keyDefs = _sourceKeyDefs.filter(d => _sourcesPresent.has(d.source));
+  if (_keyDefs.length > 0) {
+    const keyRow = document.createElement('div');
+    keyRow.style.cssText = 'display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;width:100%;';
+    _keyDefs.forEach(def => {
+      const item = document.createElement('div');
+      item.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim);font-family:var(--mono);';
+      const svgNS = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('width', '22'); svg.setAttribute('height', '10');
+      svg.style.cssText = 'flex-shrink:0;overflow:visible;';
+      const line = document.createElementNS(svgNS, 'line');
+      line.setAttribute('x1', '0'); line.setAttribute('y1', '5');
+      line.setAttribute('x2', '22'); line.setAttribute('y2', '5');
+      line.setAttribute('stroke', def.color);
+      line.setAttribute('stroke-width', def.width);
+      if (def.dash) line.setAttribute('stroke-dasharray', def.dash);
+      svg.appendChild(line);
+      item.appendChild(svg);
+      item.appendChild(document.createTextNode(def.label));
+      keyRow.appendChild(item);
+    });
+    legendEl.appendChild(keyRow);
+  }
 }
 
 function _tsLocalDate(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -6937,18 +7113,16 @@ function _submitPulseModal(){
   _closePulseModal(true);
 }
 
-function snapshotBalance(s) {
+function snapshotBalance(s, source) {
   const hist = loadBalHist();
   const today = _tsLocalDate();
   const weights = {};
   (s.parts || []).forEach(p => {
     weights[p.id] = p.balanceWeight || 0;
   });
-  // Include self weight if present
   if (s._selfWeight) weights['self'] = s._selfWeight;
-  // Overwrite same-day entry instead of stacking duplicates
   const existing = hist.findIndex(h => h.date === today);
-  const entry = { date: today, weights, source: 'chat' };
+  const entry = { date: today, weights, source: source || 'entry' };
   if (existing >= 0) hist[existing] = entry; else hist.push(entry);
   saveBalHist(hist);
 }
@@ -8613,7 +8787,7 @@ function applyUpdate(chatData) {
       saveBalHist(hist);
     }
     if (merged.parts && merged.parts.some(p => p.balanceWeight)) {
-      snapshotBalance(merged);
+      snapshotBalance(merged, 'import');
     }
 
     // Ensure all sessions have an id
@@ -8851,6 +9025,10 @@ function showToast(msg, dur) {
 }
 
 // ══ HELP MODAL ════════════════════════════════════════════════
+function openSupportModal() {
+  document.getElementById('support-copy-msg').textContent = '';
+  document.getElementById('support-modal').classList.add('open');
+}
 function openHelpModal() {
   document.getElementById('help-modal').classList.add('open');
 }
@@ -8968,6 +9146,7 @@ function _reencryptIfActive(){
 }
 
 function _getLockTimeout(){ return parseInt(localStorage.getItem(PIN_TIMEOUT_KEY)||'0')||0; }
+function _getLockOnHide(){ const v = localStorage.getItem(LOCK_ON_HIDE_KEY); return v === null ? true : v === '1'; }
 
 function _resetLockTimer(){
   if(_lockTimer){ clearTimeout(_lockTimer); _lockTimer=null; }
@@ -9098,6 +9277,8 @@ function openSettingsModal(){
   [...sel.options].forEach(o=>o.selected=(parseInt(o.value)===t));
   const ccEl = document.getElementById('settings-close-confirm');
   if (ccEl) ccEl.checked = localStorage.getItem(CLOSE_CONFIRM_KEY) !== '0';
+  const lohEl = document.getElementById('settings-lock-on-hide');
+  if (lohEl) lohEl.checked = _getLockOnHide();
   hideResetConfirm();
   document.getElementById('settings-modal').classList.add('open');
 }
@@ -9217,6 +9398,11 @@ function settingsSaveTimeout(){
 function settingsSaveCloseConfirm(){
   const el = document.getElementById('settings-close-confirm');
   if (el) localStorage.setItem(CLOSE_CONFIRM_KEY, el.checked ? '1' : '0');
+}
+
+function settingsSaveLockOnHide(){
+  const el = document.getElementById('settings-lock-on-hide');
+  if (el) localStorage.setItem(LOCK_ON_HIDE_KEY, el.checked ? '1' : '0');
 }
 
 // ── Reset all data ──────────────────────────────────────────────
@@ -9364,7 +9550,7 @@ function _doInit() {
     _applyBalCheckinGlow();
     _showPulseModal();
   }
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) _handleCheckinPoll(); if (document.hidden && _pinActive) lockApp(); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) _handleCheckinPoll(); if (document.hidden && _pinActive && _getLockOnHide()) lockApp(); });
   setInterval(_handleCheckinPoll, 60000);
 
   const saved = loadState();
@@ -9401,7 +9587,7 @@ function _doInit() {
           saveBalHist(fromSessions);
         }
       }
-      if (appState.parts && appState.parts.some(p => p.balanceWeight)) snapshotBalance(appState);
+      if (appState.parts && appState.parts.some(p => p.balanceWeight)) snapshotBalance(appState, 'import');
     }
     render(appState);
     maybeShowResetUndoBanner();
@@ -9429,7 +9615,7 @@ function _doInit() {
         delete appState._balanceHistory;
       } else if (data.parts && data.parts.some(p => p.balanceWeight)) {
         saveBalHist([]);
-        snapshotBalance(data);
+        snapshotBalance(data, 'import');
       }
       if (IS_DEMO) {
         const b = document.getElementById('demo-banner');
@@ -11161,6 +11347,15 @@ async function gitSyncPull() {
 }
 
 async function gitSyncToggleAuto(enabled) {
+  if (enabled) {
+    const form = _gitSyncReadForm();
+    if (!form || !form.pat || !form.owner || !form.repo) {
+      showToast('Fill in your GitHub token and owner/repo before enabling auto-sync.');
+      const autoEl = document.getElementById('ts-git-autosync');
+      if (autoEl) autoEl.checked = false;
+      return;
+    }
+  }
   const gs = loadGitSyncSettings();
   gs.autoSync = enabled;
   await saveGitSyncSettings(gs);
