@@ -1497,6 +1497,9 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 .chat-qs-chip strong { color:var(--text); font-weight:600; }
 .chat-qs-chip:hover { background:rgba(200,168,74,0.14); border-color:var(--gold); color:var(--gold); }
 .chat-field { margin-bottom:14px; }
+.chat-section-local { border:1px solid rgba(80,200,120,0.22); border-radius:6px; padding:12px 14px; margin-bottom:14px; }
+.chat-section-cloud { border:1px solid rgba(240,144,144,0.22); border-radius:6px; padding:12px 14px; margin-bottom:14px; }
+.chat-section-hdr { font-size:11px; font-family:var(--mono); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px; }
 .chat-field-lbl { display:block; font-size:13px; color:var(--text-mid); margin-bottom:5px; font-family:'Cinzel',serif; letter-spacing:0.08em; text-transform:uppercase; }
 .chat-field input, .chat-field select { width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border-hi); color:var(--text); font-size:14px; padding:7px 9px; border-radius:4px; outline:none; box-sizing:border-box; }
 .chat-field input:focus, .chat-field select:focus { border-color:rgba(200,168,74,0.4); }
@@ -1904,6 +1907,11 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <div class="modal" style="border-top:3px solid var(--modal-brown-border);max-width:700px;width:100%;">
     <button class="modal-close" onclick="document.getElementById('export-modal').classList.remove('open')">&#215;</button>
     <div class="modal-title" style="color:var(--modal-brown);">&#8595;&nbsp; Export</div>
+    <div id="export-enc-row" style="display:none;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+      <div style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.15em;color:#6090c8;text-transform:uppercase;margin-bottom:6px;">Encrypted backup</div>
+      <p style="margin:0 0 10px;font-size:14px;color:var(--text-dim);line-height:1.5;">Downloads the same encrypted file that GitHub sync uses. Safe to store anywhere: AES-256-GCM encrypted with your password and unreadable without it. Use as an offline backup or to move to a new device.</p>
+      <button class="btn-ghost" style="font-size:14px;" onclick="downloadEncryptedJson()">&#8595; ts-data.enc</button>
+    </div>
     <div style="padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(160,60,60,0.12);border:1px solid rgba(160,60,60,0.4);color:#c07070;margin:0 0 10px;">This file contains your private data. Treat it like a diary.</div>
     <p>Copy your data.json and share it with your AI project to start or continue a journalling session.</p>
     <div id="export-warn-box" class="export-warn"></div>
@@ -8686,6 +8694,8 @@ function openExport() {
   }
 
   renderExportPie(data, jsonStr);
+  const encRow = document.getElementById('export-enc-row');
+  if (encRow) encRow.style.display = (_pinActive && localStorage.getItem(ENC_KEY)) ? 'block' : 'none';
   document.getElementById('export-modal').classList.add('open');
 }
 
@@ -8757,6 +8767,19 @@ function downloadExport() {
   a.href = url; a.download = 'team-data.json';
   document.body.appendChild(a); a.click();
   document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function downloadEncryptedJson() {
+  const encData = localStorage.getItem(ENC_KEY);
+  const pinCheck = localStorage.getItem(PIN_CHECK_KEY);
+  if (!encData) { showToast('No encrypted data found. Set a password in Security first.'); return; }
+  const payload = JSON.stringify({ _v: 2, enc: encData, check: pinCheck || '' });
+  const blob = new Blob([payload], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ts-data.enc';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 // ══ CONFIRM DELETE ════════════════════════════════════════════
@@ -11336,7 +11359,7 @@ function saveChatSettingsFromForm() {
 function onChatModelPresetChange() {
   const sel        = document.getElementById('ts-chat-model-preset');
   const custom     = document.getElementById('ts-chat-model-custom');
-  const apiSec     = document.getElementById('ts-apikey-section');
+  const cloudSec   = document.getElementById('ts-cloud-section');
   const ollamaNote = document.getElementById('ts-ollama-note');
   if (!sel) return;
   const isCustom  = sel.value === 'custom';
@@ -11344,10 +11367,10 @@ function onChatModelPresetChange() {
   const customVal = custom ? custom.value.trim() : '';
   const customIsOllama = isCustom && customVal && !customVal.startsWith('claude-');
   const showOllama = isOllama || customIsOllama;
-  if (custom)     custom.style.display     = isCustom    ? 'block' : 'none';
-  if (apiSec)     apiSec.style.display     = showOllama  ? 'none'  : 'block';
+  if (custom)    custom.style.display    = isCustom    ? 'block' : 'none';
+  if (cloudSec)  cloudSec.style.display  = showOllama  ? 'none'  : 'block';
   const wasHidden = !ollamaNote || ollamaNote.style.display === 'none';
-  if (ollamaNote) ollamaNote.style.display = showOllama  ? 'block' : 'none';
+  if (ollamaNote) ollamaNote.style.display = showOllama ? 'block' : 'none';
   if (showOllama && wasHidden) checkOllamaModels();
 }
 
@@ -11706,65 +11729,76 @@ document.addEventListener('keydown', function(e) {
       <div style="margin-top:5px;"><strong style="color:var(--text-mid);">C. No AI:</strong> all other features work fine without any AI model set up.</div>
       <div style="margin-top:7px;font-size:12px;color:var(--text-dim);"><a href="https://github.com/sam-holmes2/team-sheet/blob/master/ai-privacy-guide.md" target="_blank" style="color:inherit;text-decoration:underline;">Provider privacy guide</a></div>
     </div>
-    <div class="chat-field">
-      <label class="chat-field-lbl" for="ts-chat-model-preset">Model</label>
-      <select id="ts-chat-model-preset" onchange="onChatModelPresetChange()">
-        <optgroup label="Ollama (local)">
-          <option value="gemma3:4b" selected>gemma3:4b - fast, 4 GB RAM</option>
-          <option value="qwen2.5:7b">qwen2.5:7b - reliable, 8 GB RAM</option>
-          <option value="qwen3:8b">qwen3:8b - thinking mode, 8 GB RAM</option>
-          <option value="gemma3:12b">gemma3:12b - balanced, 12 GB RAM</option>
-          <option value="qwen2.5:14b">qwen2.5:14b - strong, 16 GB RAM</option>
-          <option value="qwen2.5:32b">qwen2.5:32b - best quality, 32 GB RAM</option>
-          <option value="llama3.3:latest">llama3.3 - strongest, 48 GB RAM</option>
-        </optgroup>
-        <optgroup label="Anthropic (cloud)">
-          <option value="claude-sonnet-4-6">claude-sonnet-4-6</option>
-          <option value="claude-opus-4-7">claude-opus-4-7 (more capable, slower)</option>
-          <option value="claude-haiku-4-5-20251001">claude-haiku-4-5 (fastest, cheapest)</option>
-        </optgroup>
-        <option value="custom">Custom model ID...</option>
-      </select>
-      <input type="text" id="ts-chat-model-custom" placeholder="e.g. qwen2.5:14b or llama3.3:latest" style="display:none;margin-top:6px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:6px;">
-        <label class="chat-sync-radio"><input type="checkbox" id="ts-chat-default-model"> Save as default for new chats</label>
-        <button onclick="openModelGuide()" style="background:none;border:none;padding:0;color:var(--text-dim);text-decoration:underline;cursor:pointer;font-size:11px;white-space:nowrap;">Not sure which local model fits your computer?</button>
+    <!-- Local model settings -->
+    <div class="chat-section-local">
+      <div class="chat-section-hdr" style="color:#50c878;">Local model (Ollama)</div>
+      <div class="chat-field" style="margin-bottom:10px;">
+        <label class="chat-field-lbl" for="ts-chat-model-preset">Model</label>
+        <select id="ts-chat-model-preset" onchange="onChatModelPresetChange()">
+          <optgroup label="Ollama (local)">
+            <option value="gemma3:4b" selected>gemma3:4b - fast, 4 GB RAM</option>
+            <option value="qwen2.5:7b">qwen2.5:7b - reliable, 8 GB RAM</option>
+            <option value="qwen3:8b">qwen3:8b - thinking mode, 8 GB RAM</option>
+            <option value="gemma3:12b">gemma3:12b - balanced, 12 GB RAM</option>
+            <option value="qwen2.5:14b">qwen2.5:14b - strong, 16 GB RAM</option>
+            <option value="qwen2.5:32b">qwen2.5:32b - best quality, 32 GB RAM</option>
+            <option value="llama3.3:latest">llama3.3 - strongest, 48 GB RAM</option>
+          </optgroup>
+          <optgroup label="Anthropic (cloud)">
+            <option value="claude-sonnet-4-6">claude-sonnet-4-6</option>
+            <option value="claude-opus-4-7">claude-opus-4-7 (more capable, slower)</option>
+            <option value="claude-haiku-4-5-20251001">claude-haiku-4-5 (fastest, cheapest)</option>
+          </optgroup>
+          <option value="custom">Custom model ID...</option>
+        </select>
+        <input type="text" id="ts-chat-model-custom" placeholder="e.g. qwen2.5:14b or llama3.3:latest" style="display:none;margin-top:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:6px;">
+          <label class="chat-sync-radio"><input type="checkbox" id="ts-chat-default-model"> Save as default for new chats</label>
+          <button onclick="openModelGuide()" style="background:none;border:none;padding:0;color:var(--text-dim);text-decoration:underline;cursor:pointer;font-size:11px;white-space:nowrap;">Not sure which local model fits your computer?</button>
+        </div>
+      </div>
+      <div id="ts-ollama-note" class="ollama-note" style="display:none;margin-bottom:10px;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:10px 12px;">
+        <div class="ollama-status-hdr">
+          <span id="ts-ollama-conn-badge" class="ollama-conn-err">&#9679; Ollama</span>
+          <button class="ollama-mini-btn ollama-copy-btn" onclick="checkOllamaModels()">&#8635; Check</button>
+        </div>
+        <div id="ts-ollama-model-list"></div>
+        <div id="ts-ollama-install" class="chat-api-note" style="margin-top:9px;font-size:12px;"></div>
+      </div>
+      <div class="chat-field" style="margin-bottom:0;">
+        <label class="chat-field-lbl" for="ts-chat-numctx">Context window</label>
+        <input type="number" id="ts-chat-numctx" min="2048" max="131072" step="1024" value="8192">
+        <p class="chat-api-note" style="margin-top:5px;">Your current data is about <strong id="ts-ctx-token-est">...</strong> tokens. Set this to at least 2x that, plus headroom for the conversation.</p>
       </div>
     </div>
-    <div id="ts-ollama-note" class="ollama-note" style="display:none;margin-bottom:14px;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:10px 12px;">
-      <div class="ollama-status-hdr">
-        <span id="ts-ollama-conn-badge" class="ollama-conn-err">&#9679; Ollama</span>
-        <button class="ollama-mini-btn ollama-copy-btn" onclick="checkOllamaModels()">&#8635; Check</button>
-      </div>
-      <div id="ts-ollama-model-list"></div>
-      <div id="ts-ollama-install" class="chat-api-note" style="margin-top:9px;font-size:12px;"></div>
-    </div>
-    <div id="ts-apikey-section" class="chat-field">
-      <label class="chat-field-lbl" for="ts-chat-apikey">Anthropic API Key</label>
-      <div id="ts-pin-gate" style="display:none;padding:10px 12px;background:rgba(200,168,74,0.07);border:1px solid rgba(200,168,74,0.25);border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.6;">
-        A security password is required before storing an API key.<br>
-        <button onclick="closeChatSettings();openSettings();setTimeout(()=>document.getElementById('settings-pin-new')?.focus(),300)" style="margin-top:8px;padding:5px 14px;background:rgba(200,168,74,0.12);border:1px solid rgba(200,168,74,0.4);color:var(--gold);border-radius:4px;cursor:pointer;font-size:13px;">Set up password in Settings</button>
-      </div>
-      <div id="ts-apikey-inputs">
-        <input type="password" id="ts-chat-apikey" placeholder="sk-ant-..." autocomplete="off">
-        <div id="ts-apikey-error" style="font-size:13px;color:#c84040;min-height:0;margin-top:5px;"></div>
-        <div class="chat-api-note">
-          <ol style="margin:4px 0 0 16px;padding:0;line-height:1.9;font-size:12px;">
-            <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in (separate from Claude.ai)</li>
-            <li>Open <strong>API Keys</strong> and create a new key</li>
-            <li>Paste it above</li>
-          </ol>
+
+    <!-- Cloud model settings -->
+    <div class="chat-section-cloud" id="ts-cloud-section">
+      <div class="chat-section-hdr" style="color:#f09090;">Cloud model (Anthropic)</div>
+      <div id="ts-apikey-section" class="chat-field" style="margin-bottom:0;">
+        <label class="chat-field-lbl" for="ts-chat-apikey">API Key</label>
+        <div id="ts-pin-gate" style="display:none;padding:10px 12px;background:rgba(200,168,74,0.07);border:1px solid rgba(200,168,74,0.25);border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.6;">
+          A security password is required before storing an API key.<br>
+          <button onclick="closeChatSettings();openSettings();setTimeout(()=>document.getElementById('settings-pin-new')?.focus(),300)" style="margin-top:8px;padding:5px 14px;background:rgba(200,168,74,0.12);border:1px solid rgba(200,168,74,0.4);color:var(--gold);border-radius:4px;cursor:pointer;font-size:13px;">Set up password in Settings</button>
+        </div>
+        <div id="ts-apikey-inputs">
+          <input type="password" id="ts-chat-apikey" placeholder="sk-ant-..." autocomplete="off">
+          <div id="ts-apikey-error" style="font-size:13px;color:#c84040;min-height:0;margin-top:5px;"></div>
+          <div class="chat-api-note">
+            <ol style="margin:4px 0 0 16px;padding:0;line-height:1.9;font-size:12px;">
+              <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in (separate from Claude.ai)</li>
+              <li>Open <strong>API Keys</strong> and create a new key</li>
+              <li>Paste it above</li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Settings that apply to all models -->
     <div class="chat-field">
       <label class="chat-field-lbl" for="ts-chat-maxtokens">Max response tokens</label>
       <input type="number" id="ts-chat-maxtokens" min="256" max="32000" step="256" value="4096">
-    </div>
-    <div class="chat-field">
-      <label class="chat-field-lbl" for="ts-chat-numctx">Context window (local models)</label>
-      <input type="number" id="ts-chat-numctx" min="2048" max="131072" step="1024" value="8192">
-      <p class="chat-api-note" style="margin-top:5px;">Your current data is about <strong id="ts-ctx-token-est">...</strong> tokens. Set this to at least 2x that, plus headroom for the conversation.</p>
     </div>
     <div class="chat-field">
       <label class="chat-field-lbl">Context sent to AI</label>
