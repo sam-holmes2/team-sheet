@@ -70,15 +70,15 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .hdr-util-btn { color:rgba(200,168,74,0.45); }
 .hdr-util-btn:hover { color:var(--gold); background:var(--gold-dim); }
 .app-brand {
-  font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.22em;
+  font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.22em;
   text-transform:uppercase; color:var(--text-dim); opacity:0.6;
 }
 .app-right {
   display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:0;
 }
 .app-disclaimer {
-  font-size:12px; color:#c08080; line-height:1.35; opacity:0.8;
-  text-align:right; max-width:220px;
+  font-size:14px; color:#c08080; line-height:1.45; opacity:0.9;
+  text-align:right; max-width:260px;
 }
 .system-title {
   font-family:'Crimson Pro',Georgia,serif;
@@ -98,14 +98,19 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .system-desc:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.01); }
 .system-desc:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
 .journal-intentions {
-  display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;
+  display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:auto auto auto auto; gap:0 16px;
   margin-bottom:32px; padding-bottom:28px;
   border-bottom:1px solid var(--border);
 }
-.journal-intention-group { display:flex; flex-direction:column; gap:8px; }
+/* Each group spans a column; use subgrid to share row heights across all three */
+.journal-intention-group {
+  display:grid; grid-row:1 / -1; grid-template-rows:subgrid;
+  gap:0; align-content:start;
+}
 .journal-intention-label {
   font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em;
-  text-transform:uppercase; color:var(--gold); margin-bottom:4px;
+  text-transform:uppercase; color:var(--gold); padding-bottom:8px; margin-bottom:0;
+  align-self:end;
 }
 .journal-intention-item {
   font-size:16px; color:var(--text-b); line-height:1.55;
@@ -115,16 +120,18 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .journal-intention-item:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.02); }
 .journal-intention-item:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.6; }
-.journal-intention-row { display:flex; align-items:center; gap:10px; }
+.journal-intention-row { display:flex; align-items:center; gap:10px; align-self:start; }
 .journal-item-num { font-family:'Cinzel',serif; font-size:30px; font-weight:700; color:var(--gold); line-height:1; min-width:20px; opacity:0.75; user-select:none; flex-shrink:0; }
 @media(max-width:800px){
-  .journal-intentions { grid-template-columns:1fr 1fr; }
+  .journal-intentions { grid-template-columns:1fr 1fr; grid-template-rows:auto auto auto auto auto auto auto auto; }
+  .journal-intention-group:nth-child(3) { grid-column:1 / -1; }
 }
 @media(max-width:500px){
-  .journal-intentions { grid-template-columns:1fr; }
+  .journal-intentions { grid-template-columns:1fr; grid-template-rows:none; }
+  .journal-intention-group { grid-row:auto; grid-template-rows:none; margin-bottom:20px; }
 }
 .journal-overview { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(128,144,168,0.15); }
-.journal-overview-title { font-family:'Cinzel',serif; font-size:14px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+.journal-overview-title { font-family:'Cinzel',serif; font-size:15px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
 
 /* ── Body diagram panel (Body tab) ── */
 .body-diagram-panel { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid var(--border); }
@@ -189,25 +196,25 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   grid-template-columns:1fr auto 1fr;
   align-items:center;
   gap:12px;
-  padding:8px 0 8px;
+  padding:8px 0 4px;
   min-height:0;
 }
 .header-phrase {
   display:flex; align-items:center; gap:0; flex-wrap:nowrap;
-  font-size:14px; color:var(--text-dim); letter-spacing:0.04em;
+  font-size:15px; color:var(--text-dim); letter-spacing:0.04em;
   justify-content:center; text-align:center; white-space:nowrap;
 }
 
 
 /* ── Tab nav ── */
 .tab-nav {
-  display:flex; gap:0; margin-top:4px; margin-bottom:16px;
+  display:flex; gap:0; margin-top:2px; margin-bottom:16px;
   border-bottom:1px solid var(--border); padding-bottom:0;
   justify-content:center;
   overflow:hidden; flex-wrap:nowrap;
 }
 .tab-btn {
-  font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.16em;
+  font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.16em;
   text-transform:uppercase; color:var(--text-dim);
   background:none; border:none; border-bottom:2px solid transparent;
   padding:10px 22px; cursor:pointer;
@@ -233,13 +240,13 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   border-radius:6px; padding:18px 20px; margin-bottom:16px;
 }
 .card-hdr {
-  font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.14em;
+  font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.14em;
   text-transform:uppercase; color:var(--gold);
   margin-bottom:12px;
 }
 .card-hdr.gold { color:var(--gold); }
 .section-heading {
-  font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.16em;
+  font-family:'Cinzel',serif; font-size:15px; letter-spacing:0.16em;
   text-transform:uppercase; color:var(--gold);
   margin-bottom:6px;
 }
@@ -738,7 +745,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .pie-edit-slider { flex:1; accent-color:var(--gold); cursor:pointer; }
 .pie-edit-val {
   font-size:13px; color:var(--text-dim); font-family:var(--mono);
-  min-width:16px; text-align:right; flex-shrink:0;
+  min-width:36px; text-align:right; flex-shrink:0;
 }
 
 /* ── SELF tab ── */
@@ -945,12 +952,18 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .journal-starters {
   margin-bottom:24px;
 }
+.journal-starters-header {
+  display:flex; align-items:center; gap:10px;
+}
+.journal-starters-header .chat-open-btn {
+  flex-shrink:0;
+}
 .starters-toggle {
   background:none; border:1px solid var(--border-hi); color:var(--text-mid);
   font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.12em;
-  text-transform:uppercase; padding:8px 16px; border-radius:4px;
+  text-transform:uppercase; padding:6px 14px; border-radius:4px;
   cursor:pointer; display:flex; align-items:center; gap:8px;
-  transition:all 0.15s;
+  transition:all 0.15s; flex-shrink:0;
 }
 .starters-toggle:hover { color:var(--gold); border-color:var(--gold); }
 .starters-body { display:none; margin-top:10px; }
@@ -983,14 +996,16 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   box-shadow:0 8px 32px rgba(0,0,0,0.5);
 }
 .modal-close {
-  position:absolute; top:12px; right:14px;
+  position:absolute; top:14px; right:16px;
   background:none; border:none; color:var(--text-dim);
-  font-size:22px; cursor:pointer; line-height:1; padding:4px 8px;
+  font-size:22px; cursor:pointer; line-height:1; padding:6px 10px;
+  border-radius:6px; transition:color 0.15s, background 0.15s;
 }
-.modal-close:hover { color:var(--text-b); }
+.modal-close:hover { color:var(--text-b); background:rgba(255,255,255,0.06); }
 .modal-title {
   font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.18em;
-  text-transform:uppercase; margin-bottom:14px;
+  text-transform:uppercase; margin-bottom:16px;
+  padding-right:40px;
 }
 .modal textarea {
   width:100%; min-height:180px; background:var(--surface);
@@ -998,7 +1013,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   font-family:var(--mono); font-size:14px; padding:10px;
   border-radius:4px; resize:vertical; margin:10px 0;
 }
-.modal-row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+.modal-row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:14px; }
 .modal-status { font-family:var(--mono); font-size:14px; }
 .modal-status.ok { color:var(--help); }
 .modal-status.err { color:#c07070; }
@@ -1094,7 +1109,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 /* ── Responsive ── */
 @media(max-width:600px){
   body { padding:0 16px 60px; font-size:16px; }
-  .tab-btn { padding:8px 10px; font-size:12px; }
+  .tab-btn { padding:8px 10px; font-size:13px; }
   #tab-map.active { flex-direction:column; }
   .map-legend, .map-editor { width:100%; flex-shrink:0; align-self:auto; max-height:200px; overflow-y:auto; }
   .map-editor { order:-1; }
@@ -1110,8 +1125,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   .modal::before { content:''; display:block; width:36px; height:4px; background:var(--border-hi); border-radius:2px; margin:0 auto 16px; opacity:0.6; }
 }
 @media(min-width:601px) and (max-width:900px){
-  /* Narrow tablets: hide disclaimer text to avoid crowding */
-  .app-disclaimer { display:none; }
+  /* Narrow tablets: shrink disclaimer to avoid crowding */
+  .app-disclaimer { font-size:12px; max-width:180px; }
   .app-header { gap:8px; }
 }
 @media(min-width:601px) and (max-width:900px){
@@ -1121,12 +1136,12 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 /* ── Map tooltip ── */
 #map-tooltip {
   position:fixed; background:var(--card); border:1px solid var(--border-hi);
-  border-radius:4px; padding:8px 12px; font-size:14px;
+  border-radius:4px; padding:8px 12px; font-size:15px;
   pointer-events:none; z-index:500; display:none;
-  max-width:220px; line-height:1.4;
+  max-width:240px; line-height:1.4;
 }
-#map-tooltip .tt-name { font-family:'Cinzel',serif; font-size:13px; color:var(--text-b); margin-bottom:4px; }
-#map-tooltip .tt-role { font-size:12px; font-family:'Cinzel',serif; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:5px; }
+#map-tooltip .tt-name { font-family:'Cinzel',serif; font-size:15px; color:var(--text-b); margin-bottom:4px; }
+#map-tooltip .tt-role { font-size:13px; font-family:'Cinzel',serif; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:5px; }
 #map-tooltip .tt-role.manager { color:var(--manager); }
 #map-tooltip .tt-role.firefighter { color:var(--firefighter); }
 #map-tooltip .tt-role.exile { color:var(--exile); }
@@ -1198,8 +1213,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 
 /* ── Settings modal ── */
-.settings-section { margin-bottom:18px; }
-.settings-label { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em; color:var(--text-dim); text-transform:uppercase; margin-bottom:8px; }
+.settings-section { margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid var(--border); }
+.settings-label { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em; color:var(--text-dim); text-transform:uppercase; margin-bottom:10px; }
 .settings-pin-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
 .settings-pin-input {
   background:var(--surface); border:1px solid var(--border-hi); border-radius:6px;
@@ -1216,9 +1231,9 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .settings-status { font-size:15px; color:var(--text-dim); margin-top:6px; min-height:18px; }
 .settings-status.ok  { color:#3a8050; }
 .settings-status.err { color:#903030; }
-.settings-danger-zone { border-top:1px solid rgba(200,60,60,0.25); padding-top:16px; margin-top:4px; }
-.settings-danger-label { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em; color:#c84040; text-transform:uppercase; margin-bottom:8px; }
-#reset-confirm-row { display:none; margin-top:10px; padding:12px 14px; background:rgba(200,60,60,0.08); border:1px solid rgba(200,60,60,0.3); border-radius:8px; }
+.settings-danger-zone { border-top:1px solid rgba(200,60,60,0.3); padding-top:18px; margin-top:0; margin-bottom:20px; }
+.settings-danger-label { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em; color:#c84040; text-transform:uppercase; margin-bottom:12px; }
+#reset-confirm-row { display:none; margin-top:12px; padding:14px 16px; background:rgba(200,60,60,0.08); border:1px solid rgba(200,60,60,0.3); border-radius:8px; }
 
 /* ── Lock screen ── */
 #lock-screen {
@@ -1294,7 +1309,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .fbar-btn:last-child { border-right:none; }
 .fbar-btn:has(+ .fbar-sep) { border-right:none; }
 .fbar-btn:hover { background:var(--border); color:var(--text-b); }
-.fbar-sep { width:4px; flex-shrink:0; align-self:stretch; background:#000; }
+.fbar-sep { width:1px; flex-shrink:0; align-self:stretch; background:var(--border-hi); }
 .fbar-btn.fbar-import { color:var(--gold); }
 .fbar-btn.fbar-chat { color:var(--gold); }
 .fbar-btn.fbar-daily { color:var(--gold); }
@@ -1511,9 +1526,9 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 .chat-qs-chip strong { color:var(--text); font-weight:600; }
 .chat-qs-chip:hover { background:rgba(200,168,74,0.14); border-color:var(--gold); color:var(--gold); }
 .chat-field { margin-bottom:14px; }
-.chat-section-local { border:1px solid rgba(80,200,120,0.22); border-radius:6px; padding:12px 14px; margin-bottom:14px; }
-.chat-section-cloud { border:1px solid rgba(240,144,144,0.22); border-radius:6px; padding:12px 14px; margin-bottom:14px; }
-.chat-section-hdr { font-size:11px; font-family:var(--mono); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px; }
+.chat-section-local { border:1px solid rgba(80,200,120,0.22); border-radius:6px; padding:14px 16px; margin-bottom:16px; }
+.chat-section-cloud { border:1px solid rgba(240,144,144,0.22); border-radius:6px; padding:14px 16px; margin-bottom:16px; }
+.chat-section-hdr { font-size:11px; font-family:var(--mono); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px; }
 .chat-field-lbl { display:block; font-size:13px; color:var(--text-mid); margin-bottom:5px; font-family:'Cinzel',serif; letter-spacing:0.08em; text-transform:uppercase; }
 .chat-field input, .chat-field select { width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border-hi); color:var(--text); font-size:14px; padding:7px 9px; border-radius:4px; outline:none; box-sizing:border-box; }
 .chat-field input:focus, .chat-field select:focus { border-color:rgba(200,168,74,0.4); }
@@ -1562,7 +1577,14 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 .pulse-part-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 .pulse-part-name { font-size:15px; color:var(--text-b); flex-shrink:0; min-width:90px; max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .pulse-part-slider { flex:1; accent-color:var(--gold); cursor:pointer; }
-.pulse-part-val { font-size:13px; color:var(--text-dim); min-width:24px; text-align:right; font-family:var(--mono); }
+.pulse-part-slider--unset { accent-color:rgba(200,168,74,0.3); outline:none; box-shadow:0 0 0 1.5px rgba(200,168,74,0.55); border-radius:4px; animation:pulse-slider-glow 2s ease-in-out infinite; }
+@keyframes pulse-slider-glow { 0%,100%{box-shadow:0 0 0 1.5px rgba(200,168,74,0.35);} 50%{box-shadow:0 0 0 2px rgba(200,168,74,0.7), 0 0 8px rgba(200,168,74,0.2);} }
+.pulse-self-row { display:flex;align-items:center;gap:10px;padding:8px 0 6px;border-top:1px solid var(--border);margin-top:4px; }
+.pulse-self-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--self-color); }
+.pulse-self-name { font-size:15px;color:var(--text-b);flex-shrink:0;min-width:90px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic; }
+.pulse-self-slider { flex:1;accent-color:rgba(232,223,200,0.7);cursor:pointer; }
+.pulse-self-slider.pulse-part-slider--unset { accent-color:rgba(232,223,200,0.3);animation:pulse-slider-glow 2s ease-in-out infinite; }
+.pulse-part-val { font-size:13px; color:var(--text-dim); min-width:32px; text-align:right; font-family:var(--mono); }
 .pulse-body { display:flex; flex-direction:column; gap:0; margin-bottom:16px; }
 .pulse-sliders-col { display:flex; flex-direction:column; }
 .pulse-pie-col { display:flex; flex-direction:column; align-items:center; gap:4px; padding-top:14px; border-top:1px solid var(--border); margin-top:4px; }
@@ -1699,7 +1721,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
           <div id="parts-dist-now" class="parts-dist-pie-row"></div>
         </div>
         <div>
-          <div class="parts-dist-pie-title">This week</div>
+          <div class="parts-dist-pie-title" id="parts-dist-week-label">This week</div>
           <div id="parts-dist-week" class="parts-dist-pie-row"></div>
         </div>
         <div>
@@ -1784,13 +1806,13 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       </div>
     </div>
   </div>
-  <div style="padding-bottom:8px;">
-    <button class="btn-primary chat-open-btn" onclick="openChat()">&#10022; Open chat</button>
-  </div>
   <div class="journal-starters">
-    <button class="starters-toggle" onclick="toggleStarters()">
-      <span id="starters-arrow">&#9658;</span> Session starters
-    </button>
+    <div class="journal-starters-header">
+      <button class="btn-primary chat-open-btn" onclick="openChat()">&#10022; Open chat</button>
+      <button class="starters-toggle" onclick="toggleStarters()">
+        <span id="starters-arrow">&#9658;</span> Session starters
+      </button>
+    </div>
     <div class="starters-body" id="starters-body">
       <div class="starter-row">
         <span>"Here's what's been present lately..."</span>
@@ -1839,7 +1861,6 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       <canvas id="balance-area-canvas-recent" style="cursor:pointer;display:block;width:100%;"></canvas>
       <div class="balance-area-legend" id="balance-area-legend-recent"></div>
     </div>
-    <div class="chart-click-hint">Click the chart to add a snapshot at that date</div>
     <div class="backfill-panel" id="backfill-panel">
       <div class="backfill-panel-heading">Add snapshot</div>
       <div class="backfill-date-row">
@@ -1863,7 +1884,6 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       <canvas id="balance-area-canvas" style="cursor:pointer;"></canvas>
       <div class="balance-area-legend" id="balance-area-legend"></div>
     </div>
-    <div class="chart-click-hint">Click the chart to add a snapshot at that date</div>
     <div class="backfill-panel" id="backfill-panel-alltime">
       <div class="backfill-panel-heading">Add snapshot</div>
       <div class="backfill-date-row">
@@ -1880,7 +1900,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       <div class="section-heading" style="margin-bottom:0;">Team composition history</div>
       <button class="btn-primary" style="font-size:13px;padding:3px 12px;" onclick="openBackfillPanel('table', null)">+ Add snapshot</button>
     </div>
-    <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">All composition snapshots. Every row is editable. Source shows where each snapshot came from: check-in (pulse modal), your AI (chat), entry (manual slider), import, or blank for older entries.</p>
+    <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">All composition snapshots. Every row is editable. Source: check-in (pulse modal), your AI (chat update), entry (UI slider or manual add), import (data.json restore).</p>
     <div class="backfill-panel" id="backfill-panel-table">
       <div class="backfill-panel-heading">Add snapshot</div>
       <div class="backfill-date-row">
@@ -2019,6 +2039,17 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     <div class="pulse-actions">
       <button class="pulse-done-btn" onclick="_submitPulseModal()">Submit</button>
       <button class="btn-ghost" onclick="_closePulseModal(false)">Skip</button>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+        <label for="pulse-checkin-interval" style="font-size:12px;color:var(--text-dim);white-space:nowrap;">Remind me</label>
+        <select id="pulse-checkin-interval" onchange="_pulseIntervalChanged(this.value)" style="font-size:12px;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);border-radius:4px;padding:3px 6px;cursor:pointer;font-family:inherit;">
+          <option value="0">once a day</option>
+          <option value="2">every 2h</option>
+          <option value="4">every 4h</option>
+          <option value="6">every 6h</option>
+          <option value="8">every 8h</option>
+          <option value="12">every 12h</option>
+        </select>
+      </div>
     </div>
   </div>
 </div>
@@ -2038,7 +2069,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 <!-- ══ SUPPORT MODAL ════════════════════════════════════════════ -->
 <div class="modal-overlay" id="support-modal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal" style="border-top:3px solid var(--modal-brown-border);max-width:520px;width:100%;position:relative;">
-    <button class="modal-close" onclick="document.getElementById('support-modal').classList.remove('open')" title="Close">x</button>
+    <button class="modal-close" onclick="document.getElementById('support-modal').classList.remove('open')" title="Close">&#x2715;</button>
     <div class="modal-title" style="color:var(--modal-brown);margin-bottom:16px;">&#9829; &nbsp;SUPPORT THIS PROJECT</div>
     <p style="line-height:1.7;margin:0 0 14px;">team-sheet is free, open source, and always will be. If it has been useful to you, the best way to support it is to share it with someone who might benefit.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
@@ -2198,6 +2229,22 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     </div>
 
     <div class="settings-section">
+      <div class="settings-label">Check-In Prompts</div>
+      <p style="font-size:14px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">The check-in popup opens automatically on your first visit each day. You can also set it to prompt you again throughout the day.</p>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <label for="settings-checkin-interval" style="font-size:14px;color:var(--text-dim);white-space:nowrap;">Repeat every</label>
+        <select class="settings-select" id="settings-checkin-interval" onchange="settingsSaveCheckinInterval()">
+          <option value="0">Once per day only</option>
+          <option value="2">2 hours</option>
+          <option value="4">4 hours</option>
+          <option value="6">6 hours</option>
+          <option value="8">8 hours</option>
+          <option value="12">12 hours</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-section">
       <div class="settings-label">Browser</div>
       <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:var(--text-dim);">
         <input type="checkbox" id="settings-close-confirm" onchange="settingsSaveCloseConfirm()" style="width:16px;height:16px;cursor:pointer;">
@@ -2217,7 +2264,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       </div>
     </div>
 
-    <div style="display:flex;">
+    <div style="display:flex;padding-top:4px;border-top:1px solid var(--border);">
       <button class="btn-ghost" onclick="closeSettingsModal()">Close</button>
     </div>
   </div>
@@ -2277,7 +2324,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       </label>
       <p class="chat-api-note" style="margin:12px 0 0;">Push after each session to keep a backup accessible from another device.</p>
     </div>
-    <div class="modal-row" style="margin-top:16px;">
+    <div class="modal-row" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
       <button class="btn-ghost" onclick="closeGitSyncModal()">Close</button>
     </div>
   </div>
@@ -2304,6 +2351,7 @@ const SESSIONS_KEY         = 'ts-sessions-v1';
 const BAL_HIST_KEY         = 'ts-balance-hist-v1';
 const CHECKIN_LOG_KEY      = 'ts-checkin-log-v1';   // {date: {entries:[{ts,weights}]}}
 const CHECKIN_INTERVAL_KEY = 'ts-checkin-interval-v1'; // hours between auto-prompts (default 24)
+const CHECKIN_LOAD_DATE_KEY = 'ts-checkin-load-date-v1'; // last effective date app was loaded (for first-load-of-day prompt)
 const WELCOMED_KEY         = 'ts-welcomed-v1';
 const HIDE_DIRTY_BANNER_KEY = 'ts-hide-dirty-banner-v1';
 const CLOSE_CONFIRM_KEY     = 'ts-close-confirm-v1';
@@ -2825,7 +2873,7 @@ Every field is optional. Only include fields you have real information for.
         }
       ],
 
-      "balanceWeight": "number 0.0-1.0: this part's estimated share of the waking day. Must sum to 1.0 across all parts + _selfWeight.",
+      "balanceWeight": "number 0.0-1.0: this part's estimated share of the waking day. Must sum to 1.0 across all parts + _selfWeight. The app also displays this as a 0-100% slider.",
       "nodeSize": "small | medium | large: how prominent this part is in the system. Use 'large' for parts that run most of the day or shape the system most significantly.",
       "lastUpdated": "YYYY-MM-DD"
     }
@@ -4219,7 +4267,9 @@ function renderMap(s) {
   const canvas = document.getElementById('map-canvas');
   const container = document.getElementById('map-container');
   const W = container.clientWidth || 800;
-  const H = container.clientHeight || Math.max(420, Math.round(W * 0.52));
+  const H = container.clientHeight;
+  // If the container has no height yet (tab hidden or layout not settled), defer one frame
+  if (!H) { requestAnimationFrame(() => renderMap(s)); return; }
   canvas.width = W;
   canvas.height = H;
   canvas.style.width = W + 'px';
@@ -5658,26 +5708,26 @@ function buildPartCard(part, idx, s) {
   nowLbl.textContent = 'Right now';
   nowLbl.title = 'How blended are you with this part right now? Drag to check in; each check-in nudges the all-time average.';
   const nowSlider = document.createElement('input');
-  nowSlider.type = 'range'; nowSlider.min = '0'; nowSlider.max = '10'; nowSlider.step = '0.5';
+  nowSlider.type = 'range'; nowSlider.min = '0'; nowSlider.max = '100'; nowSlider.step = '1';
   nowSlider.style.cssText = 'flex:1;accent-color:var(--gold);cursor:pointer;';
-  nowSlider.value = String(part.blendedNow != null ? part.blendedNow : (part.balanceWeight != null ? Math.round(part.balanceWeight * 20) / 2 : 5));
+  nowSlider.value = String(part.blendedNow != null ? Math.round(part.blendedNow) : (part.balanceWeight != null ? Math.round(part.balanceWeight * 100) : 50));
   const nowVal = document.createElement('span');
-  nowVal.style.cssText = 'font-size:13px;color:var(--text-dim);min-width:22px;text-align:right;font-family:var(--mono);';
-  nowVal.textContent = parseFloat(nowSlider.value).toFixed(1);
+  nowVal.style.cssText = 'font-size:13px;color:var(--text-dim);min-width:32px;text-align:right;font-family:var(--mono);';
+  nowVal.textContent = Math.round(parseFloat(nowSlider.value)) + '%';
   nowSlider.addEventListener('pointerdown', () => { pushUndo('Blended now: ' + (part.name || 'part')); });
   nowSlider.addEventListener('input', () => {
-    const v = parseFloat(nowSlider.value);
-    nowVal.textContent = v.toFixed(1);
+    const v = Math.round(parseFloat(nowSlider.value));
+    nowVal.textContent = v + '%';
     part.blendedNow = v;
     renderPartsTabPies(appState);
     renderPartsDistribution(appState);
   });
   nowSlider.addEventListener('change', () => {
-    const v = parseFloat(nowSlider.value);
-    const old = part.balanceWeight != null ? part.balanceWeight : v / 10;
-    part.balanceWeight = old * 0.85 + (v / 10) * 0.15;
-    atSlider.value = String(Math.round(part.balanceWeight * 20) / 2);
-    atVal.textContent = parseFloat(atSlider.value).toFixed(1);
+    const v = Math.round(parseFloat(nowSlider.value));
+    const old = part.balanceWeight != null ? part.balanceWeight : v / 100;
+    part.balanceWeight = old * 0.85 + (v / 100) * 0.15;
+    atSlider.value = String(Math.round(part.balanceWeight * 100));
+    atVal.textContent = Math.round(parseFloat(atSlider.value)) + '%';
     saveState(appState);
     snapshotBalance(appState, 'entry');
     renderPartsTabPies(appState);
@@ -5694,17 +5744,17 @@ function buildPartCard(part, idx, s) {
   atLbl.textContent = 'All time';
   atLbl.title = 'Running average of how blended you tend to be with this part. Nudged automatically by Right now check-ins; also directly editable.';
   const atSlider = document.createElement('input');
-  atSlider.type = 'range'; atSlider.min = '0'; atSlider.max = '10'; atSlider.step = '0.5';
+  atSlider.type = 'range'; atSlider.min = '0'; atSlider.max = '100'; atSlider.step = '1';
   atSlider.style.cssText = 'flex:1;accent-color:rgba(130,160,200,0.75);cursor:pointer;';
-  atSlider.value = String(part.balanceWeight != null ? Math.round(part.balanceWeight * 20) / 2 : 5);
+  atSlider.value = String(part.balanceWeight != null ? Math.round(part.balanceWeight * 100) : 50);
   const atVal = document.createElement('span');
-  atVal.style.cssText = 'font-size:13px;color:var(--text-dim);min-width:22px;text-align:right;font-family:var(--mono);';
-  atVal.textContent = parseFloat(atSlider.value).toFixed(1);
+  atVal.style.cssText = 'font-size:13px;color:var(--text-dim);min-width:32px;text-align:right;font-family:var(--mono);';
+  atVal.textContent = Math.round(parseFloat(atSlider.value)) + '%';
   atSlider.addEventListener('pointerdown', () => { pushUndo('Blended all-time: ' + (part.name || 'part')); });
   atSlider.addEventListener('input', () => {
-    const v = parseFloat(atSlider.value);
-    atVal.textContent = v.toFixed(1);
-    part.balanceWeight = v / 10;
+    const v = Math.round(parseFloat(atSlider.value));
+    atVal.textContent = v + '%';
+    part.balanceWeight = v / 100;
     renderPartsTabPies(appState);
     renderPartsDistribution(appState);
   });
@@ -6328,7 +6378,7 @@ function buildBalancePie(snap, size, container, editOpts) {
 
   editBtn = document.createElement('button');
   editBtn.className = 'pie-edit-btn';
-  editBtn.textContent = 'Edit';
+  editBtn.textContent = editOpts.label || 'Edit';
   legend.appendChild(editBtn);
 
   const panel = document.createElement('div');
@@ -6347,16 +6397,16 @@ function buildBalancePie(snap, size, container, editOpts) {
       lbl.className = 'pie-edit-label';
       lbl.textContent = name;
       const sl = document.createElement('input');
-      sl.type = 'range'; sl.min = '0'; sl.max = '10'; sl.step = '0.5';
+      sl.type = 'range'; sl.min = '0'; sl.max = '100'; sl.step = '1';
       sl.className = 'pie-edit-slider';
       const w0 = weights[id] != null ? weights[id] : (editOpts.getWeight ? editOpts.getWeight(id) : 0);
-      sl.value = String(Math.round(w0 * 20) / 2);
+      sl.value = String(Math.round(w0 * 100));
       const valEl = document.createElement('span');
       valEl.className = 'pie-edit-val';
-      valEl.textContent = parseFloat(sl.value).toFixed(1);
+      valEl.textContent = Math.round(parseFloat(sl.value)) + '%';
       sl.addEventListener('input', () => {
-        valEl.textContent = parseFloat(sl.value).toFixed(1);
-        const v01 = parseFloat(sl.value) / 10;
+        valEl.textContent = Math.round(parseFloat(sl.value)) + '%';
+        const v01 = parseFloat(sl.value) / 100;
         weights[id] = v01;
         editOpts.onChange(id, v01);
         redraw();
@@ -6410,7 +6460,7 @@ function renderPartsTabPies(s) {
   // "Latest" reads blendedNow (falls back to balanceWeight for parts not yet checked in)
   const nowWeights = {};
   (s.parts || []).forEach(p => {
-    const w = p.blendedNow != null ? p.blendedNow / 10 : (p.balanceWeight || 0);
+    const w = p.blendedNow != null ? p.blendedNow / 100 : (p.balanceWeight || 0);
     if (w > 0) nowWeights[p.id] = w;
   });
   if (s._selfWeightNow != null) nowWeights.self = s._selfWeightNow;
@@ -6430,11 +6480,12 @@ function renderPartsTabPies(s) {
 
   nowEl.innerHTML = '';
   if (hasNow) buildBalancePie({ date: 'Latest', weights: nowWeights }, 120, nowEl, {
+    label: 'Add entry',
     parts: partsList,
     getWeight: id => {
       if (id === 'self') return s._selfWeightNow || 0;
       const p = (s.parts || []).find(x => x.id === id);
-      return p ? (p.blendedNow != null ? p.blendedNow / 10 : (p.balanceWeight || 0)) : 0;
+      return p ? (p.blendedNow != null ? p.blendedNow / 100 : (p.balanceWeight || 0)) : 0;
     },
     onChange: (id, v01) => {
       if (id === 'self') {
@@ -6443,7 +6494,7 @@ function renderPartsTabPies(s) {
       } else {
         const p = (s.parts || []).find(x => x.id === id);
         if (p) {
-          p.blendedNow = v01 * 10;
+          p.blendedNow = Math.round(v01 * 100);
           p.balanceWeight = v01;
         }
       }
@@ -6451,7 +6502,7 @@ function renderPartsTabPies(s) {
     },
     onClose: () => {
       const directWeights = {};
-      (appState.parts||[]).forEach(p=>{ if(p.blendedNow!=null) directWeights[p.id]=p.blendedNow/10; });
+      (appState.parts||[]).forEach(p=>{ if(p.blendedNow!=null) directWeights[p.id]=p.blendedNow/100; });
       if(appState._selfWeightNow!=null) directWeights['self']=appState._selfWeightNow;
       if(Object.keys(directWeights).length>0) _appendCheckinEntry(directWeights);
       snapshotBalance(appState, 'check-in');
@@ -6463,27 +6514,12 @@ function renderPartsTabPies(s) {
 
   if (weekEl) {
     weekEl.innerHTML = '';
-    if (hasWeek) buildBalancePie({ date: 'This week', weights: weekWeights }, 120, weekEl, null);
+    const weekDisplay = hasWeek ? weekWeights : (hasNow ? nowWeights : null);
+    if (weekDisplay) buildBalancePie({ date: 'This week', weights: weekDisplay }, 120, weekEl, null);
   }
 
   atEl.innerHTML = '';
-  if (hasAt) buildBalancePie({ date: 'All time', weights: atWeights }, 120, atEl, {
-    parts: partsList,
-    getWeight: id => {
-      if (id === 'self') return s._selfWeight || 0;
-      const p = (s.parts || []).find(x => x.id === id);
-      return p ? (p.balanceWeight || 0) : 0;
-    },
-    onChange: (id, v01) => {
-      if (id === 'self') { s._selfWeight = v01 > 0 ? v01 : undefined; }
-      else {
-        const p = (s.parts || []).find(x => x.id === id);
-        if (p) p.balanceWeight = v01;
-      }
-      saveState(appState);
-    },
-    onClose: () => { snapshotBalance(appState, 'entry'); renderPartsDistribution(appState); renderPartsTabPies(appState); }
-  });
+  if (hasAt) buildBalancePie({ date: 'All time', weights: atWeights }, 120, atEl, null);
 
   // Apply glow after pies are built
   _applyBalCheckinGlow();
@@ -6499,7 +6535,7 @@ function renderPartsDistribution(s) {
 
   const nowWeights = {};
   (s.parts || []).forEach(p => {
-    const w = p.blendedNow != null ? p.blendedNow / 10 : (p.balanceWeight || 0);
+    const w = p.blendedNow != null ? p.blendedNow / 100 : (p.balanceWeight || 0);
     if (w > 0) nowWeights[p.id] = w;
   });
   if (s._selfWeightNow != null) nowWeights.self = s._selfWeightNow;
@@ -6514,11 +6550,11 @@ function renderPartsDistribution(s) {
     getWeight: id => {
       if (id === 'self') return s._selfWeightNow || 0;
       const p = (s.parts || []).find(x => x.id === id);
-      return p ? (p.blendedNow != null ? p.blendedNow / 10 : (p.balanceWeight || 0)) : 0;
+      return p ? (p.blendedNow != null ? p.blendedNow / 100 : (p.balanceWeight || 0)) : 0;
     },
     onChange: (id, v01) => {
       if (id === 'self') { appState._selfWeightNow = v01 > 0 ? v01 : undefined; }
-      else { const p = (appState.parts || []).find(x => x.id === id); if (p) p.blendedNow = v01 * 10; }
+      else { const p = (appState.parts || []).find(x => x.id === id); if (p) p.blendedNow = Math.round(v01 * 100); }
       saveState(appState);
     },
     onClose: () => { renderPartsDistribution(appState); renderPartsTabPies(appState); }
@@ -6768,12 +6804,12 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     'check-in': { stroke: 'rgba(200,168,74,0.65)', dash: [],    width: 1.5 },
     'chat':     { stroke: 'rgba(160,100,200,0.55)', dash: [4,3], width: 1 },
     'entry':    { stroke: 'rgba(58,184,120,0.55)',  dash: [3,3], width: 1 },
-    'import':   { stroke: 'rgba(110,94,74,0.45)',   dash: [2,4], width: 1 },
+    'import':   { stroke: 'rgba(110,94,74,0.65)',   dash: [2,4], width: 1 },
   };
   origHist.forEach(snap => {
     const x = dateX(snap.date);
     if (x < 0) return;
-    const style = _snapLineStyles[snap.source] || { stroke: 'rgba(110,94,74,0.35)', dash: [2,4], width: 1 };
+    const style = _snapLineStyles[snap.source] || _snapLineStyles['entry'];
     ctx.strokeStyle = style.stroke;
     ctx.lineWidth = style.width;
     ctx.setLineDash(style.dash);
@@ -6869,20 +6905,21 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     legendEl.appendChild(item);
   });
 
-  // Source line key: one entry per source type present in this chart's history
-  const _sourcesPresent = new Set(origHist.map(h => h.source || ''));
+  // Source line key: always show all source types so the key is self-explanatory
   const _sourceKeyDefs = [
-    { source: 'check-in', label: 'check-in', color: 'rgba(200,168,74,0.8)',   dash: '',    width: '1.5' },
-    { source: 'chat',     label: 'your AI',  color: 'rgba(160,100,200,0.75)', dash: '4 3', width: '1' },
-    { source: 'entry',    label: 'entry',    color: 'rgba(58,184,120,0.7)',    dash: '3 3', width: '1' },
-    { source: 'import',   label: 'import',   color: 'rgba(130,110,90,0.6)',    dash: '2 4', width: '1' },
-    { source: '',         label: 'manual',   color: 'rgba(130,110,90,0.5)',    dash: '2 4', width: '1' },
+    { source: 'check-in', label: 'check-in',   color: 'rgba(200,168,74,0.8)',   dash: '',    width: '1.5' },
+    { source: 'chat',     label: 'your AI',    color: 'rgba(160,100,200,0.75)', dash: '4 3', width: '1' },
+    { source: 'entry',    label: 'entry (UI)', color: 'rgba(58,184,120,0.7)',   dash: '3 3', width: '1' },
+    { source: 'import',   label: 'import',     color: 'rgba(110,94,74,0.65)',   dash: '2 4', width: '1' },
   ];
-  const _keyDefs = _sourceKeyDefs.filter(d => _sourcesPresent.has(d.source));
-  if (_keyDefs.length > 0) {
+  {
     const keyRow = document.createElement('div');
-    keyRow.style.cssText = 'display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;width:100%;';
-    _keyDefs.forEach(def => {
+    keyRow.style.cssText = 'display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:8px;width:100%;';
+    const keyLabel = document.createElement('span');
+    keyLabel.style.cssText = 'font-size:11px;color:var(--text-dim);font-family:var(--mono);letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;flex-shrink:0;';
+    keyLabel.textContent = 'Snapshot sources:';
+    keyRow.appendChild(keyLabel);
+    _sourceKeyDefs.forEach(def => {
       const item = document.createElement('div');
       item.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim);font-family:var(--mono);';
       const svgNS = 'http://www.w3.org/2000/svg';
@@ -6913,11 +6950,18 @@ function _pulseEffectiveDate(){
 }
 
 // ── Check-in interval (hours between auto-prompts) ────────────
+// Returns true if "once per day only" mode: no value set, '0', or old default '24'.
+function _checkinOncePerDayOnly(){
+  try{
+    const v = localStorage.getItem(CHECKIN_INTERVAL_KEY);
+    return v == null || v === '0' || v === '24';
+  }catch{ return true; }
+}
 function _getCheckinIntervalHours(){
   try{ const v=parseInt(localStorage.getItem(CHECKIN_INTERVAL_KEY),10); return (v>0)?v:24; }catch{ return 24; }
 }
 function _setCheckinIntervalHours(h){
-  try{ localStorage.setItem(CHECKIN_INTERVAL_KEY, String(Math.max(1,Math.round(h)))); }catch{}
+  try{ localStorage.setItem(CHECKIN_INTERVAL_KEY, String(Math.max(0,Math.round(h)))); }catch{}
 }
 
 // ── Check-in log: {[date]: {entries:[{ts, weights}]}} ─────────
@@ -6936,6 +6980,7 @@ function _getLastCheckinTs(){
   return latest;
 }
 function _checkinDueNow(){
+  if(_checkinOncePerDayOnly()) return false; // once-per-day handled by first-load bypass
   const last = _getLastCheckinTs();
   if(!last) return true;
   const intervalMs = _getCheckinIntervalHours() * 3600 * 1000;
@@ -7012,16 +7057,19 @@ function _buildPulseSliderList(list, parts){
     nameLbl.textContent = part.name || 'Unnamed part';
     nameLbl.title = part.name || 'Unnamed part';
     const slider = document.createElement('input');
-    slider.type = 'range'; slider.min = '0'; slider.max = '10'; slider.step = '0.5';
-    slider.className = 'pulse-part-slider';
-    slider.value = '5';
+    slider.type = 'range'; slider.min = '0'; slider.max = '100'; slider.step = '1';
+    slider.className = 'pulse-part-slider pulse-part-slider--unset';
+    slider.value = '0';
     slider.dataset.partId = part.id;
+    slider.dataset.unset = 'true';
     const valLbl = document.createElement('span');
     valLbl.className = 'pulse-part-val';
-    valLbl.textContent = parseFloat(slider.value).toFixed(1);
+    valLbl.textContent = '–';
     slider.addEventListener('input', () => {
-      const v = parseFloat(slider.value);
-      valLbl.textContent = v.toFixed(1);
+      const v = Math.round(parseFloat(slider.value));
+      valLbl.textContent = v + '%';
+      slider.classList.remove('pulse-part-slider--unset');
+      delete slider.dataset.unset;
       const p = (appState.parts || []).find(x => x.id === part.id);
       if(p){ p.blendedNow = v; saveState(appState); renderPartsTabPies(appState); renderPartsDistribution(appState); }
       _renderPulsePie();
@@ -7029,6 +7077,33 @@ function _buildPulseSliderList(list, parts){
     row.appendChild(dot); row.appendChild(nameLbl); row.appendChild(slider); row.appendChild(valLbl);
     list.appendChild(row);
   });
+
+  // Self row
+  const selfRow = document.createElement('div');
+  selfRow.className = 'pulse-self-row';
+  const selfDot = document.createElement('div');
+  selfDot.className = 'pulse-self-dot';
+  const selfNameLbl = document.createElement('div');
+  selfNameLbl.className = 'pulse-self-name';
+  selfNameLbl.textContent = 'Self';
+  selfNameLbl.title = 'Self — calm, present, not led by any part';
+  const selfSlider = document.createElement('input');
+  selfSlider.type = 'range'; selfSlider.min = '0'; selfSlider.max = '100'; selfSlider.step = '1';
+  selfSlider.className = 'pulse-self-slider pulse-part-slider--unset';
+  selfSlider.value = '0';
+  selfSlider.dataset.unset = 'true';
+  const selfValLbl = document.createElement('span');
+  selfValLbl.className = 'pulse-part-val';
+  selfValLbl.textContent = '–';
+  selfSlider.addEventListener('input', () => {
+    const v = Math.round(parseFloat(selfSlider.value));
+    selfValLbl.textContent = v + '%';
+    selfSlider.classList.remove('pulse-part-slider--unset');
+    delete selfSlider.dataset.unset;
+    _renderPulsePie();
+  });
+  selfRow.appendChild(selfDot); selfRow.appendChild(selfNameLbl); selfRow.appendChild(selfSlider); selfRow.appendChild(selfValLbl);
+  list.appendChild(selfRow);
 }
 
 function _renderPulsePie() {
@@ -7038,20 +7113,26 @@ function _renderPulsePie() {
   if (!list) return;
   const weights = {};
   list.querySelectorAll('.pulse-part-slider').forEach(slider => {
+    if (slider.dataset.unset) return;
     const v = parseFloat(slider.value);
-    if (v > 0) weights[slider.dataset.partId] = v;
+    if (v > 0) weights[slider.dataset.partId] = v / 100;
   });
+  const selfSlider = list.querySelector('.pulse-self-slider');
+  if (selfSlider && !selfSlider.dataset.unset) {
+    const sv = parseFloat(selfSlider.value);
+    if (sv > 0) weights['self'] = sv / 100;
+  }
   pieEl.innerHTML = '';
   if (Object.keys(weights).length === 0) return;
   pieEl.style.cssText = 'display:flex;flex-direction:row;align-items:flex-start;gap:14px;';
   buildBalancePie({ date: 'now', weights }, 110, pieEl, null);
 }
 
-function _openPulseModal(isAutoPrompt){
+function _openPulseModal(isAutoPrompt, bypassGate){
   if(IS_DEMO) return;
   const parts = appState.parts || [];
   if(parts.length === 0) return;
-  if(isAutoPrompt && !_checkinDueConsideringDismiss()) return;
+  if(isAutoPrompt && !bypassGate && !_checkinDueConsideringDismiss()) return;
   const modal = document.getElementById('pulse-modal');
   if(!modal) return;
   if(document.querySelector('.modal-overlay.open')) return;
@@ -7059,11 +7140,27 @@ function _openPulseModal(isAutoPrompt){
   if(!list) return;
   _buildPulseSliderList(list, parts);
   _renderPulsePie();
+  // Sync inline frequency select to current setting
+  const ciSel = document.getElementById('pulse-checkin-interval');
+  if(ciSel){
+    const raw = localStorage.getItem(CHECKIN_INTERVAL_KEY);
+    const val = (raw == null || raw === '0' || raw === '24') ? '0' : raw;
+    [...ciSel.options].forEach(o => o.selected = (o.value === val));
+  }
   modal.classList.add('open');
 }
 
+function _pulseIntervalChanged(val){
+  _setCheckinIntervalHours(parseInt(val, 10));
+  // Keep the settings modal select in sync if it's open
+  const settingsSel = document.getElementById('settings-checkin-interval');
+  if(settingsSel) [...settingsSel.options].forEach(o => o.selected = (o.value === val));
+}
+
 // Called by auto-prompt (day rollover / interval timer)
-function _showPulseModal(){ _openPulseModal(true); }
+function _showPulseModal(){ _openPulseModal(true, false); }
+// Called on first load of each day: bypasses interval/dismiss gate
+function _showPulseModalFirstLoad(){ _openPulseModal(true, true); }
 // Called by fbar button (manual, always opens)
 function openDailyPulse(){ _openPulseModal(false); }
 
@@ -7079,16 +7176,26 @@ function _submitPulseModal(){
   // Collect slider values and update blendedNow + balanceWeight
   const sliderWeights = {};
   list.querySelectorAll('.pulse-part-slider').forEach(slider => {
+    if (slider.dataset.unset) return;
     const id = slider.dataset.partId;
     const part = (appState.parts || []).find(p => p.id === id);
     if(!part) return;
-    const v = parseFloat(slider.value);
+    const v = Math.round(parseFloat(slider.value));
     part.blendedNow = v;
-    const old = part.balanceWeight != null ? part.balanceWeight : v / 10;
-    part.balanceWeight = old * 0.85 + (v / 10) * 0.15;
-    sliderWeights[id] = v / 10;
+    const old = part.balanceWeight != null ? part.balanceWeight : v / 100;
+    part.balanceWeight = old * 0.85 + (v / 100) * 0.15;
+    sliderWeights[id] = v / 100;
   });
-  if(appState._selfWeightNow != null) sliderWeights['self'] = appState._selfWeightNow;
+  // Self slider
+  const selfSlider = list.querySelector('.pulse-self-slider');
+  if (selfSlider && !selfSlider.dataset.unset) {
+    const sv = Math.round(parseFloat(selfSlider.value));
+    appState._selfWeightNow = sv / 100;
+    appState._selfWeight = sv / 100;
+    sliderWeights['self'] = sv / 100;
+  } else if(appState._selfWeightNow != null) {
+    sliderWeights['self'] = appState._selfWeightNow;
+  }
   saveState(appState);
 
   // Append this check-in to today's log
@@ -8172,16 +8279,16 @@ function _buildBackfillSliders(slidersEl, dateStr) {
     lbl.className = 'pie-edit-label';
     lbl.textContent = name;
     const sl = document.createElement('input');
-    sl.type = 'range'; sl.min = '0'; sl.max = '10'; sl.step = '0.5';
+    sl.type = 'range'; sl.min = '0'; sl.max = '100'; sl.step = '1';
     sl.className = 'pie-edit-slider';
     const w0 = _backfillWeights[id] != null ? _backfillWeights[id] : 0;
-    sl.value = String(Math.round(w0 * 20) / 2);
+    sl.value = String(Math.round(w0 * 100));
     const valEl = document.createElement('span');
     valEl.className = 'pie-edit-val';
-    valEl.textContent = parseFloat(sl.value).toFixed(1);
+    valEl.textContent = Math.round(parseFloat(sl.value)) + '%';
     sl.addEventListener('input', () => {
-      valEl.textContent = parseFloat(sl.value).toFixed(1);
-      _backfillWeights[id] = parseFloat(sl.value) / 10;
+      valEl.textContent = Math.round(parseFloat(sl.value)) + '%';
+      _backfillWeights[id] = parseFloat(sl.value) / 100;
     });
     row.appendChild(dot); row.appendChild(lbl); row.appendChild(sl); row.appendChild(valEl);
     slidersEl.appendChild(row);
@@ -8224,7 +8331,7 @@ function saveBackfillPanel(chartId) {
   const weights = {};
   Object.entries(_backfillWeights).forEach(([k, v]) => { if (v > 0.005) weights[k] = v; });
   const idx = hist.findIndex(h => h.date === dateStr);
-  const entry = { date: dateStr, weights };
+  const entry = { date: dateStr, weights, source: 'entry' };
   if (idx >= 0) hist[idx] = entry; else hist.push(entry);
   hist.sort((a, b) => a.date < b.date ? -1 : 1);
   saveBalHist(hist);
@@ -8402,16 +8509,16 @@ function renderSnapshotTable(s) {
         lbl.className = 'pie-edit-label';
         lbl.textContent = name;
         const sl = document.createElement('input');
-        sl.type = 'range'; sl.min = '0'; sl.max = '10'; sl.step = '0.5';
+        sl.type = 'range'; sl.min = '0'; sl.max = '100'; sl.step = '1';
         sl.className = 'pie-edit-slider';
         const w0 = editWeights[id] != null ? editWeights[id] : 0;
-        sl.value = String(Math.round(w0 * 20) / 2);
+        sl.value = String(Math.round(w0 * 100));
         const valEl = document.createElement('span');
         valEl.className = 'pie-edit-val';
-        valEl.textContent = parseFloat(sl.value).toFixed(1);
+        valEl.textContent = Math.round(parseFloat(sl.value)) + '%';
         sl.addEventListener('input', () => {
-          valEl.textContent = parseFloat(sl.value).toFixed(1);
-          editWeights[id] = parseFloat(sl.value) / 10;
+          valEl.textContent = Math.round(parseFloat(sl.value)) + '%';
+          editWeights[id] = parseFloat(sl.value) / 100;
         });
         row.appendChild(dot); row.appendChild(lbl); row.appendChild(sl); row.appendChild(valEl);
         expandCell.appendChild(row);
@@ -8547,7 +8654,7 @@ function switchTab(name) {
 
   if (name === 'map') {
     mapVx = {}; mapVy = {};
-    renderMap(appState);
+    requestAnimationFrame(() => renderMap(appState));
   }
   if (name === 'parts') {
     renderParts(appState);
@@ -8672,8 +8779,9 @@ function validateImport(p) {
   return errs.length ? errs[0] : null;
 }
 
-function applyUpdate(chatData) {
+function applyUpdate(chatData, importSource) {
   const raw = chatData ? JSON.stringify(chatData) : document.getElementById('json-input').value.trim();
+  const _importSource = importSource || 'import';
   try {
     const { result: p, stripped } = sanitizeImportHTML(JSON.parse(raw));
     if (stripped) showToast('HTML tags were removed from the import data.', 5000);
@@ -8777,9 +8885,9 @@ function applyUpdate(chatData) {
       merged.sessions.forEach(sess => {
         if (!sess.date || datesInHist.has(sess.date)) return;
         if (sess.weights && Object.keys(sess.weights).length > 0) {
-          hist.push({ date: sess.date, weights: sess.weights, source: 'import' });
+          hist.push({ date: sess.date, weights: sess.weights, source: _importSource });
         } else if (hasFallback) {
-          hist.push({ date: sess.date, weights: Object.assign({}, fallbackWeights), source: 'import' });
+          hist.push({ date: sess.date, weights: Object.assign({}, fallbackWeights), source: _importSource });
         }
         datesInHist.add(sess.date);
       });
@@ -8787,7 +8895,7 @@ function applyUpdate(chatData) {
       saveBalHist(hist);
     }
     if (merged.parts && merged.parts.some(p => p.balanceWeight)) {
-      snapshotBalance(merged, 'import');
+      snapshotBalance(merged, _importSource);
     }
 
     // Ensure all sessions have an id
@@ -9279,6 +9387,14 @@ function openSettingsModal(){
   if (ccEl) ccEl.checked = localStorage.getItem(CLOSE_CONFIRM_KEY) !== '0';
   const lohEl = document.getElementById('settings-lock-on-hide');
   if (lohEl) lohEl.checked = _getLockOnHide();
+  // Populate check-in interval select (default is "Once per day only" = '0')
+  const ciSel = document.getElementById('settings-checkin-interval');
+  if(ciSel){
+    const rawStored = localStorage.getItem(CHECKIN_INTERVAL_KEY);
+    // null means never configured before: default to once-per-day ('0')
+    const ciVal = (rawStored == null || rawStored === '0' || rawStored === '24') ? '0' : rawStored;
+    [...ciSel.options].forEach(o => o.selected = (o.value === ciVal));
+  }
   hideResetConfirm();
   document.getElementById('settings-modal').classList.add('open');
 }
@@ -9290,6 +9406,12 @@ function closeSettingsModal(){
 
 function showResetConfirm(){ document.getElementById('reset-confirm-row').style.display=''; }
 function hideResetConfirm(){ document.getElementById('reset-confirm-row').style.display='none'; }
+
+function settingsSaveCheckinInterval(){
+  const sel = document.getElementById('settings-checkin-interval');
+  if(!sel) return;
+  _setCheckinIntervalHours(parseInt(sel.value, 10));
+}
 
 function _setSettingsStatus(msg, type){
   const el = document.getElementById('settings-pin-status');
@@ -9556,6 +9678,17 @@ function _doInit() {
   const saved = loadState();
   if (saved) {
     appState = saved;
+    // Migrate blendedNow from old 0-10 scale to new 0-100 scale
+    (appState.parts || []).forEach(p => {
+      if (p.blendedNow != null && p.blendedNow <= 10 && p.blendedNow !== Math.round(p.blendedNow)) {
+        p.blendedNow = Math.round(p.blendedNow * 10);
+      } else if (p.blendedNow != null && p.blendedNow > 0 && p.blendedNow <= 10 && Number.isInteger(p.blendedNow)) {
+        // Integer value 1-10 is ambiguous but likely old scale — scale up if balanceWeight suggests it
+        if (p.balanceWeight != null && Math.abs(p.blendedNow / 10 - p.balanceWeight) < Math.abs(p.blendedNow / 100 - p.balanceWeight)) {
+          p.blendedNow = Math.round(p.blendedNow * 10);
+        }
+      }
+    });
     // Backfill ids for sessions/memories from before id field was added
     (appState.sessions || []).forEach(sess => {
       if (!sess.id) sess.id = 'sess-' + (sess.date || Date.now()) + '-' + Math.random().toString(36).slice(2, 7);
@@ -9591,7 +9724,12 @@ function _doInit() {
     }
     render(appState);
     maybeShowResetUndoBanner();
-    _showPulseModal();
+    // On first load of a new day, always show check-in regardless of dismiss/interval.
+    const _todayDate = _pulseEffectiveDate();
+    const _lastLoadDate = localStorage.getItem(CHECKIN_LOAD_DATE_KEY);
+    const _isFirstLoadOfDay = _lastLoadDate !== _todayDate;
+    if(!IS_DEMO) try{ localStorage.setItem(CHECKIN_LOAD_DATE_KEY, _todayDate); }catch{}
+    if(_isFirstLoadOfDay){ _showPulseModalFirstLoad(); } else { _showPulseModal(); }
     // Show disclaimer banner on first load (dismissable; persists until "Don't show again")
     if (!localStorage.getItem(HIDE_DISC_BANNER_KEY)) {
       const db = document.getElementById('disclaimer-banner');
@@ -10552,7 +10690,7 @@ async function chatSend() {
 
 function chatApplyUpdate() {
   if (!chatState.pendingJSON || chatState.isLoading) return;
-  applyUpdate(chatState.pendingJSON);
+  applyUpdate(chatState.pendingJSON, 'chat');
   const statusEl = document.getElementById('modal-status');
   const failed = statusEl && statusEl.classList.contains('err');
   if (!failed) {
@@ -11545,11 +11683,18 @@ function saveChatSettingsFromForm() {
   const ctxEl    = document.getElementById('ts-chat-numctx');
   const preset   = presetEl ? presetEl.value : '';
   const modelId  = (preset === 'custom' && customEl) ? (customEl.value.trim() || 'gemma3:4b') : (preset || 'gemma3:4b');
+  const errEl = document.getElementById('ts-apikey-error');
+  if (errEl) errEl.textContent = '';
   if (modelId.startsWith('claude-') && keyEl?.value.trim() && !(typeof _hasPIN === 'function' && _hasPIN())) {
     showToast('Set up a security password in Security (bottom bar) before saving an API key. This keeps your key encrypted in the browser.');
     return;
   }
   const s = loadChatSettings();
+  if (modelId.startsWith('claude-') && !keyEl?.value.trim() && !s.apiKey) {
+    if (errEl) { errEl.textContent = 'An API key is required to use this model. Paste your key above.'; }
+    document.getElementById('ts-chat-apikey')?.focus();
+    return;
+  }
   if (keyEl) s.apiKey = keyEl.value.trim();
   s.model = modelId;
   s.maxTokens = tokensEl ? (parseInt(tokensEl.value) || 4096) : 4096;
@@ -12053,7 +12198,7 @@ document.addEventListener('keydown', function(e) {
       </div>
       <p class="chat-api-note" style="margin-top:8px;">Compaction summarises older messages so the session can continue without hitting context limits.</p>
     </div>
-    <div class="modal-row" style="margin-top:18px;">
+    <div class="modal-row" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
       <button class="btn-primary" onclick="saveChatSettingsFromForm()">Save</button>
       <button class="btn-ghost" onclick="closeChatSettings()">Cancel</button>
     </div>
@@ -12118,7 +12263,7 @@ document.addEventListener('keydown', function(e) {
       <span class="os-step os-mac os-win os-linux">2. Run: <code>llmfit fit</code> <button class="ollama-mini-btn ollama-copy-btn" onclick="_ollamaCopyCmd('llmfit fit',this)">copy</button></span>
     </div>
 
-    <div class="modal-row" style="margin-top:18px;">
+    <div class="modal-row" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
       <button class="btn-ghost" onclick="closeModelGuide()">Close</button>
     </div>
   </div>
