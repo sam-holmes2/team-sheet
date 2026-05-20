@@ -55,6 +55,10 @@ body {
   max-width:1400px; margin:0 auto;
   display:flex; flex-direction:column;
 }
+body.map-tab-active {
+  overflow:hidden;
+  padding-bottom:0;
+}
 /* ── Typography ── */
 h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .app-left {
@@ -98,19 +102,17 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .system-desc:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.01); }
 .system-desc:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
 .journal-intentions {
-  display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:auto auto auto auto; gap:0 16px;
+  display:grid; grid-template-columns:1fr 1fr 1fr; gap:0 16px;
   margin-bottom:32px; padding-bottom:28px;
   border-bottom:1px solid var(--border);
 }
-/* Each group spans a column; use subgrid to share row heights across all three */
 .journal-intention-group {
-  display:grid; grid-row:1 / -1; grid-template-rows:subgrid;
-  gap:0; align-content:start;
+  display:flex; flex-direction:column; gap:0; align-content:start;
 }
 .journal-intention-label {
   font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em;
   text-transform:uppercase; color:var(--gold); padding-bottom:8px; margin-bottom:0;
-  align-self:end;
+  align-self:end; text-align:center;
 }
 .journal-intention-item {
   font-size:16px; color:var(--text-b); line-height:1.55;
@@ -131,11 +133,15 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   .journal-intention-group { grid-row:auto; grid-template-rows:none; margin-bottom:20px; }
 }
 .journal-overview { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(128,144,168,0.15); }
-.journal-overview-title { font-family:'Cinzel',serif; font-size:15px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+.journal-overview-title { font-family:'Cinzel',serif; font-size:16px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+.journal-intention-extra { display:none; }
+.journal-intention-extra.open { display:block; }
+.intention-expand-hint { font-size:10px; opacity:0.5; margin-left:4px; transition:transform 0.2s; display:inline-block; }
+.journal-intention-label.open .intention-expand-hint { transform:rotate(180deg); }
 
 /* ── Body diagram panel (Body tab) ── */
 .body-diagram-panel { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid var(--border); }
-.bd-panel-title { font-family:'Cinzel',serif; font-size:14px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+.bd-panel-title { font-family:'Cinzel',serif; font-size:16px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
 .bd-controls { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:14px; }
 .bd-control-group { display:flex; align-items:center; gap:8px; }
 .bd-control-label { font-family:var(--mono); font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); white-space:nowrap; }
@@ -246,9 +252,9 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .card-hdr.gold { color:var(--gold); }
 .section-heading {
-  font-family:'Cinzel',serif; font-size:15px; letter-spacing:0.16em;
+  font-family:'Cinzel',serif; font-size:16px; font-weight:700; letter-spacing:0.14em;
   text-transform:uppercase; color:var(--gold);
-  margin-bottom:6px;
+  margin-bottom:8px;
 }
 
 /* ── Role tags ── */
@@ -686,9 +692,15 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   text-transform:uppercase; color:var(--gold);
 }
 .parts-dist-pie-row { display:flex; align-items:flex-start; gap:16px; }
+.parts-dist-three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; width:100%; }
+.parts-dist-col { display:flex; flex-direction:column; align-items:flex-start; padding:0 20px; }
+.parts-dist-col:first-child { padding-left:0; }
+.parts-dist-col:last-child { padding-right:0; }
+.parts-dist-col--center { border-left:1px solid var(--border); border-right:1px solid var(--border); }
+.parts-dist-col .parts-dist-pie-row { width:100%; flex-wrap:nowrap; }
 .parts-dist-top { display:block; margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid var(--border); }
-.parts-dist-section-hdr { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em; color:var(--text-dim); text-transform:uppercase; opacity:0.7; margin-bottom:10px; }
-.parts-dist-pie-title { font-family:var(--mono); font-size:13px; letter-spacing:0.08em; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px; }
+.parts-dist-section-hdr { font-family:'Cinzel',serif; font-size:16px; font-weight:700; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; margin-bottom:12px; }
+.parts-dist-pie-title { font-family:'Cinzel',serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; margin-bottom:6px; opacity:0.75; }
 @keyframes bal-edit-btn-pulse {
   0%,100% { color:var(--text-dim); }
   50%      { color:rgba(200,168,74,0.9); text-shadow:0 0 8px rgba(200,168,74,0.35); }
@@ -949,6 +961,41 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   color:var(--text-mid);
 }
 
+/* ── Parts timeline ── */
+#parts-timeline-section { margin-bottom:4px; }
+#parts-timeline-layout { border-radius:8px; overflow:hidden; background:rgba(0,0,0,0.18); }
+#parts-timeline-labels { background:rgba(0,0,0,0.10); border-right:1px solid rgba(255,255,255,0.06); }
+#parts-timeline-canvas { display:block; }
+#parts-timeline-legend { min-height:16px; }
+
+/* ── Part origin age ── */
+.part-origin-row {
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+}
+.part-origin-label {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--text-dim);
+  cursor:default;
+}
+.part-origin-input {
+  width:52px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:4px;
+  color:var(--text);
+  font-family:var(--mono);
+  font-size:13px;
+  padding:2px 6px;
+  text-align:center;
+}
+.part-origin-input:focus { outline:none; border-color:var(--border-hi); }
+
 .journal-starters {
   margin-bottom:24px;
 }
@@ -1079,6 +1126,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .welcome-opt-ghost { background:none; border:1px solid var(--border-hi); color:var(--text-dim); }
 .welcome-opt-ghost:hover { border-color:var(--text-dim); color:var(--text); }
 .welcome-opt-ghost.active { border-color:var(--gold); color:var(--gold); }
+.welcome-opt-ghost.active-noai  { border-color:#6090c8; color:#6090c8; }
+.welcome-opt-ghost.active-cloud { border-color:#f09090; color:#f09090; }
 #welcome-setup-steps { display:none; margin-top:18px; padding-top:18px; border-top:1px solid var(--border-hi); }
 .welcome-step { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
 .welcome-step:last-child { border-bottom:none; }
@@ -1572,16 +1621,16 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 #pulse-modal .modal-title { color:var(--gold); }
 .pulse-subtitle { font-size:14px; color:var(--text-dim); margin-bottom:14px; line-height:1.5; }
 .pulse-parts-list { display:flex; flex-direction:column; gap:0; margin-bottom:16px; }
-.pulse-part-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--border); }
+.pulse-part-row { display:grid; grid-template-columns:10px 140px 1fr 36px; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--border); }
 .pulse-part-row:last-child { border-bottom:none; }
-.pulse-part-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-.pulse-part-name { font-size:15px; color:var(--text-b); flex-shrink:0; min-width:90px; max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.pulse-part-slider { flex:1; accent-color:var(--gold); cursor:pointer; }
+.pulse-part-dot { width:8px; height:8px; border-radius:50%; }
+.pulse-part-name { font-size:15px; color:var(--text-b); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pulse-part-slider { width:100%; accent-color:var(--gold); cursor:pointer; }
 .pulse-part-slider--unset { accent-color:rgba(200,168,74,0.3); outline:none; box-shadow:0 0 0 1.5px rgba(200,168,74,0.55); border-radius:4px; animation:pulse-slider-glow 2s ease-in-out infinite; }
 @keyframes pulse-slider-glow { 0%,100%{box-shadow:0 0 0 1.5px rgba(200,168,74,0.35);} 50%{box-shadow:0 0 0 2px rgba(200,168,74,0.7), 0 0 8px rgba(200,168,74,0.2);} }
-.pulse-self-row { display:flex;align-items:center;gap:10px;padding:8px 0 6px;border-top:1px solid var(--border);margin-top:4px; }
-.pulse-self-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--self-color); }
-.pulse-self-name { font-size:15px;color:var(--text-b);flex-shrink:0;min-width:90px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic; }
+.pulse-self-row { display:grid; grid-template-columns:10px 140px 1fr 36px; align-items:center; gap:10px; padding:8px 0 6px; border-top:1px solid var(--border); margin-top:4px; }
+.pulse-self-dot { width:8px;height:8px;border-radius:50%;background:var(--self-color); }
+.pulse-self-name { font-size:15px;color:var(--text-b);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic; }
 .pulse-self-slider { flex:1;accent-color:rgba(232,223,200,0.7);cursor:pointer; }
 .pulse-self-slider.pulse-part-slider--unset { accent-color:rgba(232,223,200,0.3);animation:pulse-slider-glow 2s ease-in-out infinite; }
 .pulse-part-val { font-size:13px; color:var(--text-dim); min-width:32px; text-align:right; font-family:var(--mono); }
@@ -1595,9 +1644,104 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 .pulse-done-btn:hover { background:rgba(200,168,74,0.18); }
 .btn-gold-ghost { background:rgba(200,168,74,0.1);border:1px solid rgba(200,168,74,0.45);color:var(--gold);transition:background 0.15s; }
 .btn-gold-ghost:hover { background:rgba(200,168,74,0.18); }
+
+/* ══ INTRO TOUR ════════════════════════════════════════════ */
+#tour-overlay {
+  display:none; position:fixed; inset:0; z-index:9000;
+}
+#tour-overlay.active { display:block; }
+
+#tour-scrim {
+  position:absolute; inset:0;
+  background:rgba(0,0,0,0.55);
+  pointer-events:auto;
+}
+#tour-spotlight {
+  position:absolute;
+  border-radius:6px;
+  box-shadow:0 0 0 9999px rgba(0,0,0,0.55), 0 0 0 2px var(--gold);
+  transition:all 0.25s ease;
+  pointer-events:none;
+  outline:2px solid transparent;
+}
+#tour-spotlight.hidden { opacity:0; box-shadow:none; outline:none; }
+
+#tour-card {
+  position:absolute;
+  background:var(--surface);
+  border:1px solid var(--border-hi);
+  border-top:3px solid var(--gold);
+  border-radius:6px;
+  padding:18px 18px 14px;
+  max-width:320px;
+  width:calc(100vw - 32px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.6);
+  pointer-events:auto;
+  z-index:1;
+}
+#tour-card.tour-card-center {
+  position:fixed;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+}
+#tour-card:not(.tour-card-center) { transform:none; }
+
+.tour-step-label {
+  font-family:var(--mono); font-size:11px;
+  color:var(--gold); letter-spacing:0.08em;
+  text-transform:uppercase; margin-bottom:6px;
+}
+.tour-heading {
+  font-family:'Cinzel',serif; font-size:15px;
+  color:var(--text-b); margin-bottom:8px; line-height:1.35;
+}
+.tour-body {
+  font-size:14px; color:var(--text-mid);
+  line-height:1.55; margin-bottom:12px;
+}
+.tour-body strong { color:var(--text-b); font-weight:600; }
+.tour-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.tour-btn-next {
+  background:var(--gold); border:none; color:#1a1208;
+  font-family:'Cinzel',serif; font-size:12px;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:7px 16px; border-radius:4px; cursor:pointer;
+  transition:filter 0.15s;
+}
+.tour-btn-next:hover { filter:brightness(1.12); }
+.tour-btn-skip {
+  background:none; border:none; color:var(--text-dim);
+  font-size:13px; cursor:pointer; padding:4px 2px;
+  transition:color 0.15s;
+}
+.tour-btn-skip:hover { color:var(--text); }
+.tour-progress {
+  display:flex; gap:5px; align-items:center; margin-left:auto;
+}
+.tour-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--border-hi); transition:background 0.2s;
+}
+.tour-dot.active { background:var(--gold); }
+.tour-cta-row { display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
+.tour-cta-btn {
+  display:flex; flex-direction:column; gap:2px;
+  background:none; border:1px solid var(--border-hi);
+  color:var(--text-mid); border-radius:4px;
+  padding:9px 12px; cursor:pointer; text-align:left;
+  font-size:13px; line-height:1.4;
+  transition:border-color 0.15s, background 0.15s;
+}
+.tour-cta-btn strong { color:var(--gold); font-size:13px; display:block; }
+.tour-cta-btn:hover { border-color:var(--gold); background:rgba(200,168,74,0.07); }
+@media (max-width:480px) {
+  #tour-card { padding:15px 15px 12px; }
+}
+/* ══ WELCOME MODAL: active-state colors for new option C ══ */
+.welcome-opt-ghost.active-green { border-color:#50c878; color:#50c878; }
 </style>
 </head>
-<body>
+<body class="map-tab-active">
 
 <!-- ══ HEADER + NAV (sticky) ════════════════════════════════════ -->
 <div class="sticky-top">
@@ -1636,7 +1780,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <button class="tab-btn"        data-tab="body"    onclick="switchTab('body')"     title="Body: where each part lives as a physical sensation. Drag dots onto the body outline to place them; the spread slider shows how localised or diffuse the feeling is."><span class="tab-nav-count" id="nav-body">0</span>Body</button>
   <button class="tab-btn"        data-tab="self"    onclick="switchTab('self')"     title="Self: the uninjured witnessing presence at your core. Track the 8 Cs and 5 Ps, qualities like curiosity, calm, and compassion that emerge when Self leads."><span class="tab-nav-count" id="nav-self">0</span>Self</button>
   <button class="tab-btn"        data-tab="journal"  onclick="switchTab('journal')"  title="Journal: your AI session log. Each entry records which parts were active, what was explored, and any Self-led moments or breakthroughs that emerged."><span class="tab-nav-count" id="nav-journal">0</span>Journal</button>
-  <button class="tab-btn"        data-tab="timeline" onclick="switchTab('timeline')" title="Timeline: when each part first emerged in your life. Parts arise in response to experience; seeing the chronology can reveal why protective parts formed."><span class="tab-nav-count" id="nav-timeline">0</span>Timeline</button>
+  <button class="tab-btn"        data-tab="timeline" onclick="switchTab('timeline')" title="History: your system over time. Charts show part leadership across all sessions, and memories anchor key life events to the timeline."><span class="tab-nav-count" id="nav-timeline">0</span>History</button>
 </nav>
 </div>
 
@@ -1715,16 +1859,16 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <div id="parts-dist-top" class="parts-dist-top" style="display:none;">
     <div style="width:100%;">
       <div class="parts-dist-section-hdr">Team Composition</div>
-      <div style="display:flex;justify-content:space-between;gap:24px;align-items:flex-start;max-width:560px;">
-        <div>
+      <div class="parts-dist-three-col">
+        <div class="parts-dist-col">
           <div class="parts-dist-pie-title" id="parts-dist-now-label">Latest</div>
           <div id="parts-dist-now" class="parts-dist-pie-row"></div>
         </div>
-        <div>
+        <div class="parts-dist-col parts-dist-col--center">
           <div class="parts-dist-pie-title" id="parts-dist-week-label">This week</div>
           <div id="parts-dist-week" class="parts-dist-pie-row"></div>
         </div>
-        <div>
+        <div class="parts-dist-col">
           <div class="parts-dist-pie-title">All time</div>
           <div id="parts-dist-alltime-parts" class="parts-dist-pie-row"></div>
         </div>
@@ -1760,52 +1904,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 
 <!-- ══ TAB: JOURNAL ══════════════════════════════════════════════ -->
 <div id="tab-journal" class="tab-panel">
-  <!-- Active tensions, key questions, key experiments -->
-  <div class="journal-intentions">
-    <div class="journal-intention-group">
-      <div class="journal-intention-label">Active tensions</div>
-      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-kt-1" contenteditable="true" spellcheck="false" data-field="topTension1" data-placeholder="Which parts are most at odds right now?"></div></div>
-      <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-kt-2" contenteditable="true" spellcheck="false" data-field="topTension2" data-placeholder="What is each side protecting?"></div></div>
-      <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-kt-3" contenteditable="true" spellcheck="false" data-field="topTension3" data-placeholder="What would it take for them to soften?"></div></div>
-    </div>
-    <div class="journal-intention-group">
-      <div class="journal-intention-label">Key questions</div>
-      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-kq-1" contenteditable="true" spellcheck="false" data-field="keyQuestion1" data-placeholder="What is this part trying to protect?"></div></div>
-      <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-kq-2" contenteditable="true" spellcheck="false" data-field="keyQuestion2" data-placeholder="When did this part first show up?"></div></div>
-      <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-kq-3" contenteditable="true" spellcheck="false" data-field="keyQuestion3" data-placeholder="What does it need from Self?"></div></div>
-    </div>
-    <div class="journal-intention-group">
-      <div class="journal-intention-label">Key experiments</div>
-      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-ke-1" contenteditable="true" spellcheck="false" data-field="keyExperiment1" data-placeholder="Notice when this part activates this week."></div></div>
-      <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-ke-2" contenteditable="true" spellcheck="false" data-field="keyExperiment2" data-placeholder="Try speaking to it with curiosity rather than frustration."></div></div>
-      <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-ke-3" contenteditable="true" spellcheck="false" data-field="keyExperiment3" data-placeholder="Spend 5 minutes with a part that rarely gets attention."></div></div>
-    </div>
-  </div>
-  <div id="journal-system-summary" class="journal-overview">
-    <div style="display:flex;gap:20px;align-items:flex-start;">
-      <div style="flex:1;min-width:0;">
-        <div class="journal-overview-title">Summary of system</div>
-        <div class="system-desc" id="system-summary-display" contenteditable="true" spellcheck="false" data-placeholder="Type a summary here, or your AI will fill this in after sessions."></div>
-        <div id="system-meta-row" style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;"></div>
-      </div>
-      <div style="flex-shrink:0;">
-        <div class="parts-dist-pie-title">All time</div>
-        <div id="parts-dist-alltime" class="parts-dist-pie-row"></div>
-      </div>
-    </div>
-  </div>
-  <div id="journal-recent-shifts" class="journal-overview">
-    <div style="display:flex;gap:20px;align-items:flex-start;">
-      <div style="flex:1;min-width:0;">
-        <div class="journal-overview-title">Recent shifts</div>
-        <div class="system-desc" id="recent-shifts-display" contenteditable="true" spellcheck="false" data-placeholder="No recent shifts recorded yet."></div>
-      </div>
-      <div style="flex-shrink:0;">
-        <div class="parts-dist-pie-title">Latest</div>
-        <div id="parts-dist-latest" class="parts-dist-pie-row"></div>
-      </div>
-    </div>
-  </div>
+  <!-- Chat + Session starters (top) -->
   <div class="journal-starters">
     <div class="journal-starters-header">
       <button class="btn-primary chat-open-btn" onclick="openChat()">&#10022; Open chat</button>
@@ -1836,26 +1935,54 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       </div>
     </div>
   </div>
-  <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
-    <div class="section-heading" style="margin-bottom:0;">Sessions</div>
-    <button class="btn-primary" onclick="addSession()">+ Add session</button>
-  </div>
-  <div id="sessions-list"></div>
-  <div id="sessions-empty" style="color:var(--text-dim);font-size:15px;display:none;">
-    No sessions yet. Use "+ Add session" above to create one manually, or journal with your AI and import the update.
-  </div>
-</div>
 
-<!-- ══ TAB: TIMELINE ══════════════════════════════════════════════ -->
-<div id="tab-timeline" class="tab-panel">
-  <div id="timeline-empty" style="color:var(--text-dim);font-size:15px;display:none;">
-    No session history yet. Add sessions in the Journal tab to see the timeline chart.
+  <!-- Active tensions, key questions, key experiments (collapsible: top item visible, rest hidden) -->
+  <div class="journal-intentions">
+    <div class="journal-intention-group">
+      <div class="journal-intention-label" onclick="toggleIntentionGroup(this)" style="cursor:pointer;user-select:none;">Active tensions <span class="intention-expand-hint" id="hint-kt">&#9660;</span></div>
+      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-kt-1" contenteditable="true" spellcheck="false" data-field="topTension1" data-placeholder="Which parts are most at odds right now?"></div></div>
+      <div class="journal-intention-extra" id="extra-kt">
+        <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-kt-2" contenteditable="true" spellcheck="false" data-field="topTension2" data-placeholder="Second tension..."></div></div>
+        <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-kt-3" contenteditable="true" spellcheck="false" data-field="topTension3" data-placeholder="Third tension..."></div></div>
+      </div>
+    </div>
+    <div class="journal-intention-group">
+      <div class="journal-intention-label" onclick="toggleIntentionGroup(this)" style="cursor:pointer;user-select:none;">Key questions <span class="intention-expand-hint" id="hint-kq">&#9660;</span></div>
+      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-kq-1" contenteditable="true" spellcheck="false" data-field="keyQuestion1" data-placeholder="What is this part trying to protect?"></div></div>
+      <div class="journal-intention-extra" id="extra-kq">
+        <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-kq-2" contenteditable="true" spellcheck="false" data-field="keyQuestion2" data-placeholder="Second question..."></div></div>
+        <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-kq-3" contenteditable="true" spellcheck="false" data-field="keyQuestion3" data-placeholder="Third question..."></div></div>
+      </div>
+    </div>
+    <div class="journal-intention-group">
+      <div class="journal-intention-label" onclick="toggleIntentionGroup(this)" style="cursor:pointer;user-select:none;">Key experiments <span class="intention-expand-hint" id="hint-ke">&#9660;</span></div>
+      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-ke-1" contenteditable="true" spellcheck="false" data-field="keyExperiment1" data-placeholder="Notice when this part activates."></div></div>
+      <div class="journal-intention-extra" id="extra-ke">
+        <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-ke-2" contenteditable="true" spellcheck="false" data-field="keyExperiment2" data-placeholder="Second experiment..."></div></div>
+        <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-ke-3" contenteditable="true" spellcheck="false" data-field="keyExperiment3" data-placeholder="Third experiment..."></div></div>
+      </div>
+    </div>
   </div>
 
-  <div id="timeline-recent-section" style="display:none;">
-    <div style="margin-bottom:14px;">
+  <!-- Recent shifts -->
+  <div id="journal-recent-shifts" class="journal-overview">
+    <div style="display:flex;gap:20px;align-items:flex-start;">
+      <div style="flex:1;min-width:0;">
+        <div class="journal-overview-title">Recent shifts</div>
+        <div class="system-desc" id="recent-shifts-display" contenteditable="true" spellcheck="false" data-placeholder="No recent shifts recorded yet."></div>
+      </div>
+      <div style="flex-shrink:0;">
+        <div class="parts-dist-pie-title">Latest</div>
+        <div id="parts-dist-latest" class="parts-dist-pie-row"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Since you started chart (moved from History tab) -->
+  <div id="journal-timeline-section" style="display:none;margin-bottom:28px;">
+    <div style="margin-bottom:10px;">
       <div class="section-heading">Since you started</div>
-      <p class="balance-note" style="margin:0;">Part leadership across all sessions. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll). Faint vertical lines show distribution snapshots, colored by source (see key below).</p>
+      <p class="balance-note" style="margin:0;">Part leadership across all sessions. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll).</p>
     </div>
     <div style="position:relative;width:100%;margin-bottom:8px;">
       <canvas id="balance-area-canvas-recent" style="cursor:pointer;display:block;width:100%;"></canvas>
@@ -1872,52 +1999,44 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     </div>
   </div>
 
-  <div id="timeline-alltime-section" style="display:none;margin-top:36px;">
-    <div style="margin-bottom:14px;">
-      <div class="section-heading">All time</div>
-      <p class="balance-note" style="margin:0;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
-        <span style="flex:1;">Your full history of part leadership including pre-app memories. Gold lines mark sessions (click to open); blue lines mark memories (click to scroll). Faint vertical lines show distribution snapshots, colored by source (see key below).</span>
-        <label style="white-space:nowrap;color:var(--text-dim);font-size:13px;">Born: <input type="date" id="birth-date-input" style="background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:3px;padding:1px 4px;font-size:13px;font-family:inherit;" oninput="if(!appState.system)appState.system={};appState.system.birthDate=this.value;saveState(appState);renderTimeline(appState);" /></label>
-      </p>
-    </div>
-    <div id="balance-area-wrap" style="display:none;">
-      <canvas id="balance-area-canvas" style="cursor:pointer;"></canvas>
-      <div class="balance-area-legend" id="balance-area-legend"></div>
-    </div>
-    <div class="backfill-panel" id="backfill-panel-alltime">
-      <div class="backfill-panel-heading">Add snapshot</div>
-      <div class="backfill-date-row">
-        <label>Date: <input type="date" id="backfill-date-alltime" /></label>
-        <button class="btn-primary" style="font-size:13px;padding:4px 12px;" onclick="saveBackfillPanel('alltime')">Save</button>
-        <button class="btn-ghost" style="font-size:13px;padding:4px 10px;" onclick="closeBackfillPanel('alltime')">Cancel</button>
-      </div>
-      <div id="backfill-sliders-alltime"></div>
+  <!-- Sessions -->
+  <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
+    <div class="section-heading" style="margin-bottom:0;">Sessions</div>
+    <button class="btn-primary" onclick="addSession()">+ Add session</button>
+  </div>
+  <div id="sessions-list"></div>
+  <div id="sessions-empty" style="color:var(--text-dim);font-size:15px;display:none;">
+    No sessions yet. Use "+ Add session" above to create one manually, or journal with your AI and import the update.
+  </div>
+</div>
+
+<!-- ══ TAB: HISTORY (formerly Timeline) ══════════════════════════ -->
+<div id="tab-timeline" class="tab-panel">
+
+  <!-- Summary of system -->
+  <div id="journal-system-summary" class="journal-overview">
+    <div style="flex:1;min-width:0;">
+      <div class="journal-overview-title">Summary of system</div>
+      <div class="system-desc" id="system-summary-display" contenteditable="true" spellcheck="false" data-placeholder="Type a summary here, or your AI will fill this in after sessions."></div>
+      <div id="system-meta-row" style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;"></div>
     </div>
   </div>
 
-  <div id="snapshot-table-section" style="margin-top:28px;display:none;">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap;">
-      <div class="section-heading" style="margin-bottom:0;">Team composition history</div>
-      <button class="btn-primary" style="font-size:13px;padding:3px 12px;" onclick="openBackfillPanel('table', null)">+ Add snapshot</button>
+  <!-- Parts timeline: vertical ticks per memory, color-coded by part -->
+  <div id="parts-timeline-section" style="margin-top:28px;">
+    <div style="margin-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div class="section-heading" style="margin-bottom:0;">Parts timeline</div>
+      <span style="font-size:13px;color:var(--text-dim);flex:1;">Each mark is a memory or Self moment. Diamond marks show when a part first formed. Click any mark to navigate.</span>
     </div>
-    <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">All composition snapshots. Every row is editable. Source: check-in (pulse modal), your AI (chat update), entry (UI slider or manual add), import (data.json restore).</p>
-    <div class="backfill-panel" id="backfill-panel-table">
-      <div class="backfill-panel-heading">Add snapshot</div>
-      <div class="backfill-date-row">
-        <label>Date: <input type="date" id="backfill-date-table" /></label>
-        <button class="btn-primary" style="font-size:13px;padding:4px 12px;" onclick="saveBackfillPanel('table')">Save</button>
-        <button class="btn-ghost" style="font-size:13px;padding:4px 10px;" onclick="closeBackfillPanel('table')">Cancel</button>
-      </div>
-      <div id="backfill-sliders-table"></div>
-    </div>
-    <div id="snapshot-table-container"></div>
+    <div id="parts-timeline-empty" style="color:var(--text-dim);font-size:14px;display:none;">No memories yet. Add memories below to see the timeline.</div>
+    <div id="parts-timeline-legend" style="display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:8px;"></div>
   </div>
 
   <!-- Memories -->
-  <div id="memories-section" style="margin-top:36px;margin-bottom:36px;">
+  <div id="memories-section" style="margin-top:28px;margin-bottom:36px;">
     <div style="margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
       <div class="section-heading" style="margin-bottom:0;">Memories</div>
-      <span style="font-size:14px;color:var(--text-dim);flex:1;">Significant events inferred across sessions.</span>
+      <span style="font-size:14px;color:var(--text-dim);flex:1;">Significant events linked to parts.</span>
       <button class="btn-primary" onclick="addMemory()">+ Add memory</button>
     </div>
     <div id="memories-list"></div>
@@ -1984,36 +2103,46 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 <!-- ══ WELCOME MODAL ════════════════════════════════════════════ -->
 <div class="modal-overlay" id="welcome-modal">
   <div class="modal">
-    <div class="modal-title">WELCOME TO TEAM-SHEET</div>
-    <p class="welcome-modal-desc">Your mind is made up of <strong style="color:var(--text-b);">parts</strong>: the one that drives you forward, the one that shuts down, the one that numbs when things get hard. IFS (Internal Family Systems) is a therapeutic framework built on this insight. team-sheet maps your inner system as it grows through journalling — no prior IFS experience needed.</p>
+    <div class="modal-title">&#10022; &nbsp;WELCOME TO TEAM-SHEET</div>
+    <p class="welcome-modal-desc">Your mind is made up of <strong style="color:var(--text-b);">parts</strong>: the one that pushes forward, the one that shuts down, the one that numbs when things get hard. team-sheet maps your inner system as it grows through reflection. No prior IFS experience needed.</p>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">How do you want to use it? You can change this at any time.</div>
     <div class="welcome-options">
-      <button class="welcome-opt-btn welcome-opt-primary" id="welcome-setup-btn" onclick="toggleWelcomeSetup('manual')">Fill in manually</button>
-      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-ai-btn" onclick="toggleWelcomeSetup('ai')">Set up with AI</button>
-      <button class="welcome-opt-btn welcome-opt-ghost" onclick="dismissWelcome();openModal()">Import existing data</button>
+      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-setup-btn" onclick="toggleWelcomeSetup('manual')">A &nbsp;Fill it in yourself</button>
+      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-ai-btn" onclick="toggleWelcomeSetup('ai')">B &nbsp;Copy-paste with your AI</button>
+      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-chat-btn" onclick="toggleWelcomeSetup('chat')">C &nbsp;Chat inside the app</button>
     </div>
     <div style="margin:10px 0 2px;border-top:1px solid var(--border);padding-top:12px;">
-      <button onclick="dismissWelcome();openChat()" class="btn-gold-ghost" style="width:100%;padding:11px 16px;font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;border-radius:5px;cursor:pointer;">&#10022; Chat: journal with an Anthropic API key or Ollama, no copy-paste</button>
+      <button onclick="dismissWelcome();openModal()" class="btn-gold-ghost" style="width:100%;padding:11px 16px;font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;border-radius:5px;cursor:pointer;">&#10022; Already have data? Import it</button>
     </div>
     <div id="welcome-setup-steps" data-mode="">
-      <!-- Manual path -->
+      <!-- Path A: Fill it in yourself -->
       <div class="welcome-path" id="welcome-path-manual">
-        <div class="welcome-step"><div class="welcome-step-num">1</div><div class="welcome-step-text"><strong>Go to the Parts tab</strong> and click "+ Add part". Start with whatever you notice most in yourself: a voice, a pattern, a recurring tension.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num">2</div><div class="welcome-step-text"><strong>Give it a name and a role</strong> (Manager, Firefighter, or Exile). Fill in what you know: what it does, what it fears, when it shows up. You don't need to fill everything at once.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num">3</div><div class="welcome-step-text"><strong>Open the Map tab</strong> to see your parts visualised as nodes. Add connections between parts in each part's Relationships section.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num">4</div><div class="welcome-step-text"><strong>Export regularly.</strong> Use the Export button (↓ in the bottom bar) to save a backup. Your data only exists in this browser, so Export is your safety net.</div></div>
-        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:var(--text);">✦</div><div class="welcome-step-text" style="color:var(--text);">You can add AI journalling at any time. Download instructions.md from Help (? button) and upload it to a project in your AI of choice.</div></div>
+        <div style="font-size:13px;color:#6090c8;margin:14px 0 10px;font-weight:600;">A &nbsp;Fill it in yourself &mdash; no AI required, works completely offline</div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">1</div><div class="welcome-step-text"><strong>Go to the Parts tab</strong> and click "+ Add part". Start with whatever you notice most in yourself: a voice, a pattern, a recurring tension.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">2</div><div class="welcome-step-text"><strong>Give it a name and a role</strong> (Manager, Firefighter, or Exile). Fill in what you know: what it does, what it fears, when it shows up. No need to fill everything at once.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">3</div><div class="welcome-step-text"><strong>Open the Map tab</strong> to see your parts as a visual network. Add connections between parts in each part's Relationships section.</div></div>
+        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#6090c8;">4</div><div class="welcome-step-text"><strong>Export regularly</strong> using the Data button (bottom bar). Your data only exists in this browser, so Export is your backup.</div></div>
       </div>
-      <!-- AI path -->
+      <!-- Path B: Copy-paste with your AI -->
       <div class="welcome-path" id="welcome-path-ai" style="display:none;">
-        <div class="welcome-step"><div class="welcome-step-num">1</div><div class="welcome-step-text"><strong>Download instructions.md</strong> — the file that tells your AI how team-sheet works and what data to produce. <button class="btn-download" style="margin-left:6px;" onclick="downloadInstructionsMd(this)">↓ instructions.md</button></div></div>
-        <div class="welcome-step"><div class="welcome-step-num">2</div><div class="welcome-step-text"><strong>Create a project in your AI</strong> (Claude Projects, ChatGPT Projects, or Gemini Gems). Upload instructions.md to the project so it's included in every session.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Try: <em>"Here's what's been present for me lately..."</em> or use a Session Starter from the Journal tab.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num">4</div><div class="welcome-step-text"><strong>When you're done,</strong> ask your AI: <em>"Update my data"</em> and copy the output.</div></div>
-        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num">5</div><div class="welcome-step-text"><strong><button class="btn-ghost" style="font-size:inherit;padding:2px 7px;" onclick="dismissWelcome();openModal()">↑ Import</button></strong> your data, paste the output, and hit Apply. Your map updates instantly.</div></div>
+        <div style="font-size:13px;color:#f09090;margin:14px 0 10px;font-weight:600;">B &nbsp;Copy-paste with your AI &mdash; journal in any AI, import the result</div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">1</div><div class="welcome-step-text"><strong>Download instructions.md,</strong> the file that tells your AI how team-sheet works. <button class="btn-ghost btn-download" style="margin-left:6px;" onclick="downloadInstructionsMd(this)">&#8595; instructions.md</button></div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">2</div><div class="welcome-step-text"><strong>Create a project</strong> in your AI of choice and upload instructions.md to its knowledge base.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Try: <em>"Here's what's been present for me lately..."</em> or use a Session Starter from the Journal tab.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">4</div><div class="welcome-step-text"><strong>When done,</strong> ask your AI: <em>"Update my data"</em> and copy the output.</div></div>
+        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#f09090;">5</div><div class="welcome-step-text"><button class="btn-ghost" style="font-size:inherit;padding:2px 7px;font-weight:700;" onclick="dismissWelcome();openModal()">&#8593; Import</button> your data, paste the output, and hit Apply. Your map updates instantly.</div></div>
+      </div>
+      <!-- Path C: Chat inside the app -->
+      <div class="welcome-path" id="welcome-path-chat" style="display:none;">
+        <div style="font-size:13px;color:#50c878;margin:14px 0 10px;font-weight:600;">C &nbsp;Chat inside the app &mdash; API key or local Ollama</div>
+        <div class="welcome-step"><div class="welcome-step-num">1</div><div class="welcome-step-text"><strong>Open Chat</strong> using the star (&#10022;) icon in the bottom bar.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num">2</div><div class="welcome-step-text"><strong>Open Chat Settings</strong> (gear icon inside the chat panel) and enter your API key, or connect a local Ollama model. The settings screen shows the exact Ollama start command for your OS.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Journal for 10-20 minutes and your parts map fills in from your own words. No copy-pasting needed.</div></div>
+        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:var(--text-dim);">i</div><div class="welcome-step-text" style="font-size:14px;color:var(--text-dim);">Ollama runs entirely offline after a one-time model download. API key usage sends your session to the provider's servers.</div></div>
       </div>
     </div>
-    <div style="font-size:14px;color:var(--text);line-height:1.6;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
-      <strong style="color:var(--text);">Privacy:</strong> Your data is stored only in this browser — no server, no accounts, no telemetry. Export regularly and store the backup somewhere safe. If you journal with an AI, that provider may store what you share with them.
+    <div style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+      <strong style="color:var(--text-mid);">Privacy:</strong> Your data lives only in this browser. No server, no accounts, no tracking. Export regularly and treat the file like a private diary. If you use a cloud AI, that provider may store what you share with them.
     </div>
     <div class="modal-row" style="margin-top:14px;">
       <button class="btn-ghost" onclick="dismissWelcome()">Close</button>
@@ -2032,7 +2161,6 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <div class="pulse-parts-list" id="pulse-parts-list"></div>
       </div>
       <div class="pulse-pie-col">
-        <div class="pulse-pie-label">Right now</div>
         <div class="pulse-pie-inner" id="pulse-pie"></div>
       </div>
     </div>
@@ -2170,7 +2298,8 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:14px;color:#c08080;line-height:1.5;margin-bottom:12px;">
       team-sheet is intended as a supplement to a professional IFS therapist, not a replacement. All data is estimated and open to change. Nothing leaves your browser unless you send it.
     </div>
-    <div style="display:flex;justify-content:flex-end;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <button id="help-replay-tour-btn" class="btn-ghost" style="display:none;" onclick="document.getElementById('help-modal').classList.remove('open');sessionStorage.removeItem('ts-tour-seen-v1');startTour();">&#9655; Replay intro tour</button>
       <button class="btn-ghost" onclick="document.getElementById('help-modal').classList.remove('open')">Close</button>
     </div>
   </div>
@@ -2644,9 +2773,9 @@ Some conflicts run across sessions without resolving. When a tension is signific
 
 At the end of each session, update \`topTensions\`, \`topQuestions\`, and \`topExperiments\` on \`system\`. Each is an array of up to 3 strings, specific to this person. All three are displayed at the top of the Journal tab.
 
-- **\`topTensions\`**: the most active unresolved conflicts between parts, or between a part and Self. One sentence per item. E.g. "The Achiever and the Soother are in a push-pull loop: neither trusts the other to handle what it manages."
-- **\`topQuestions\`**: the most important unknowns about the inner system right now. One sentence per item. E.g. "What is The Critic actually protecting underneath the harshness?"
-- **\`topExperiments\`**: the most useful concrete things to try or notice before the next session. One sentence per item. E.g. "When The Critic fires, pause and ask: what is it afraid would happen if it stayed quiet for 10 minutes?"
+- **\`topTensions\`**: the most active unresolved conflicts between parts, or between a part and Self. Keep each entry short: half a sentence to one short sentence. E.g. "Achiever and Soother in push-pull."
+- **\`topQuestions\`**: the most important unknowns about the inner system. Keep each entry short: half a sentence to one short sentence. E.g. "What is The Critic actually protecting?"
+- **\`topExperiments\`**: the most useful things to try or notice before the next session. Keep each entry short: half a sentence to one short sentence. E.g. "When The Critic fires, pause and ask what it fears."
 
 **Rank by importance.** Put the most pressing item first. Reorder each session. Drop items that have resolved; add new ones as they emerge. The goal is a live, prioritised read of the system, not a growing archive.
 
@@ -2819,9 +2948,9 @@ Every field is optional. Only include fields you have real information for.
     "name": "string: the person's name for their inner system",
     "systemSummary": "string: big picture: who this person is, what the core dynamic is, how parts relate. 3 paragraphs, ideally under 120 words total. Update when the fundamental picture changes.",
     "recentShifts": "string: what is recent and changing: movements since last session, active tensions. 30-50 words. Update each session.",
-    "topTensions": ["array of up to 3 strings, ranked: most pressing conflict first. Reorder, add, and drop each session."],
-    "topQuestions": ["array of up to 3 strings, ranked: most important unknown first. Reorder, add, and drop each session."],
-    "topExperiments": ["array of up to 3 strings, ranked: most useful experiment first. Reorder, add, and drop each session."],
+    "topTensions": ["up to 3 strings, ranked most pressing first. Half a sentence to one short sentence each. Reorder, add, and drop each session."],
+    "topQuestions": ["up to 3 strings, ranked most important first. Half a sentence to one short sentence each. Reorder, add, and drop each session."],
+    "topExperiments": ["up to 3 strings, ranked most useful first. Half a sentence to one short sentence each. Reorder, add, and drop each session."],
     "journeyStage": "early | developing | established: your read of where the person is in their IFS journey. Update each session.",
     "professionalSupport": "true: set once when the person mentions working with a therapist or professional. Omit entirely if not yet mentioned; never set to false.",
     "currentAge": "number: the person's current age"
@@ -2875,6 +3004,7 @@ Every field is optional. Only include fields you have real information for.
 
       "balanceWeight": "number 0.0-1.0: this part's estimated share of the waking day. Must sum to 1.0 across all parts + _selfWeight. The app also displays this as a 0-100% slider.",
       "nodeSize": "small | medium | large: how prominent this part is in the system. Use 'large' for parts that run most of the day or shape the system most significantly.",
+      "originAge": "number (optional): how old the user was when this part first formed or appeared. Used to anchor the part on the history timeline. Leave null if unknown.",
       "lastUpdated": "YYYY-MM-DD"
     }
   ],
@@ -5358,7 +5488,8 @@ window.addEventListener('resize', () => {
     mapVx = {}; mapVy = {};
     renderMap(appState);
   }
-  if (document.getElementById('tab-timeline').classList.contains('active')) {
+  if (document.getElementById('tab-timeline').classList.contains('active') ||
+      document.getElementById('tab-journal').classList.contains('active')) {
     renderTimeline(appState);
   }
 });
@@ -5939,9 +6070,19 @@ function buildPartCard(part, idx, s) {
     memoriesSec.appendChild(memoriesLbl);
     const memList = document.createElement('div');
     memList.style.cssText = 'display:flex;flex-direction:column;gap:4px;margin-top:2px;';
-    partMemories.forEach(m => {
+    const sortedMemories = partMemories.slice().sort((a, b) => {
+      const da = a.date || a.dateApprox || '';
+      const db = b.date || b.dateApprox || '';
+      return db.localeCompare(da);
+    });
+    sortedMemories.forEach(m => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:baseline;gap:6px;';
+      const bullet = document.createElement('span');
+      bullet.textContent = '•';
+      bullet.style.cssText = 'color:var(--gold);flex-shrink:0;font-size:14px;';
       const link = document.createElement('a');
-      link.style.cssText = 'font-size:14px;color:var(--gold);line-height:1.4;cursor:pointer;text-decoration:none;display:block;';
+      link.style.cssText = 'font-size:14px;color:var(--gold);line-height:1.4;cursor:pointer;text-decoration:none;';
       link.textContent = m.label || 'Untitled memory';
       link.title = 'Go to this memory in the Timeline tab';
       link.onclick = () => {
@@ -5951,7 +6092,9 @@ function buildPartCard(part, idx, s) {
           if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
       };
-      memList.appendChild(link);
+      row.appendChild(bullet);
+      row.appendChild(link);
+      memList.appendChild(row);
     });
     memoriesSec.appendChild(memList);
     secLeft.appendChild(memoriesSec);
@@ -5974,71 +6117,6 @@ function buildPartCard(part, idx, s) {
   potentialSec.appendChild(potentialList);
   secRight.appendChild(potentialSec);
 
-  const keyEventsSec = document.createElement('div');
-  keyEventsSec.className = 'part-section';
-  const keyEventsLbl = document.createElement('div');
-  keyEventsLbl.className = 'part-section-label';
-  keyEventsLbl.textContent = 'Key events';
-  keyEventsLbl.title = 'Significant moments in this part\'s history — experiences that shaped or activated it.';
-
-  function rebuildKeyEvents() {
-    let listEl = keyEventsSec.querySelector('.key-events-list');
-    if (!listEl) { listEl = document.createElement('div'); listEl.className = 'key-events-list'; }
-    listEl.innerHTML = '';
-    const events = Array.isArray(part.keyEvents) ? part.keyEvents : [];
-    events.forEach((ev, ei) => {
-      const item = document.createElement('div');
-      item.className = 'key-event-item';
-      const ageInput = document.createElement('input');
-      ageInput.type = 'number'; ageInput.min = '0'; ageInput.max = '100';
-      ageInput.style.cssText = 'width:38px;background:var(--card);border:1px solid var(--border);color:var(--text-dim);border-radius:3px;padding:1px 3px;font-size:13px;font-family:var(--mono);flex-shrink:0;';
-      ageInput.value = ev.age != null ? ev.age : '';
-      ageInput.placeholder = 'age';
-      ageInput.addEventListener('change', () => { const v = parseInt(ageInput.value); events[ei].age = isNaN(v) ? undefined : v; part.keyEvents = events; saveState(appState); });
-      const bodyEl = document.createElement('div');
-      bodyEl.className = 'key-event-body';
-      const labelEl = document.createElement('div');
-      labelEl.className = 'key-event-label';
-      labelEl.contentEditable = 'true';
-      labelEl.textContent = ev.label || '';
-      labelEl.setAttribute('data-placeholder', 'Event label...');
-      labelEl.addEventListener('blur', () => { events[ei].label = labelEl.textContent.trim(); part.keyEvents = events; saveState(appState); });
-      labelEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); labelEl.blur(); } });
-      const notesEl = document.createElement('div');
-      notesEl.className = 'key-event-notes';
-      notesEl.contentEditable = 'true';
-      notesEl.textContent = ev.notes || '';
-      notesEl.setAttribute('data-placeholder', 'Brief context...');
-      notesEl.addEventListener('blur', () => { events[ei].notes = notesEl.textContent.trim(); part.keyEvents = events; saveState(appState); });
-      notesEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); notesEl.blur(); } });
-      bodyEl.appendChild(labelEl);
-      bodyEl.appendChild(notesEl);
-      const delBtn = document.createElement('button');
-      delBtn.className = 'key-event-del';
-      delBtn.textContent = '×';
-      delBtn.title = 'Remove';
-      delBtn.addEventListener('click', () => { pushUndo('Remove key event'); events.splice(ei, 1); part.keyEvents = events; saveState(appState); rebuildKeyEvents(); });
-      item.appendChild(ageInput);
-      item.appendChild(bodyEl);
-      item.appendChild(delBtn);
-      listEl.appendChild(item);
-    });
-    const addEvBtn = document.createElement('button');
-    addEvBtn.className = 'bullet-add';
-    addEvBtn.innerHTML = '<span style="font-size:14px;line-height:1">+</span> Add event';
-    addEvBtn.addEventListener('click', () => {
-      pushUndo('Add key event');
-      if (!part.keyEvents) part.keyEvents = [];
-      part.keyEvents.push({ label:'', age: undefined, notes:'' });
-      saveState(appState);
-      rebuildKeyEvents();
-
-    });
-    listEl.appendChild(addEvBtn);
-    if (!keyEventsSec.contains(listEl)) keyEventsSec.appendChild(listEl);
-  }
-  rebuildKeyEvents();
-  secRight.appendChild(keyEventsSec);
   secGrid.appendChild(secRight);
   body.appendChild(secGrid);
 
@@ -6057,6 +6135,29 @@ function buildPartCard(part, idx, s) {
 
   const relTable = buildRelTable(part, idx, s);
   body.appendChild(relTable);
+
+  // Origin age row
+  const originRow = document.createElement('div');
+  originRow.className = 'part-origin-row';
+  const originLbl = document.createElement('label');
+  originLbl.className = 'part-origin-label';
+  originLbl.textContent = 'Formed at age:';
+  originLbl.title = 'How old you were when this part first appeared. Parts often behave as if you are still that age.';
+  const originInput = document.createElement('input');
+  originInput.type = 'number'; originInput.min = '0'; originInput.max = '120'; originInput.step = '1';
+  originInput.className = 'part-origin-input';
+  originInput.value = part.originAge != null ? part.originAge : '';
+  originInput.placeholder = '--';
+  originInput.title = 'Age you were when this part formed. Leave blank if unknown.';
+  originInput.addEventListener('change', () => {
+    const v = parseInt(originInput.value);
+    part.originAge = isNaN(v) ? null : v;
+    saveState(appState);
+    renderTimeline(appState);
+  });
+  originLbl.appendChild(originInput);
+  originRow.appendChild(originLbl);
+  body.appendChild(originRow);
 
   // Last updated + delete
   const footer = document.createElement('div');
@@ -6329,7 +6430,7 @@ function buildBalancePie(snap, size, container, editOpts) {
   const cx = size/2, cy = size/2, r = size/2 - 2;
 
   const legend = document.createElement('div');
-  legend.style.cssText = 'display:flex;flex-direction:column;gap:3px;';
+  legend.style.cssText = 'display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;';
 
   let editBtn = null;
 
@@ -6527,9 +6628,8 @@ function renderPartsTabPies(s) {
 
 // Renders pies into Journal tab — identical data sources and behaviour as renderPartsTabPies.
 function renderPartsDistribution(s) {
-  const allTimeEl = document.getElementById('parts-dist-alltime');
-  const latestEl  = document.getElementById('parts-dist-latest');
-  if (!allTimeEl || !latestEl) return;
+  const latestEl = document.getElementById('parts-dist-latest');
+  if (!latestEl) return;
 
   const partsList = (s.parts || []).map(p => ({ id: p.id, name: p.name || p.id, role: p.role }));
 
@@ -6539,10 +6639,6 @@ function renderPartsDistribution(s) {
     if (w > 0) nowWeights[p.id] = w;
   });
   if (s._selfWeightNow != null) nowWeights.self = s._selfWeightNow;
-
-  const atWeights = {};
-  (s.parts || []).forEach(p => { if (p.balanceWeight > 0) atWeights[p.id] = p.balanceWeight; });
-  if (s._selfWeight) atWeights.self = s._selfWeight;
 
   latestEl.innerHTML = '';
   if (Object.keys(nowWeights).length) buildBalancePie({ date: 'Latest', weights: nowWeights }, 100, latestEl, {
@@ -6558,22 +6654,6 @@ function renderPartsDistribution(s) {
       saveState(appState);
     },
     onClose: () => { renderPartsDistribution(appState); renderPartsTabPies(appState); }
-  });
-
-  allTimeEl.innerHTML = '';
-  if (Object.keys(atWeights).length) buildBalancePie({ date: 'All time', weights: atWeights }, 100, allTimeEl, {
-    parts: partsList,
-    getWeight: id => {
-      if (id === 'self') return s._selfWeight || 0;
-      const p = (s.parts || []).find(x => x.id === id);
-      return p ? (p.balanceWeight || 0) : 0;
-    },
-    onChange: (id, v01) => {
-      if (id === 'self') { appState._selfWeight = v01 > 0 ? v01 : undefined; }
-      else { const p = (appState.parts || []).find(x => x.id === id); if (p) p.balanceWeight = v01; }
-      saveState(appState);
-    },
-    onClose: () => { snapshotBalance(appState, 'entry'); renderPartsDistribution(appState); renderPartsTabPies(appState); }
   });
 }
 
@@ -6632,7 +6712,7 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
 
   const n = snaps.length;
   // All-time chart: date-proportional x axis extended to include memory dates.
-  // Recent chart: even index-based spacing so each session is equally visible.
+  // Recent chart: split layout — recent 7 days gets 60% of width, history 40%.
   const isAllTime = !canvasId || canvasId === 'balance-area-canvas';
 
   const birthMs = s.system && s.system.birthDate ? new Date(s.system.birthDate).getTime() : null;
@@ -6656,9 +6736,31 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     snapMs.unshift(dateMin);
   }
 
+  // Split layout geometry for recent chart
+  const nowMs = Date.now();
+  const recentDays = 7;
+  const boundaryMs = nowMs - recentDays * 86400000;
+  const validSnapMs = snapMs.filter(t => t > 0);
+  const hasHist = !isAllTime && validSnapMs.some(ms => ms < boundaryMs);
+  const recentFrac = (!isAllTime && hasHist) ? 0.60 : 1.0;
+  const histPW = (!isAllTime && hasHist) ? drawW * (1 - recentFrac) : 0;
+  const recentPW = drawW * recentFrac;
+  const histMin = hasHist ? Math.min(...validSnapMs.filter(t => t < boundaryMs)) : boundaryMs;
+
+  function msToX(ms) {
+    if (isAllTime) return PAD_L + ((ms - dateMin) / dateRange) * drawW;
+    if (!hasHist || ms >= boundaryMs) {
+      const span = Math.max(nowMs - boundaryMs, 1);
+      return PAD_L + histPW + Math.max(0, Math.min(1, (ms - boundaryMs) / span)) * recentPW;
+    } else {
+      const span = Math.max(boundaryMs - histMin, 1);
+      return PAD_L + Math.max(0, Math.min(1, (ms - histMin) / span)) * histPW;
+    }
+  }
+
   function snapX(i) {
     if (isAllTime) return PAD_L + ((snapMs[i] - dateMin) / dateRange) * drawW;
-    return PAD_L + (n <= 1 ? drawW / 2 : (i / (n - 1)) * drawW);
+    return msToX(snapMs[i]);
   }
   function propY(cum) { return PAD_T + drawH * (1 - cum); }
 
@@ -6684,6 +6786,20 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     ctx.fillStyle = color.replace(/[\d.]+\)$/, '0.55)');
     ctx.fill();
   });
+
+  // Zone divider + history tint for recent split chart
+  if (!isAllTime && hasHist) {
+    const bx = PAD_L + histPW;
+    ctx.fillStyle = 'rgba(0,0,0,0.06)';
+    ctx.fillRect(PAD_L, PAD_T, histPW, drawH);
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)'; ctx.lineWidth = 0.75; ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(bx, PAD_T); ctx.lineTo(bx, PAD_T + drawH); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font = `8px 'JetBrains Mono', monospace`;
+    ctx.fillStyle = 'rgba(128,120,100,0.4)';
+    ctx.textAlign = 'center';
+    ctx.fillText('7 days', bx + recentPW * 0.5, PAD_T + drawH + 20);
+  }
 
   // Gridlines + Y axis labels (0%, 50%, 100%)
   ctx.font = `10px 'JetBrains Mono', monospace`;
@@ -6716,18 +6832,43 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
       ctx.textAlign = li === 0 ? 'left' : li === nLabels - 1 ? 'right' : 'center';
       ctx.fillText(label, x, H - PAD_B + 16);
     }
+  } else if (hasHist) {
+    // Recent zone: Today / Yest. / weekday labels per day
+    ctx.font = `8px 'JetBrains Mono', monospace`;
+    const todayMidnight = new Date(); todayMidnight.setHours(0, 0, 0, 0);
+    for (let daysAgo = 0; daysAgo < recentDays; daysAgo++) {
+      const d = new Date(todayMidnight); d.setDate(d.getDate() - daysAgo);
+      const x = msToX(d.getTime() + 43200000);
+      let lbl;
+      if (daysAgo === 0)      lbl = 'Today';
+      else if (daysAgo === 1) lbl = 'Yest.';
+      else                    lbl = d.toLocaleDateString('en-GB', { weekday: 'short' });
+      ctx.fillStyle = 'rgba(128,120,100,0.55)'; ctx.textAlign = 'center';
+      ctx.fillText(lbl, x, H - PAD_B + 16);
+    }
+    // History zone: 2-3 date labels
+    const histSpan = Math.max(boundaryMs - histMin, 1);
+    [0.1, 0.5, 0.9].forEach(frac => {
+      const t = histMin + histSpan * frac;
+      const x = msToX(t);
+      const lbl = new Date(t).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).replace(' ', '-');
+      ctx.fillStyle = 'rgba(128,120,100,0.35)'; ctx.textAlign = 'center';
+      ctx.fillText(lbl, x, H - PAD_B + 16);
+    });
   } else {
+    // No history: label each snapshot date in the recent zone
+    ctx.font = `9px 'JetBrains Mono', monospace`;
     const labelStep = Math.max(1, Math.floor(n / 6));
     snaps.forEach((snap, i) => {
       if (i % labelStep !== 0 && i !== n - 1) return;
       ctx.textAlign = i === 0 ? 'left' : i === n - 1 ? 'right' : 'center';
-      ctx.fillText(snap.date, snapX(i), H - PAD_B + 16);
+      ctx.fillStyle = 'rgba(128,120,100,0.55)';
+      ctx.fillText(snap.date ? snap.date.slice(5) : '', snapX(i), H - PAD_B + 16);
     });
   }
   ctx.textAlign = 'center';
 
-  // x position for a date string: proportional for all-time, interpolated between
-  // session positions for recent chart (so pins reflect actual dates, not nearest snapshot).
+  // x position for a date string: date-proportional for all charts.
   function dateX(dateStr) {
     if (!dateStr) return -1;
     const ms = new Date(dateStr).getTime();
@@ -6737,16 +6878,7 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
       return PAD_L + t * drawW;
     }
     if (n === 0) return -1;
-    if (n === 1) return snapX(0);
-    if (ms <= snapMs[0]) return snapX(0);
-    if (ms >= snapMs[n - 1]) return snapX(n - 1);
-    for (let i = 0; i < n - 1; i++) {
-      if (ms >= snapMs[i] && ms <= snapMs[i + 1]) {
-        const t = (ms - snapMs[i]) / (snapMs[i + 1] - snapMs[i]);
-        return snapX(i) + t * (snapX(i + 1) - snapX(i));
-      }
-    }
-    return -1;
+    return msToX(ms);
   }
 
   // Build pin lists
@@ -6773,19 +6905,13 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     } else if (mem.dateApprox) {
       const ms = parseApproxDate(mem.dateApprox, birthMs);
       if (!ms || isNaN(ms)) return;
-      const t = Math.min(Math.max((ms - dateMin) / dateRange, 0), 1);
       if (!isAllTime && (ms < snapMs[0] || ms > snapMs[snapMs.length - 1])) return;
-      x = isAllTime ? PAD_L + t * drawW : (() => {
-        if (n === 0) return -1;
-        if (n === 1) return snapX(0);
-        for (let i = 0; i < n - 1; i++) {
-          if (ms >= snapMs[i] && ms <= snapMs[i + 1]) {
-            const tt = (ms - snapMs[i]) / (snapMs[i + 1] - snapMs[i]);
-            return snapX(i) + tt * (snapX(i + 1) - snapX(i));
-          }
-        }
-        return -1;
-      })();
+      if (isAllTime) {
+        const t = Math.min(Math.max((ms - dateMin) / dateRange, 0), 1);
+        x = PAD_L + t * drawW;
+      } else {
+        x = n === 0 ? -1 : msToX(ms);
+      }
       isApprox = true;
     } else {
       return;
@@ -6822,7 +6948,8 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
   // Click + hover handlers for pins
   canvas._chartW = W; // store current CSS width so the click handler always uses latest value
   // Store chart geometry so the single-bound click handler can compute clicked dates
-  canvas._chartMeta = { isAllTime, dateMin, dateRange, snapMs, snaps, PAD_L, drawW };
+  canvas._chartMeta = { isAllTime, dateMin, dateRange, snapMs, snaps, PAD_L, drawW,
+    hasHist, histMin, histPW, recentPW, boundaryMs, nowMs };
   canvas._onChartClick = onChartClick || null;
   if (!canvas._pinClickBound) {
     canvas._pinClickBound = true;
@@ -6855,15 +6982,27 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
         const d = new Date(ms);
         if (isNaN(d)) return;
         dateStr = d.toISOString().slice(0, 10);
+      } else if (meta.hasHist) {
+        // Split layout: reverse-map x to ms
+        const splitX = meta.PAD_L + meta.histPW;
+        let clickMs;
+        if (mx >= splitX) {
+          const t = Math.min(Math.max((mx - splitX) / (meta.recentPW || 1), 0), 1);
+          clickMs = meta.boundaryMs + t * (meta.nowMs - meta.boundaryMs);
+        } else {
+          const t = Math.min(Math.max((mx - meta.PAD_L) / (meta.histPW || 1), 0), 1);
+          clickMs = meta.histMin + t * (meta.boundaryMs - meta.histMin);
+        }
+        dateStr = new Date(clickMs).toISOString().slice(0, 10);
       } else {
+        // No history: entire width = last 7 days
         const n2 = meta.snaps.length;
         if (!n2) return;
         if (n2 === 1) { dateStr = meta.snaps[0].date; }
         else {
           const t = Math.min(Math.max((mx - meta.PAD_L) / meta.drawW, 0), 1);
-          const fi = t * (n2 - 1);
-          const i = Math.round(fi);
-          dateStr = meta.snaps[Math.min(i, n2 - 1)].date;
+          const clickMs = meta.boundaryMs + t * (meta.nowMs - meta.boundaryMs);
+          dateStr = new Date(clickMs).toISOString().slice(0, 10);
         }
       }
       if (dateStr) canvas._onChartClick(dateStr);
@@ -7640,6 +7779,7 @@ function _renderAllMoments(s) {
     const entry = document.createElement('div');
     entry.className = 'moment-entry';
     entry.style.alignItems = 'flex-start';
+    if (m.id) entry.id = 'sm-anchor-' + m.id;
 
     const dateEl = document.createElement('div');
     dateEl.className = 'moment-date';
@@ -7761,7 +7901,7 @@ function renderJournal(s) {
     ageInput.style.cssText = 'width:46px;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:2px 5px;font-size:13px;font-family:var(--mono);';
     ageInput.value = s.system?.currentAge != null ? s.system.currentAge : '';
     ageInput.placeholder = '--';
-    ageInput.title = 'Current age — used to calculate age on the timeline axis.';
+    ageInput.title = 'Your current age — used to place parts timeline origin markers on the correct year.';
     ageInput.addEventListener('change', () => {
       const v = parseInt(ageInput.value);
       if (!appState.system) appState.system = {};
@@ -7851,6 +7991,7 @@ function buildDemoSessionCard(session) {
   body.className = 'session-body';
 
   const contentLabel = document.createElement('div');
+
   contentLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid);margin-top:12px;margin-bottom:4px;';
   contentLabel.textContent = 'Notes';
   body.appendChild(contentLabel);
@@ -7882,6 +8023,40 @@ function buildDemoSessionCard(session) {
 
   card.appendChild(body);
   return card;
+}
+
+function buildSessionHeaderPie(session, s, size) {
+  const hist = loadBalHist();
+  if (hist.length === 0 && !session.weights) return null;
+  let closest = null;
+  if (hist.length > 0) {
+    closest = hist[0];
+    let closestDist = Infinity;
+    hist.forEach(snap => {
+      const d = Math.abs(new Date(snap.date) - new Date(session.date));
+      if (d < closestDist) { closestDist = d; closest = snap; }
+    });
+  }
+  const snap = session.weights ? { weights: Object.assign({}, session.weights) } : closest;
+  if (!snap) return null;
+  const weights = snap.weights || {};
+  const entries = Object.entries(weights).filter(([,v]) => v > 0);
+  if (entries.length === 0) return null;
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  canvas.style.cssText = `width:${size}px;height:${size}px;flex-shrink:0;border-radius:50%;pointer-events:none;`;
+  const ctx = canvas.getContext('2d');
+  const cx = size / 2, cy = size / 2, r = size / 2 - 1;
+  const total = entries.reduce((a, [, v]) => a + v, 0) || 1;
+  let angle = -Math.PI / 2;
+  entries.forEach(([id, w]) => {
+    const slice = (w / total) * Math.PI * 2;
+    ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, angle, angle + slice); ctx.closePath();
+    ctx.fillStyle = _partColor(id); ctx.fill();
+    angle += slice;
+  });
+  return canvas;
 }
 
 function buildSessionCard(session, s) {
@@ -7925,7 +8100,12 @@ function buildSessionCard(session, s) {
   chevron.textContent = '▶';
   chevron.style.cssText = 'font-size:12px;color:var(--text-dim);transition:transform 0.2s;flex-shrink:0;pointer-events:none;';
 
-  hdr.appendChild(dateEl); hdr.appendChild(titleEl); hdr.appendChild(preview); hdr.appendChild(chevron);
+  // Small pie in header (always visible)
+  const hdrPie = buildSessionHeaderPie(session, s, 28);
+
+  hdr.appendChild(dateEl); hdr.appendChild(titleEl); hdr.appendChild(preview);
+  if (hdrPie) hdr.appendChild(hdrPie);
+  hdr.appendChild(chevron);
   hdr.addEventListener('click', () => {
     card.classList.toggle('expanded');
     chevron.style.transform = card.classList.contains('expanded') ? 'rotate(90deg)' : '';
@@ -8572,16 +8752,342 @@ function renderSnapshotTable(s) {
   container.appendChild(table);
 }
 
+// ══ PARTS TIMELINE ════════════════════════════════════════════
+// Layout: DOM label column on left, canvas tick plot on right.
+// Rows: Self (selfMoments) at top, then one per active part, then Untagged.
+// Marks: diamond = origin (from part.originAge or first-memory fallback); tick = other memory.
+// Clicking a tick navigates to its memory card or the Self tab.
+function renderPartsTimeline(s) {
+  const section = document.getElementById('parts-timeline-section');
+  const emptyEl = document.getElementById('parts-timeline-empty');
+  const legendEl = document.getElementById('parts-timeline-legend');
+  if (!section || !emptyEl || !legendEl) return;
+
+  const memories = (s.memories || []).filter(m => m.date || m.dateApprox);
+  const parts = s.parts || [];
+  const currentAge = s.system?.currentAge != null ? s.system.currentAge : null;
+  const effectiveBirthMs = currentAge != null ? Date.now() - currentAge * 365.25 * 24 * 3600 * 1000 : null;
+
+  function memMs(m) {
+    if (m.date) return new Date(m.date).getTime();
+    return parseApproxDate(m.dateApprox, effectiveBirthMs);
+  }
+
+  const timedMems = memories.map(m => ({ mem: m, ms: memMs(m), kind: 'memory' })).filter(x => x.ms != null && !isNaN(x.ms));
+
+  // Self moments
+  const selfMoments = (s.selfMoments || []).filter(m => m.date);
+  const timedSelf = selfMoments.map(m => ({ mem: m, ms: new Date(m.date).getTime(), kind: 'self' }));
+
+  // Origin markers from part.originAge
+  const originMarkers = [];
+  parts.forEach(p => {
+    if (p.originAge != null && effectiveBirthMs) {
+      originMarkers.push({ partId: p.id, ms: effectiveBirthMs + p.originAge * 365.25 * 24 * 3600 * 1000 });
+    }
+  });
+
+  // First timed memory per part (for fallback diamond when no originAge)
+  const firstMemByPart = {};
+  timedMems.slice().sort((a, b) => a.ms - b.ms).forEach(({ mem, ms }) => {
+    (mem.partsTagged || []).forEach(pid => { if (firstMemByPart[pid] == null) firstMemByPart[pid] = ms; });
+  });
+
+  const hasSelf = timedSelf.length > 0;
+  const activeParts = parts.filter(p =>
+    timedMems.some(x => (x.mem.partsTagged || []).includes(p.id)) ||
+    originMarkers.some(o => o.partId === p.id)
+  );
+  const hasUntagged = timedMems.some(x => (x.mem.partsTagged || []).length === 0);
+
+  const rows = [];
+  if (hasSelf) rows.push({ id: '__self__', name: 'Self', color: 'rgba(232,223,200,0.88)' });
+  activeParts.forEach(p => rows.push({ id: p.id, name: p.name || 'Unnamed', color: _partColor(p.id) }));
+  if (hasUntagged) rows.push({ id: '__untagged__', name: 'Untagged', color: 'rgba(144,138,120,0.5)' });
+
+  const allTimed = timedMems.concat(timedSelf);
+  const allMs = allTimed.map(x => x.ms).concat(originMarkers.map(x => x.ms));
+
+  if (allMs.length === 0) {
+    // Remove any existing layout, show empty message
+    const existing = document.getElementById('parts-timeline-layout');
+    if (existing) existing.remove();
+    emptyEl.style.display = '';
+    legendEl.innerHTML = '';
+    return;
+  }
+  emptyEl.style.display = 'none';
+
+  let minMs = Math.min(...allMs);
+  let maxMs = Math.max(...allMs, Date.now());
+  const span = maxMs - minMs || 1;
+  minMs -= span * 0.04;
+  maxMs += span * 0.02;
+
+  // Build/reuse layout: label column + canvas
+  let layout = document.getElementById('parts-timeline-layout');
+  let labelCol, canvas;
+  if (!layout) {
+    layout = document.createElement('div');
+    layout.id = 'parts-timeline-layout';
+    layout.style.cssText = 'display:flex;align-items:stretch;width:100%;';
+    labelCol = document.createElement('div');
+    labelCol.id = 'parts-timeline-labels';
+    labelCol.style.cssText = 'flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-start;';
+    canvas = document.createElement('canvas');
+    canvas.id = 'parts-timeline-canvas';
+    canvas.style.cssText = 'flex:1;min-width:0;display:block;cursor:pointer;border-radius:0 6px 6px 0;background:rgba(0,0,0,0.18);';
+    layout.appendChild(labelCol);
+    layout.appendChild(canvas);
+    // Insert before emptyEl
+    section.insertBefore(layout, emptyEl);
+  } else {
+    labelCol = document.getElementById('parts-timeline-labels');
+    canvas = document.getElementById('parts-timeline-canvas');
+  }
+
+  const ROW_H = 28;
+  const AXIS_H = 22;
+  const TOP_PAD = 6;
+  const LABEL_W = 90;
+
+  // Rebuild label column
+  labelCol.innerHTML = '';
+  labelCol.style.width = LABEL_W + 'px';
+  // Top padding spacer
+  const topSpacer = document.createElement('div');
+  topSpacer.style.height = TOP_PAD + 'px';
+  labelCol.appendChild(topSpacer);
+  rows.forEach(row => {
+    const lbl = document.createElement('div');
+    lbl.className = 'pt-row-label';
+    lbl.style.cssText = `height:${ROW_H}px;display:flex;align-items:center;padding-right:8px;justify-content:flex-end;`;
+    const span = document.createElement('span');
+    span.style.cssText = `font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.06em;color:${row.color};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${LABEL_W - 10}px;`;
+    span.textContent = row.name;
+    span.title = row.name;
+    // Clicking Self label navigates to Self tab
+    if (row.id === '__self__') {
+      lbl.style.cursor = 'pointer';
+      lbl.title = 'Go to Self tab';
+      lbl.addEventListener('click', () => switchTab('self'));
+    }
+    lbl.appendChild(span);
+    labelCol.appendChild(lbl);
+  });
+  // Axis spacer
+  const axisSpacer = document.createElement('div');
+  axisSpacer.style.height = AXIS_H + 'px';
+  labelCol.appendChild(axisSpacer);
+
+  // Size canvas
+  const dpr = window.devicePixelRatio || 1;
+  const cssWidth = canvas.parentElement.clientWidth - LABEL_W || 500;
+  const cssHeight = TOP_PAD + rows.length * ROW_H + AXIS_H;
+  canvas.style.height = cssHeight + 'px';
+  canvas.width = Math.round(cssWidth * dpr);
+  canvas.height = Math.round(cssHeight * dpr);
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, cssWidth, cssHeight);
+
+  const LEFT = 6, RIGHT = 6;
+  const plotW = cssWidth - LEFT - RIGHT;
+  function xForMs(ms) { return LEFT + (ms - minMs) / (maxMs - minMs) * plotW; }
+  function rowY(i) { return TOP_PAD + i * ROW_H + ROW_H / 2; }
+
+  // Lane lines
+  rows.forEach((_, i) => {
+    const y = rowY(i);
+    ctx.beginPath(); ctx.moveTo(LEFT, y); ctx.lineTo(LEFT + plotW, y);
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1; ctx.stroke();
+  });
+
+  // Year grid lines + axis labels
+  const minYear = new Date(minMs).getFullYear();
+  const maxYear = new Date(maxMs).getFullYear();
+  const axisY = TOP_PAD + rows.length * ROW_H + 4;
+  ctx.font = `10px var(--mono, monospace)`; ctx.textAlign = 'center';
+  for (let yr = minYear; yr <= maxYear; yr++) {
+    const x = xForMs(new Date(yr + '-01-01').getTime());
+    if (x < LEFT || x > LEFT + plotW) continue;
+    ctx.beginPath(); ctx.moveTo(x, TOP_PAD); ctx.lineTo(x, TOP_PAD + rows.length * ROW_H);
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillStyle = 'rgba(180,170,140,0.45)';
+    ctx.fillText(String(yr), x, axisY + 10);
+  }
+
+  // Hit map for click/hover
+  const hitMap = [];
+
+  // Self moment ticks
+  if (hasSelf) {
+    const ri = rows.findIndex(r => r.id === '__self__');
+    const color = 'rgba(232,223,200,0.88)';
+    timedSelf.forEach(({ mem, ms }) => {
+      const x = xForMs(ms);
+      const y = rowY(ri);
+      const H = ROW_H * 0.52;
+      ctx.beginPath(); ctx.moveTo(x, y - H / 2); ctx.lineTo(x, y + H / 2);
+      ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+      hitMap.push({ x, ri, kind: 'self', mem });
+    });
+  }
+
+  // Memory ticks
+  timedMems.forEach(({ mem, ms }) => {
+    const x = xForMs(ms);
+    const tagged = mem.partsTagged || [];
+    const targets = tagged.length > 0
+      ? tagged.map(pid => rows.findIndex(r => r.id === pid)).filter(i => i >= 0)
+      : (hasUntagged ? [rows.findIndex(r => r.id === '__untagged__')] : []);
+    targets.forEach(ri => {
+      const y = rowY(ri);
+      const color = rows[ri].color;
+      const partId = rows[ri].id;
+      const isFirstMem = tagged.includes(partId) && firstMemByPart[partId] === ms;
+      const hasOrigin = originMarkers.some(o => o.partId === partId);
+      if (isFirstMem && !hasOrigin) {
+        const d = 6;
+        ctx.beginPath(); ctx.moveTo(x, y - d); ctx.lineTo(x + d, y); ctx.lineTo(x, y + d); ctx.lineTo(x - d, y); ctx.closePath();
+        ctx.fillStyle = color; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 1; ctx.stroke();
+      } else {
+        const H = ROW_H * 0.52;
+        ctx.beginPath(); ctx.moveTo(x, y - H / 2); ctx.lineTo(x, y + H / 2);
+        ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+      }
+      hitMap.push({ x, ri, kind: 'memory', mem });
+    });
+  });
+
+  // Origin markers
+  originMarkers.forEach(({ partId, ms }) => {
+    const ri = rows.findIndex(r => r.id === partId);
+    if (ri < 0) return;
+    const x = xForMs(ms); const y = rowY(ri); const color = rows[ri].color; const d = 7;
+    ctx.beginPath(); ctx.moveTo(x, y - d); ctx.lineTo(x + d, y); ctx.lineTo(x, y + d); ctx.lineTo(x - d, y); ctx.closePath();
+    ctx.fillStyle = color; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 1.5; ctx.stroke();
+    hitMap.push({ x, ri, kind: 'origin', partId });
+  });
+
+  canvas._ptHitMap = hitMap;
+  canvas._ptRows = rows;
+  canvas._ptRowH = ROW_H;
+  canvas._ptTopPad = TOP_PAD;
+
+  // Legend
+  legendEl.innerHTML = '';
+  const diamondNote = document.createElement('span');
+  diamondNote.style.cssText = 'font-size:11px;color:var(--text-dim);font-family:var(--mono);display:inline-flex;align-items:center;gap:4px;';
+  diamondNote.innerHTML = '<svg width="10" height="10" viewBox="-5 -5 10 10"><polygon points="0,-4 4,0 0,4 -4,0" fill="rgba(200,190,160,0.7)" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/></svg> origin';
+  legendEl.appendChild(diamondNote);
+}
+
+function _ptHitTest(canvas, px, py) {
+  const rows = canvas._ptRows || [];
+  const rowH = canvas._ptRowH || 28;
+  const topPad = canvas._ptTopPad || 6;
+  const hitMap = canvas._ptHitMap || [];
+  const ri = Math.floor((py - topPad) / rowH);
+  if (ri < 0 || ri >= rows.length) return null;
+  let best = null, bestDist = 14;
+  hitMap.filter(h => h.ri === ri).forEach(h => {
+    const d = Math.abs(px - h.x);
+    if (d < bestDist) { best = h; bestDist = d; }
+  });
+  return best;
+}
+
+function _ptTooltipEl() {
+  let el = document.getElementById('parts-timeline-tooltip');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'parts-timeline-tooltip';
+    el.style.cssText = 'position:fixed;background:var(--card);border:1px solid var(--border-hi);border-radius:6px;padding:5px 10px;font-size:13px;color:var(--text);font-family:var(--mono);pointer-events:none;z-index:200;max-width:300px;white-space:pre-wrap;display:none;box-shadow:0 2px 8px rgba(0,0,0,0.4);';
+    document.body.appendChild(el);
+  }
+  return el;
+}
+
+(function _initPartsTimelineEvents() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const section = document.getElementById('parts-timeline-section');
+    if (!section) return;
+    const tip = _ptTooltipEl();
+
+    function getCanvas() { return document.getElementById('parts-timeline-canvas'); }
+
+    function hitFromEvent(e) {
+      const canvas = getCanvas();
+      if (!canvas) return null;
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+      const clientY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
+      const px = clientX - rect.left;
+      const py = clientY - rect.top;
+      return { hit: _ptHitTest(canvas, px, py), clientX, clientY };
+    }
+
+    function showTip(e) {
+      const { hit, clientX, clientY } = hitFromEvent(e);
+      if (!hit) { tip.style.display = 'none'; return; }
+      let msg = '';
+      if (hit.kind === 'origin') {
+        const part = (appState.parts || []).find(p => p.id === hit.partId);
+        msg = `${(appState.parts || []).find(p => p.id === hit.partId)?.name || 'Part'}: formed at age ${part?.originAge ?? '?'}`;
+      } else if (hit.kind === 'self') {
+        msg = hit.mem.quality ? hit.mem.quality.charAt(0).toUpperCase() + hit.mem.quality.slice(1) : 'Self moment';
+        if (hit.mem.date) msg += ' — ' + hit.mem.date;
+        if (hit.mem.description) msg += '\n' + hit.mem.description.slice(0, 80) + (hit.mem.description.length > 80 ? '…' : '');
+      } else {
+        msg = hit.mem.label || '(no label)';
+        if (hit.mem.date) msg += ' — ' + hit.mem.date;
+        else if (hit.mem.dateApprox) msg += ' — ' + hit.mem.dateApprox;
+        if (hit.mem.notes) msg += '\n' + hit.mem.notes.slice(0, 80) + (hit.mem.notes.length > 80 ? '…' : '');
+      }
+      tip.textContent = msg;
+      tip.style.display = 'block';
+      const tx = Math.min(clientX + 14, window.innerWidth - 310);
+      const ty = Math.max(clientY - 48, 8);
+      tip.style.left = tx + 'px';
+      tip.style.top = ty + 'px';
+    }
+
+    function handleClick(e) {
+      const { hit } = hitFromEvent(e);
+      if (!hit) return;
+      tip.style.display = 'none';
+      if (hit.kind === 'self') {
+        switchTab('self');
+        setTimeout(() => {
+          const el = document.getElementById('sm-anchor-' + hit.mem.id);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 80);
+      } else if (hit.kind === 'memory') {
+        const el = document.getElementById('memory-anchor-' + hit.mem.id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    section.addEventListener('mousemove', e => { if (e.target === getCanvas()) showTip(e); else tip.style.display = 'none'; });
+    section.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+    section.addEventListener('click', e => { if (e.target === getCanvas()) handleClick(e); });
+    section.addEventListener('touchstart', e => { if (e.target === getCanvas()) showTip(e); }, { passive: true });
+    section.addEventListener('touchend', e => {
+      if (e.target === getCanvas()) {
+        handleClick(e.changedTouches ? { clientX: e.changedTouches[0].clientX, clientY: e.changedTouches[0].clientY } : e);
+        setTimeout(() => { tip.style.display = 'none'; }, 1400);
+      }
+    });
+  });
+})();
+
 function renderTimeline(s) {
-  const emptyEl = document.getElementById('timeline-empty');
-  const recentSection = document.getElementById('timeline-recent-section');
-  const alltimeSection = document.getElementById('timeline-alltime-section');
-  const areaWrap = document.getElementById('balance-area-wrap');
+  // Journal tab: "Since you started" area chart
+  const recentSection = document.getElementById('journal-timeline-section');
   let hist = loadBalHist();
 
-  // Ensure every session date has a balance entry. Parts may have changed since the
-  // history was last written (e.g. after import on a new device), so fill any gaps
-  // using the current parts' balanceWeight as the best available approximation.
+  // Fill gaps: ensure every session date has a balance entry
   if (Array.isArray(s.sessions) && Array.isArray(s.parts)) {
     const fallbackW = {};
     s.parts.forEach(p => { if (p.id && p.balanceWeight) fallbackW[p.id] = p.balanceWeight; });
@@ -8602,42 +9108,20 @@ function renderTimeline(s) {
     }
   }
 
+  // Journal tab: show/hide "Since you started" chart
+  if (recentSection) {
+    if (hist.length > 0) {
+      recentSection.style.display = '';
+      renderBalanceAreaChart(s, hist, 'balance-area-canvas-recent', 'balance-area-legend-recent',
+        dateStr => openBackfillPanel('recent', dateStr));
+    } else {
+      recentSection.style.display = 'none';
+    }
+  }
+
+  // History tab: parts timeline + memories list
+  renderPartsTimeline(s);
   renderMemories(s);
-
-  if (hist.length === 0) {
-    emptyEl.style.display = '';
-    recentSection.style.display = 'none';
-    alltimeSection.style.display = 'none';
-    return;
-  }
-  emptyEl.style.display = 'none';
-
-  // "Since you started" = all session history snapshots
-  recentSection.style.display = '';
-  renderBalanceAreaChart(s, hist, 'balance-area-canvas-recent', 'balance-area-legend-recent',
-    dateStr => openBackfillPanel('recent', dateStr));
-
-  // "All time" = sessions + memories extended back; show when a birth date is set,
-  // or when there are memories (exact or approx) older than the earliest session snapshot.
-  const birthMs = s.system && s.system.birthDate ? new Date(s.system.birthDate).getTime() : null;
-  const earliestSnap = hist[0]?.date || '';
-  const hasOlderMemories = (s.memories || []).some(m => {
-    if (m.date) return m.date < earliestSnap;
-    if (m.dateApprox) { const ms = parseApproxDate(m.dateApprox, birthMs); return ms && ms < new Date(earliestSnap).getTime(); }
-    return false;
-  });
-  if (hasOlderMemories || (birthMs && !isNaN(birthMs))) {
-    alltimeSection.style.display = '';
-    areaWrap.style.display = '';
-    const bdInput = document.getElementById('birth-date-input');
-    if (bdInput) bdInput.value = (s.system && s.system.birthDate) || '';
-    renderBalanceAreaChart(s, hist, undefined, undefined,
-      dateStr => openBackfillPanel('alltime', dateStr));
-  } else {
-    alltimeSection.style.display = 'none';
-  }
-
-  renderSnapshotTable(s);
 }
 
 // ══ TAB SWITCHING ══════════════════════════════════════════════
@@ -8651,6 +9135,9 @@ function switchTab(name) {
   window.scrollTo(0, 0);
   document.documentElement.scrollTop = 0;
   if (panel) panel.scrollTop = 0;
+
+  // Map tab needs body locked to viewport height so the canvas fills exactly the remaining space
+  document.body.classList.toggle('map-tab-active', name === 'map');
 
   if (name === 'map') {
     mapVx = {}; mapVy = {};
@@ -8667,7 +9154,7 @@ function switchTab(name) {
     const sp = document.getElementById('tab-self');
     if (sp) { sp.scrollTop = 0; requestAnimationFrame(() => { sp.scrollTop = 0; }); }
   }
-  if (name === 'timeline') {
+  if (name === 'timeline' || name === 'journal') {
     renderTimeline(appState);
   }
 }
@@ -9115,6 +9602,13 @@ function toggleStarters() {
   body.classList.toggle('open');
   arrow.textContent = body.classList.contains('open') ? '▼' : '▶';
 }
+function toggleIntentionGroup(labelEl) {
+  const group = labelEl.parentElement;
+  const extra = group.querySelector('.journal-intention-extra');
+  if (!extra) return;
+  const open = extra.classList.toggle('open');
+  labelEl.classList.toggle('open', open);
+}
 function copyStarter(btn, text) {
   navigator.clipboard.writeText(text).catch(() => {
     const ta = document.createElement('textarea');
@@ -9139,6 +9633,8 @@ function openSupportModal() {
 }
 function openHelpModal() {
   document.getElementById('help-modal').classList.add('open');
+  const replayBtn = document.getElementById('help-replay-tour-btn');
+  if (replayBtn) replayBtn.style.display = IS_DEMO ? 'inline-block' : 'none';
 }
 
 // ── zxcvbn-ts core (password strength) ────────────────────
@@ -9606,23 +10102,27 @@ function dismissWelcome() {
 }
 
 function toggleWelcomeSetup(mode) {
-  const steps = document.getElementById('welcome-setup-steps');
-  const manualBtn = document.getElementById('welcome-setup-btn');
-  const aiBtn = document.getElementById('welcome-ai-btn');
+  const steps    = document.getElementById('welcome-setup-steps');
+  const manualBtn = document.getElementById('welcome-setup-btn'); // A
+  const aiBtn     = document.getElementById('welcome-ai-btn');    // B
+  const chatBtn   = document.getElementById('welcome-chat-btn'); // C
   const current = steps.getAttribute('data-mode');
   if (current === mode) {
     steps.style.display = 'none';
     steps.setAttribute('data-mode', '');
-    manualBtn.classList.remove('active');
-    aiBtn.classList.remove('active');
+    if (manualBtn) manualBtn.classList.remove('active-noai');
+    if (aiBtn)     aiBtn.classList.remove('active-cloud');
+    if (chatBtn)   chatBtn.classList.remove('active-green');
     return;
   }
   steps.setAttribute('data-mode', mode);
   steps.style.display = 'block';
   document.getElementById('welcome-path-manual').style.display = mode === 'manual' ? 'block' : 'none';
-  document.getElementById('welcome-path-ai').style.display = mode === 'ai' ? 'block' : 'none';
-  manualBtn.classList.toggle('active', mode === 'manual');
-  aiBtn.classList.toggle('active', mode === 'ai');
+  document.getElementById('welcome-path-ai').style.display     = mode === 'ai'     ? 'block' : 'none';
+  document.getElementById('welcome-path-chat').style.display   = mode === 'chat'   ? 'block' : 'none';
+  if (manualBtn) manualBtn.classList.toggle('active-noai',  mode === 'manual');
+  if (aiBtn)     aiBtn.classList.toggle('active-cloud',     mode === 'ai');
+  if (chatBtn)   chatBtn.classList.toggle('active-green',   mode === 'chat');
 }
 
 function downloadInstructionsMd(btn) {
@@ -9758,6 +10258,10 @@ function _doInit() {
       if (IS_DEMO) {
         const b = document.getElementById('demo-banner');
         if (b) b.style.display = 'flex';
+        // Show intro tour on first visit each session
+        if (!sessionStorage.getItem(TOUR_SEEN_KEY)) {
+          setTimeout(startTour, 650);
+        }
       } else {
         // Don't save demo data into localStorage; show welcome
         const welcomed = localStorage.getItem(WELCOMED_KEY);
@@ -11109,9 +11613,10 @@ function chatLoadSession(sessionId) {
 
   if (!isJournalSession && source.model) {
     const cs = loadChatSettings();
-    cs.model = source.model;
+    const modelToUse = cs.defaultModel || source.model;
+    cs.model = modelToUse;
     saveChatSettings(cs);
-    _updateModelUI(source.model);
+    _updateModelUI(modelToUse);
   }
 
   const container = document.getElementById('chat-msgs');
@@ -12025,6 +12530,225 @@ document.addEventListener('keydown', function(e) {
   });
 })();
 
+// ══ INTRO TOUR ══════════════════════════════════════════════
+const TOUR_SEEN_KEY = 'ts-tour-seen-v1'; // sessionStorage — resets each browser session
+
+const _TOUR_STEPS = [
+  // Step 0 — full-screen framing, no spotlight
+  {
+    target: null,
+    heading: "Welcome. You're looking at Alex's demo.",
+    body: "This is a real example of what your own inner map could look like. Parts are named, connected, and tracked over time. Nothing here is saved. Take 60 seconds to see how it works.",
+    next: 'Take the tour',
+    skip: 'Skip',
+  },
+  // Step 1 — tab nav
+  {
+    target: '.tab-nav',
+    heading: 'Six views of your inner system',
+    body: "<strong>Map</strong> (visual network), <strong>Parts</strong> (full roster), <strong>Body</strong> (physical sensations), <strong>Self</strong> (your core qualities), <strong>Journal</strong> (session log), and <strong>History</strong> (your system over time). Alex's data is filled in across all of them.",
+    placement: 'below',
+  },
+  // Step 2 — map tab (the main canvas area)
+  {
+    target: '#tab-map',
+    heading: 'The Map: your parts as a network',
+    body: "Each node is a part. Size reflects how prominent it is right now. Click a node to open its full profile. Drag to rearrange. The connections show how parts relate to each other.",
+    placement: 'below',
+  },
+  // Step 3 — parts tab button
+  {
+    target: '[data-tab="parts"]',
+    heading: 'Parts: your inner roster',
+    body: "Every part has a <strong>role</strong> (Manager, Firefighter, or Exile), a core function, and a blending level. You don't need to know IFS theory to start — just name what you notice.",
+    placement: 'below',
+  },
+  // Step 4 — check-in button
+  {
+    target: '.fbar-btn.fbar-daily',
+    heading: 'Daily check-in',
+    body: "Tap this to log how blended or separate you feel with each part right now. Takes 30 seconds. Check in regularly and a history chart builds itself over time.",
+    placement: 'above',
+  },
+  // Step 5 — chat button
+  {
+    target: '#chat-btn',
+    heading: 'Journal with your AI',
+    body: "Open this to connect an AI directly. Journal for 10-20 minutes and your map fills itself in from your own words. Works with any AI via API key, or with a local Ollama model that never leaves your device.",
+    placement: 'above',
+  },
+  // Step 6 — demo banner CTA
+  {
+    target: '#demo-banner',
+    heading: 'Ready to map your own inner system?',
+    body: null,
+    isCTA: true,
+    placement: 'above',
+  },
+];
+
+let _tourStep = 0;
+let _tourActive = false;
+let _tourResizeObs = null;
+
+function startTour(){
+  _tourStep = 0;
+  _tourActive = true;
+  document.getElementById('tour-overlay').classList.add('active');
+  _tourRender();
+}
+
+function _tourEnd(skipped){
+  _tourActive = false;
+  document.getElementById('tour-overlay').classList.remove('active');
+  document.getElementById('tour-spotlight').classList.add('hidden');
+  if(_tourResizeObs){ _tourResizeObs.disconnect(); _tourResizeObs = null; }
+  sessionStorage.setItem(TOUR_SEEN_KEY, '1');
+}
+
+function _tourNext(){
+  if(_tourStep < _TOUR_STEPS.length - 1){
+    _tourStep++;
+    _tourRender();
+  } else {
+    _tourEnd(false);
+  }
+}
+
+function _tourScrimClick(){
+  _tourNext();
+}
+
+function _tourRender(){
+  const step = _TOUR_STEPS[_tourStep];
+  const card = document.getElementById('tour-card');
+  const spotlight = document.getElementById('tour-spotlight');
+  const isLast = _tourStep === _TOUR_STEPS.length - 1;
+
+  document.getElementById('tour-step-label').textContent =
+    _tourStep === 0 ? 'Intro' : `Step ${_tourStep} of ${_TOUR_STEPS.length - 1}`;
+
+  document.getElementById('tour-heading').textContent = step.heading;
+
+  const bodyEl = document.getElementById('tour-body');
+  if(step.isCTA){
+    bodyEl.innerHTML = '';
+    const ctaRow = document.createElement('div');
+    ctaRow.className = 'tour-cta-row';
+    const opts = [
+      { label: 'Fill it in yourself', sub: 'Click any field to edit. No AI needed.', action: ()=>{ _tourShowDownloadNudge(); } },
+      { label: 'Copy-paste with your AI', sub: 'Journal in any AI, import the result.', action: ()=>{ _tourShowDownloadNudge(); } },
+      { label: 'Chat inside the app', sub: 'Connect via API key or local Ollama. No copy-paste.', action: ()=>{ _tourShowDownloadNudge(); } },
+    ];
+    opts.forEach(o => {
+      const btn = document.createElement('button');
+      btn.className = 'tour-cta-btn';
+      const strong = document.createElement('strong');
+      strong.textContent = o.label;
+      const sub = document.createTextNode(o.sub);
+      btn.appendChild(strong);
+      btn.appendChild(sub);
+      btn.addEventListener('click', e => { e.stopPropagation(); o.action(); });
+      ctaRow.appendChild(btn);
+    });
+    bodyEl.appendChild(ctaRow);
+    const note = document.createElement('div');
+    note.style.cssText = 'font-size:13px;color:var(--text-dim);line-height:1.5;margin-top:4px;';
+    note.textContent = 'Download the app first, then the welcome screen walks you through each option.';
+    bodyEl.appendChild(note);
+  } else if(step.body){
+    bodyEl.innerHTML = step.body; // static internal content only
+  } else {
+    bodyEl.textContent = '';
+  }
+
+  const prog = document.getElementById('tour-progress');
+  prog.innerHTML = '';
+  _TOUR_STEPS.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'tour-dot' + (i === _tourStep ? ' active' : '');
+    prog.appendChild(dot);
+  });
+
+  const nextBtn = document.getElementById('tour-btn-next');
+  nextBtn.textContent = step.next || (isLast ? 'Download the app' : 'Next');
+  if(isLast){
+    nextBtn.onclick = e => { e.stopPropagation(); downloadApp(); _tourShowDownloadNudge(); };
+  } else {
+    nextBtn.onclick = e => { e.stopPropagation(); _tourNext(); };
+  }
+
+  if(!step.target){
+    spotlight.classList.add('hidden');
+    card.className = 'tour-card-center';
+    card.style.top = ''; card.style.left = ''; card.style.right = ''; card.style.bottom = '';
+  } else {
+    card.className = '';
+    spotlight.classList.remove('hidden');
+    _tourPosition(step);
+    if(_tourResizeObs) _tourResizeObs.disconnect();
+    _tourResizeObs = new ResizeObserver(() => { if(_tourActive) _tourPosition(_TOUR_STEPS[_tourStep]); });
+    _tourResizeObs.observe(document.documentElement);
+  }
+}
+
+function _tourShowDownloadNudge(){
+  downloadApp();
+  const bodyEl = document.getElementById('tour-body');
+  bodyEl.innerHTML = '';
+  const msg = document.createElement('div');
+  msg.style.cssText = 'font-size:15px;color:var(--text-mid);line-height:1.6;';
+  msg.textContent = 'Your file is downloading. Open team-sheet.html in your browser to start mapping your own inner system.';
+  bodyEl.appendChild(msg);
+  const nextBtn = document.getElementById('tour-btn-next');
+  nextBtn.textContent = 'Done';
+  nextBtn.onclick = e => { e.stopPropagation(); _tourEnd(false); };
+}
+
+function _tourPosition(step){
+  const el = document.querySelector(step.target);
+  if(!el) return;
+  const r = el.getBoundingClientRect();
+  const pad = 8;
+  const spotlight = document.getElementById('tour-spotlight');
+  spotlight.style.left   = (r.left - pad) + 'px';
+  spotlight.style.top    = (r.top  - pad) + 'px';
+  spotlight.style.width  = (r.width  + pad * 2) + 'px';
+  spotlight.style.height = (r.height + pad * 2) + 'px';
+
+  const card = document.getElementById('tour-card');
+  const placement = step.placement || 'below';
+  const gap = 14;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  requestAnimationFrame(() => {
+    const cw = card.offsetWidth;
+    const ch = card.offsetHeight;
+    let top, left;
+
+    if(placement === 'below'){
+      top  = r.bottom + pad + gap;
+      left = r.left + r.width / 2 - cw / 2;
+    } else if(placement === 'above'){
+      top  = r.top - pad - gap - ch;
+      left = r.left + r.width / 2 - cw / 2;
+    } else if(placement === 'left'){
+      top  = r.top + r.height / 2 - ch / 2;
+      left = r.left - pad - gap - cw;
+    } else { // right
+      top  = r.top + r.height / 2 - ch / 2;
+      left = r.right + pad + gap;
+    }
+
+    left = Math.max(8, Math.min(left, vw - cw - 8));
+    top  = Math.max(8, Math.min(top,  vh - ch - 8));
+
+    card.style.top  = top  + 'px';
+    card.style.left = left + 'px';
+  });
+}
+
 </script>
 
 <!-- ══ CHAT PRIVACY MODAL ════════════════════════════════════════ -->
@@ -12265,6 +12989,21 @@ document.addEventListener('keydown', function(e) {
 
     <div class="modal-row" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
       <button class="btn-ghost" onclick="closeModelGuide()">Close</button>
+    </div>
+  </div>
+</div>
+<!-- ══ INTRO TOUR ════════════════════════════════════════════ -->
+<div id="tour-overlay">
+  <div id="tour-scrim" onclick="_tourScrimClick()"></div>
+  <div id="tour-spotlight" class="hidden"></div>
+  <div id="tour-card">
+    <div class="tour-step-label" id="tour-step-label">Intro</div>
+    <div class="tour-heading" id="tour-heading"></div>
+    <div class="tour-body" id="tour-body"></div>
+    <div class="tour-actions">
+      <button class="tour-btn-next" id="tour-btn-next" onclick="_tourNext()">Next</button>
+      <button class="tour-btn-skip" onclick="_tourEnd(true)">Skip</button>
+      <div class="tour-progress" id="tour-progress"></div>
     </div>
   </div>
 </div>
