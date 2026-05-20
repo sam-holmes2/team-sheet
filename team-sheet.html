@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' blob:; font-src 'self' data:; img-src 'self' data:; connect-src 'self' https://api.anthropic.com http://localhost:11434 https://raw.githubusercontent.com https://api.github.com;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>team-sheet — IFS inner parts mapping and journaling</title>
+<title>team-sheet: IFS inner parts mapping and journaling</title>
 <meta name="description" content="A free, local app for mapping your Internal Family Systems parts. Track Managers, Firefighters, and Exiles through journaling and AI-assisted sessions. Single HTML file, no account, all data stays local.">
-<meta property="og:title" content="team-sheet — IFS inner parts mapping and journaling">
+<meta property="og:title" content="team-sheet: IFS inner parts mapping and journaling">
 <meta property="og:description" content="Map your Internal Family Systems parts, track Self-led moments, and journal your inner work. Free, open source, all data stays on your device.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://sam-holmes2.github.io/team-sheet/Screenshot%202026-05-02%20at%2017.50.24.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="team-sheet — IFS inner parts mapping and journaling">
+<meta name="twitter:title" content="team-sheet: IFS inner parts mapping and journaling">
 <meta name="twitter:description" content="Map your Internal Family Systems parts and journal your inner work. Free, open source, runs locally.">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -2117,7 +2117,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     <div id="welcome-setup-steps" data-mode="">
       <!-- Path A: Fill it in yourself -->
       <div class="welcome-path" id="welcome-path-manual">
-        <div style="font-size:13px;color:#6090c8;margin:14px 0 10px;font-weight:600;">A &nbsp;Fill it in yourself &mdash; no AI required, works completely offline</div>
+        <div style="font-size:13px;color:#6090c8;margin:14px 0 10px;font-weight:600;">A &nbsp;Fill it in yourself. No AI required, works completely offline.</div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">1</div><div class="welcome-step-text"><strong>Go to the Parts tab</strong> and click "+ Add part". Start with whatever you notice most in yourself: a voice, a pattern, a recurring tension.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">2</div><div class="welcome-step-text"><strong>Give it a name and a role</strong> (Manager, Firefighter, or Exile). Fill in what you know: what it does, what it fears, when it shows up. No need to fill everything at once.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">3</div><div class="welcome-step-text"><strong>Open the Map tab</strong> to see your parts as a visual network. Add connections between parts in each part's Relationships section.</div></div>
@@ -2125,7 +2125,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       </div>
       <!-- Path B: Copy-paste with your AI -->
       <div class="welcome-path" id="welcome-path-ai" style="display:none;">
-        <div style="font-size:13px;color:#f09090;margin:14px 0 10px;font-weight:600;">B &nbsp;Copy-paste with your AI &mdash; journal in any AI, import the result</div>
+        <div style="font-size:13px;color:#f09090;margin:14px 0 10px;font-weight:600;">B &nbsp;Copy-paste with your AI. Journal in any AI, then import the result.</div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">1</div><div class="welcome-step-text"><strong>Download instructions.md,</strong> the file that tells your AI how team-sheet works. <button class="btn-ghost btn-download" style="margin-left:6px;" onclick="downloadInstructionsMd(this)">&#8595; instructions.md</button></div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">2</div><div class="welcome-step-text"><strong>Create a project</strong> in your AI of choice and upload instructions.md to its knowledge base.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Try: <em>"Here's what's been present for me lately..."</em> or use a Session Starter from the Journal tab.</div></div>
@@ -2134,7 +2134,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       </div>
       <!-- Path C: Chat inside the app -->
       <div class="welcome-path" id="welcome-path-chat" style="display:none;">
-        <div style="font-size:13px;color:#50c878;margin:14px 0 10px;font-weight:600;">C &nbsp;Chat inside the app &mdash; API key or local Ollama</div>
+        <div style="font-size:13px;color:#50c878;margin:14px 0 10px;font-weight:600;">C &nbsp;Chat inside the app. API key or local Ollama.</div>
         <div class="welcome-step"><div class="welcome-step-num">1</div><div class="welcome-step-text"><strong>Open Chat</strong> using the star (&#10022;) icon in the bottom bar.</div></div>
         <div class="welcome-step"><div class="welcome-step-num">2</div><div class="welcome-step-text"><strong>Open Chat Settings</strong> (gear icon inside the chat panel) and enter your API key, or connect a local Ollama model. The settings screen shows the exact Ollama start command for your OS.</div></div>
         <div class="welcome-step"><div class="welcome-step-num">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Journal for 10-20 minutes and your parts map fills in from your own words. No copy-pasting needed.</div></div>
@@ -2155,6 +2155,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <div class="modal">
     <button class="modal-close" onclick="_closePulseModal(false)">&#215;</button>
     <div class="modal-title">Parts Check-In</div>
+    <div id="pulse-demo-notice" style="display:none;font-size:13px;color:var(--gold);background:rgba(200,168,74,0.1);border:1px solid rgba(200,168,74,0.25);border-radius:4px;padding:6px 10px;margin-bottom:8px;">Demo mode: sliders are interactive but nothing is saved.</div>
     <div class="pulse-subtitle">Take a breath. Who's present right now?</div>
     <div class="pulse-body">
       <div class="pulse-sliders-col">
@@ -2283,8 +2284,8 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <div class="help-step">
           <div class="help-step-num">2</div>
           <div class="help-step-text"><strong>Choose how to connect:</strong>
-            <span style="display:block;margin-top:6px;font-size:14px;"><strong style="color:var(--text-b);">API key</strong> — enter a key from Anthropic, OpenAI, or another provider. You pay for usage directly (usually a few cents per session). Fastest setup.</span>
-            <span style="display:block;margin-top:6px;font-size:14px;"><strong style="color:var(--text-b);">Ollama</strong> — a free app that runs an AI model on your own computer. Nothing leaves your device. Requires a one-time install and model download (4-10 GB).</span>
+            <span style="display:block;margin-top:6px;font-size:14px;"><strong style="color:var(--text-b);">API key:</strong> enter a key from Anthropic, OpenAI, or another provider. You pay for usage directly (usually a few cents per session). Fastest setup.</span>
+            <span style="display:block;margin-top:6px;font-size:14px;"><strong style="color:var(--text-b);">Ollama:</strong> a free app that runs an AI model on your own computer. Nothing leaves your device. Requires a one-time install and model download (4-10 GB).</span>
           </div>
         </div>
         <div class="help-step">
@@ -3179,7 +3180,7 @@ function saveState(s) {
   if (typeof _pinActive !== 'undefined' && _pinActive) {
     _encryptAndSave(s, _currentKey ? null : _currentPIN);
   } else {
-    try { localStorage.setItem(STATE_KEY, JSON.stringify(s)); } catch(e) { showToast('Storage full — data not saved'); }
+    try { localStorage.setItem(STATE_KEY, JSON.stringify(s)); } catch(e) { showToast('Storage full. Data not saved.'); }
   }
   if (!localStorage.getItem(HIDE_DIRTY_BANNER_KEY)) {
     const b = document.getElementById('dirty-banner');
@@ -3864,7 +3865,7 @@ function renderBodyDiagramPanel(s) {
   resetBtn.className = 'bd-reset-btn';
   resetBtn.style.cssText = 'margin-top:10px;width:100%;';
   resetBtn.textContent = 'Reset positions';
-  resetBtn.title = 'Clear all manually dragged positions — dots return to auto-inferred placement from trailhead text';
+  resetBtn.title = 'Clear all manually dragged positions. Dots return to auto-inferred placement from trailhead text.';
   resetBtn.onclick = () => { pushUndo('Reset body positions'); bd.dotOverrides = {}; saveState(appState); renderBodyDiagramPanel(appState); };
   svgWrap.appendChild(resetBtn);
 
@@ -5932,7 +5933,7 @@ function buildPartCard(part, idx, s) {
   const intentLbl = document.createElement('div');
   intentLbl.className = 'part-section-label';
   intentLbl.textContent = 'Positive intent';
-  intentLbl.title = 'What this part is trying to protect or achieve — its underlying motivation and values. Every part has a positive intent even when its strategy is harmful.';
+  intentLbl.title = 'What this part is trying to protect or achieve. Its underlying motivation and values. Every part has a positive intent even when its strategy is harmful.';
   const intentList = buildBulletField(part, 'valuesAndNeeds', 'What is this part trying to protect or achieve...');
   intentSec.appendChild(intentLbl);
   intentSec.appendChild(intentList);
@@ -5964,7 +5965,7 @@ function buildPartCard(part, idx, s) {
   const wantsLbl = document.createElement('div');
   wantsLbl.className = 'part-section-label';
   wantsLbl.textContent = 'Cravings';
-  wantsLbl.title = 'What this part craves or feels pulled toward in the moment — surface desires from other parts, people, or the world. Most pressing first.';
+  wantsLbl.title = 'What this part craves or feels pulled toward in the moment. Surface desires from other parts, people, or the world. Most pressing first.';
   const wantsList = buildBulletField(part, 'wants', 'Add something this part craves or feels it needs right now...');
   wantsSec.appendChild(wantsLbl);
   wantsSec.appendChild(wantsList);
@@ -5976,7 +5977,7 @@ function buildPartCard(part, idx, s) {
   const trailheadsLbl = document.createElement('div');
   trailheadsLbl.className = 'part-section-label';
   trailheadsLbl.textContent = 'Trailheads';
-  trailheadsLbl.title = 'Body sensations and physical signals that indicate this part is present — doorways into the part. E.g. tightness across the chest, hollow feeling below the sternum, shoulders pulling in.';
+  trailheadsLbl.title = 'Body sensations and physical signals that indicate this part is present. Doorways into the part. E.g. tightness across the chest, hollow feeling below the sternum, shoulders pulling in.';
   const trailheadsList = buildBulletField(part, 'trailheads', 'Add a body sensation or physical signal...');
   trailheadsSec.appendChild(trailheadsLbl);
   trailheadsSec.appendChild(trailheadsList);
@@ -6001,7 +6002,7 @@ function buildPartCard(part, idx, s) {
   fearsLbl.className = 'part-section-label';
   fearsLbl.textContent = 'Fears';
   fearsLbl.title = 'What this part is trying to prevent. Most frequently activated fear first. Often reveals which exile the part is protecting.';
-  const fearsList = buildBulletField(part, 'fears', 'Add a fear — what this part is trying to prevent...');
+  const fearsList = buildBulletField(part, 'fears', 'Add a fear. What is this part trying to prevent?...');
   fearsSec.appendChild(fearsLbl);
   fearsSec.appendChild(fearsList);
   rightCol.appendChild(fearsSec);
@@ -6035,7 +6036,7 @@ function buildPartCard(part, idx, s) {
   const emergedLbl = document.createElement('div');
   emergedLbl.className = 'part-section-label';
   emergedLbl.textContent = 'Emerged around age';
-  emergedLbl.title = 'Approximate age when this part first developed. Use tentative language — rough window is more useful than false precision.';
+  emergedLbl.title = 'Approximate age when this part first developed. Use tentative language. A rough window is more useful than false precision.';
   const emergedRow = document.createElement('div');
   emergedRow.style.cssText = 'display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;';
   const emergedAgeInput = document.createElement('input');
@@ -7225,7 +7226,7 @@ function _buildPulseSliderList(list, parts){
   const selfNameLbl = document.createElement('div');
   selfNameLbl.className = 'pulse-self-name';
   selfNameLbl.textContent = 'Self';
-  selfNameLbl.title = 'Self — calm, present, not led by any part';
+  selfNameLbl.title = 'Self: calm, present, not led by any part';
   const selfSlider = document.createElement('input');
   selfSlider.type = 'range'; selfSlider.min = '0'; selfSlider.max = '100'; selfSlider.step = '1';
   selfSlider.className = 'pulse-self-slider pulse-part-slider--unset';
@@ -7268,10 +7269,9 @@ function _renderPulsePie() {
 }
 
 function _openPulseModal(isAutoPrompt, bypassGate){
-  if(IS_DEMO) return;
   const parts = appState.parts || [];
   if(parts.length === 0) return;
-  if(isAutoPrompt && !bypassGate && !_checkinDueConsideringDismiss()) return;
+  if(!IS_DEMO && isAutoPrompt && !bypassGate && !_checkinDueConsideringDismiss()) return;
   const modal = document.getElementById('pulse-modal');
   if(!modal) return;
   if(document.querySelector('.modal-overlay.open')) return;
@@ -7279,12 +7279,16 @@ function _openPulseModal(isAutoPrompt, bypassGate){
   if(!list) return;
   _buildPulseSliderList(list, parts);
   _renderPulsePie();
+  const demoNotice = document.getElementById('pulse-demo-notice');
+  if(demoNotice) demoNotice.style.display = IS_DEMO ? 'block' : 'none';
   // Sync inline frequency select to current setting
-  const ciSel = document.getElementById('pulse-checkin-interval');
-  if(ciSel){
-    const raw = localStorage.getItem(CHECKIN_INTERVAL_KEY);
-    const val = (raw == null || raw === '0' || raw === '24') ? '0' : raw;
-    [...ciSel.options].forEach(o => o.selected = (o.value === val));
+  if(!IS_DEMO){
+    const ciSel = document.getElementById('pulse-checkin-interval');
+    if(ciSel){
+      const raw = localStorage.getItem(CHECKIN_INTERVAL_KEY);
+      const val = (raw == null || raw === '0' || raw === '24') ? '0' : raw;
+      [...ciSel.options].forEach(o => o.selected = (o.value === val));
+    }
   }
   modal.classList.add('open');
 }
@@ -7591,7 +7595,7 @@ function _initWheelEvents() {
       const c   = EIGHT_CS[idx];
       const cnt = (_groupedMoments(appState)[c.name.toLowerCase()] || []).length;
       showTip(
-        `${c.name.toUpperCase()} — ${cnt} moment${cnt !== 1 ? 's' : ''}`,
+        `${c.name.toUpperCase()}: ${cnt} moment${cnt !== 1 ? 's' : ''}`,
         `<div>${c.desc}</div><div class="tt-dist">${c.distinction}</div>`,
         e
       );
@@ -7901,7 +7905,7 @@ function renderJournal(s) {
     ageInput.style.cssText = 'width:46px;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:2px 5px;font-size:13px;font-family:var(--mono);';
     ageInput.value = s.system?.currentAge != null ? s.system.currentAge : '';
     ageInput.placeholder = '--';
-    ageInput.title = 'Your current age — used to place parts timeline origin markers on the correct year.';
+    ageInput.title = 'Your current age. Used to place parts timeline origin markers on the correct year.';
     ageInput.addEventListener('change', () => {
       const v = parseInt(ageInput.value);
       if (!appState.system) appState.system = {};
@@ -9055,12 +9059,12 @@ function _ptTooltipEl() {
         msg = `${(appState.parts || []).find(p => p.id === hit.partId)?.name || 'Part'}: formed at age ${part?.originAge ?? '?'}`;
       } else if (hit.kind === 'self') {
         msg = hit.mem.quality ? hit.mem.quality.charAt(0).toUpperCase() + hit.mem.quality.slice(1) : 'Self moment';
-        if (hit.mem.date) msg += ' — ' + hit.mem.date;
+        if (hit.mem.date) msg += ', ' + hit.mem.date;
         if (hit.mem.description) msg += '\n' + hit.mem.description.slice(0, 80) + (hit.mem.description.length > 80 ? '…' : '');
       } else {
         msg = hit.mem.label || '(no label)';
-        if (hit.mem.date) msg += ' — ' + hit.mem.date;
-        else if (hit.mem.dateApprox) msg += ' — ' + hit.mem.dateApprox;
+        if (hit.mem.date) msg += ', ' + hit.mem.date;
+        else if (hit.mem.dateApprox) msg += ', ' + hit.mem.dateApprox;
         if (hit.mem.notes) msg += '\n' + hit.mem.notes.slice(0, 80) + (hit.mem.notes.length > 80 ? '…' : '');
       }
       tip.textContent = msg;
@@ -10162,7 +10166,7 @@ function downloadInstructionsMd(btn) {
       setTimeout(() => { btn.textContent = orig; }, 2500);
     })
     .catch(() => {
-      btn.textContent = '✗ Failed — check connection'; btn.disabled = false;
+      btn.textContent = '✗ Failed. Check connection.'; btn.disabled = false;
       setTimeout(() => { btn.textContent = orig; }, 3000);
     });
 }
@@ -10502,7 +10506,9 @@ function buildChatSystemPrompt() {
   const inAppNote = `IN-APP CHAT MODE
 You are running directly inside team-sheet. Key differences from the standalone workflow described above:
 - ${dataNote}
-- When you include a \`\`\`json block with updated data, the app applies it to local storage automatically. Do not tell the user to copy, paste, or import JSON.
+- When you include a \`\`\`json block with updated data, the app intercepts it automatically — the user never sees the raw JSON. Do not tell the user to copy, paste, or import JSON.
+- NEVER display raw JSON or describe JSON field names/structure in your conversational text. The user has no idea what the JSON looks like and does not need to. If you want to tell the user what would be recorded, describe it in plain language (e.g. "I would update this part's role and add a new burden").
+- To save changes, the user clicks the "Update map" button at the bottom of the chat. When they ask how to save, tell them to click that button — do not output a JSON block in response.
 - ${syncInstr}
 - Keep responses conversational. Skip any boilerplate about the import/export workflow.`;
   // Use trimmed context for small local models to avoid context overflow
@@ -11098,7 +11104,8 @@ function _chatHandleReply(reply, streamingEl = null) {
   const syncMode = s.syncMode || (s.autoApply ? 'always' : 'manual');
   const narrative = reply.replace(/```json[\s\S]*?```/, '').replace(/\n{3,}/g, '\n\n').trim();
   if (syncMode === 'manual') {
-    chatAddMsg('assistant', reply, '✶ Changes noted. Use "Update map" to save them.');
+    if (narrative) chatAddMsg('assistant', narrative);
+    chatAddMsg('system', 'Changes noted. Click "Update map" to review and save them.');
   } else if (s.reviewBeforeSave) {
     if (narrative) chatAddMsg('assistant', narrative);
     chatShowUpdateReview(detected, null);
@@ -12571,7 +12578,7 @@ const _TOUR_STEPS = [
   {
     target: '.tab-nav',
     heading: 'Six views of your inner system',
-    body: "<strong>Map</strong> &mdash; visual network<br><strong>Parts</strong> &mdash; full roster<br><strong>Body</strong> &mdash; physical sensations<br><strong>Self</strong> &mdash; your core qualities<br><strong>Journal</strong> &mdash; session log<br><strong>History</strong> &mdash; your system over time<br><br>Alex's data is filled in across all of them.",
+    body: "<strong>Map</strong>: visual network<br><strong>Parts</strong>: full roster<br><strong>Body</strong>: physical sensations<br><strong>Self</strong>: your core qualities<br><strong>Journal</strong>: session log<br><strong>History</strong>: your system over time<br><br>All tabs are filled in. Click any one to explore freely.",
     placement: 'below',
   },
   // Step 2 — map tab (the main canvas area)
