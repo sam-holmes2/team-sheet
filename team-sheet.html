@@ -9781,6 +9781,8 @@ function _resetLockTimer(){
   document.addEventListener(ev, ()=>{ if(_pinActive) _resetLockTimer(); }, {passive:true});
 });
 
+let _chatSettingsCache = null;
+
 function lockApp(){
   if(_lockTimer){ clearTimeout(_lockTimer); _lockTimer=null; }
   _pinActive = false;
@@ -10328,7 +10330,6 @@ function _defaultAutoCompactThreshold() {
 }
 
 const CHAT_SETTINGS_KEY    = 'ts-chat-settings-v1';
-let _chatSettingsCache = null;
 const ANTHROPIC_PRICING = {
   'claude-opus-4-7':           { in: 15.00, out: 75.00 },
   'claude-sonnet-4-6':         { in:  3.00, out: 15.00 },
@@ -11016,7 +11017,7 @@ async function callOllamaAPI(messages, systemPrompt, streamCallback = null) {
       }),
     });
   } catch(e) {
-    if (!_isLocalModel(loadChatSettings().model)) throw new Error('');
+    if (!_isLocalModel(loadChatSettings().model)) throw e;
     const onFile = window.location.protocol === 'file:';
     if (onFile) {
       chatAddInfoCard(_ollamaInstallHTML(detectOS(), model));
@@ -11035,7 +11036,7 @@ async function callOllamaAPI(messages, systemPrompt, streamCallback = null) {
     throw new Error('Could not connect to Ollama. Make sure it is running with CORS enabled. Use the restart command shown in Chat Settings (gear icon).');
   }
   if (!resp.ok) {
-    if (!_isLocalModel(loadChatSettings().model)) throw new Error('');
+    if (!_isLocalModel(loadChatSettings().model)) throw new Error('Unexpected routing error: cloud model sent to local API. Open Chat Settings and re-save your model selection.');
     let msg = 'Ollama error ' + resp.status;
     try { const e = await resp.json(); msg = (typeof e?.error === 'string' ? e.error : e?.error?.message) || msg; } catch {}
     const probe = await probeOllamaStatus();
@@ -11633,12 +11634,14 @@ function chatLoadSession(sessionId) {
   chatState.sessionStartedAt = null;
   chatState._displaySessionId = sessionId;
 
-  if (!isJournalSession && source.model) {
+  if (!isJournalSession) {
     const cs = loadChatSettings();
-    const modelToUse = cs.defaultModel || source.model;
-    cs.model = modelToUse;
-    saveChatSettings(cs);
-    _updateModelUI(modelToUse);
+    const modelToUse = cs.defaultModel || cs.model || source.model;
+    if (modelToUse) {
+      cs.model = modelToUse;
+      saveChatSettings(cs);
+      _updateModelUI(modelToUse);
+    }
   }
 
   const container = document.getElementById('chat-msgs');
