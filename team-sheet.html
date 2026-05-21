@@ -112,7 +112,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .journal-intention-label {
   font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.18em;
   text-transform:uppercase; color:var(--gold); padding-bottom:8px; margin-bottom:0;
-  align-self:end; text-align:center;
+  text-align:center;
 }
 .journal-intention-item {
   font-size:16px; color:var(--text-b); line-height:1.55;
@@ -716,6 +716,15 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   display:flex; align-items:center; gap:6px; color:var(--text-mid);
 }
 .balance-note { font-size:15px; color:var(--text-mid); line-height:1.55; }
+.chart-today-pulse {
+  position:absolute; pointer-events:none; border-radius:0;
+  border-left: 1px solid rgba(220,185,80,0.25);
+  animation: today-pulse 2.4s ease-in-out infinite;
+}
+@keyframes today-pulse {
+  0%,100% { box-shadow: inset 0 0 0 rgba(220,185,80,0); }
+  50%      { box-shadow: inset 6px 0 18px rgba(220,185,80,0.18), inset -6px 0 12px rgba(220,185,80,0.08); }
+}
 .balance-area-legend-dot {
   width:10px; height:10px; border-radius:50%; flex-shrink:0;
 }
@@ -963,8 +972,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 
 /* ── Parts timeline ── */
 #parts-timeline-section { margin-bottom:4px; }
-#parts-timeline-layout { border-radius:8px; overflow:hidden; background:rgba(0,0,0,0.18); }
-#parts-timeline-labels { background:rgba(0,0,0,0.10); border-right:1px solid rgba(255,255,255,0.06); }
+#parts-timeline-layout { border-radius:8px; overflow:hidden; background:rgba(30,27,22,0.55); border:1px solid rgba(255,255,255,0.07); }
+#parts-timeline-labels { background:rgba(20,18,14,0.35); border-right:1px solid rgba(255,255,255,0.08); }
 #parts-timeline-canvas { display:block; }
 #parts-timeline-legend { min-height:16px; }
 
@@ -1362,6 +1371,11 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .fbar-btn.fbar-import { color:var(--gold); }
 .fbar-btn.fbar-chat { color:var(--gold); }
 .fbar-btn.fbar-daily { color:var(--gold); }
+@keyframes checkin-due-pulse {
+  0%,100% { color:var(--gold); text-shadow:none; }
+  50%      { color:rgba(240,205,80,1); text-shadow:0 0 10px rgba(220,185,60,0.55), 0 0 22px rgba(220,185,60,0.25); }
+}
+.fbar-btn.fbar-daily.checkin-due { animation:checkin-due-pulse 2.4s ease-in-out infinite; }
 .fbar-btn.fbar-data { color:var(--gold); }
 .fbar-btn.fbar-data:hover { background:var(--border); color:var(--text-b); }
 .fbar-btn.fbar-data.active { background:var(--gold-dim); color:var(--gold); }
@@ -1433,20 +1447,20 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .chat-icon-btn { background:none; border:1px solid var(--border-hi); color:var(--text-dim); font-size:14px; width:28px; height:28px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
 .chat-icon-btn:hover { border-color:var(--gold); color:var(--gold); }
 .chat-msgs { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
-.chat-msg { max-width:82%; padding:10px 14px; border-radius:8px; font-size:15px; line-height:1.6; white-space:pre-wrap; word-break:break-word; }
+.chat-msg { max-width:82%; padding:10px 14px; border-radius:8px; font-size:17px; line-height:1.6; white-space:pre-wrap; word-break:break-word; }
 .chat-msg-user { align-self:flex-end; background:rgba(200,168,74,0.1); border:1px solid rgba(200,168,74,0.25); color:var(--text-b); }
 .chat-msg-ai { align-self:flex-start; background:rgba(255,255,255,0.04); border:1px solid var(--border-hi); color:var(--text); }
-.chat-msg-sys { align-self:center; font-size:13px; color:var(--text-dim); font-style:italic; padding:2px 0; }
-.chat-info-card { align-self:stretch; background:rgba(200,168,74,0.05); border:1px solid rgba(200,168,74,0.18); border-radius:6px; padding:12px 14px; font-size:13px; color:var(--text-dim); line-height:1.7; }
+.chat-msg-sys { align-self:center; font-size:15px; color:var(--text-dim); font-style:italic; padding:2px 0; }
+.chat-info-card { align-self:stretch; background:rgba(200,168,74,0.05); border:1px solid rgba(200,168,74,0.18); border-radius:6px; padding:12px 14px; font-size:15px; color:var(--text-dim); line-height:1.7; }
 .chat-info-card strong { color:var(--text-mid); font-style:normal; }
 .chat-info-card ol { margin:6px 0 0 18px; padding:0; }
 .chat-info-card li { margin-bottom:3px; }
-.chat-info-card code { display:inline-block; margin-top:4px; padding:4px 8px; background:rgba(0,0,0,0.35); border-radius:4px; font-family:monospace; font-size:12px; color:#e8e0d0; user-select:all; }
-.chat-error-bubble { align-self:flex-start; background:rgba(192,64,64,0.08); border:1px solid rgba(192,64,64,0.3); border-radius:8px; padding:10px 14px; font-size:14px; color:#c07070; max-width:82%; white-space:pre-wrap; }
-.chat-json-hint { font-size:12px; color:var(--gold); margin-top:6px; opacity:0.85; }
+.chat-info-card code { display:inline-block; margin-top:4px; padding:4px 8px; background:rgba(0,0,0,0.35); border-radius:4px; font-family:monospace; font-size:14px; color:#e8e0d0; user-select:all; }
+.chat-error-bubble { align-self:flex-start; background:rgba(192,64,64,0.08); border:1px solid rgba(192,64,64,0.3); border-radius:8px; padding:10px 14px; font-size:16px; color:#c07070; max-width:82%; white-space:pre-wrap; }
+.chat-json-hint { font-size:14px; color:var(--gold); margin-top:6px; opacity:0.85; }
 .chat-loading { opacity:0.5; }
 .chat-input-bar { display:flex; gap:8px; padding:10px 16px; border-top:1px solid var(--border-hi); background:rgba(19,15,9,0.8); flex-shrink:0; }
-.chat-textarea { flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--border-hi); color:var(--text); font-family:'Crimson Pro',Georgia,serif; font-size:15px; padding:8px 10px; border-radius:5px; resize:none; outline:none; line-height:1.5; }
+.chat-textarea { flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--border-hi); color:var(--text); font-family:'Crimson Pro',Georgia,serif; font-size:17px; padding:8px 10px; border-radius:5px; resize:none; outline:none; line-height:1.5; }
 .chat-textarea:focus { border-color:rgba(200,168,74,0.4); }
 .chat-send-btn { align-self:flex-end; }
 .chat-action-bar { display:flex; align-items:center; gap:10px; padding:8px 16px; border-top:1px solid var(--border); background:rgba(19,15,9,0.8); flex-shrink:0; }
@@ -1570,6 +1584,24 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 .session-transcript-msg { font-size:13px; line-height:1.5; padding:6px 10px; border-radius:4px; white-space:pre-wrap; word-break:break-word; }
 .session-transcript-user { background:rgba(200,168,74,0.08); border:1px solid rgba(200,168,74,0.2); color:var(--text); text-align:right; }
 .session-transcript-assistant { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); color:var(--text-mid); }
+/* Chat mode selector */
+.chat-mode-bar { padding:10px 14px 0; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.chat-mode-btn {
+  display:flex; align-items:center; gap:5px; font-size:12px; padding:5px 10px;
+  border-radius:20px; border:1px solid rgba(255,255,255,0.12); background:transparent;
+  color:var(--text-dim); cursor:pointer; transition:all 0.15s; white-space:nowrap;
+}
+.chat-mode-btn:hover { border-color:rgba(255,255,255,0.3); color:var(--text); }
+.chat-mode-btn.active { background:rgba(200,168,74,0.2); border-color:rgba(200,168,74,0.45); color:var(--gold); }
+.chat-mode-emoji { font-size:14px; line-height:1; }
+.chat-mode-sep { width:1px; height:18px; background:rgba(255,255,255,0.1); margin:0 2px; flex-shrink:0; }
+.chat-leader-toggle {
+  display:flex; align-items:center; gap:5px; font-size:12px; padding:5px 10px;
+  border-radius:20px; border:1px solid rgba(255,255,255,0.12); background:transparent;
+  color:var(--text-dim); cursor:pointer; transition:all 0.15s; white-space:nowrap; margin-left:auto;
+}
+.chat-leader-toggle:hover { border-color:rgba(255,255,255,0.3); color:var(--text); }
+.chat-leader-toggle.ai-led { background:rgba(200,168,74,0.15); border-color:rgba(200,168,74,0.4); color:var(--gold); }
 .chat-quickstarts { padding:10px 16px 0; display:flex; flex-direction:column; gap:6px; }
 .chat-qs-chip { background:rgba(200,168,74,0.07); border:1px solid rgba(200,168,74,0.25); color:var(--text-mid); font-size:13px; padding:6px 14px; border-radius:20px; cursor:pointer; transition:all 0.15s; width:100%; text-align:left; white-space:normal; overflow-wrap:break-word; line-height:1.4; }
 .chat-qs-chip strong { color:var(--text); font-weight:600; }
@@ -1775,12 +1807,12 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 
 <!-- ══ TAB NAV ══════════════════════════════════════════════════ -->
 <nav class="tab-nav">
-  <button class="tab-btn active" data-tab="map"     onclick="switchTab('map')"      title="Map: a visual network of all your parts and how they relate. Node size reflects prominence; edges show the dynamic between parts. Start here for an overview."><span class="tab-nav-count" id="nav-map">0</span>Map</button>
-  <button class="tab-btn"        data-tab="parts"   onclick="switchTab('parts')"    title="Parts: the full roster of your inner parts. Each part has a role (manager, firefighter, or exile), a core function, and a current blending level with Self."><span class="tab-nav-count" id="nav-parts">0</span>Parts</button>
-  <button class="tab-btn"        data-tab="body"    onclick="switchTab('body')"     title="Body: where each part lives as a physical sensation. Drag dots onto the body outline to place them; the spread slider shows how localised or diffuse the feeling is."><span class="tab-nav-count" id="nav-body">0</span>Body</button>
-  <button class="tab-btn"        data-tab="self"    onclick="switchTab('self')"     title="Self: the uninjured witnessing presence at your core. Track the 8 Cs and 5 Ps, qualities like curiosity, calm, and compassion that emerge when Self leads."><span class="tab-nav-count" id="nav-self">0</span>Self</button>
-  <button class="tab-btn"        data-tab="journal"  onclick="switchTab('journal')"  title="Journal: your AI session log. Each entry records which parts were active, what was explored, and any Self-led moments or breakthroughs that emerged."><span class="tab-nav-count" id="nav-journal">0</span>Journal</button>
-  <button class="tab-btn"        data-tab="timeline" onclick="switchTab('timeline')" title="History: your system over time. Charts show part leadership across all sessions, and memories anchor key life events to the timeline."><span class="tab-nav-count" id="nav-timeline">0</span>History</button>
+  <button class="tab-btn active" data-tab="parts"   onclick="switchTab('parts')"    title="Parts: the full roster of your inner parts. Each part has a role (manager, firefighter, or exile), a core function, and a current blending level with Self."><span class="tab-nav-count" id="nav-parts">0</span>Parts</button>
+  <button class="tab-btn"        data-tab="map"     onclick="switchTab('map')"      title="Connections: a visual network showing how your parts relate. Node size reflects prominence; edges show the dynamic between parts."><span class="tab-nav-count" id="nav-map">0</span>Connections</button>
+  <button class="tab-btn"        data-tab="body"    onclick="switchTab('body')"     title="Trailheads: where each part lives as a physical sensation. Drag dots onto the body outline to place them; the spread slider shows how localised or diffuse the feeling is."><span class="tab-nav-count" id="nav-body">0</span>Trailheads</button>
+  <button class="tab-btn"        data-tab="self"    onclick="switchTab('self')"     title="Self-led Moments: the uninjured witnessing presence at your core. Track the 8 Cs and 5 Ps, qualities like curiosity, calm, and compassion that emerge when Self leads."><span class="tab-nav-count" id="nav-self">0</span>Self-led Moments</button>
+  <button class="tab-btn"        data-tab="journal"  onclick="switchTab('journal')"  title="Sessions: your AI session log. Each entry records which parts were active, what was explored, and any Self-led moments or breakthroughs that emerged."><span class="tab-nav-count" id="nav-journal">0</span>Sessions</button>
+  <button class="tab-btn"        data-tab="timeline" onclick="switchTab('timeline')" title="Memories: your system over time. Charts show part leadership across all sessions, and memories anchor key life events to the timeline."><span class="tab-nav-count" id="nav-timeline">0</span>Memories</button>
 </nav>
 </div>
 
@@ -1808,7 +1840,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 </div>
 
 <!-- ══ TAB: MAP ══════════════════════════════════════════════════ -->
-<div id="tab-map" class="tab-panel active">
+<div id="tab-map" class="tab-panel">
   <div id="map-editor" class="map-editor">
     <div id="map-editor-node-section" style="display:none">
       <div class="map-editor-section" id="map-editor-node-fields"></div>
@@ -1855,7 +1887,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 </div>
 
 <!-- ══ TAB: PARTS ════════════════════════════════════════════════ -->
-<div id="tab-parts" class="tab-panel">
+<div id="tab-parts" class="tab-panel active">
   <div id="parts-dist-top" class="parts-dist-top" style="display:none;">
     <div style="width:100%;">
       <div class="parts-dist-section-hdr">Team Composition</div>
@@ -1936,30 +1968,14 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     </div>
   </div>
 
-  <!-- Active tensions, key questions, key experiments (collapsible: top item visible, rest hidden) -->
+  <!-- Key questions (what to carry into the next session) -->
   <div class="journal-intentions">
     <div class="journal-intention-group">
-      <div class="journal-intention-label" onclick="toggleIntentionGroup(this)" style="cursor:pointer;user-select:none;">Active tensions <span class="intention-expand-hint" id="hint-kt">&#9660;</span></div>
-      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-kt-1" contenteditable="true" spellcheck="false" data-field="topTension1" data-placeholder="Which parts are most at odds right now?"></div></div>
-      <div class="journal-intention-extra" id="extra-kt">
-        <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-kt-2" contenteditable="true" spellcheck="false" data-field="topTension2" data-placeholder="Second tension..."></div></div>
-        <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-kt-3" contenteditable="true" spellcheck="false" data-field="topTension3" data-placeholder="Third tension..."></div></div>
-      </div>
-    </div>
-    <div class="journal-intention-group">
       <div class="journal-intention-label" onclick="toggleIntentionGroup(this)" style="cursor:pointer;user-select:none;">Key questions <span class="intention-expand-hint" id="hint-kq">&#9660;</span></div>
-      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-kq-1" contenteditable="true" spellcheck="false" data-field="keyQuestion1" data-placeholder="What is this part trying to protect?"></div></div>
+      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-kq-1" contenteditable="true" spellcheck="false" data-field="topQuestion1" data-placeholder="What is most alive or unresolved right now?"></div></div>
       <div class="journal-intention-extra" id="extra-kq">
-        <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-kq-2" contenteditable="true" spellcheck="false" data-field="keyQuestion2" data-placeholder="Second question..."></div></div>
-        <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-kq-3" contenteditable="true" spellcheck="false" data-field="keyQuestion3" data-placeholder="Third question..."></div></div>
-      </div>
-    </div>
-    <div class="journal-intention-group">
-      <div class="journal-intention-label" onclick="toggleIntentionGroup(this)" style="cursor:pointer;user-select:none;">Key experiments <span class="intention-expand-hint" id="hint-ke">&#9660;</span></div>
-      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-ke-1" contenteditable="true" spellcheck="false" data-field="keyExperiment1" data-placeholder="Notice when this part activates."></div></div>
-      <div class="journal-intention-extra" id="extra-ke">
-        <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-ke-2" contenteditable="true" spellcheck="false" data-field="keyExperiment2" data-placeholder="Second experiment..."></div></div>
-        <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-ke-3" contenteditable="true" spellcheck="false" data-field="keyExperiment3" data-placeholder="Third experiment..."></div></div>
+        <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-kq-2" contenteditable="true" spellcheck="false" data-field="topQuestion2" data-placeholder="Second question..."></div></div>
+        <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-kq-3" contenteditable="true" spellcheck="false" data-field="topQuestion3" data-placeholder="Third question..."></div></div>
       </div>
     </div>
   </div>
@@ -2001,12 +2017,12 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 
   <!-- Sessions -->
   <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">
-    <div class="section-heading" style="margin-bottom:0;">Sessions</div>
+    <div class="section-heading" style="margin-bottom:0;">History</div>
     <button class="btn-primary" onclick="addSession()">+ Add session</button>
   </div>
   <div id="sessions-list"></div>
   <div id="sessions-empty" style="color:var(--text-dim);font-size:15px;display:none;">
-    No sessions yet. Use "+ Add session" above to create one manually, or journal with your AI and import the update.
+    No history yet. Check in daily or use "+ Add session" to create a session manually.
   </div>
 </div>
 
@@ -2118,9 +2134,9 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       <!-- Path A: Fill it in yourself -->
       <div class="welcome-path" id="welcome-path-manual">
         <div style="font-size:13px;color:#6090c8;margin:14px 0 10px;font-weight:600;">A &nbsp;Fill it in yourself. No AI required, works completely offline.</div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">1</div><div class="welcome-step-text"><strong>Go to the Parts tab</strong> and click "+ Add part". Start with whatever you notice most in yourself: a voice, a pattern, a recurring tension.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">1</div><div class="welcome-step-text"><strong>Go to Parts</strong> and click "+ Add part". Start with whatever you notice most in yourself: a voice, a pattern, a recurring tension.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">2</div><div class="welcome-step-text"><strong>Give it a name and a role</strong> (Manager, Firefighter, or Exile). Fill in what you know: what it does, what it fears, when it shows up. No need to fill everything at once.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">3</div><div class="welcome-step-text"><strong>Open the Map tab</strong> to see your parts as a visual network. Add connections between parts in each part's Relationships section.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">3</div><div class="welcome-step-text"><strong>Open Connections</strong> to see your parts as a visual network. Add connections between parts in each part's Relationships section.</div></div>
         <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#6090c8;">4</div><div class="welcome-step-text"><strong>Export regularly</strong> using the Data button (bottom bar). Your data only exists in this browser, so Export is your backup.</div></div>
       </div>
       <!-- Path B: Copy-paste with your AI -->
@@ -2128,7 +2144,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <div style="font-size:13px;color:#f09090;margin:14px 0 10px;font-weight:600;">B &nbsp;Copy-paste with your AI. Journal in any AI, then import the result.</div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">1</div><div class="welcome-step-text"><strong>Download instructions.md,</strong> the file that tells your AI how team-sheet works. <button class="btn-ghost btn-download" style="margin-left:6px;" onclick="downloadInstructionsMd(this)">&#8595; instructions.md</button></div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">2</div><div class="welcome-step-text"><strong>Create a project</strong> in your AI of choice and upload instructions.md to its knowledge base.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Try: <em>"Here's what's been present for me lately..."</em> or use a Session Starter from the Journal tab.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Try: <em>"Here's what's been present for me lately..."</em> or use a Session Starter from Sessions.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">4</div><div class="welcome-step-text"><strong>When done,</strong> ask your AI: <em>"Update my data"</em> and copy the output.</div></div>
         <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#f09090;">5</div><div class="welcome-step-text"><button class="btn-ghost" style="font-size:inherit;padding:2px 7px;font-weight:700;" onclick="dismissWelcome();openModal()">&#8593; Import</button> your data, paste the output, and hit Apply. Your map updates instantly.</div></div>
       </div>
@@ -2172,11 +2188,15 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <label for="pulse-checkin-interval" style="font-size:12px;color:var(--text-dim);white-space:nowrap;">Remind me</label>
         <select id="pulse-checkin-interval" onchange="_pulseIntervalChanged(this.value)" style="font-size:12px;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);border-radius:4px;padding:3px 6px;cursor:pointer;font-family:inherit;">
           <option value="0">once a day</option>
+          <option value="0.5">every 30 min</option>
+          <option value="1">every hour</option>
           <option value="2">every 2h</option>
+          <option value="3">every 3h</option>
           <option value="4">every 4h</option>
           <option value="6">every 6h</option>
           <option value="8">every 8h</option>
           <option value="12">every 12h</option>
+          <option value="24">every 24h</option>
         </select>
       </div>
     </div>
@@ -2225,7 +2245,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         </div>
         <div class="help-step">
           <div class="help-step-num">1</div>
-          <div class="help-step-text"><strong>Go to the Parts tab</strong> and click "+ Add part". Start with whatever you notice most: a voice, a pattern, a recurring tension.</div>
+          <div class="help-step-text"><strong>Go to Parts</strong> and click "+ Add part". Start with whatever you notice most: a voice, a pattern, a recurring tension.</div>
         </div>
         <div class="help-step">
           <div class="help-step-num">2</div>
@@ -2233,7 +2253,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         </div>
         <div class="help-step">
           <div class="help-step-num">3</div>
-          <div class="help-step-text"><strong>Use the Map tab</strong> to see your parts as a visual map. Add connections between parts in each part's Relationships section.</div>
+          <div class="help-step-text"><strong>Use Connections</strong> to see your parts as a visual map. Add connections between parts in each part's Relationships section.</div>
         </div>
         <div class="help-step">
           <div class="help-step-num">4</div>
@@ -2260,7 +2280,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         </div>
         <div class="help-step">
           <div class="help-step-num">3</div>
-          <div class="help-step-text"><strong>Journal with your AI.</strong> Try: <em>"Here's what's been present lately..."</em> or use a Session Starter on the Journal tab. At the end, ask: <em>"Update my data.json"</em> and copy the output.</div>
+          <div class="help-step-text"><strong>Journal with your AI.</strong> Try: <em>"Here's what's been present lately..."</em> or use a Session Starter in Sessions. At the end, ask: <em>"Update my data.json"</em> and copy the output.</div>
         </div>
         <div class="help-step">
           <div class="help-step-num">4</div>
@@ -2365,11 +2385,15 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <label for="settings-checkin-interval" style="font-size:14px;color:var(--text-dim);white-space:nowrap;">Repeat every</label>
         <select class="settings-select" id="settings-checkin-interval" onchange="settingsSaveCheckinInterval()">
           <option value="0">Once per day only</option>
-          <option value="2">2 hours</option>
-          <option value="4">4 hours</option>
-          <option value="6">6 hours</option>
-          <option value="8">8 hours</option>
-          <option value="12">12 hours</option>
+          <option value="0.5">Every 30 minutes</option>
+          <option value="1">Every hour</option>
+          <option value="2">Every 2 hours</option>
+          <option value="3">Every 3 hours</option>
+          <option value="4">Every 4 hours</option>
+          <option value="6">Every 6 hours</option>
+          <option value="8">Every 8 hours</option>
+          <option value="12">Every 12 hours</option>
+          <option value="24">Every 24 hours</option>
         </select>
       </div>
     </div>
@@ -2552,22 +2576,29 @@ When someone dismisses progress, check whether a protector is reframing it: "Loo
 
 ## Session modes
 
-Choose the mode that fits the person's current state and journey stage. Name your suggestion once and ask; do not impose.
+The app shows a mode selector bar in the chat panel. The user can switch modes at any time. Each mode also has a "You lead" / "AI leads" toggle: when AI leads, you open the session with a question grounded in their specific data; when the user leads, you wait for their first message.
 
-**Freeflow** (default)
-No agenda. The person leads. You listen, reflect, and track parts as they emerge. Use this when nothing more specific is needed, when you are unsure what is live, or when the person just needs space. Right for most sessions and all early-stage work.
+When you notice a different mode would serve better, name what you observed and suggest the switch once. Never switch without the person's agreement.
 
-**Part in depth**
-Focused work on a single part using the 6 Fs as a loose internal guide. Suggest when a specific part has come up repeatedly, when the person names wanting to understand a particular reaction better, or when a part surfaced strongly in the last session and was left open.
+**Freeflow** (default) 🌊
+No agenda. The person leads. Combines elements of all modes: follow what emerges, map parts as they appear, notice what is live, help the person access Self. Use this when nothing more specific is needed, or when you are unsure what is most alive.
+When AI leads: open with a warm question grounded in their key questions or most recent session material.
 
-**System review**
-Stepping back to look at the whole map together. Read through current parts, relationships, and tensions with the person. Invite them to say what still fits, what feels wrong, and what has shifted. Every description is a hypothesis. A system review should end with a cleaner or more accurate map, not a more detailed one. Suggest when the map has grown complex and hard to hold, when several sessions have passed without revisiting older parts, or when something in this session suggests the overall picture may be off.
+**Check-in** 👁
+Notice which parts are active right now and what each is carrying. Go through them one at a time. Focus on observation: body sensations, energy, what is most present. Useful after a gap, at the start of a session, or when the person wants grounding before going deeper.
+When AI leads: ask one orienting question about what is most present or activated right now.
 
-**Decision from Self**
-Structured help with a real-world decision. Map which parts have a stake, what each fears and wants, and help the person find a vantage point that feels calm and clear rather than driven. Suggest when the person brings a concrete decision they are genuinely trying to make.
+**Unblending** 🌿
+Help the person create space from a part they are blended with and access Self-energy. Identify which part is activated, use language like "can you notice it rather than be it?", watch for parts that resist the process. The goal is access to the 8 Cs, not forced resolution.
+When AI leads: help the person identify which part feels most merged with them right now, then begin finding a little distance.
 
-**Check-in**
-A shorter, lower-intensity session. Useful after a long gap, an emotionally heavy session, when the person signals limited capacity, or as a brief calibration at the start of what might become a deeper session. Can transition into another mode if the person opens up.
+**Part focus** 🔍
+Focused work on a single part using the 6 Fs as a loose guide: Find, Focus, Flesh out, Feel toward, Befriend, Fear. Suggest when a part has come up repeatedly, when the person wants to understand a reaction better, or when a part was left open last session.
+When AI leads: choose the part most likely to benefit from focused attention, then open the 6 Fs sequence.
+
+**Challenge** 🪞
+Examine the current map with fresh eyes. Look for inconsistencies, missing parts, misidentified roles, parts that feel unheard, and relationships that do not quite fit. Surface contradictions with curiosity rather than confrontation. A challenge session should leave the map cleaner or more accurate.
+When AI leads: pick one specific aspect of the map to gently examine, then ask a probing question.
 
 ---
 
@@ -2768,21 +2799,20 @@ Use the quality that best fits when logging a Self-led moment.
 
 ---
 
-## Tracking unresolved tensions
+## Tracking what carries forward
 
-Some conflicts run across sessions without resolving. When a tension is significant and unresolved, name it gently once, then follow their lead.
+At the end of each session, update \`topQuestion1\`, \`topQuestion2\`, and \`topQuestion3\` as flat string fields on \`system\`. Each is one short sentence, the most important things to carry into the next session. Use whichever form (question, tension, experiment) is most alive right now.
 
-At the end of each session, update \`topTensions\`, \`topQuestions\`, and \`topExperiments\` on \`system\`. Each is an array of up to 3 strings, specific to this person. All three are displayed at the top of the Journal tab.
+Examples:
+- "What is The Critic actually protecting underneath the harshness?"
+- "The Achiever and the Soother are in a push-pull: neither trusts the other."
+- "When The Critic fires, pause and ask what it fears."
 
-- **\`topTensions\`**: the most active unresolved conflicts between parts, or between a part and Self. Keep each entry short: half a sentence to one short sentence. E.g. "Achiever and Soother in push-pull."
-- **\`topQuestions\`**: the most important unknowns about the inner system. Keep each entry short: half a sentence to one short sentence. E.g. "What is The Critic actually protecting?"
-- **\`topExperiments\`**: the most useful things to try or notice before the next session. Keep each entry short: half a sentence to one short sentence. E.g. "When The Critic fires, pause and ask what it fears."
+**Rank by importance.** Most pressing first. Reorder each session. Drop items that have resolved; add new ones as they emerge.
 
-**Rank by importance.** Put the most pressing item first. Reorder each session. Drop items that have resolved; add new ones as they emerge. The goal is a live, prioritised read of the system, not a growing archive.
+**Keep these specific.** The app surfaces these as personalised chat entry points each time the user opens a session. Stale or generic entries produce generic chips. Specific, freshly inferred items produce prompts the user actually wants to click.
 
-**Keep these current.** The app surfaces \`topTensions\`, \`topQuestions\`, and \`topExperiments\` as personalised chat entry points each time the user opens a session. Stale or generic entries produce generic chips. Specific, freshly inferred items produce prompts the user actually wants to click.
-
-The previous \`keyQuestion\` and \`keyExperiment\` fields are deprecated; do not output them.
+The previous \`topTensions\`, \`topExperiments\`, \`keyQuestion\`, and \`keyExperiment\` fields are deprecated; do not output them.
 
 ---
 
@@ -2880,11 +2910,15 @@ When uncertain, leave previous weights unchanged rather than guessing. Lean towa
 
 When a person moves to close using productive framing while emotional material is still live, name the pattern once before complying: "I notice we're moving to output mode while something still feels active. Worth a moment more, or are you ready to close?" Then comply with whatever they say.
 
+**Never end a session on your own initiative.** If someone mentions they want to wrap up, close, or finish soon, do not immediately output JSON or a debrief. Acknowledge what they said, ask if they are ready, and wait. The person ends the session by clicking "Update map" in the app. Your role is to keep the conversation going until they do. Do not pre-emptively summarise, close out, or output data updates just because the person mentioned wanting to stop soon.
+
 ---
 
 ## JSON update after a session
 
 **Nothing important gets lost.** Treat every session as though this is the last context you will ever have. Before outputting, sweep the full conversation for anything significant not yet captured: offhand mentions, small shifts, things the person said in passing. Update all relevant existing fields, not just the obvious focus. Refine existing entries when the session added nuance.
+
+**Do not output JSON mid-session.** Only output a JSON update when the person explicitly asks you to update the map, asks you to wrap up, or asks for the data update. If someone mentions wanting to close the session soon, do not output JSON yet. Continue the conversation until they are clearly ready. When the time comes, guide them to click "Update map" in the app toolbar rather than outputting raw JSON in your reply.
 
 ---
 
@@ -2898,7 +2932,7 @@ Output a partial JSON block the person can import. Always set \`"_partial": true
 - **New or updated memories**: if a significant pre-history event was mentioned, add or refine it.
 - **Updated \`balanceWeight\` on each part and \`_selfWeight\`**: estimate for the full waking day, not just session time. All values must sum to 1.0. Always include \`_selfWeight\` alongside part weights.
 - **Updated \`lastUpdated\`** on any part you touched.
-- **Updated \`topTensions\`, \`topQuestions\`, and \`topExperiments\`**: up to three entries each, specific to this person, displayed at the top of the Journal tab.
+- **Updated \`topQuestion1\`, \`topQuestion2\`, \`topQuestion3\`**: up to three items, the most important things to carry into the next session (questions, tensions, or experiments, whichever form is most alive), displayed at the top of the Journal tab.
 - **Updated \`journeyStage\`**: your read of where the person is (\`early\`, \`developing\`, or \`established\`). Update each session.
 - **\`professionalSupport: true\`**: set once if the person mentions a therapist. Omit rather than setting to false.
 - **A \`sessionDate\` field**: add to each new session entry using \`currentDate\` from context. If the most recent session appears to be from the same date, ask whether this is a continuation or a new session.
@@ -2949,9 +2983,9 @@ Every field is optional. Only include fields you have real information for.
     "name": "string: the person's name for their inner system",
     "systemSummary": "string: big picture: who this person is, what the core dynamic is, how parts relate. 3 paragraphs, ideally under 120 words total. Update when the fundamental picture changes.",
     "recentShifts": "string: what is recent and changing: movements since last session, active tensions. 30-50 words. Update each session.",
-    "topTensions": ["up to 3 strings, ranked most pressing first. Half a sentence to one short sentence each. Reorder, add, and drop each session."],
-    "topQuestions": ["up to 3 strings, ranked most important first. Half a sentence to one short sentence each. Reorder, add, and drop each session."],
-    "topExperiments": ["up to 3 strings, ranked most useful first. Half a sentence to one short sentence each. Reorder, add, and drop each session."],
+    "topQuestion1": "string: most important thing to carry into the next session",
+    "topQuestion2": "string: second most important",
+    "topQuestion3": "string: third most important",
     "journeyStage": "early | developing | established: your read of where the person is in their IFS journey. Update each session.",
     "professionalSupport": "true: set once when the person mentions working with a therapist or professional. Omit entirely if not yet mentioned; never set to false.",
     "currentAge": "number: the person's current age"
@@ -3574,12 +3608,12 @@ function updateNavCounts(s) {
     const span = el(id); if (!span) return;
     span.textContent = n; span.title = tip;
   }
-  setCount('nav-map',      connCount,        `${connCount} mapped connection${connCount !== 1 ? 's' : ''} between parts`);
-  setCount('nav-parts',    parts.length,     `${parts.length} part${parts.length !== 1 ? 's' : ''} in your system`);
-  setCount('nav-body',     trailheadCount,   `${trailheadCount} body trailhead${trailheadCount !== 1 ? 's' : ''} identified`);
+  setCount('nav-parts',    parts.length,       `${parts.length} part${parts.length !== 1 ? 's' : ''} in your system`);
+  setCount('nav-map',      connCount,          `${connCount} connection${connCount !== 1 ? 's' : ''} between parts`);
+  setCount('nav-body',     trailheadCount,     `${trailheadCount} trailhead${trailheadCount !== 1 ? 's' : ''} identified`);
   setCount('nav-self',     selfMoments.length, `${selfMoments.length} Self-led moment${selfMoments.length !== 1 ? 's' : ''} recorded`);
-  setCount('nav-journal',  sessions.length,  `${sessions.length} journal session${sessions.length !== 1 ? 's' : ''}`);
-  setCount('nav-timeline', memories.length,  `${memories.length} timeline memor${memories.length !== 1 ? 'ies' : 'y'}`);
+  setCount('nav-journal',  sessions.length,    `${sessions.length} session${sessions.length !== 1 ? 's' : ''}`);
+  setCount('nav-timeline', memories.length,    `${memories.length} memor${memories.length !== 1 ? 'ies' : 'y'}`);
 }
 
 function render(s) {
@@ -5864,6 +5898,7 @@ function buildPartCard(part, idx, s) {
     snapshotBalance(appState, 'entry');
     renderPartsTabPies(appState);
     renderPartsDistribution(appState);
+    renderTimeline(appState);
   });
   nowRow.appendChild(nowLbl); nowRow.appendChild(nowSlider); nowRow.appendChild(nowVal);
 
@@ -5895,6 +5930,7 @@ function buildPartCard(part, idx, s) {
     snapshotBalance(appState, 'entry');
     renderPartsTabPies(appState);
     renderPartsDistribution(appState);
+    renderTimeline(appState);
   });
   atRow.appendChild(atLbl); atRow.appendChild(atSlider); atRow.appendChild(atVal);
 
@@ -6067,7 +6103,7 @@ function buildPartCard(part, idx, s) {
     const memoriesLbl = document.createElement('div');
     memoriesLbl.className = 'part-section-label';
     memoriesLbl.textContent = 'Memories';
-    memoriesLbl.title = 'Memories from the Timeline tab that are tagged with this part.';
+    memoriesLbl.title = 'Memories from the Memories tab that are tagged with this part.';
     memoriesSec.appendChild(memoriesLbl);
     const memList = document.createElement('div');
     memList.style.cssText = 'display:flex;flex-direction:column;gap:4px;margin-top:2px;';
@@ -6085,7 +6121,7 @@ function buildPartCard(part, idx, s) {
       const link = document.createElement('a');
       link.style.cssText = 'font-size:14px;color:var(--gold);line-height:1.4;cursor:pointer;text-decoration:none;';
       link.textContent = m.label || 'Untitled memory';
-      link.title = 'Go to this memory in the Timeline tab';
+      link.title = 'Go to this memory in Memories';
       link.onclick = () => {
         switchTab('timeline');
         requestAnimationFrame(() => {
@@ -6611,6 +6647,8 @@ function renderPartsTabPies(s) {
       _applyBalCheckinGlow();
       renderPartsDistribution(appState);
       renderPartsTabPies(appState);
+      renderTimeline(appState);
+      renderJournal(appState);
     }
   });
 
@@ -6685,7 +6723,7 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   ctx.clearRect(0, 0, W, H);
 
-  const PAD_L = 40, PAD_R = 16, PAD_T = 12, PAD_B = 28;
+  const PAD_L = 110, PAD_R = 6, PAD_T = 12, PAD_B = 28;
   const drawW = W - PAD_L - PAD_R;
   const drawH = H - PAD_T - PAD_B;
 
@@ -6742,6 +6780,15 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
   const recentDays = 7;
   const boundaryMs = nowMs - recentDays * 86400000;
   const validSnapMs = snapMs.filter(t => t > 0);
+
+  // For recent chart: if all snaps fall within the recent window (no older history) and there
+  // is only one snap, prepend a synthetic anchor at the left edge so the area has width.
+  if (!isAllTime && validSnapMs.length > 0 && !validSnapMs.some(ms => ms < boundaryMs)) {
+    snaps.unshift({ date: '', props: { ...snaps[0].props } });
+    snapMs.unshift(boundaryMs);
+    validSnapMs.unshift(boundaryMs);
+  }
+
   const hasHist = !isAllTime && validSnapMs.some(ms => ms < boundaryMs);
   const recentFrac = (!isAllTime && hasHist) ? 0.60 : 1.0;
   const histPW = (!isAllTime && hasHist) ? drawW * (1 - recentFrac) : 0;
@@ -6764,6 +6811,24 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     return msToX(snapMs[i]);
   }
   function propY(cum) { return PAD_T + drawH * (1 - cum); }
+
+  // Today column: glowing gold band drawn behind everything
+  if (!isAllTime) {
+    const todayMidnight = new Date(); todayMidnight.setHours(0, 0, 0, 0);
+    const todayX = msToX(todayMidnight.getTime());
+    const tomorrowX = msToX(todayMidnight.getTime() + 86400000);
+    const colW = Math.max(tomorrowX - todayX, 2);
+    const grad = ctx.createLinearGradient(todayX, 0, tomorrowX, 0);
+    grad.addColorStop(0, 'rgba(200,168,74,0)');
+    grad.addColorStop(0.3, 'rgba(200,168,74,0.13)');
+    grad.addColorStop(1, 'rgba(200,168,74,0.22)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(todayX, PAD_T, colW, drawH);
+    // Store today column geometry on canvas for the CSS pulse overlay
+    canvas._todayCol = { x: todayX, w: colW, y: PAD_T, h: drawH };
+  } else {
+    canvas._todayCol = null;
+  }
 
   // Draw stacked areas bottom-up (ids reversed so self is on top)
   const idsRev = ids.slice().reverse();
@@ -6788,36 +6853,66 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     ctx.fill();
   });
 
-  // Zone divider + history tint for recent split chart
+  // History zone tint for recent split chart
   if (!isAllTime && hasHist) {
-    const bx = PAD_L + histPW;
-    ctx.fillStyle = 'rgba(0,0,0,0.06)';
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
     ctx.fillRect(PAD_L, PAD_T, histPW, drawH);
-    ctx.strokeStyle = 'rgba(255,255,255,0.1)'; ctx.lineWidth = 0.75; ctx.setLineDash([3, 3]);
-    ctx.beginPath(); ctx.moveTo(bx, PAD_T); ctx.lineTo(bx, PAD_T + drawH); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.font = `8px 'JetBrains Mono', monospace`;
-    ctx.fillStyle = 'rgba(128,120,100,0.4)';
-    ctx.textAlign = 'center';
-    ctx.fillText('7 days', bx + recentPW * 0.5, PAD_T + drawH + 20);
   }
 
-  // Gridlines + Y axis labels (0%, 50%, 100%)
-  ctx.font = `10px 'JetBrains Mono', monospace`;
-  ctx.fillStyle = '#504c44';
-  ctx.textAlign = 'right';
-  [0, 0.5, 1].forEach(v => {
+  // Horizontal gridlines only — no Y axis percentage labels
+  [0, 1].forEach(v => {
     const y = propY(v);
-    ctx.fillText(Math.round(v*100)+'%', PAD_L - 5, y + 3);
-    if (v !== 0.5) {
-      ctx.strokeStyle = 'rgba(35,35,50,0.8)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(PAD_L+drawW, y); ctx.stroke();
-    }
+    ctx.strokeStyle = 'rgba(35,35,50,0.8)';
+    ctx.lineWidth = 1; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(PAD_L + drawW, y); ctx.stroke();
   });
 
+  // Vertical day/week/month dividers
+  ctx.setLineDash([]);
+  if (isAllTime) {
+    // Month dividers for all-time view
+    const startDate = new Date(dateMin);
+    startDate.setDate(1); startDate.setHours(0, 0, 0, 0);
+    startDate.setMonth(startDate.getMonth() + 1);
+    const msPerYear = 365.25 * 86400000;
+    const useYear = dateRange > msPerYear * 1.5;
+    const cur = new Date(startDate);
+    while (cur.getTime() <= dateMax) {
+      const isYearStart = cur.getMonth() === 0;
+      if (useYear && !isYearStart) { cur.setMonth(cur.getMonth() + 1); continue; }
+      const x = PAD_L + ((cur.getTime() - dateMin) / dateRange) * drawW;
+      ctx.strokeStyle = isYearStart ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.035)';
+      ctx.lineWidth = isYearStart ? 1 : 0.5;
+      ctx.beginPath(); ctx.moveTo(x, PAD_T); ctx.lineTo(x, PAD_T + drawH); ctx.stroke();
+      cur.setMonth(cur.getMonth() + 1);
+    }
+  } else {
+    // Day dividers for recent chart
+    const todayMidnight = new Date(); todayMidnight.setHours(0, 0, 0, 0);
+    for (let daysAgo = 1; daysAgo < recentDays; daysAgo++) {
+      const d = new Date(todayMidnight); d.setDate(d.getDate() - daysAgo);
+      const x = msToX(d.getTime());
+      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(x, PAD_T); ctx.lineTo(x, PAD_T + drawH); ctx.stroke();
+    }
+    // Week boundary divider — solid, labeled
+    if (hasHist) {
+      const bx = PAD_L + histPW;
+      ctx.strokeStyle = 'rgba(200,185,140,0.35)'; ctx.lineWidth = 1.5;
+      ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(bx, PAD_T); ctx.lineTo(bx, PAD_T + drawH); ctx.stroke();
+      // "7 days" label straddling the line
+      ctx.font = `10px 'JetBrains Mono', monospace`;
+      ctx.fillStyle = 'rgba(200,185,140,0.55)';
+      ctx.textAlign = 'center';
+      ctx.fillText('7 days', bx, PAD_T + 10);
+    }
+  }
+
   // X axis date labels
-  ctx.fillStyle = '#504c44';
+  ctx.font = `11px 'JetBrains Mono', monospace`;
+  ctx.fillStyle = 'rgba(160,150,120,0.85)';
   if (isAllTime) {
     const nLabels = Math.min(6, Math.max(2, n));
     for (let li = 0; li < nLabels; li++) {
@@ -6827,15 +6922,14 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
         const age = (ms - birthMs) / (365.25 * 24 * 3600 * 1000);
         label = age >= 0 ? Math.round(age) : new Date(ms).toISOString().slice(0, 10);
       } else {
-        label = new Date(ms).toISOString().slice(0, 10);
+        label = new Date(ms).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' });
       }
       const x = PAD_L + (li / Math.max(nLabels - 1, 1)) * drawW;
       ctx.textAlign = li === 0 ? 'left' : li === nLabels - 1 ? 'right' : 'center';
       ctx.fillText(label, x, H - PAD_B + 16);
     }
   } else if (hasHist) {
-    // Recent zone: Today / Yest. / weekday labels per day
-    ctx.font = `8px 'JetBrains Mono', monospace`;
+    // Recent zone: Today / yesterday / weekday labels per day
     const todayMidnight = new Date(); todayMidnight.setHours(0, 0, 0, 0);
     for (let daysAgo = 0; daysAgo < recentDays; daysAgo++) {
       const d = new Date(todayMidnight); d.setDate(d.getDate() - daysAgo);
@@ -6844,28 +6938,36 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
       if (daysAgo === 0)      lbl = 'Today';
       else if (daysAgo === 1) lbl = 'Yest.';
       else                    lbl = d.toLocaleDateString('en-GB', { weekday: 'short' });
-      ctx.fillStyle = 'rgba(128,120,100,0.55)'; ctx.textAlign = 'center';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = daysAgo === 0 ? 'rgba(220,185,80,0.95)' : 'rgba(160,150,120,0.85)';
+      ctx.font = daysAgo === 0 ? `bold 11px 'JetBrains Mono', monospace` : `11px 'JetBrains Mono', monospace`;
       ctx.fillText(lbl, x, H - PAD_B + 16);
     }
-    // History zone: 2-3 date labels
+    ctx.fillStyle = 'rgba(160,150,120,0.85)';
+    ctx.font = `11px 'JetBrains Mono', monospace`;
+    // History zone: 2 date labels
     const histSpan = Math.max(boundaryMs - histMin, 1);
-    [0.1, 0.5, 0.9].forEach(frac => {
+    [0.15, 0.85].forEach(frac => {
       const t = histMin + histSpan * frac;
       const x = msToX(t);
-      const lbl = new Date(t).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).replace(' ', '-');
-      ctx.fillStyle = 'rgba(128,120,100,0.35)'; ctx.textAlign = 'center';
+      const lbl = new Date(t).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+      ctx.fillStyle = 'rgba(128,120,100,0.5)'; ctx.textAlign = 'center';
       ctx.fillText(lbl, x, H - PAD_B + 16);
     });
   } else {
-    // No history: label each snapshot date in the recent zone
-    ctx.font = `9px 'JetBrains Mono', monospace`;
+    // No history: label each snapshot date, highlight today in gold
+    const todayStr = _tsLocalDate();
     const labelStep = Math.max(1, Math.floor(n / 6));
     snaps.forEach((snap, i) => {
       if (i % labelStep !== 0 && i !== n - 1) return;
+      const isToday = snap.date === todayStr;
       ctx.textAlign = i === 0 ? 'left' : i === n - 1 ? 'right' : 'center';
-      ctx.fillStyle = 'rgba(128,120,100,0.55)';
-      ctx.fillText(snap.date ? snap.date.slice(5) : '', snapX(i), H - PAD_B + 16);
+      ctx.fillStyle = isToday ? 'rgba(220,185,80,0.95)' : 'rgba(160,150,120,0.85)';
+      ctx.font = isToday ? `bold 11px 'JetBrains Mono', monospace` : `11px 'JetBrains Mono', monospace`;
+      ctx.fillText(isToday ? 'Today' : (snap.date ? snap.date.slice(5) : ''), snapX(i), H - PAD_B + 16);
     });
+    ctx.fillStyle = 'rgba(160,150,120,0.85)';
+    ctx.font = `11px 'JetBrains Mono', monospace`;
   }
   ctx.textAlign = 'center';
 
@@ -6945,6 +7047,34 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     canvas._eventPins.push({ x, type: 'snapshot', date: snap.date, source: snap.source || '',
       label: (snap.source || 'manual') + ' snapshot: ' + snap.date });
   });
+
+  // "Now" line: solid gold at the right edge of the chart for recent view
+  if (!isAllTime) {
+    const nowX = msToX(nowMs);
+    ctx.strokeStyle = 'rgba(220,185,80,0.9)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(nowX, PAD_T); ctx.lineTo(nowX, PAD_T + drawH); ctx.stroke();
+  }
+
+  // Update CSS pulse overlay for today column
+  const overlayId = (canvasId || 'balance-area-canvas') + '-today-pulse';
+  let overlay = document.getElementById(overlayId);
+  const tc = canvas._todayCol;
+  if (tc && canvas.parentElement) {
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = overlayId;
+      overlay.className = 'chart-today-pulse';
+      canvas.parentElement.appendChild(overlay);
+    }
+    overlay.style.left   = tc.x + 'px';
+    overlay.style.top    = tc.y + 'px';
+    overlay.style.width  = tc.w + 'px';
+    overlay.style.height = tc.h + 'px';
+  } else if (overlay) {
+    overlay.remove();
+  }
 
   // Click + hover handlers for pins
   canvas._chartW = W; // store current CSS width so the click handler always uses latest value
@@ -7030,20 +7160,34 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
     canvas.addEventListener('mouseleave', () => { document.getElementById('map-tooltip').style.display = 'none'; });
   }
 
-  // Parts legend
-  legendEl.innerHTML = '';
-  ids.forEach(id => {
-    const part = id==='self' ? null : (s.parts||[]).find(p=>p.id===id);
-    const name = id==='self' ? 'Self' : (part ? part.name : id);
-    const item = document.createElement('div');
-    item.className = 'balance-area-legend-item';
-    const dot = document.createElement('span');
-    dot.className = 'balance-area-legend-dot';
-    dot.style.background = _partColor(id).replace(/[\d.]+\)$/, '0.8)');
-    item.appendChild(dot);
-    item.appendChild(document.createTextNode(name));
-    legendEl.appendChild(item);
-  });
+  // Parts labels drawn inline on right edge of chart, ordered by visual position (bottom of band)
+  if (legendEl) legendEl.innerHTML = '';
+  const lastSnap = snaps[snaps.length - 1];
+  if (lastSnap) {
+    ctx.font = `bold 11px 'JetBrains Mono', monospace`;
+    ctx.textAlign = 'left';
+    // Compute cumulative positions for each band at the last data point
+    let cum = 0;
+    const bandMids = ids.map(id => {
+      const bottom = cum;
+      cum += lastSnap.props[id] || 0;
+      const top = cum;
+      return { id, mid: (bottom + top) / 2, bandH: (top - bottom) * drawH };
+    });
+    // Only label bands tall enough to fit text
+    const MIN_BAND_H = 13;
+    const labelX = PAD_L - 8;
+    ctx.textAlign = 'right';
+    bandMids.forEach(({ id, mid, bandH }) => {
+      if (bandH < MIN_BAND_H) return;
+      const part = id === 'self' ? null : (s.parts || []).find(p => p.id === id);
+      const name = id === 'self' ? 'Self' : (part ? part.name : id);
+      const y = propY(mid);
+      ctx.fillStyle = _partColor(id).replace(/[\d.]+\)$/, '0.9)');
+      ctx.fillText(name, labelX, y + 4);
+    });
+    ctx.textAlign = 'center';
+  }
 
   // Source line key: always show all source types so the key is self-explanatory
   const _sourceKeyDefs = [
@@ -7055,10 +7199,6 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
   {
     const keyRow = document.createElement('div');
     keyRow.style.cssText = 'display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:8px;width:100%;';
-    const keyLabel = document.createElement('span');
-    keyLabel.style.cssText = 'font-size:11px;color:var(--text-dim);font-family:var(--mono);letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;flex-shrink:0;';
-    keyLabel.textContent = 'Snapshot sources:';
-    keyRow.appendChild(keyLabel);
     _sourceKeyDefs.forEach(def => {
       const item = document.createElement('div');
       item.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim);font-family:var(--mono);';
@@ -7098,10 +7238,10 @@ function _checkinOncePerDayOnly(){
   }catch{ return true; }
 }
 function _getCheckinIntervalHours(){
-  try{ const v=parseInt(localStorage.getItem(CHECKIN_INTERVAL_KEY),10); return (v>0)?v:24; }catch{ return 24; }
+  try{ const v=parseFloat(localStorage.getItem(CHECKIN_INTERVAL_KEY)); return (v>0)?v:24; }catch{ return 24; }
 }
 function _setCheckinIntervalHours(h){
-  try{ localStorage.setItem(CHECKIN_INTERVAL_KEY, String(Math.max(0,Math.round(h)))); }catch{}
+  try{ localStorage.setItem(CHECKIN_INTERVAL_KEY, String(Math.max(0, h))); }catch{}
 }
 
 // ── Check-in log: {[date]: {entries:[{ts, weights}]}} ─────────
@@ -7157,10 +7297,18 @@ function _balCheckinDoneToday(){
   const day = log[_pulseEffectiveDate()];
   return !!(day && day.entries && day.entries.length > 0);
 }
+function _checkinButtonDue(){
+  if ((appState.parts||[]).length === 0) return false;
+  if (!_balCheckinDoneToday()) return true; // first check-in of the day always due
+  if (_checkinOncePerDayOnly()) return false;
+  return _checkinDueConsideringDismiss();
+}
 function _applyBalCheckinGlow(){
-  const needs = (appState.parts||[]).length > 0 && !_balCheckinDoneToday();
+  const needsPie = (appState.parts||[]).length > 0 && !_balCheckinDoneToday();
   const el = document.getElementById('parts-dist-now');
-  if(el) el.classList.toggle('bal-needs-checkin', needs);
+  if(el) el.classList.toggle('bal-needs-checkin', needsPie);
+  const btn = document.querySelector('.fbar-btn.fbar-daily');
+  if(btn) btn.classList.toggle('checkin-due', _checkinButtonDue());
 }
 
 // Dismiss: skip is now just "don't auto-prompt again until interval elapses"
@@ -7286,7 +7434,7 @@ function _openPulseModal(isAutoPrompt, bypassGate){
     const ciSel = document.getElementById('pulse-checkin-interval');
     if(ciSel){
       const raw = localStorage.getItem(CHECKIN_INTERVAL_KEY);
-      const val = (raw == null || raw === '0' || raw === '24') ? '0' : raw;
+      const val = (raw == null || raw === '0') ? '0' : raw;
       [...ciSel.options].forEach(o => o.selected = (o.value === val));
     }
   }
@@ -7294,7 +7442,7 @@ function _openPulseModal(isAutoPrompt, bypassGate){
 }
 
 function _pulseIntervalChanged(val){
-  _setCheckinIntervalHours(parseInt(val, 10));
+  _setCheckinIntervalHours(parseFloat(val));
   // Keep the settings modal select in sync if it's open
   const settingsSel = document.getElementById('settings-checkin-interval');
   if(settingsSel) [...settingsSel.options].forEach(o => o.selected = (o.value === val));
@@ -7360,6 +7508,7 @@ function _submitPulseModal(){
   renderPartsTabPies(appState);
   renderPartsDistribution(appState);
   renderTimeline(appState);
+  renderJournal(appState);
   _closePulseModal(true);
 }
 
@@ -7839,8 +7988,8 @@ function _renderAllMoments(s) {
 
 // ══ TAB: JOURNAL ════════════════════════════════════════════
 function renderJournal(s) {
-  // Key questions, experiments, active tensions
-  ['kq-1','kq-2','kq-3','ke-1','ke-2','ke-3','kt-1','kt-2','kt-3'].forEach(id => {
+  // Key questions
+  ['kq-1','kq-2','kq-3'].forEach(id => {
     const el = document.getElementById('journal-' + id);
     if (!el) return;
     const field = el.dataset.field;
@@ -7921,12 +8070,39 @@ function renderJournal(s) {
   const list = document.getElementById('sessions-list');
   const empty = document.getElementById('sessions-empty');
   list.innerHTML = '';
-  const sessions = IS_DEMO ? TS_DEMO_SESSIONS : (s.sessions || []);
-  empty.style.display = sessions.length === 0 ? 'block' : 'none';
-  // Most recent first
-  [...sessions].reverse().forEach(session => {
-    list.appendChild(IS_DEMO ? buildDemoSessionCard(session) : buildSessionCard(session, s));
-  });
+
+  if (IS_DEMO) {
+    empty.style.display = TS_DEMO_SESSIONS.length === 0 ? 'block' : 'none';
+    [...TS_DEMO_SESSIONS].reverse().forEach(session => list.appendChild(buildDemoSessionCard(session)));
+  } else {
+    // Build unified list: sessions + check-in days, merged by date, most recent first
+    const sessions = s.sessions || [];
+    const checkinLog = _loadCheckinLog();
+
+    // Collect check-in day entries — one card per day
+    const checkinItems = Object.entries(checkinLog).map(([date, dayData]) => ({
+      _type: 'checkin', date, entries: dayData.entries || []
+    }));
+
+    // Merge and sort by date descending (sessions use sess.date, check-ins use date key)
+    const allItems = [
+      ...sessions.map(sess => ({ _type: 'session', date: sess.date || '', _sess: sess })),
+      ...checkinItems
+    ].sort((a, b) => {
+      // Same date: sessions before check-ins
+      if (b.date !== a.date) return b.date > a.date ? 1 : -1;
+      return a._type === 'session' ? -1 : 1;
+    });
+
+    empty.style.display = allItems.length === 0 ? 'block' : 'none';
+    allItems.forEach(item => {
+      if (item._type === 'session') {
+        list.appendChild(buildSessionCard(item._sess, s));
+      } else {
+        list.appendChild(buildCheckinCard(item.date, item.entries, s));
+      }
+    });
+  }
 
   renderPartsDistribution(s);
 }
@@ -8268,6 +8444,87 @@ function buildSessionCard(session, s) {
   });
   footer.appendChild(delBtn);
   body.appendChild(footer);
+
+  card.appendChild(body);
+  return card;
+}
+
+function buildCheckinCard(date, entries, s) {
+  const card = document.createElement('div');
+  card.className = 'session-card';
+
+  const hdr = document.createElement('div');
+  hdr.className = 'session-header';
+
+  const dateEl = document.createElement('span');
+  dateEl.className = 'session-date-edit';
+  dateEl.style.cursor = 'default';
+  dateEl.textContent = date;
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'session-title-edit';
+  titleEl.style.cssText += ';cursor:default;color:var(--text-mid);font-size:13px;';
+  titleEl.textContent = entries.length === 1 ? 'Check-in' : entries.length + ' check-ins';
+
+  const chevron = document.createElement('span');
+  chevron.textContent = '▶';
+  chevron.style.cssText = 'font-size:12px;color:var(--text-dim);transition:transform 0.2s;flex-shrink:0;pointer-events:none;';
+
+  // Small pie from averaged weights of this day's entries
+  const avgWeights = {};
+  const counts = {};
+  entries.forEach(e => {
+    Object.entries(e.weights || {}).forEach(([id, v]) => {
+      avgWeights[id] = (avgWeights[id] || 0) + v;
+      counts[id] = (counts[id] || 0) + 1;
+    });
+  });
+  Object.keys(avgWeights).forEach(id => { avgWeights[id] /= counts[id]; });
+  const snap = { date, weights: avgWeights };
+  const hdrPie = buildSessionHeaderPie(snap, s, 28);
+
+  hdr.appendChild(dateEl);
+  hdr.appendChild(titleEl);
+  if (hdrPie) hdr.appendChild(hdrPie);
+  hdr.appendChild(chevron);
+
+  hdr.addEventListener('click', () => {
+    card.classList.toggle('expanded');
+    chevron.style.transform = card.classList.contains('expanded') ? 'rotate(90deg)' : '';
+  });
+  card.appendChild(hdr);
+
+  const body = document.createElement('div');
+  body.className = 'session-body';
+
+  entries.forEach((entry, i) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:8px 0;' +
+      (i < entries.length - 1 ? 'border-bottom:1px solid var(--border);' : '');
+
+    const timeEl = document.createElement('span');
+    timeEl.style.cssText = 'font-family:var(--mono);font-size:12px;color:var(--text-dim);flex-shrink:0;min-width:54px;';
+    const t = new Date(entry.ts);
+    timeEl.textContent = isNaN(t) ? '' : t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    row.appendChild(timeEl);
+
+    const partsEl = document.createElement('div');
+    partsEl.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
+    Object.entries(entry.weights || {}).sort((a, b) => b[1] - a[1]).forEach(([id, v]) => {
+      const part = id === 'self' ? null : (s.parts || []).find(p => p.id === id);
+      const name = id === 'self' ? 'Self' : (part ? part.name : id);
+      const tag = document.createElement('span');
+      tag.style.cssText = 'font-size:12px;font-family:var(--mono);padding:1px 7px;border-radius:3px;border:1px solid;white-space:nowrap;';
+      const color = _partColor(id);
+      tag.style.color = color.replace(/[\d.]+\)$/, '0.9)');
+      tag.style.borderColor = color.replace(/[\d.]+\)$/, '0.3)');
+      tag.style.background = color.replace(/[\d.]+\)$/, '0.08)');
+      tag.textContent = name + ' ' + Math.round(v * 100) + '%';
+      partsEl.appendChild(tag);
+    });
+    row.appendChild(partsEl);
+    body.appendChild(row);
+  });
 
   card.appendChild(body);
   return card;
@@ -8822,11 +9079,14 @@ function renderPartsTimeline(s) {
   }
   emptyEl.style.display = 'none';
 
+  // Split layout: recent 7 days = right 60%, older history = left 40%
+  const nowMs = Date.now();
+  const recentDays = 7;
+  const boundaryMs = nowMs - recentDays * 86400000;
+  const hasHist = allMs.some(ms => ms < boundaryMs);
+
   let minMs = Math.min(...allMs);
-  let maxMs = Math.max(...allMs, Date.now());
-  const span = maxMs - minMs || 1;
-  minMs -= span * 0.04;
-  maxMs += span * 0.02;
+  let maxMs = Math.max(...allMs, nowMs);
 
   // Build/reuse layout: label column + canvas
   let layout = document.getElementById('parts-timeline-layout');
@@ -8840,7 +9100,7 @@ function renderPartsTimeline(s) {
     labelCol.style.cssText = 'flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-start;';
     canvas = document.createElement('canvas');
     canvas.id = 'parts-timeline-canvas';
-    canvas.style.cssText = 'flex:1;min-width:0;display:block;cursor:pointer;border-radius:0 6px 6px 0;background:rgba(0,0,0,0.18);';
+    canvas.style.cssText = 'flex:1;min-width:0;display:block;cursor:pointer;border-radius:0 6px 6px 0;background:transparent;';
     layout.appendChild(labelCol);
     layout.appendChild(canvas);
     // Insert before emptyEl
@@ -8850,10 +9110,10 @@ function renderPartsTimeline(s) {
     canvas = document.getElementById('parts-timeline-canvas');
   }
 
-  const ROW_H = 28;
-  const AXIS_H = 22;
-  const TOP_PAD = 6;
-  const LABEL_W = 90;
+  const ROW_H = 34;
+  const AXIS_H = 26;
+  const TOP_PAD = 8;
+  const LABEL_W = 108;
 
   // Rebuild label column
   labelCol.innerHTML = '';
@@ -8867,13 +9127,13 @@ function renderPartsTimeline(s) {
     lbl.className = 'pt-row-label';
     lbl.style.cssText = `height:${ROW_H}px;display:flex;align-items:center;padding-right:8px;justify-content:flex-end;`;
     const span = document.createElement('span');
-    span.style.cssText = `font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.06em;color:${row.color};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${LABEL_W - 10}px;`;
+    span.style.cssText = `font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.06em;color:${row.color};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${LABEL_W - 10}px;`;
     span.textContent = row.name;
     span.title = row.name;
     // Clicking Self label navigates to Self tab
     if (row.id === '__self__') {
       lbl.style.cursor = 'pointer';
-      lbl.title = 'Go to Self tab';
+      lbl.title = 'Go to Self-led Moments';
       lbl.addEventListener('click', () => switchTab('self'));
     }
     lbl.appendChild(span);
@@ -8897,45 +9157,128 @@ function renderPartsTimeline(s) {
 
   const LEFT = 6, RIGHT = 6;
   const plotW = cssWidth - LEFT - RIGHT;
-  function xForMs(ms) { return LEFT + (ms - minMs) / (maxMs - minMs) * plotW; }
+
+  // Split geometry: recent 7d = 60%, history = 40%
+  const recentFrac = hasHist ? 0.60 : 1.0;
+  const histPW = hasHist ? plotW * (1 - recentFrac) : 0;
+  const recentPW = plotW * recentFrac;
+  const histMin = hasHist ? Math.min(...allMs.filter(ms => ms < boundaryMs)) : boundaryMs;
+
+  function xForMs(ms) {
+    if (!hasHist || ms >= boundaryMs) {
+      const span = Math.max(nowMs - boundaryMs, 1);
+      return LEFT + histPW + Math.max(0, Math.min(1, (ms - boundaryMs) / span)) * recentPW;
+    } else {
+      const span = Math.max(boundaryMs - histMin, 1);
+      return LEFT + Math.max(0, Math.min(1, (ms - histMin) / span)) * histPW;
+    }
+  }
   function rowY(i) { return TOP_PAD + i * ROW_H + ROW_H / 2; }
 
-  // Lane lines
+  // History zone tint
+  if (hasHist) {
+    ctx.fillStyle = 'rgba(0,0,0,0.18)';
+    ctx.fillRect(LEFT, TOP_PAD, histPW, rows.length * ROW_H);
+  }
+
+  // Lane lines (alternating subtle bands for readability)
   rows.forEach((_, i) => {
     const y = rowY(i);
+    if (i % 2 === 0) {
+      ctx.fillStyle = 'rgba(255,255,255,0.025)';
+      ctx.fillRect(LEFT, TOP_PAD + i * ROW_H, plotW, ROW_H);
+    }
     ctx.beginPath(); ctx.moveTo(LEFT, y); ctx.lineTo(LEFT + plotW, y);
-    ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 1; ctx.stroke();
   });
 
-  // Axis grid lines + labels (age if birthMs known, otherwise year)
-  const axisY = TOP_PAD + rows.length * ROW_H + 4;
-  ctx.font = `10px var(--mono, monospace)`; ctx.textAlign = 'center';
-  if (effectiveBirthMs) {
-    const msPerYear = 365.25 * 24 * 3600 * 1000;
-    const minAge = Math.ceil((minMs - effectiveBirthMs) / msPerYear);
-    const maxAge = Math.floor((maxMs - effectiveBirthMs) / msPerYear);
-    // Pick a step so we don't render more than ~12 labels
-    const ageSpan = maxAge - minAge;
-    const step = ageSpan <= 12 ? 1 : ageSpan <= 24 ? 2 : ageSpan <= 50 ? 5 : 10;
-    const firstTick = Math.ceil(minAge / step) * step;
-    for (let age = firstTick; age <= maxAge; age += step) {
-      const x = xForMs(effectiveBirthMs + age * msPerYear);
-      if (x < LEFT || x > LEFT + plotW) continue;
-      ctx.beginPath(); ctx.moveTo(x, TOP_PAD); ctx.lineTo(x, TOP_PAD + rows.length * ROW_H);
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1; ctx.stroke();
-      ctx.fillStyle = 'rgba(180,170,140,0.45)';
-      ctx.fillText(String(age), x, axisY + 10);
+  // Split boundary divider
+  if (hasHist) {
+    const bx = LEFT + histPW;
+    ctx.strokeStyle = 'rgba(200,185,140,0.35)'; ctx.lineWidth = 1.5; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(bx, TOP_PAD); ctx.lineTo(bx, TOP_PAD + rows.length * ROW_H); ctx.stroke();
+    ctx.font = `10px var(--mono, monospace)`; ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(200,185,140,0.55)';
+    ctx.fillText('7 days', bx, TOP_PAD + 10);
+  }
+
+  // Axis grid lines + labels
+  const axisY = TOP_PAD + rows.length * ROW_H + 5;
+  ctx.font = `12px var(--mono, monospace)`; ctx.textAlign = 'center';
+  if (hasHist) {
+    // Recent zone: day labels
+    const todayMidnight = new Date(); todayMidnight.setHours(0, 0, 0, 0);
+    for (let daysAgo = 0; daysAgo < recentDays; daysAgo++) {
+      const d = new Date(todayMidnight); d.setDate(d.getDate() - daysAgo);
+      const x = xForMs(d.getTime() + 43200000);
+      if (x < LEFT + histPW || x > LEFT + plotW) continue;
+      let lbl;
+      if (daysAgo === 0)      lbl = 'Today';
+      else if (daysAgo === 1) lbl = 'Yest.';
+      else                    lbl = d.toLocaleDateString('en-GB', { weekday: 'short' });
+      ctx.fillStyle = daysAgo === 0 ? 'rgba(220,185,80,0.95)' : 'rgba(200,190,160,0.65)';
+      ctx.fillText(lbl, x, axisY + 12);
+    }
+    // History zone: age or year labels
+    if (effectiveBirthMs) {
+      const msPerYear = 365.25 * 24 * 3600 * 1000;
+      const minAge = Math.ceil((histMin - effectiveBirthMs) / msPerYear);
+      const maxHistAge = Math.floor((boundaryMs - effectiveBirthMs) / msPerYear);
+      const ageSpan = maxHistAge - minAge;
+      const step = ageSpan <= 12 ? 1 : ageSpan <= 24 ? 2 : ageSpan <= 50 ? 5 : 10;
+      const firstTick = Math.ceil(minAge / step) * step;
+      for (let age = firstTick; age <= maxHistAge; age += step) {
+        const ms = effectiveBirthMs + age * msPerYear;
+        if (ms >= boundaryMs) continue;
+        const x = xForMs(ms);
+        if (x < LEFT || x > LEFT + histPW) continue;
+        ctx.beginPath(); ctx.moveTo(x, TOP_PAD); ctx.lineTo(x, TOP_PAD + rows.length * ROW_H);
+        ctx.strokeStyle = 'rgba(255,255,255,0.09)'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = 'rgba(160,150,120,0.55)';
+        ctx.fillText(String(age), x, axisY + 12);
+      }
+    } else {
+      const minYear = new Date(histMin).getFullYear();
+      const maxYear = new Date(boundaryMs).getFullYear();
+      for (let yr = minYear; yr <= maxYear; yr++) {
+        const ms = new Date(yr + '-01-01').getTime();
+        if (ms >= boundaryMs) continue;
+        const x = xForMs(ms);
+        if (x < LEFT || x > LEFT + histPW) continue;
+        ctx.beginPath(); ctx.moveTo(x, TOP_PAD); ctx.lineTo(x, TOP_PAD + rows.length * ROW_H);
+        ctx.strokeStyle = 'rgba(255,255,255,0.09)'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = 'rgba(160,150,120,0.55)';
+        ctx.fillText(String(yr), x, axisY + 12);
+      }
     }
   } else {
-    const minYear = new Date(minMs).getFullYear();
-    const maxYear = new Date(maxMs).getFullYear();
-    for (let yr = minYear; yr <= maxYear; yr++) {
-      const x = xForMs(new Date(yr + '-01-01').getTime());
-      if (x < LEFT || x > LEFT + plotW) continue;
-      ctx.beginPath(); ctx.moveTo(x, TOP_PAD); ctx.lineTo(x, TOP_PAD + rows.length * ROW_H);
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1; ctx.stroke();
-      ctx.fillStyle = 'rgba(180,170,140,0.45)';
-      ctx.fillText(String(yr), x, axisY + 10);
+    // No history: linear scale across full width
+    if (effectiveBirthMs) {
+      const msPerYear = 365.25 * 24 * 3600 * 1000;
+      const minAge = Math.ceil((minMs - effectiveBirthMs) / msPerYear);
+      const maxAge = Math.floor((maxMs - effectiveBirthMs) / msPerYear);
+      const ageSpan = maxAge - minAge;
+      const step = ageSpan <= 12 ? 1 : ageSpan <= 24 ? 2 : ageSpan <= 50 ? 5 : 10;
+      const firstTick = Math.ceil(minAge / step) * step;
+      for (let age = firstTick; age <= maxAge; age += step) {
+        const x = xForMs(effectiveBirthMs + age * msPerYear);
+        if (x < LEFT || x > LEFT + plotW) continue;
+        ctx.beginPath(); ctx.moveTo(x, TOP_PAD); ctx.lineTo(x, TOP_PAD + rows.length * ROW_H);
+        ctx.strokeStyle = 'rgba(255,255,255,0.09)'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = 'rgba(200,190,160,0.65)';
+        ctx.fillText(String(age), x, axisY + 12);
+      }
+    } else {
+      const minYear = new Date(minMs).getFullYear();
+      const maxYear = new Date(maxMs).getFullYear();
+      for (let yr = minYear; yr <= maxYear; yr++) {
+        const x = xForMs(new Date(yr + '-01-01').getTime());
+        if (x < LEFT || x > LEFT + plotW) continue;
+        ctx.beginPath(); ctx.moveTo(x, TOP_PAD); ctx.lineTo(x, TOP_PAD + rows.length * ROW_H);
+        ctx.strokeStyle = 'rgba(255,255,255,0.09)'; ctx.lineWidth = 1; ctx.stroke();
+        ctx.fillStyle = 'rgba(200,190,160,0.65)';
+        ctx.fillText(String(yr), x, axisY + 12);
+      }
     }
   }
 
@@ -8945,13 +9288,13 @@ function renderPartsTimeline(s) {
   // Self moment ticks
   if (hasSelf) {
     const ri = rows.findIndex(r => r.id === '__self__');
-    const color = 'rgba(232,223,200,0.88)';
+    const color = 'rgba(232,223,200,0.92)';
     timedSelf.forEach(({ mem, ms }) => {
       const x = xForMs(ms);
       const y = rowY(ri);
-      const H = ROW_H * 0.52;
+      const H = ROW_H * 0.62;
       ctx.beginPath(); ctx.moveTo(x, y - H / 2); ctx.lineTo(x, y + H / 2);
-      ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+      ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.stroke();
       hitMap.push({ x, ri, kind: 'self', mem });
     });
   }
@@ -8970,11 +9313,11 @@ function renderPartsTimeline(s) {
       const isFirstMem = tagged.includes(partId) && firstMemByPart[partId] === ms;
       const hasOrigin = originMarkers.some(o => o.partId === partId);
       if (isFirstMem && !hasOrigin) {
-        const d = 6;
+        const d = 7;
         ctx.beginPath(); ctx.moveTo(x, y - d); ctx.lineTo(x + d, y); ctx.lineTo(x, y + d); ctx.lineTo(x - d, y); ctx.closePath();
         ctx.fillStyle = color; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 1; ctx.stroke();
       } else {
-        const H = ROW_H * 0.52;
+        const H = ROW_H * 0.62;
         ctx.beginPath(); ctx.moveTo(x, y - H / 2); ctx.lineTo(x, y + H / 2);
         ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
       }
@@ -8999,9 +9342,18 @@ function renderPartsTimeline(s) {
 
   // Legend
   legendEl.innerHTML = '';
+  const itemStyle = 'font-size:12px;color:var(--text-dim);font-family:var(--mono);display:inline-flex;align-items:center;gap:5px;';
+  const memoryNote = document.createElement('span');
+  memoryNote.style.cssText = itemStyle;
+  memoryNote.innerHTML = '<svg width="12" height="14" viewBox="0 0 12 14"><line x1="6" y1="2" x2="6" y2="12" stroke="rgba(200,190,160,0.75)" stroke-width="2"/></svg> memory';
+  legendEl.appendChild(memoryNote);
+  const selfNote = document.createElement('span');
+  selfNote.style.cssText = itemStyle;
+  selfNote.innerHTML = '<svg width="12" height="14" viewBox="0 0 12 14"><line x1="6" y1="2" x2="6" y2="12" stroke="rgba(232,223,200,0.88)" stroke-width="2"/></svg> Self-led moment';
+  legendEl.appendChild(selfNote);
   const diamondNote = document.createElement('span');
-  diamondNote.style.cssText = 'font-size:11px;color:var(--text-dim);font-family:var(--mono);display:inline-flex;align-items:center;gap:4px;';
-  diamondNote.innerHTML = '<svg width="10" height="10" viewBox="-5 -5 10 10"><polygon points="0,-4 4,0 0,4 -4,0" fill="rgba(200,190,160,0.7)" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/></svg> origin';
+  diamondNote.style.cssText = itemStyle;
+  diamondNote.innerHTML = '<svg width="12" height="12" viewBox="-6 -6 12 12"><polygon points="0,-4.5 4.5,0 0,4.5 -4.5,0" fill="rgba(200,190,160,0.7)" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/></svg> part origin (when formed)';
   legendEl.appendChild(diamondNote);
 }
 
@@ -9130,11 +9482,29 @@ function renderTimeline(s) {
     }
   }
 
+  // Build chart data: replace per-day check-in averages with individual timestamped entries,
+  // keeping all other sources (session snapshots, imports, manual entries) as-is.
+  const checkinLog = _loadCheckinLog();
+  const chartHist = [];
+  hist.forEach(entry => {
+    if (entry.source === 'check-in') return; // replaced below by individual entries
+    chartHist.push(entry);
+  });
+  // Add one point per individual check-in, using the ISO timestamp as date so the chart
+  // places it at the exact moment rather than at midnight.
+  Object.values(checkinLog).forEach(day => {
+    (day.entries || []).forEach(e => {
+      if (!e.ts || !e.weights || Object.keys(e.weights).length === 0) return;
+      chartHist.push({ date: new Date(e.ts).toISOString(), weights: e.weights, source: 'check-in' });
+    });
+  });
+  chartHist.sort((a, b) => (a.date < b.date ? -1 : 1));
+
   // Journal tab: show/hide "Since you started" chart
   if (recentSection) {
-    if (hist.length > 0) {
+    if (chartHist.length > 0) {
       recentSection.style.display = '';
-      renderBalanceAreaChart(s, hist, 'balance-area-canvas-recent', 'balance-area-legend-recent',
+      renderBalanceAreaChart(s, chartHist, 'balance-area-canvas-recent', 'balance-area-legend-recent',
         dateStr => openBackfillPanel('recent', dateStr));
     } else {
       recentSection.style.display = 'none';
@@ -9913,7 +10283,7 @@ function openSettingsModal(){
   if(ciSel){
     const rawStored = localStorage.getItem(CHECKIN_INTERVAL_KEY);
     // null means never configured before: default to once-per-day ('0')
-    const ciVal = (rawStored == null || rawStored === '0' || rawStored === '24') ? '0' : rawStored;
+    const ciVal = (rawStored == null || rawStored === '0') ? '0' : rawStored;
     [...ciSel.options].forEach(o => o.selected = (o.value === ciVal));
   }
   hideResetConfirm();
@@ -9931,7 +10301,7 @@ function hideResetConfirm(){ document.getElementById('reset-confirm-row').style.
 function settingsSaveCheckinInterval(){
   const sel = document.getElementById('settings-checkin-interval');
   if(!sel) return;
-  _setCheckinIntervalHours(parseInt(sel.value, 10));
+  _setCheckinIntervalHours(parseFloat(sel.value));
 }
 
 function _setSettingsStatus(msg, type){
@@ -10349,6 +10719,8 @@ const chatState = {
   currentSessionId: null,
   sessionStartedAt: null,
   _displaySessionId: null,
+  mode: 'freeflow',  // 'freeflow' | 'checkin' | 'unblending' | 'partfocus' | 'challenge'
+  aiLed: false,      // if true, AI opens the conversation
 };
 
 function loadChatSettings() {
@@ -10503,6 +10875,7 @@ function buildChatSystemPrompt() {
   const dataNote = depth === 'full'
     ? 'The complete data for this user is loaded below.'
     : 'A compact summary of the user\'s current data is loaded below. Full profiles for any part, session, or memory are available if relevant — the user can share more detail, or you can ask.';
+  const modeInstr = typeof _buildModeInstruction === 'function' ? _buildModeInstruction() : '';
   const inAppNote = `IN-APP CHAT MODE
 You are running directly inside team-sheet. Key differences from the standalone workflow described above:
 - ${dataNote}
@@ -10510,7 +10883,8 @@ You are running directly inside team-sheet. Key differences from the standalone 
 - NEVER display raw JSON or describe JSON field names/structure in your conversational text. The user has no idea what the JSON looks like and does not need to. If you want to tell the user what would be recorded, describe it in plain language (e.g. "I would update this part's role and add a new burden").
 - To save changes, the user clicks the "Update map" button at the bottom of the chat. When they ask how to save, tell them to click that button — do not output a JSON block in response.
 - ${syncInstr}
-- Keep responses conversational. Skip any boilerplate about the import/export workflow.`;
+- Keep responses conversational. Skip any boilerplate about the import/export workflow.
+${modeInstr ? '\n' + modeInstr : ''}`;
   // Use trimmed context for small local models to avoid context overflow
   const numCtx = s.numCtx || _defaultNumCtx();
   const isSmallModel = !s.model?.startsWith('claude-') && numCtx < 16384;
@@ -10674,44 +11048,34 @@ function renderChatQuickstarts() {
   const parts = appState.parts || [];
   const chips = [];
 
-  // Active tensions
-  const tensions = [1,2,3].map(i => (sys[`topTension${i}`] || (sys.topTensions && sys.topTensions[i-1]) || '').trim()).filter(Boolean);
-  for (const t of tensions) {
-    if (chips.length >= 5) break;
-    chips.push({ title: 'Tension', body: t, prompt: `I want to explore an active tension in my system: ${t} -- Let me tell you what has been happening and what I notice when I sit with it.` });
-  }
-
-  // Key questions
-  const questions = [1,2,3].map(i => (sys[`keyQuestion${i}`] || (sys.topQuestions && sys.topQuestions[i-1]) || '').trim()).filter(Boolean);
+  // Key questions (topQuestion1/2/3 — simplified from the previous three-group system)
+  const questions = [1,2,3].map(i =>
+    (sys[`topQuestion${i}`] || sys[`keyQuestion${i}`] || (sys.topQuestions && sys.topQuestions[i-1]) || '').trim()
+  ).filter(Boolean);
   for (const q of questions) {
-    if (chips.length >= 5) break;
-    chips.push({ title: 'Question', body: q, prompt: `I want to sit with a question that keeps coming up for me: ${q} -- I am not sure what is underneath it yet. Help me get curious.` });
+    if (chips.length >= 3) break;
+    chips.push({ title: 'Question', body: q, prompt: `I want to sit with a question that is alive for me: ${q}` });
   }
 
-  // Key experiments
-  const exps = [1,2,3].map(i => (sys[`keyExperiment${i}`] || (sys.topExperiments && sys.topExperiments[i-1]) || '').trim()).filter(Boolean);
-  for (const e of exps) {
-    if (chips.length >= 5) break;
-    chips.push({ title: 'Experiment', body: e, prompt: `I want to debrief an experiment I have been trying: ${e} -- Let me share what happened and what I noticed.` });
-  }
-
-  // A part that needs attention (thin profile, no fears yet)
+  // A part that needs attention (thin profile or not visited recently)
   const thinPart = parts.find(p => !p.fears || !p.fears.length);
-  if (thinPart && chips.length < 5) {
-    chips.push({ title: 'Get curious', body: thinPart.name, prompt: `I want to get curious about a part of me I have not explored much yet: ${thinPart.name}. Help me find it and start understanding what it carries.` });
+  if (thinPart && chips.length < 4) {
+    chips.push({ title: 'Get curious', body: thinPart.name, prompt: `I want to get curious about a part I have not explored much yet: ${thinPart.name}. Help me find it and understand what it carries.` });
   }
 
-  // Fill with generic IFS chips to always show at least 4
+  // Fill with IFS-specific chips grounded where possible in user's parts
+  const firstPart = parts[0];
   const generic = [
-    { title: 'Map my parts', body: 'help me identify what is present right now', prompt: "I want to start mapping what is present in me right now. I may not know the parts yet. Help me slow down and notice what is here." },
-    { title: 'Check in', body: 'what is each part carrying right now?', prompt: 'I want to check in with all my parts. Can you help me go through them one by one and see what each one is carrying today?' },
-    { title: '6 Fs focus', body: 'go deep with one part using the 6 Fs', prompt: "I want to do a 6 Fs focus on a specific part. I will tell you which part and what I already know about it, then let's go through the steps together." },
+    firstPart
+      ? { title: 'Check in', body: firstPart.name, prompt: `I want to check in with my parts, starting with ${firstPart.name}. Help me see what each one is carrying right now.` }
+      : { title: 'Check in', body: 'what is each part carrying right now?', prompt: 'I want to check in with all my parts. Help me see what each one is carrying today.' },
+    { title: 'Map my parts', body: 'notice what is present right now', prompt: "I want to map what is present in me right now. I may not have words for it yet. Help me slow down and notice what is here." },
     { title: 'Recent shifts', body: 'something has changed and I want to understand it', prompt: 'Something has shifted recently, either in me or in how a part is showing up. I want to understand what changed and what it means.' },
-    { title: 'Self-led moment', body: 'I want to explore a moment I felt like myself', prompt: 'I want to explore a moment when I felt genuinely like myself, calm and present. Help me understand what made that possible and how to find it again.' },
+    { title: 'Self-led moment', body: 'explore a moment I felt like myself', prompt: 'I want to explore a moment when I felt genuinely like myself: calm, present, clear. Help me understand what made that possible.' },
   ];
   for (const g of generic) {
     if (chips.length >= 5) break;
-    if (!chips.some(c => c.prompt === g.prompt)) chips.push(g);
+    if (!chips.some(c => c.title === g.title)) chips.push(g);
   }
 
   el.innerHTML = '';
@@ -10732,6 +11096,157 @@ function renderChatQuickstarts() {
 
 function _isLocalModel(model) {
   return !!(model && !model.startsWith('claude-'));
+}
+
+// ── Chat mode selector ───────────────────────────────────────────────────────
+
+const CHAT_MODES = {
+  freeflow:  { emoji: '🌊', label: 'Freeflow',   desc: 'Open session: follow wherever the conversation goes' },
+  checkin:   { emoji: '👁', label: 'Check-in',   desc: 'Notice which parts are active and what each is carrying right now' },
+  unblending:{ emoji: '🌿', label: 'Unblending', desc: 'Create space from a part: move toward Self-energy' },
+  partfocus: { emoji: '🔍', label: 'Part focus',  desc: 'Go deep with one part: history, needs, fears, the 6 Fs' },
+  challenge: { emoji: '🪞', label: 'Challenge',   desc: 'Examine the map for contradictions, gaps, and parts that feel unheard' },
+};
+
+function renderChatModeBar() {
+  const bar = document.getElementById('chat-mode-bar');
+  if (!bar) return;
+  bar.innerHTML = '';
+  for (const [key, m] of Object.entries(CHAT_MODES)) {
+    const btn = document.createElement('button');
+    btn.className = 'chat-mode-btn' + (chatState.mode === key ? ' active' : '');
+    btn.dataset.mode = key;
+    btn.title = m.desc;
+    btn.innerHTML = `<span class="chat-mode-emoji">${m.emoji}</span><span>${m.label}</span>`;
+    btn.onclick = () => chatSetMode(key);
+    bar.appendChild(btn);
+  }
+  const sep = document.createElement('div');
+  sep.className = 'chat-mode-sep';
+  bar.appendChild(sep);
+  const toggle = document.createElement('button');
+  toggle.id = 'chat-leader-toggle';
+  toggle.className = 'chat-leader-toggle' + (chatState.aiLed ? ' ai-led' : '');
+  toggle.title = chatState.aiLed
+    ? 'Your AI opens the session. Click to switch to you leading.'
+    : 'You send the first message. Click to let your AI open the session.';
+  toggle.textContent = chatState.aiLed ? 'AI leads' : 'You lead';
+  toggle.onclick = chatToggleLeader;
+  bar.appendChild(toggle);
+}
+
+function chatSetMode(mode) {
+  if (!CHAT_MODES[mode]) return;
+  chatState.mode = mode;
+  chatState.systemPrompt = null;
+  renderChatModeBar();
+}
+
+function chatToggleLeader() {
+  chatState.aiLed = !chatState.aiLed;
+  renderChatModeBar();
+  if (chatState.aiLed && !chatState.isLoading && !IS_DEMO) {
+    const container = document.getElementById('chat-msgs');
+    const hasMessages = container && container.querySelectorAll('.chat-msg, .chat-msg-ai, .chat-msg-user').length > 0;
+    if (!hasMessages) _chatAiLedOpening();
+  }
+}
+
+function _buildModeInstruction() {
+  const parts = appState.parts || [];
+  const sys = appState.system || {};
+  const questions = [1,2,3].map(i =>
+    (sys[`topQuestion${i}`] || sys[`keyQuestion${i}`] || '').trim()
+  ).filter(Boolean);
+  const firstPart = parts[0];
+  const thinPart = parts.find(p => !p.fears || !p.fears.length);
+
+  switch (chatState.mode) {
+    case 'checkin':
+      return `SESSION MODE: Check-in.
+Your role is to help the person notice which parts are present right now and what each is carrying. Go through them one at a time. Do not rush.${firstPart ? ` Their map includes parts such as: ${parts.slice(0,3).map(p=>p.name).join(', ')}.` : ''}
+- Ask about body sensations, energy, and what is most active.
+- Reflect back what you hear without analysis.
+- This is observation, not problem-solving.`;
+
+    case 'unblending':
+      return `SESSION MODE: Unblending.
+Help the person create some space from a part that is blended with them, and move toward Self-energy. Go slowly and gently.${firstPart ? ` They may want to unblend from one of: ${parts.slice(0,3).map(p=>p.name).join(', ')}.` : ''}
+- Identify which part is activated.
+- Use phrases like "can you just notice it?" or "can you be with it rather than be it?"
+- Watch for other parts that may resist.
+- The goal is access to the 8 Cs (calm, curiosity, compassion, etc.), not forcing an outcome.`;
+
+    case 'partfocus':
+      return `SESSION MODE: Part focus.
+Use the 6 Fs to work with one specific part in depth. Let the person choose or help them identify which part needs attention.${thinPart ? ` "${thinPart.name}" has a thin profile and may benefit from deeper exploration.` : ''}
+- Find, Focus, Flesh out, Feel toward, Befriend, Fear.
+- Go at the person's pace. The process is not linear.
+- Update the part's profile with anything new that emerges.`;
+
+    case 'challenge':
+      return `SESSION MODE: Challenge.
+Examine the person's current map with fresh eyes. Look for inconsistencies, missing parts, parts that feel misidentified, or relationships that do not quite fit.${parts.length ? ` They currently have ${parts.length} part${parts.length===1?'':'s'} mapped.` : ''}${questions.length ? ` Their key questions: ${questions.map(q=>`"${q}"`).join(', ')}.` : ''}
+- Surface contradictions gently, with curiosity rather than confrontation.
+- Ask if each part feels it has been seen and described accurately.
+- Look for polarised pairs that have not been named.`;
+
+    default: // freeflow
+      return `SESSION MODE: Freeflow.
+Follow the conversation wherever it naturally goes. Be responsive to what the person brings. If they seem to want structure, offer it. If they want to explore freely, go with them.${questions.length ? ` Their live questions: ${questions.map(q=>`"${q}"`).join(', ')}.` : ''}`;
+  }
+}
+
+async function _chatAiLedOpening() {
+  if (!chatState.aiLed) return;
+  const container = document.getElementById('chat-msgs');
+  const hasMessages = container && container.querySelectorAll('.chat-msg, .chat-msg-ai, .chat-msg-user').length > 0;
+  if (hasMessages) return;
+  _chatShowQuickstarts(false);
+  if (!chatState.systemPrompt) chatState.systemPrompt = buildChatSystemPrompt();
+  chatSetLoading(true);
+  const loadEl = _chatAddLoadingBubble();
+  const parts = appState.parts || [];
+  const sys = appState.system || {};
+  const questions = [1,2,3].map(i => (sys[`topQuestion${i}`] || sys[`keyQuestion${i}`] || '').trim()).filter(Boolean);
+  const firstPart = parts[0];
+  const thinPart = parts.find(p => !p.fears || !p.fears.length);
+  let openingPrompt;
+  switch (chatState.mode) {
+    case 'checkin':
+      openingPrompt = `Open this check-in session. Ask one gentle question to help the person notice which parts are most active right now.${firstPart ? ` They have parts mapped including: ${parts.slice(0,3).map(p=>p.name).join(', ')}.` : ''} Do not use an em dash.`;
+      break;
+    case 'unblending':
+      openingPrompt = `Open this unblending session. Help the person identify which part feels most blended with them right now. Ask one orienting question.${firstPart ? ` Their parts include: ${parts.slice(0,3).map(p=>p.name).join(', ')}.` : ''} Do not use an em dash.`;
+      break;
+    case 'partfocus':
+      openingPrompt = `Open this part focus session. Help the person choose which part to work with today, or suggest one that seems to need attention.${thinPart ? ` "${thinPart.name}" has not been fully explored yet.` : firstPart ? ` They have mapped parts including: ${parts.slice(0,3).map(p=>p.name).join(', ')}.` : ''} Ask one opening question. Do not use an em dash.`;
+      break;
+    case 'challenge':
+      openingPrompt = `Open this challenge session. Choose one specific thing in their current map to gently examine or question. Make it concrete.${parts.length ? ` They have ${parts.length} part${parts.length===1?'':'s'} mapped.` : ''}${questions.length ? ` Their key questions: ${questions.map(q=>`"${q}"`).join(', ')}.` : ''} Ask one probing question. Do not use an em dash.`;
+      break;
+    default:
+      openingPrompt = `Open this freeflow IFS session. Ask one warm, open question about what is present for the person today.${questions.length ? ` You might draw from their key questions: ${questions.map(q=>`"${q}"`).join(', ')}.` : ''} Keep it natural. Do not use an em dash.`;
+  }
+  try {
+    const triggerMsg = { role: 'user', content: openingPrompt };
+    let streamStarted = false;
+    const reply = await callChatAPI([triggerMsg], chatState.systemPrompt, (chunk) => {
+      if (!streamStarted) { loadEl.textContent = ''; streamStarted = true; }
+      loadEl.textContent += chunk;
+      chatScrollBottomIfAtBottom();
+    });
+    if (!streamStarted && loadEl) loadEl.remove();
+    chatState.messages.push({ role: 'assistant', content: reply });
+    _chatHandleReply(reply, streamStarted ? loadEl : null);
+    _chatSaveLiveSession();
+  } catch (err) {
+    if (loadEl) loadEl.remove();
+    if (err.message) chatAddMsg('error', err.message);
+  } finally {
+    chatSetLoading(false);
+    document.getElementById('chat-input')?.focus();
+  }
 }
 
 function _updatePrivacyBanner(model) {
@@ -10810,8 +11325,11 @@ function _openChatOverlay() {
     }
   }
   const hasInfoCard = container && container.querySelector('.chat-info-card');
+  renderChatModeBar();
   renderChatQuickstarts();
-  _chatShowQuickstarts(!hasMessages && !IS_DEMO && !hasInfoCard);
+  const showStarters = !hasMessages && !IS_DEMO && !hasInfoCard;
+  _chatShowQuickstarts(showStarters && !chatState.aiLed);
+  if (showStarters && chatState.aiLed && !IS_DEMO) _chatAiLedOpening();
 }
 
 function closeChat() {
@@ -11246,8 +11764,8 @@ function _buildUpdateSummaryLines(prev, next) {
   parts.forEach(np => {
     const pp = prevParts.find(p => p.id === np.id);
     if (!pp) return;
-    if (pp.name !== np.name) lines.push('Renamed: ' + pp.name + ' to ' + np.name);
-    if (pp.role !== np.role) lines.push((np.name || 'Part') + ' role: ' + (np.role || 'none'));
+    if ('name' in np && pp.name !== np.name) lines.push('Renamed: ' + pp.name + ' to ' + np.name);
+    if ('role' in np && pp.role !== np.role) lines.push((np.name || pp.name || 'Part') + ' role: ' + (np.role || 'none'));
     if (pp.trailsScore !== np.trailsScore) lines.push((np.name || 'Part') + ' TRAILS: ' + pp.trailsScore + ' to ' + np.trailsScore);
     if (pp.activated !== np.activated) lines.push((np.name || 'Part') + ': ' + (np.activated ? 'activated' : 'deactivated'));
   });
@@ -11292,8 +11810,9 @@ function chatShowUpdateReview(json, narrativeText) {
   header.textContent = summaryLines.length ? 'What will change:' : 'No data changes detected.';
   card.appendChild(header);
 
+  let ul = null;
   if (summaryLines.length) {
-    const ul = document.createElement('ul');
+    ul = document.createElement('ul');
     ul.className = 'chat-review-list';
     summaryLines.forEach(line => {
       const li = document.createElement('li');
@@ -11319,7 +11838,22 @@ function chatShowUpdateReview(json, narrativeText) {
   const applyBtn = document.createElement('button');
   applyBtn.className = 'btn-primary';
   applyBtn.textContent = 'Apply';
-  applyBtn.onclick = () => { chatApplyUpdate(); card.remove(); };
+  applyBtn.onclick = () => {
+    chatApplyUpdate();
+    const statusEl = document.getElementById('modal-status');
+    const failed = statusEl && statusEl.classList.contains('err');
+    if (!failed) {
+      header.remove();
+      if (ul) ul.remove();
+      details.remove();
+      btnRow.remove();
+      const appliedNote = document.createElement('div');
+      appliedNote.className = 'chat-review-header';
+      appliedNote.style.color = 'var(--gold)';
+      appliedNote.textContent = 'Map updated.';
+      card.appendChild(appliedNote);
+    }
+  };
   const discardBtn = document.createElement('button');
   discardBtn.className = 'btn-ghost';
   discardBtn.textContent = 'Discard';
@@ -11449,7 +11983,12 @@ function chatNewSession() {
   const container = document.getElementById('chat-msgs');
   if (container) container.innerHTML = '';
   chatShowApply(false);
-  _chatShowQuickstarts(!IS_DEMO);
+  if (chatState.aiLed && !IS_DEMO) {
+    _chatShowQuickstarts(false);
+    _chatAiLedOpening();
+  } else {
+    _chatShowQuickstarts(!IS_DEMO);
+  }
   const costEl = document.getElementById('chat-cost-display');
   if (costEl) costEl.style.display = 'none';
   const _ns = loadChatSettings();
@@ -11606,7 +12145,7 @@ function _chatCheckStorageWarning() {
   const chatSize = JSON.stringify(appState.chatSessions || []).length;
   const sessSize = JSON.stringify((appState.sessions || []).filter(s => s.chatMessages)).length;
   if (chatSize + sessSize > 1024 * 1024) {
-    showToast('Chat history is large. Delete old sessions in the Journal tab to free space.');
+    showToast('Chat history is large. Delete old sessions in Sessions to free space.');
   }
 }
 
@@ -12578,21 +13117,21 @@ const _TOUR_STEPS = [
   {
     target: '.tab-nav',
     heading: 'Six views of your inner system',
-    body: "<strong>Map</strong>: visual network<br><strong>Parts</strong>: full roster<br><strong>Body</strong>: physical sensations<br><strong>Self</strong>: your core qualities<br><strong>Journal</strong>: session log<br><strong>History</strong>: your system over time<br><br>All tabs are filled in. Click any one to explore freely.",
+    body: "<strong>Parts</strong>: your full roster<br><strong>Connections</strong>: visual network<br><strong>Trailheads</strong>: physical sensations<br><strong>Self-led Moments</strong>: your core qualities<br><strong>Sessions</strong>: session log<br><strong>Memories</strong>: your system over time<br><br>All tabs are filled in. Click any one to explore freely.",
     placement: 'below',
   },
-  // Step 2 — map tab (the main canvas area)
+  // Step 2 — parts tab
   {
-    target: '#tab-map',
-    heading: 'The Map: your parts as a network',
-    body: "Each node is a part. Size reflects how prominent it is right now.<br><br>Click a node to open its full profile. Drag to rearrange. Connections show how parts relate to each other.",
-    placement: 'below',
-  },
-  // Step 3 — parts tab button
-  {
-    target: '[data-tab="parts"]',
+    target: '#tab-parts',
     heading: 'Parts: your inner roster',
     body: "Every part has a <strong>role</strong> (Manager, Firefighter, or Exile), a core function, and a blending level.<br><br>You don't need to know IFS theory to start. Just name what you notice.",
+    placement: 'below',
+  },
+  // Step 3 — connections tab button
+  {
+    target: '[data-tab="map"]',
+    heading: 'Connections: your parts as a network',
+    body: "Each node is a part. Size reflects how prominent it is right now.<br><br>Click a node to open its full profile. Drag to rearrange. Edges show how parts relate to each other.",
     placement: 'below',
   },
   // Step 4 — check-in button
@@ -12605,7 +13144,7 @@ const _TOUR_STEPS = [
   // Step 5 — chat button
   {
     target: '#chat-btn',
-    heading: 'Journal with your AI',
+    heading: 'Session with your AI',
     body: "Connect an AI directly and journal for 10-20 minutes. Your map fills itself in from your own words.<br><br>Works with any AI via API key, or a local Ollama model that never leaves your device.",
     placement: 'above',
   },
@@ -12829,6 +13368,7 @@ function _tourPosition(step){
     <button class="chat-cloud-warn-dismiss" onclick="this.closest('#chat-cloud-warn').classList.remove('visible')" title="Dismiss">&#x2715;</button>
   </div>
   <div id="chat-demo-banner" class="chat-demo-banner" style="display:none">Demo mode: chatting with Alex's data. Sessions won't be saved. Download the app to journal with your own data.</div>
+  <div id="chat-mode-bar" class="chat-mode-bar"></div>
   <div id="chat-quickstarts" class="chat-quickstarts" style="display:none"></div>
   <div id="chat-msgs" class="chat-msgs"></div>
   <div class="chat-input-bar">
@@ -12837,7 +13377,7 @@ function _tourPosition(step){
   </div>
   <div class="chat-action-bar">
     <button id="chat-summarize-btn" class="btn-ghost chat-summarize-btn" onclick="chatCompactContext()" title="Compress old messages into a summary to free up context space. Use this if the AI starts forgetting earlier parts of the conversation.">&#9636; Compact</button>
-    <button class="btn-ghost chat-new-session-btn" onclick="chatNewSession()" title="Start fresh: clear this conversation and begin a new session. The current session stays in the Journal tab.">New session</button>
+    <button class="btn-ghost chat-new-session-btn" onclick="chatNewSession()" title="Start fresh: clear this conversation and begin a new session. The current session stays in Sessions.">New session</button>
     <button id="chat-update-btn" class="btn-ghost chat-end-btn" onclick="chatUpdateMap()" title="Ask your AI to summarise and save any changes from this conversation. You can review before applying.">Update map</button>
     <button id="chat-delete-session-btn" class="btn-ghost chat-delete-session-btn" onclick="chatDeleteCurrentSession()" title="Delete this session permanently" style="display:none">Delete session</button>
   </div>
