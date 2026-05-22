@@ -123,21 +123,16 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .journal-intention-item:focus { border-color:var(--border-hi); background:rgba(255,255,255,0.02); }
 .journal-intention-item:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.6; }
 .journal-intention-row { display:flex; align-items:center; gap:10px; align-self:start; }
-.journal-item-num { font-family:'Cinzel',serif; font-size:30px; font-weight:700; color:var(--gold); line-height:1; min-width:20px; opacity:0.75; user-select:none; flex-shrink:0; }
 @media(max-width:800px){
-  .journal-intentions { grid-template-columns:1fr 1fr; grid-template-rows:auto auto auto auto auto auto auto auto; }
+  .journal-intentions { grid-template-columns:1fr 1fr; }
   .journal-intention-group:nth-child(3) { grid-column:1 / -1; }
 }
 @media(max-width:500px){
-  .journal-intentions { grid-template-columns:1fr; grid-template-rows:none; }
-  .journal-intention-group { grid-row:auto; grid-template-rows:none; margin-bottom:20px; }
+  .journal-intentions { grid-template-columns:1fr; }
+  .journal-intention-group { margin-bottom:20px; }
 }
 .journal-overview { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid rgba(128,144,168,0.15); }
 .journal-overview-title { font-family:'Cinzel',serif; font-size:16px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
-.journal-intention-extra { display:none; }
-.journal-intention-extra.open { display:block; }
-.intention-expand-hint { font-size:10px; opacity:0.5; margin-left:4px; transition:transform 0.2s; display:inline-block; }
-.journal-intention-label.open .intention-expand-hint { transform:rotate(180deg); }
 
 /* ── Body diagram panel (Body tab) ── */
 .body-diagram-panel { margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid var(--border); }
@@ -700,7 +695,9 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .parts-dist-col .parts-dist-pie-row { width:100%; flex-wrap:nowrap; }
 .parts-dist-top { display:block; margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid var(--border); }
 .parts-dist-section-hdr { font-family:'Cinzel',serif; font-size:16px; font-weight:700; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; margin-bottom:12px; }
-.parts-dist-pie-title { font-family:'Cinzel',serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; margin-bottom:6px; opacity:0.75; }
+.parts-dist-pie-title { font-family:'Cinzel',serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; opacity:0.75; }
+.parts-dist-title-row { display:flex; align-items:baseline; justify-content:space-between; width:100%; gap:8px; margin-bottom:6px; }
+.parts-dist-pie-count { font-size:11px; color:var(--text-dim); line-height:1.3; white-space:nowrap; text-align:right; }
 @keyframes bal-edit-btn-pulse {
   0%,100% { color:var(--text-dim); }
   50%      { color:rgba(200,168,74,0.9); text-shadow:0 0 8px rgba(200,168,74,0.35); }
@@ -1893,15 +1890,24 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       <div class="parts-dist-section-hdr">Team Composition</div>
       <div class="parts-dist-three-col">
         <div class="parts-dist-col">
-          <div class="parts-dist-pie-title" id="parts-dist-now-label">Latest</div>
+          <div class="parts-dist-title-row">
+            <div class="parts-dist-pie-title" id="parts-dist-now-label">Today</div>
+            <div id="parts-dist-now-count" class="parts-dist-pie-count"></div>
+          </div>
           <div id="parts-dist-now" class="parts-dist-pie-row"></div>
         </div>
         <div class="parts-dist-col parts-dist-col--center">
-          <div class="parts-dist-pie-title" id="parts-dist-week-label">This week</div>
+          <div class="parts-dist-title-row">
+            <div class="parts-dist-pie-title" id="parts-dist-week-label">This week</div>
+            <div id="parts-dist-week-count" class="parts-dist-pie-count"></div>
+          </div>
           <div id="parts-dist-week" class="parts-dist-pie-row"></div>
         </div>
         <div class="parts-dist-col">
-          <div class="parts-dist-pie-title">All time</div>
+          <div class="parts-dist-title-row">
+            <div class="parts-dist-pie-title">All time</div>
+            <div id="parts-dist-alltime-count" class="parts-dist-pie-count"></div>
+          </div>
           <div id="parts-dist-alltime-parts" class="parts-dist-pie-row"></div>
         </div>
       </div>
@@ -1971,12 +1977,16 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <!-- Key questions (what to carry into the next session) -->
   <div class="journal-intentions">
     <div class="journal-intention-group">
-      <div class="journal-intention-label" onclick="toggleIntentionGroup(this)" style="cursor:pointer;user-select:none;">Key questions <span class="intention-expand-hint" id="hint-kq">&#9660;</span></div>
-      <div class="journal-intention-row"><span class="journal-item-num">1</span><div class="journal-intention-item" id="journal-kq-1" contenteditable="true" spellcheck="false" data-field="topQuestion1" data-placeholder="What is most alive or unresolved right now?"></div></div>
-      <div class="journal-intention-extra" id="extra-kq">
-        <div class="journal-intention-row"><span class="journal-item-num">2</span><div class="journal-intention-item" id="journal-kq-2" contenteditable="true" spellcheck="false" data-field="topQuestion2" data-placeholder="Second question..."></div></div>
-        <div class="journal-intention-row"><span class="journal-item-num">3</span><div class="journal-intention-item" id="journal-kq-3" contenteditable="true" spellcheck="false" data-field="topQuestion3" data-placeholder="Third question..."></div></div>
-      </div>
+      <div class="journal-intention-label">Key question 1</div>
+      <div class="journal-intention-row"><div class="journal-intention-item" id="journal-kq-1" contenteditable="true" spellcheck="false" data-field="topQuestion1" data-placeholder="What is most alive or unresolved right now?"></div></div>
+    </div>
+    <div class="journal-intention-group">
+      <div class="journal-intention-label">Key question 2</div>
+      <div class="journal-intention-row"><div class="journal-intention-item" id="journal-kq-2" contenteditable="true" spellcheck="false" data-field="topQuestion2" data-placeholder="Second question..."></div></div>
+    </div>
+    <div class="journal-intention-group">
+      <div class="journal-intention-label">Key question 3</div>
+      <div class="journal-intention-row"><div class="journal-intention-item" id="journal-kq-3" contenteditable="true" spellcheck="false" data-field="topQuestion3" data-placeholder="Third question..."></div></div>
     </div>
   </div>
 
@@ -6585,7 +6595,7 @@ function _getWeekAvgWeights() {
   return avg;
 }
 
-// Two pies at the top of the Parts tab: "Latest" (blendedNow) and "All time" (balanceWeight running avg).
+// Three pies at the top of the Parts tab: "Today" (avg of today's check-ins), "This week" (avg of 7-day check-ins), "All time" (balanceWeight running avg).
 function renderPartsTabPies(s) {
   const topEl  = document.getElementById('parts-dist-top');
   const nowEl  = document.getElementById('parts-dist-now');
@@ -6595,13 +6605,29 @@ function renderPartsTabPies(s) {
 
   const partsList = (s.parts || []).map(p => ({ id: p.id, name: p.name || p.id, role: p.role }));
 
-  // "Latest" reads blendedNow (falls back to balanceWeight for parts not yet checked in)
+  const today = _pulseEffectiveDate();
+  const checkinLog = _loadCheckinLog();
+
+  // "Today" averages all check-in entries for today
   const nowWeights = {};
-  (s.parts || []).forEach(p => {
-    const w = p.blendedNow != null ? p.blendedNow / 100 : (p.balanceWeight || 0);
-    if (w > 0) nowWeights[p.id] = w;
-  });
-  if (s._selfWeightNow != null) nowWeights.self = s._selfWeightNow;
+  const todayEntries = (checkinLog[today] || {}).entries || [];
+  if (todayEntries.length > 0) {
+    const sums = {}, counts = {};
+    todayEntries.forEach(e => {
+      Object.entries(e.weights || {}).forEach(([id, v]) => {
+        sums[id] = (sums[id] || 0) + v;
+        counts[id] = (counts[id] || 0) + 1;
+      });
+    });
+    Object.keys(sums).forEach(id => { nowWeights[id] = sums[id] / counts[id]; });
+  } else {
+    // fall back to blendedNow / balanceWeight if no check-ins today
+    (s.parts || []).forEach(p => {
+      const w = p.blendedNow != null ? p.blendedNow / 100 : (p.balanceWeight || 0);
+      if (w > 0) nowWeights[p.id] = w;
+    });
+    if (s._selfWeightNow != null) nowWeights.self = s._selfWeightNow;
+  }
 
   // "All time" reads balanceWeight directly (the running average) — updates live with slider
   const atWeights = {};
@@ -6611,13 +6637,48 @@ function renderPartsTabPies(s) {
   // "This week" averages all check-in entries from the past 7 days
   const weekWeights = _getWeekAvgWeights();
 
+  // Count data sources for each column
+  const weekCutoffMs = Date.now() - 7 * 24 * 3600 * 1000;
+  const _wcd = new Date(weekCutoffMs);
+  const weekCutoffDate = _wcd.getFullYear() + '-' + String(_wcd.getMonth()+1).padStart(2,'0') + '-' + String(_wcd.getDate()).padStart(2,'0');
+  let todayCheckins = 0, weekCheckins = 0, allCheckins = 0;
+  Object.entries(checkinLog).forEach(([date, day]) => {
+    const n = (day.entries || []).length;
+    allCheckins += n;
+    if (date >= weekCutoffDate) weekCheckins += n;
+    if (date === today) todayCheckins += n;
+  });
+  const todayCalendar = _tsLocalDate(); // sessions/imports use calendar date, not pulse-adjusted
+  const allSessions = (s.sessions || []).length;
+  const weekSessions = (s.sessions || []).filter(sess => (sess.date || '') >= weekCutoffDate).length;
+  const todaySessions = (s.sessions || []).filter(sess => (sess.date || '') === todayCalendar).length;
+  const balHist = loadBalHist();
+  const allImports = balHist.filter(h => h.source === 'import').length;
+  const weekImports = balHist.filter(h => h.source === 'import' && (h.date || '') >= weekCutoffDate).length;
+  const todayImports = balHist.filter(h => h.source === 'import' && (h.date || '') === todayCalendar).length;
+
+  function _distCountText(checkins, sessions, imports) {
+    const parts = [];
+    if (checkins > 0) parts.push(checkins + ' check-in' + (checkins !== 1 ? 's' : ''));
+    if (sessions > 0) parts.push(sessions + ' chat' + (sessions !== 1 ? 's' : ''));
+    if (imports > 0) parts.push(imports + ' import' + (imports !== 1 ? 's' : ''));
+    return parts.join(', ');
+  }
+
+  const nowCountEl  = document.getElementById('parts-dist-now-count');
+  const weekCountEl = document.getElementById('parts-dist-week-count');
+  const atCountEl   = document.getElementById('parts-dist-alltime-count');
+  if (nowCountEl)  nowCountEl.textContent  = _distCountText(todayCheckins, todaySessions, todayImports);
+  if (weekCountEl) weekCountEl.textContent = _distCountText(weekCheckins, weekSessions, weekImports);
+  if (atCountEl)   atCountEl.textContent   = _distCountText(allCheckins, allSessions, allImports);
+
   const hasNow  = Object.keys(nowWeights).length > 0;
   const hasWeek = Object.keys(weekWeights).length > 0;
   const hasAt   = Object.keys(atWeights).length > 0;
   if (topEl) topEl.style.display = (hasNow || hasWeek || hasAt) ? '' : 'none';
 
   nowEl.innerHTML = '';
-  if (hasNow) buildBalancePie({ date: 'Latest', weights: nowWeights }, 120, nowEl, {
+  if (hasNow) buildBalancePie({ date: 'Today', weights: nowWeights }, 120, nowEl, {
     label: 'Add entry',
     parts: partsList,
     getWeight: id => {
@@ -6644,6 +6705,7 @@ function renderPartsTabPies(s) {
       if(appState._selfWeightNow!=null) directWeights['self']=appState._selfWeightNow;
       if(Object.keys(directWeights).length>0) _appendCheckinEntry(directWeights);
       snapshotBalance(appState, 'check-in');
+      saveState(appState);
       _applyBalCheckinGlow();
       renderPartsDistribution(appState);
       renderPartsTabPies(appState);
@@ -7245,11 +7307,17 @@ function _setCheckinIntervalHours(h){
 }
 
 // ── Check-in log: {[date]: {entries:[{ts, weights}]}} ─────────
+// In-memory cache survives PIN encryption cycles that clear localStorage keys.
+let _checkinLogCache = null;
 function _loadCheckinLog(){
-  try{ return JSON.parse(localStorage.getItem(CHECKIN_LOG_KEY)||'{}'); }catch{ return {}; }
+  if (_checkinLogCache !== null) return _checkinLogCache;
+  try{ _checkinLogCache = JSON.parse(localStorage.getItem(CHECKIN_LOG_KEY)||'{}'); }catch{ _checkinLogCache = {}; }
+  return _checkinLogCache;
 }
 function _saveCheckinLog(log){
+  _checkinLogCache = log;
   try{ localStorage.setItem(CHECKIN_LOG_KEY, JSON.stringify(log)); }catch{}
+  _reencryptIfActive();
 }
 function _getLastCheckinTs(){
   const log = _loadCheckinLog();
@@ -7484,13 +7552,8 @@ function _submitPulseModal(){
     appState._selfWeightNow = sv / 100;
     appState._selfWeight = sv / 100;
     sliderWeights['self'] = sv / 100;
-  } else if(appState._selfWeightNow != null) {
-    sliderWeights['self'] = appState._selfWeightNow;
   }
-  saveState(appState);
-
-  // Append this check-in to today's log
-  _appendCheckinEntry(sliderWeights);
+  if (Object.keys(sliderWeights).length > 0) _appendCheckinEntry(sliderWeights);
 
   // Update balHist using the running average of all today's check-ins.
   // Use _pulseEffectiveDate() consistently so midnight-2am entries land on the right day.
@@ -7503,6 +7566,8 @@ function _submitPulseModal(){
     if(existing >= 0) hist[existing] = entry; else hist.push(entry);
     saveBalHist(hist);
   }
+
+  saveState(appState);
 
   _applyBalCheckinGlow();
   renderPartsTabPies(appState);
@@ -9994,13 +10059,6 @@ function toggleStarters() {
   body.classList.toggle('open');
   arrow.textContent = body.classList.contains('open') ? '▼' : '▶';
 }
-function toggleIntentionGroup(labelEl) {
-  const group = labelEl.parentElement;
-  const extra = group.querySelector('.journal-intention-extra');
-  if (!extra) return;
-  const open = extra.classList.toggle('open');
-  labelEl.classList.toggle('open', open);
-}
 function copyStarter(btn, text) {
   navigator.clipboard.writeText(text).catch(() => {
     const ta = document.createElement('textarea');
@@ -10110,6 +10168,7 @@ function _restoreBlob(blob){
   [LOCKS_KEY, SESSIONS_KEY, BAL_HIST_KEY, CHECKIN_LOG_KEY, CHECKIN_INTERVAL_KEY, CHAT_SETTINGS_KEY, GIT_SYNC_SETTINGS_KEY].forEach(k=>{
     if(blob[k] != null) localStorage.setItem(k, blob[k]);
   });
+  _checkinLogCache = null; // invalidate cache so next read picks up restored data
 }
 
 function _clearSensitiveKeys(){
