@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' blob:; font-src 'self' data:; img-src 'self' data:; connect-src 'self' https://api.anthropic.com http://localhost:11434 https://raw.githubusercontent.com https://api.github.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' blob:; font-src 'self' data:; img-src 'self' data:; connect-src 'self' https://api.anthropic.com https://api.openai.com http://localhost:11434 https://raw.githubusercontent.com https://api.github.com;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>team-sheet: IFS inner parts mapping and journaling</title>
 <meta name="description" content="A free, local app for mapping your Internal Family Systems parts. Track Managers, Firefighters, and Exiles through journaling and AI-assisted sessions. Single HTML file, no account, all data stays local.">
@@ -845,6 +845,79 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 
 /* ── JOURNAL tab ── */
+/* ── Sessions history list (jtl-style) ── */
+.ts-jtl-list { display:flex; flex-direction:column; gap:6px; }
+.ts-jtl-item { position:relative; }
+.ts-jtl-head {
+  display:flex; align-items:center; gap:8px;
+  padding:9px 12px; border-radius:6px;
+  border:1px solid var(--border); background:rgba(255,255,255,0.015);
+  cursor:pointer; user-select:none; transition:border-color 0.15s, background 0.15s;
+}
+.ts-jtl-item--session .ts-jtl-head {
+  border-left:2px solid rgba(200,168,74,0.45); padding-left:11px;
+}
+.ts-jtl-item--session .ts-jtl-head:hover { border-color:rgba(200,168,74,0.3); background:rgba(200,168,74,0.03); }
+.ts-jtl-item--checkin .ts-jtl-head {
+  border-left:2px solid rgba(110,94,74,0.55); padding-left:11px;
+}
+.ts-jtl-item--checkin .ts-jtl-head:hover { border-color:rgba(110,94,74,0.45); background:rgba(110,94,74,0.04); }
+.ts-jtl-checkin-flat { cursor:default !important; }
+.ts-jtl-checkin-flat:hover { border-color:rgba(110,94,74,0.3) !important; background:transparent !important; }
+.ts-jtl-checkin-flat .ts-jtl-del { opacity:0.3; }
+.ts-jtl-checkin-flat .ts-jtl-del:hover { opacity:1; }
+.ts-jtl-head.ts-jtl-open { border-radius:6px 6px 0 0; border-bottom-color:transparent; }
+.ts-jtl-type {
+  font-family:var(--mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase;
+  flex-shrink:0; min-width:52px; opacity:0.7;
+}
+.ts-jtl-item--session .ts-jtl-type { color:var(--gold); }
+.ts-jtl-item--checkin .ts-jtl-type { color:var(--text-dim); }
+.ts-jtl-date { font-family:var(--mono); font-size:12px; color:var(--text-dim); flex-shrink:0; }
+.ts-jtl-title {
+  font-size:14px; color:var(--text-b); flex:1; min-width:0;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  /* override session-title-edit layout */
+  max-width:none; font-family:inherit; letter-spacing:normal;
+}
+.ts-jtl-item--session .ts-jtl-title { font-style:italic; color:rgba(200,168,74,0.85); }
+.ts-jtl-item--checkin .ts-jtl-title { color:var(--text-mid); }
+.ts-jtl-preview {
+  font-size:13px; color:var(--text-dim); flex:1; min-width:0;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.ts-jtl-msgcount { font-size:12px; color:var(--text-dim); flex-shrink:0; }
+.ts-jtl-arrow { font-size:11px; color:var(--text-dim); flex-shrink:0; transition:transform 0.18s; }
+.ts-jtl-del {
+  background:none; border:none; color:var(--text-dim); cursor:pointer;
+  font-size:15px; line-height:1; padding:0 3px; flex-shrink:0; opacity:0;
+  transition:opacity 0.12s, color 0.12s;
+}
+.ts-jtl-head:hover .ts-jtl-del { opacity:0.45; }
+.ts-jtl-del:hover { opacity:1 !important; color:#c84040; }
+.ts-jtl-item--session .ts-jtl-del { opacity:0.3; }
+
+.ts-jtl-body {
+  display:none; padding:12px 14px 14px;
+  border:1px solid var(--border); border-top:none;
+  border-radius:0 0 6px 6px; background:var(--bg);
+}
+.ts-jtl-body.open { display:block; }
+
+/* Top row: parts-tagged + pie side by side */
+.ts-jtl-top-row {
+  display:flex; align-items:flex-start; gap:16px;
+  margin-bottom:10px; padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
+.ts-jtl-top-left { flex:1; min-width:0; }
+.ts-jtl-top-right { flex-shrink:0; display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+.ts-jtl-section-lbl {
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--text-dim); margin-bottom:5px;
+}
+
+/* keep old classes used elsewhere in the file */
 .session-card {
   background:var(--card); border:1px solid var(--border-hi);
   border-radius:10px; margin-bottom:12px; overflow:hidden;
@@ -1424,8 +1497,18 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .chat-hdr { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 16px; border-bottom:1px solid var(--border-hi); background:rgba(19,15,9,0.98); flex-shrink:0; }
 .chat-hdr-left { display:flex; flex-direction:column; gap:3px; min-width:0; flex:1; }
 .chat-hdr-app { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.22em; color:var(--text-mid); text-transform:uppercase; }
-.chat-hdr-title-row { display:flex; align-items:baseline; gap:12px; min-width:0; }
-.chat-hdr-title { font-family:'Cinzel',serif; font-size:18px; letter-spacing:0.15em; color:var(--gold); text-transform:uppercase; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex-shrink:1; min-width:0; }
+.chat-hdr-title-row { display:flex; align-items:center; gap:8px; min-width:0; flex-wrap:wrap; }
+.chat-hdr-num { font-family:var(--mono); font-size:11px; color:var(--text-dim); opacity:0.55; flex-shrink:0; white-space:nowrap; user-select:none; }
+.chat-hdr-title {
+  font-family:'Cinzel',serif; font-size:17px; letter-spacing:0.13em;
+  color:var(--gold); text-transform:uppercase; margin:0;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex-shrink:1; min-width:60px;
+  cursor:text; border-radius:3px; padding:2px 5px; margin-left:-5px;
+  outline:none; border:1px solid transparent;
+}
+.chat-hdr-title:focus { background:rgba(200,168,74,0.08); border-color:rgba(200,168,74,0.4); overflow:visible; text-overflow:clip; white-space:normal; }
+.chat-hdr-title:hover:not(:focus) { background:rgba(200,168,74,0.06); border-color:rgba(200,168,74,0.2); }
+.chat-hdr-title:empty:not(:focus)::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.4; font-style:italic; }
 .chat-hdr-model { font-family:var(--mono); font-size:12px; color:rgba(200,168,74,0.65); white-space:nowrap; flex-shrink:0; }
 .chat-cloud-warn { display:none; align-items:center; gap:7px; padding:7px 14px; background:rgba(180,40,40,0.12); border-bottom:1px solid rgba(200,60,60,0.35); font-size:12px; color:#e07070; flex-shrink:0; }
 .chat-cloud-warn.visible { display:flex; }
@@ -1441,8 +1524,12 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .chat-sync-radio { display:flex; align-items:flex-start; gap:7px; font-size:13px; color:var(--text); cursor:pointer; flex-wrap:wrap; }
 .chat-sync-radio input[type=radio], .chat-sync-radio input[type=checkbox] { margin:0; margin-top:2px; cursor:pointer; flex-shrink:0; }
 .chat-sync-n { width:44px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:var(--text); border-radius:3px; padding:2px 4px; text-align:center; font-size:12px; }
-.chat-icon-btn { background:none; border:1px solid var(--border-hi); color:var(--text-dim); font-size:14px; width:28px; height:28px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
-.chat-icon-btn:hover { border-color:var(--gold); color:var(--gold); }
+.chat-icon-btn { background:none; border:1px solid rgba(255,255,255,0.12); color:var(--text-dim); font-size:13px; padding:5px 10px; border-radius:5px; cursor:pointer; display:flex; align-items:center; gap:5px; transition:all 0.15s; }
+.chat-icon-btn .chat-icon-glyph { font-size:16px; line-height:1; }
+.chat-icon-btn .chat-icon-label { font-size:12px; letter-spacing:0.03em; }
+.chat-icon-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(200,168,74,0.07); }
+.chat-hdr-model-inline { font-family:var(--mono); font-size:11px; color:rgba(200,168,74,0.75); white-space:nowrap; max-width:110px; overflow:hidden; text-overflow:ellipsis; }
+.chat-sess-name-chip { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:130px; opacity:0.7; align-self:center; }
 .chat-msgs { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
 .chat-msg { max-width:82%; padding:10px 14px; border-radius:8px; font-size:17px; line-height:1.6; white-space:pre-wrap; word-break:break-word; }
 .chat-msg-user { align-self:flex-end; background:rgba(200,168,74,0.1); border:1px solid rgba(200,168,74,0.25); color:var(--text-b); }
@@ -1463,6 +1550,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .chat-action-bar { display:flex; align-items:center; gap:10px; padding:8px 16px; border-top:1px solid var(--border); background:rgba(19,15,9,0.8); flex-shrink:0; }
 .chat-apply-btn { background:rgba(200,168,74,0.12); border:1px solid rgba(200,168,74,0.4); color:var(--gold); font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; padding:5px 14px; border-radius:4px; cursor:pointer; animation:chat-pulse 1.6s ease-in-out infinite; }
 @keyframes chat-pulse { 0%,100% { box-shadow:0 0 0 0 rgba(200,168,74,0); } 50% { box-shadow:0 0 0 5px rgba(200,168,74,0.12); } }
+@keyframes nav-glow { 0% { box-shadow:0 0 0 2px rgba(200,168,74,0.65), 0 0 14px rgba(200,168,74,0.22); } 60% { box-shadow:0 0 0 2px rgba(200,168,74,0.4), 0 0 8px rgba(200,168,74,0.12); } 100% { box-shadow:0 0 0 0 transparent; } }
+.nav-target-glow { animation:nav-glow 1.4s ease-out forwards; }
 .chat-sync-btn { font-size:13px; padding:6px 14px; color:var(--gold); border-color:rgba(200,168,74,0.35); }
 .chat-sync-btn:hover { background:rgba(200,168,74,0.1); border-color:var(--gold); }
 .chat-end-btn { margin-left:auto; }
@@ -1567,11 +1656,16 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 .chat-sess-picker-empty { padding:12px; font-size:12px; color:var(--text-dim); text-align:center; }
 /* Chat header lock button */
 .chat-hdr-lock-btn {
-  background:none; border:none; cursor:pointer; font-size:14px; padding:0 2px;
-  opacity:0.4; transition:opacity 0.15s, color 0.15s; flex-shrink:0;
+  background:none; border:1px solid rgba(255,255,255,0.1); cursor:pointer;
+  padding:3px 8px; border-radius:4px; line-height:1; flex-shrink:0;
+  transition:color 0.15s, border-color 0.15s, background 0.15s;
+  display:flex; align-items:center; gap:4px;
+  font-size:11px; font-family:var(--mono); color:var(--text-dim); opacity:0.6;
 }
-.chat-hdr-lock-btn:hover { opacity:1; color:var(--gold); }
-.chat-hdr-lock-btn.locked { color:var(--gold); opacity:1; }
+.chat-hdr-lock-btn .lock-icon { font-size:13px; line-height:1; }
+.chat-hdr-lock-btn .lock-label { letter-spacing:0.04em; }
+.chat-hdr-lock-btn:hover { opacity:1; color:var(--gold); border-color:rgba(200,168,74,0.4); background:rgba(200,168,74,0.07); }
+.chat-hdr-lock-btn.locked { color:var(--gold); border-color:rgba(200,168,74,0.4); background:rgba(200,168,74,0.07); opacity:1; }
 /* Transcript in journal session cards */
 .session-chat-toggle { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
 .session-chat-toggle-btn { font-size:12px; color:var(--text-dim); background:none; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:3px 10px; cursor:pointer; }
@@ -1593,12 +1687,30 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 .chat-mode-emoji { font-size:14px; line-height:1; }
 .chat-mode-sep { width:1px; height:18px; background:rgba(255,255,255,0.1); margin:0 2px; flex-shrink:0; }
 .chat-leader-toggle {
-  display:flex; align-items:center; gap:5px; font-size:12px; padding:5px 10px;
-  border-radius:20px; border:1px solid rgba(255,255,255,0.12); background:transparent;
+  display:flex; align-items:center; gap:0; font-size:12px; padding:0;
+  border-radius:20px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.04);
   color:var(--text-dim); cursor:pointer; transition:all 0.15s; white-space:nowrap; margin-left:auto;
+  overflow:hidden;
 }
-.chat-leader-toggle:hover { border-color:rgba(255,255,255,0.3); color:var(--text); }
-.chat-leader-toggle.ai-led { background:rgba(200,168,74,0.15); border-color:rgba(200,168,74,0.4); color:var(--gold); }
+.chat-leader-toggle:hover { border-color:rgba(255,255,255,0.3); }
+.chat-leader-seg {
+  display:flex; align-items:center; gap:4px; padding:5px 10px;
+  font-size:12px; transition:all 0.15s; line-height:1;
+}
+.chat-leader-seg-you { border-radius:20px 0 0 20px; }
+.chat-leader-seg-ai  { border-radius:0 20px 20px 0; }
+.chat-leader-arrow {
+  font-size:10px; opacity:0.5; padding:0 2px; line-height:1; transition:all 0.15s;
+}
+.chat-leader-toggle:not(.ai-led) .chat-leader-seg-you {
+  background:rgba(255,255,255,0.12); color:var(--text); font-weight:600;
+}
+.chat-leader-toggle:not(.ai-led) .chat-leader-seg-ai { color:var(--text-dim); }
+.chat-leader-toggle.ai-led .chat-leader-seg-ai {
+  background:rgba(200,168,74,0.22); color:var(--gold); font-weight:600;
+}
+.chat-leader-toggle.ai-led .chat-leader-seg-you { color:var(--text-dim); }
+.chat-leader-toggle.ai-led { border-color:rgba(200,168,74,0.4); }
 .chat-quickstarts { padding:10px 16px 0; display:flex; flex-direction:column; gap:6px; }
 .chat-qs-chip { background:rgba(200,168,74,0.07); border:1px solid rgba(200,168,74,0.25); color:var(--text-mid); font-size:13px; padding:6px 14px; border-radius:20px; cursor:pointer; transition:all 0.15s; width:100%; text-align:left; white-space:normal; overflow-wrap:break-word; line-height:1.4; }
 .chat-qs-chip strong { color:var(--text); font-weight:600; }
@@ -1816,13 +1928,13 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 <!-- ══ BANNER ZONE (below nav) ══════════════════════════════════ -->
 <div id="banner-zone">
 <div id="dirty-banner">
-  <span class="dirty-banner-text">Saved to browser storage. Export to keep a permanent backup.</span>
+  <span class="dirty-banner-text">Your changes exist only in this browser. Export a backup file to keep them safe, or sync to a private GitHub repo to access them anywhere.</span>
   <button class="dirty-banner-never" onclick="neverShowDirtyBanner()">Don't show again</button>
   <button class="dirty-banner-dismiss" onclick="dismissDirtyBanner()" title="Dismiss">&#215;</button>
 </div>
 <div id="demo-banner">
-  <span class="demo-banner-text">You're viewing <strong>Alex's demo data</strong>. Nothing you do here is saved. Download the app to map your own inner system.</span>
-  <button class="demo-banner-dl" onclick="downloadApp()">&#8595; Download team-sheet.html</button>
+  <span class="demo-banner-text">You're viewing <strong>Alex's demo data</strong>. Nothing you do here is saved. Save the file to map your own inner system.</span>
+  <button class="demo-banner-dl" onclick="downloadApp()">&#8595; Save team-sheet.html</button>
   <button class="demo-banner-dismiss" onclick="this.closest('#demo-banner').style.display='none'" title="Dismiss">&#215;</button>
 </div>
 <div id="disclaimer-banner">
@@ -2130,12 +2242,12 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 <div class="modal-overlay" id="welcome-modal">
   <div class="modal">
     <div class="modal-title">&#10022; &nbsp;WELCOME TO TEAM-SHEET</div>
-    <p class="welcome-modal-desc">Your mind is made up of <strong style="color:var(--text-b);">parts</strong>: the one that pushes forward, the one that shuts down, the one that numbs when things get hard. team-sheet maps your inner system as it grows through reflection. No prior IFS experience needed.</p>
-    <div style="font-size:13px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">How do you want to use it? You can change this at any time.</div>
+    <p class="welcome-modal-desc">Your mind is made of <strong style="color:var(--text-b);">parts</strong>: the one that pushes forward, the one that shuts down, the one that numbs out when things get hard. team-sheet helps you name and understand them. No prior experience needed.</p>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">How would you like to fill it in? You can change this any time.</div>
     <div class="welcome-options">
       <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-setup-btn" onclick="toggleWelcomeSetup('manual')">A &nbsp;Fill it in yourself</button>
-      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-ai-btn" onclick="toggleWelcomeSetup('ai')">B &nbsp;Copy-paste with your AI</button>
-      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-chat-btn" onclick="toggleWelcomeSetup('chat')">C &nbsp;Chat inside the app</button>
+      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-chat-btn" onclick="toggleWelcomeSetup('chat')">B &nbsp;Chat inside the app</button>
+      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-ai-btn" onclick="toggleWelcomeSetup('ai')">C &nbsp;Copy-paste with your AI</button>
     </div>
     <div style="margin:10px 0 2px;border-top:1px solid var(--border);padding-top:12px;">
       <button onclick="dismissWelcome();openModal()" class="btn-gold-ghost" style="width:100%;padding:11px 16px;font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;border-radius:5px;cursor:pointer;">&#10022; Already have data? Import it</button>
@@ -2143,32 +2255,32 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     <div id="welcome-setup-steps" data-mode="">
       <!-- Path A: Fill it in yourself -->
       <div class="welcome-path" id="welcome-path-manual">
-        <div style="font-size:13px;color:#6090c8;margin:14px 0 10px;font-weight:600;">A &nbsp;Fill it in yourself. No AI required, works completely offline.</div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">1</div><div class="welcome-step-text"><strong>Go to Parts</strong> and click "+ Add part". Start with whatever you notice most in yourself: a voice, a pattern, a recurring tension.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">2</div><div class="welcome-step-text"><strong>Give it a name and a role</strong> (Manager, Firefighter, or Exile). Fill in what you know: what it does, what it fears, when it shows up. No need to fill everything at once.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">3</div><div class="welcome-step-text"><strong>Open Connections</strong> to see your parts as a visual network. Add connections between parts in each part's Relationships section.</div></div>
-        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#6090c8;">4</div><div class="welcome-step-text"><strong>Export regularly</strong> using the Data button (bottom bar). Your data only exists in this browser, so Export is your backup.</div></div>
+        <div style="font-size:13px;color:#6090c8;margin:14px 0 10px;font-weight:600;">A &nbsp;Fill it in yourself. No AI required. Works completely offline.</div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">1</div><div class="welcome-step-text"><strong>Go to Parts</strong> and click "+ Add part". Start with whatever you notice most right now: a voice, a pattern, a recurring tension. Just give it a name.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">2</div><div class="welcome-step-text"><strong>Add what you know.</strong> Give it a role (Manager, Firefighter, or Exile), describe what it does, what it fears, when it shows up. No need to fill everything at once.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">3</div><div class="welcome-step-text"><strong>Do your first check-in.</strong> Tap the Check-in button in the bottom bar. It takes 30 seconds and starts your history chart.</div></div>
+        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#6090c8;">4</div><div class="welcome-step-text"><strong>Export regularly</strong> using the Data button in the bottom bar. Your data only lives in this browser, so Export is your backup.</div></div>
       </div>
-      <!-- Path B: Copy-paste with your AI -->
-      <div class="welcome-path" id="welcome-path-ai" style="display:none;">
-        <div style="font-size:13px;color:#f09090;margin:14px 0 10px;font-weight:600;">B &nbsp;Copy-paste with your AI. Journal in any AI, then import the result.</div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">1</div><div class="welcome-step-text"><strong>Download instructions.md,</strong> the file that tells your AI how team-sheet works. <button class="btn-ghost btn-download" style="margin-left:6px;" onclick="downloadInstructionsMd(this)">&#8595; instructions.md</button></div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">2</div><div class="welcome-step-text"><strong>Create a project</strong> in your AI of choice and upload instructions.md to its knowledge base.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Try: <em>"Here's what's been present for me lately..."</em> or use a Session Starter from Sessions.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">4</div><div class="welcome-step-text"><strong>When done,</strong> ask your AI: <em>"Update my data"</em> and copy the output.</div></div>
-        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#f09090;">5</div><div class="welcome-step-text"><button class="btn-ghost" style="font-size:inherit;padding:2px 7px;font-weight:700;" onclick="dismissWelcome();openModal()">&#8593; Import</button> your data, paste the output, and hit Apply. Your map updates instantly.</div></div>
-      </div>
-      <!-- Path C: Chat inside the app -->
+      <!-- Path B: Chat inside the app (recommended) -->
       <div class="welcome-path" id="welcome-path-chat" style="display:none;">
-        <div style="font-size:13px;color:#50c878;margin:14px 0 10px;font-weight:600;">C &nbsp;Chat inside the app. API key or local Ollama.</div>
-        <div class="welcome-step"><div class="welcome-step-num">1</div><div class="welcome-step-text"><strong>Open Chat</strong> using the star (&#10022;) icon in the bottom bar.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num">2</div><div class="welcome-step-text"><strong>Open Chat Settings</strong> (gear icon inside the chat panel) and enter your API key, or connect a local Ollama model. The settings screen shows the exact Ollama start command for your OS.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num">3</div><div class="welcome-step-text"><strong>Start a session.</strong> Journal for 10-20 minutes and your parts map fills in from your own words. No copy-pasting needed.</div></div>
-        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:var(--text-dim);">i</div><div class="welcome-step-text" style="font-size:14px;color:var(--text-dim);">Ollama runs entirely offline after a one-time model download. API key usage sends your session to the provider's servers.</div></div>
+        <div style="font-size:13px;color:#50c878;margin:14px 0 10px;font-weight:600;">B &nbsp;Chat inside the app. The fastest way to build your map. <span style="background:rgba(80,200,120,0.15);border:1px solid rgba(80,200,120,0.35);border-radius:3px;padding:1px 6px;">Recommended</span></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">1</div><div class="welcome-step-text"><strong>Tap the star icon</strong> (&#10022;) in the bottom bar to open Chat.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">2</div><div class="welcome-step-text"><strong>Connect your AI.</strong> Tap the gear icon inside Chat. You can use a paid cloud service (you paste in an account key), or a free app called Ollama that runs entirely on your computer with nothing sent anywhere.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">3</div><div class="welcome-step-text"><strong>Just talk.</strong> Tell your AI what's been present for you lately. After 10-20 minutes, your map fills itself in. No typing into fields needed.</div></div>
+        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:var(--text-dim);">i</div><div class="welcome-step-text" style="font-size:14px;color:var(--text-dim);">Ollama is free and private: nothing leaves your device. Paid cloud services cost a few cents per session and send your conversation to their servers.</div></div>
+      </div>
+      <!-- Path C: Copy-paste with your AI -->
+      <div class="welcome-path" id="welcome-path-ai" style="display:none;">
+        <div style="font-size:13px;color:#f09090;margin:14px 0 10px;font-weight:600;">C &nbsp;Copy-paste with your AI. Already using an AI assistant? Start here.</div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">1</div><div class="welcome-step-text"><strong>Download instructions.md</strong> below. This file teaches your AI how team-sheet works. <button class="btn-ghost btn-download" style="margin-left:6px;" onclick="downloadInstructionsMd(this)">&#8595; instructions.md</button></div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">2</div><div class="welcome-step-text"><strong>Open your AI</strong> and start a new project or conversation. Upload instructions.md so it knows the format.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">3</div><div class="welcome-step-text"><strong>Start talking.</strong> Try: <em>"Here's what's been present for me lately..."</em> and go from there.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">4</div><div class="welcome-step-text"><strong>When you're done,</strong> ask your AI: <em>"Update my data"</em> and copy what it gives you.</div></div>
+        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#f09090;">5</div><div class="welcome-step-text"><button class="btn-ghost" style="font-size:inherit;padding:2px 7px;font-weight:700;" onclick="dismissWelcome();openModal()">&#8593; Import</button> your data here, paste it in, and hit Apply. Your map updates instantly.</div></div>
       </div>
     </div>
     <div style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
-      <strong style="color:var(--text-mid);">Privacy:</strong> Your data lives only in this browser. No server, no accounts, no tracking. Export regularly and treat the file like a private diary. If you use a cloud AI, that provider may store what you share with them.
+      <strong style="color:var(--text-mid);">Privacy:</strong> Your data lives only in this browser. No accounts, no tracking. Export regularly and treat the file like a private diary. If you use a cloud AI, that provider may store what you share with them.
     </div>
     <div class="modal-row" style="margin-top:14px;">
       <button class="btn-ghost" onclick="dismissWelcome()">Close</button>
@@ -2229,10 +2341,11 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 <div class="modal-overlay" id="support-modal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal" style="border-top:3px solid var(--modal-brown-border);max-width:520px;width:100%;position:relative;">
     <button class="modal-close" onclick="document.getElementById('support-modal').classList.remove('open')" title="Close">&#x2715;</button>
-    <div class="modal-title" style="color:var(--modal-brown);margin-bottom:16px;">&#9829; &nbsp;SUPPORT THIS PROJECT</div>
-    <p style="line-height:1.7;margin:0 0 14px;">team-sheet is free, open source, and always will be. If it has been useful to you, the best way to support it is to share it with someone who might benefit.</p>
+    <div class="modal-title" style="color:var(--help);margin-bottom:16px;">&#9829; &nbsp;SUPPORT THIS PROJECT</div>
+    <p style="line-height:1.7;margin:0 0 14px;">team-sheet is free, open source, and always will be. If it has been useful to you, a small contribution helps keep it going.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
-      <button onclick="(()=>{if(navigator.share){navigator.share({title:'team-sheet',text:'A private IFS inner parts mapping app. Free and open source.',url:'https://sam-holmes2.github.io/team-sheet/team-sheet.html'}).catch(()=>{})}else{navigator.clipboard.writeText('https://sam-holmes2.github.io/team-sheet/team-sheet.html').then(()=>document.getElementById('support-copy-msg').textContent='Link copied!').catch(()=>document.getElementById('support-copy-msg').textContent='Copy the URL from your address bar.')}})()" style="background:rgba(58,184,120,0.15);border:1px solid rgba(58,184,120,0.4);color:var(--help);padding:8px 18px;border-radius:6px;font-family:var(--mono);font-size:14px;letter-spacing:0.08em;cursor:pointer;">&#9829; Share with a friend</button>
+      <a href="https://ko-fi.com/samholmes2" target="_blank" rel="noopener" style="text-decoration:none;background:rgba(58,184,120,0.15);border:1px solid rgba(58,184,120,0.4);color:var(--help);padding:8px 18px;border-radius:6px;font-family:var(--mono);font-size:14px;letter-spacing:0.08em;">&#9829; Donate on Ko-fi</a>
+      <button onclick="(()=>{if(navigator.share){navigator.share({title:'team-sheet',text:'A private IFS inner parts mapping app. Free and open source.',url:'https://sam-holmes2.github.io/team-sheet/team-sheet.html'}).catch(()=>{})}else{navigator.clipboard.writeText('https://sam-holmes2.github.io/team-sheet/team-sheet.html').then(()=>document.getElementById('support-copy-msg').textContent='Link copied!').catch(()=>document.getElementById('support-copy-msg').textContent='Copy the URL from your address bar.')}})()" style="background:transparent;border:1px solid var(--border-hi);color:var(--text-mid);padding:8px 18px;border-radius:6px;font-family:var(--mono);font-size:14px;letter-spacing:0.08em;cursor:pointer;">&#9829; Share with a friend</button>
       <a href="https://github.com/sam-holmes2/team-sheet" target="_blank" rel="noopener" style="text-decoration:none;padding:8px 18px;border-radius:6px;font-family:var(--mono);font-size:14px;letter-spacing:0.08em;display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border-hi);color:var(--text-mid);"><svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg> Star on GitHub</a>
     </div>
     <span id="support-copy-msg" style="font-size:13px;color:var(--help);min-height:18px;display:block;margin-top:-12px;margin-bottom:12px;"></span>
@@ -2286,7 +2399,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         </div>
         <div class="help-step">
           <div class="help-step-num">2</div>
-          <div class="help-step-text"><strong>Create a project in your AI</strong> (Claude Projects, ChatGPT Projects, Gemini Gems, etc.) and upload instructions.md so it is included in every session.</div>
+          <div class="help-step-text"><strong>Create a project in your AI</strong> and upload instructions.md so it is included in every session.</div>
         </div>
         <div class="help-step">
           <div class="help-step-num">3</div>
@@ -3118,6 +3231,16 @@ Then follow their lead. If the person mentions they are already working with a t
 You are working with private, sensitive material. Hold it carefully.
 `;
 function esc(str){ const d=document.createElement('div'); d.textContent=str??''; return d.innerHTML; }
+
+function navGlow(el) {
+  if (!el) return;
+  el.classList.remove('nav-target-glow');
+  void el.offsetWidth;
+  el.classList.add('nav-target-glow');
+  const clear = () => el.classList.remove('nav-target-glow');
+  el.addEventListener('mouseenter', clear, { once: true });
+  el.addEventListener('animationend', clear, { once: true });
+}
 
 // Base role colors (can be overridden by appState.roleColors)
 const DEFAULT_ROLE_COLORS = {
@@ -5119,7 +5242,7 @@ function drawMap(canvas, W, H) {
     switchTab('parts');
     setTimeout(() => {
       const card = document.querySelector(`.part-card[data-part-id="${node.id}"]`);
-      if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); navGlow(card); }
     }, 80);
   });
 })();
@@ -5371,7 +5494,7 @@ function renderMapEditor(s) {
     switchTab('parts');
     setTimeout(() => {
       const card = document.querySelector(`.part-card[data-part-id="${part.id}"]`);
-      if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior:'smooth', block:'start' }); }
+      if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior:'smooth', block:'start' }); navGlow(card); }
     }, 80);
   });
   nodeFields.appendChild(profileBtn);
@@ -5796,7 +5919,7 @@ function buildPartCard(part, idx, s) {
         pill.addEventListener('click', e => {
           e.preventDefault(); e.stopPropagation();
           const targetCard = document.querySelector(`.part-card[data-part-id="${rel.partId}"]`);
-          if (targetCard) { targetCard.classList.add('expanded'); targetCard.scrollIntoView({ behavior:'smooth', block:'start' }); }
+          if (targetCard) { targetCard.classList.add('expanded'); targetCard.scrollIntoView({ behavior:'smooth', block:'start' }); navGlow(targetCard); }
         });
         pillsWrap.appendChild(pill);
       }
@@ -5815,7 +5938,7 @@ function buildPartCard(part, idx, s) {
         pill.addEventListener('click', e => {
           e.preventDefault(); e.stopPropagation();
           const targetCard = document.querySelector(`.part-card[data-part-id="${otherPart.id}"]`);
-          if (targetCard) { targetCard.classList.add('expanded'); targetCard.scrollIntoView({ behavior:'smooth', block:'start' }); }
+          if (targetCard) { targetCard.classList.add('expanded'); targetCard.scrollIntoView({ behavior:'smooth', block:'start' }); navGlow(targetCard); }
         });
         pillsWrap.appendChild(pill);
       }
@@ -6136,7 +6259,7 @@ function buildPartCard(part, idx, s) {
         switchTab('timeline');
         requestAnimationFrame(() => {
           const anchor = document.getElementById('memory-anchor-' + m.id);
-          if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (anchor) { anchor.scrollIntoView({ behavior: 'smooth', block: 'center' }); navGlow(anchor); }
         });
       };
       row.appendChild(bullet);
@@ -6289,7 +6412,7 @@ function buildRelTable(part, partIdx, s) {
       badge.title = 'Go to ' + (targetPart.name || rel.partName);
       badge.addEventListener('click', () => {
         const targetCard = document.querySelector(`.part-card[data-part-id="${rel.partId}"]`);
-        if (targetCard) { targetCard.classList.add('expanded'); targetCard.scrollIntoView({ behavior:'smooth', block:'start' }); }
+        if (targetCard) { targetCard.classList.add('expanded'); targetCard.scrollIntoView({ behavior:'smooth', block:'start' }); navGlow(targetCard); }
       });
     }
     tdName.appendChild(badge);
@@ -6350,8 +6473,8 @@ function addSession() {
   saveState(appState);
   renderJournal(appState);
   setTimeout(() => {
-    const card = document.querySelector(`.session-card[data-session-id="${newSession.id}"]`);
-    if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    const card = document.querySelector(`[data-session-id="${newSession.id}"]`);
+    if (card) { _openJtlItem(card); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); navGlow(card); }
   }, 50);
 }
 
@@ -6371,7 +6494,7 @@ function addMemory() {
   renderTimeline(appState);
   setTimeout(() => {
     const card = document.querySelector(`.memory-card[data-memory-id="${newMem.id}"]`);
-    if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+    if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); navGlow(card); }
   }, 50);
 }
 
@@ -6409,7 +6532,7 @@ function addPart() {
   // Expand new card
   setTimeout(() => {
     const card = document.querySelector(`.part-card[data-part-id="${id}"]`);
-    if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); navGlow(card); }
   }, 50);
 }
 
@@ -6785,7 +6908,7 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   ctx.clearRect(0, 0, W, H);
 
-  const PAD_L = 110, PAD_R = 6, PAD_T = 12, PAD_B = 28;
+  const PAD_L = 110, PAD_R = 6, PAD_T = 22, PAD_B = 28;
   const drawW = W - PAD_L - PAD_R;
   const drawH = H - PAD_T - PAD_B;
 
@@ -6963,12 +7086,14 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
       const bx = PAD_L + histPW;
       ctx.strokeStyle = 'rgba(200,185,140,0.35)'; ctx.lineWidth = 1.5;
       ctx.setLineDash([]);
-      ctx.beginPath(); ctx.moveTo(bx, PAD_T); ctx.lineTo(bx, PAD_T + drawH); ctx.stroke();
-      // "7 days" label straddling the line
-      ctx.font = `10px 'JetBrains Mono', monospace`;
-      ctx.fillStyle = 'rgba(200,185,140,0.55)';
+      ctx.beginPath(); ctx.moveTo(bx, PAD_T - 2); ctx.lineTo(bx, PAD_T + drawH); ctx.stroke();
+      // Zone header labels above the chart
+      ctx.font = `bold 8px 'JetBrains Mono', monospace`;
       ctx.textAlign = 'center';
-      ctx.fillText('7 days', bx, PAD_T + 10);
+      ctx.fillStyle = 'rgba(255,255,255,0.28)';
+      ctx.fillText('history', PAD_L + histPW / 2, PAD_T - 7);
+      ctx.fillStyle = 'rgba(200,168,74,0.55)';
+      ctx.fillText('7 days', bx + recentPW / 2, PAD_T - 7);
     }
   }
 
@@ -7155,12 +7280,12 @@ function renderBalanceAreaChart(s, hist, canvasId, legendId, onChartClick) {
         if (hit.type === 'session') {
           switchTab('journal');
           setTimeout(() => {
-            const card = document.querySelector(`.session-card[data-session-id="${hit.sessionId}"]`);
-            if (card) { card.classList.add('expanded'); card.scrollIntoView({ behavior:'smooth', block:'start' }); }
+            const card = document.querySelector(`[data-session-id="${hit.sessionId}"]`);
+            if (card) { _openJtlItem(card); card.scrollIntoView({ behavior:'smooth', block:'start' }); navGlow(card); }
           }, 80);
         } else if (hit.type === 'memory') {
           const card = document.getElementById('memory-anchor-' + hit.memoryId);
-          if (card) card.scrollIntoView({ behavior:'smooth', block:'center' });
+          if (card) { card.scrollIntoView({ behavior:'smooth', block:'center' }); navGlow(card); }
         }
         return;
       }
@@ -8134,6 +8259,7 @@ function renderJournal(s) {
 
   const list = document.getElementById('sessions-list');
   const empty = document.getElementById('sessions-empty');
+  list.className = 'ts-jtl-list';
   list.innerHTML = '';
 
   if (IS_DEMO) {
@@ -8304,67 +8430,180 @@ function buildSessionHeaderPie(session, s, size) {
   return canvas;
 }
 
+function _openJtlItem(item) {
+  const body = item.querySelector('.ts-jtl-body');
+  const hdr  = item.querySelector('.ts-jtl-head');
+  const arrow = item.querySelector('.ts-jtl-arrow');
+  if (!body || body.classList.contains('open')) return;
+  body.classList.add('open');
+  if (hdr) hdr.classList.add('ts-jtl-open');
+  if (arrow) arrow.style.transform = 'rotate(90deg)';
+}
+
+// Build pie + opacity-scaled coloured chips for a session header,
+// using session.weights or the closest balance-history snapshot.
+// Only shows parts that are actually tagged on the session (if any are tagged).
+function _buildSessionInlineContent(session, s) {
+  const frag = document.createDocumentFragment();
+
+  // Resolve weights snapshot
+  const hist = loadBalHist();
+  let snap = null;
+  if (session.weights) {
+    snap = session.weights;
+  } else if (hist.length > 0) {
+    let closest = hist[0], closestDist = Infinity;
+    hist.forEach(h => {
+      const d = Math.abs(new Date(h.date) - new Date(session.date));
+      if (d < closestDist) { closestDist = d; closest = h; }
+    });
+    snap = closest.weights || {};
+  }
+
+  // Determine which part ids to show: tagged parts, or fall back to all from snap
+  const tagged = session.partsTagged && session.partsTagged.length > 0 ? session.partsTagged : null;
+  const weights = snap || {};
+
+  // Build ordered list: tagged parts (by weight desc), or all snap parts by weight desc
+  let partEntries;
+  if (tagged) {
+    partEntries = tagged
+      .map(id => [id, weights[id] || 0])
+      .sort((a, b) => b[1] - a[1]);
+  } else {
+    partEntries = Object.entries(weights)
+      .filter(([, v]) => v > 0.01)
+      .sort((a, b) => b[1] - a[1]);
+  }
+
+  if (partEntries.length === 0) return frag;
+
+  // Tiny pie (same as check-in, 18px)
+  const pieEntries = Object.entries(weights).filter(([, v]) => v > 0);
+  if (pieEntries.length > 0) {
+    const size = 18;
+    const canvas = document.createElement('canvas');
+    canvas.width = size; canvas.height = size;
+    canvas.style.cssText = `width:${size}px;height:${size}px;flex-shrink:0;border-radius:50%;pointer-events:none;margin-right:2px;`;
+    const ctx = canvas.getContext('2d');
+    const cx = size / 2, cy = size / 2, r = size / 2 - 0.5;
+    const total = pieEntries.reduce((a, [, v]) => a + v, 0) || 1;
+    let angle = -Math.PI / 2;
+    pieEntries.sort((a, b) => b[1] - a[1]).forEach(([id, w]) => {
+      const slice = (w / total) * Math.PI * 2;
+      ctx.beginPath(); ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, angle, angle + slice); ctx.closePath();
+      ctx.fillStyle = _partColor(id); ctx.fill();
+      angle += slice;
+    });
+    frag.appendChild(canvas);
+  }
+
+  // Opacity-scaled coloured chips
+  const maxWeight = partEntries.reduce((m, [, v]) => Math.max(m, v), 0) || 1;
+  const tagsWrap = document.createElement('span');
+  tagsWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px;align-items:center;';
+  partEntries.forEach(([id, v]) => {
+    const part = id === 'self' ? null : (s.parts || []).find(p => p.id === id);
+    const name = id === 'self' ? 'Self' : (part ? part.name : id);
+    // Scale opacity: min 0.35 at lowest weight, 1.0 at highest
+    const relOpacity = 0.35 + 0.65 * (v / maxWeight);
+    const tag = document.createElement('span');
+    tag.style.cssText = 'font-size:11px;font-family:var(--mono);padding:1px 6px;border-radius:3px;border:1px solid;white-space:nowrap;';
+    const color = _partColor(id);
+    // Replace the alpha in the rgba color with our scaled values
+    tag.style.color    = color.replace(/[\d.]+\)$/, relOpacity.toFixed(2) + ')');
+    tag.style.borderColor = color.replace(/[\d.]+\)$/, (relOpacity * 0.4).toFixed(2) + ')');
+    tag.style.background  = color.replace(/[\d.]+\)$/, (relOpacity * 0.09).toFixed(2) + ')');
+    tag.textContent = name;
+    tagsWrap.appendChild(tag);
+  });
+  frag.appendChild(tagsWrap);
+  return frag;
+}
+
 function buildSessionCard(session, s) {
-  const card = document.createElement('div');
-  card.className = 'session-card';
-  card.dataset.sessionId = session.id || session.date;
+  const item = document.createElement('div');
+  item.className = 'ts-jtl-item ts-jtl-item--session';
+  item.dataset.sessionId = session.id || session.date;
 
+  // ── Head ──
   const hdr = document.createElement('div');
-  hdr.className = 'session-header';
+  hdr.className = 'ts-jtl-head';
 
-  // Editable date
+  const typeEl = document.createElement('span');
+  typeEl.className = 'ts-jtl-type';
+  typeEl.textContent = 'Session';
+
   const dateEl = document.createElement('input');
-  dateEl.className = 'session-date-edit';
+  dateEl.className = 'ts-jtl-date session-date-edit';
   dateEl.value = session.date || '';
   dateEl.placeholder = 'YYYY-MM-DD';
   dateEl.addEventListener('click', e => e.stopPropagation());
-  dateEl.addEventListener('change', () => {
-    session.date = dateEl.value.trim();
-    saveState(appState);
-  });
+  dateEl.addEventListener('focus', e => e.stopPropagation());
+  dateEl.addEventListener('change', () => { session.date = dateEl.value.trim(); saveState(appState); });
 
-  // Editable title
   const titleEl = document.createElement('div');
-  titleEl.className = 'session-title-edit';
+  titleEl.className = 'ts-jtl-title session-title-edit';
   titleEl.contentEditable = 'true';
   titleEl.setAttribute('data-placeholder', 'Untitled session');
   titleEl.textContent = session.title || '';
   titleEl.addEventListener('click', e => e.stopPropagation());
-  titleEl.addEventListener('blur', () => {
-    session.title = titleEl.textContent.trim();
-    saveState(appState);
-  });
+  titleEl.addEventListener('blur', () => { session.title = titleEl.textContent.trim(); saveState(appState); });
   titleEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); titleEl.blur(); } });
 
-  const preview = document.createElement('span');
-  preview.className = 'session-preview';
-  const previewText = (session.content || '').trim();
-  preview.textContent = previewText.length > 120 ? previewText.slice(0, 120) + '...' : previewText;
+  // Right-aligned pie + opacity-scaled chips
+  const inlineContent = document.createElement('span');
+  inlineContent.style.cssText = 'display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;';
+  inlineContent.appendChild(_buildSessionInlineContent(session, s));
 
-  const chevron = document.createElement('span');
-  chevron.textContent = '▶';
-  chevron.style.cssText = 'font-size:12px;color:var(--text-dim);transition:transform 0.2s;flex-shrink:0;pointer-events:none;';
-
-  // Small pie in header (always visible)
-  const hdrPie = buildSessionHeaderPie(session, s, 28);
-
-  hdr.appendChild(dateEl); hdr.appendChild(titleEl); hdr.appendChild(preview);
-  if (hdrPie) hdr.appendChild(hdrPie);
-  hdr.appendChild(chevron);
-  hdr.addEventListener('click', () => {
-    card.classList.toggle('expanded');
-    chevron.style.transform = card.classList.contains('expanded') ? 'rotate(90deg)' : '';
+  const delBtn = document.createElement('button');
+  delBtn.className = 'ts-jtl-del';
+  delBtn.textContent = '×';
+  delBtn.title = 'Delete session';
+  delBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    confirmDelete('Delete "' + (session.title || 'this session') + '"?', () => {
+      pushUndo('Delete ' + (session.title ? '"' + session.title + '"' : 'session'));
+      appState.sessions = (appState.sessions || []).filter(sess => sess.id !== session.id);
+      saveState(appState);
+      renderJournal(appState);
+    });
   });
-  card.appendChild(hdr);
 
+  const arrow = document.createElement('span');
+  arrow.className = 'ts-jtl-arrow';
+  arrow.textContent = '▸';
+
+  hdr.appendChild(typeEl);
+  hdr.appendChild(dateEl);
+  hdr.appendChild(titleEl);
+  hdr.appendChild(inlineContent);
+  hdr.appendChild(delBtn);
+  hdr.appendChild(arrow);
+
+  hdr.addEventListener('click', () => {
+    const open = body.classList.toggle('open');
+    hdr.classList.toggle('ts-jtl-open', open);
+    arrow.style.transform = open ? 'rotate(90deg)' : '';
+  });
+  item.appendChild(hdr);
+
+  // ── Body ──
   const body = document.createElement('div');
-  body.className = 'session-body';
+  body.className = 'ts-jtl-body';
 
-  // Parts tagged — toggleable picker
-  const tagsLabel = document.createElement('div');
-  tagsLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid);margin-top:12px;margin-bottom:4px;';
-  tagsLabel.textContent = 'Parts tagged';
-  body.appendChild(tagsLabel);
+  // Top row: parts tagged (left) + distribution pie (right)
+  const topRow = document.createElement('div');
+  topRow.className = 'ts-jtl-top-row';
+
+  const topLeft = document.createElement('div');
+  topLeft.className = 'ts-jtl-top-left';
+
+  const tagsLbl = document.createElement('div');
+  tagsLbl.className = 'ts-jtl-section-lbl';
+  tagsLbl.textContent = 'Parts tagged';
+  topLeft.appendChild(tagsLbl);
 
   const tagPicker = document.createElement('div');
   tagPicker.className = 'part-tag-picker';
@@ -8383,30 +8622,66 @@ function buildSessionCard(session, s) {
   });
   if ((s.parts || []).length === 0) {
     const hint = document.createElement('span');
-    hint.style.cssText = 'font-size:14px;color:var(--text-dim);';
+    hint.style.cssText = 'font-size:13px;color:var(--text-dim);';
     hint.textContent = 'No parts yet';
     tagPicker.appendChild(hint);
   }
-  body.appendChild(tagPicker);
+  topLeft.appendChild(tagPicker);
+  topRow.appendChild(topLeft);
 
-  // Editable content
-  const contentLabel = document.createElement('div');
-  contentLabel.style.cssText = 'font-family:\'Cinzel\',serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid);margin-top:12px;margin-bottom:4px;';
-  contentLabel.textContent = 'Notes';
-  body.appendChild(contentLabel);
+  // Distribution pie (right side)
+  const hist = loadBalHist();
+  if (hist.length > 0 || session.weights) {
+    let closest = hist[0] || null;
+    if (hist.length > 0) {
+      let closestDist = Infinity;
+      hist.forEach(snap => {
+        const d = Math.abs(new Date(snap.date) - new Date(session.date));
+        if (d < closestDist) { closestDist = d; closest = snap; }
+      });
+    }
+    const snap = session.weights ? { weights: Object.assign({}, session.weights) } : closest;
+    if (snap) {
+      const topRight = document.createElement('div');
+      topRight.className = 'ts-jtl-top-right';
+      const pieLbl = document.createElement('div');
+      pieLbl.className = 'ts-jtl-section-lbl';
+      pieLbl.textContent = 'Distribution';
+      topRight.appendChild(pieLbl);
+      buildBalancePie(snap, 56, topRight, {
+        parts: (s.parts || []).map(p => ({ id: p.id, name: p.name || p.id, role: p.role })),
+        getWeight: id => {
+          if (id === 'self') return s._selfWeight || 0;
+          const p = (s.parts||[]).find(x => x.id === id);
+          return p ? (p.balanceWeight || 0.1) : 0.1;
+        },
+        onChange: (id, v01) => {
+          if (!session.weights) session.weights = Object.assign({}, snap.weights || {});
+          session.weights[id] = v01;
+          saveState(appState);
+        }
+      });
+      topRow.appendChild(topRight);
+    }
+  }
+  body.appendChild(topRow);
+
+  // Notes
+  const contentLbl = document.createElement('div');
+  contentLbl.className = 'ts-jtl-section-lbl';
+  contentLbl.style.marginTop = '10px';
+  contentLbl.textContent = 'Notes';
+  body.appendChild(contentLbl);
 
   const contentEl = document.createElement('div');
   contentEl.className = 'session-content-edit';
   contentEl.contentEditable = 'true';
   contentEl.setAttribute('data-placeholder', 'Session notes...');
   contentEl.textContent = session.content || '';
-  contentEl.addEventListener('blur', () => {
-    session.content = contentEl.textContent.trim();
-    saveState(appState);
-  });
+  contentEl.addEventListener('blur', () => { session.content = contentEl.textContent.trim(); saveState(appState); });
   body.appendChild(contentEl);
 
-  // Editable system read
+  // System read
   const readEl = document.createElement('div');
   readEl.className = 'session-system-read';
   const readLabel = document.createElement('div');
@@ -8416,60 +8691,22 @@ function buildSessionCard(session, s) {
   readText.contentEditable = 'true';
   readText.setAttribute('data-placeholder', 'Your AI\'s read of the system after this session...');
   readText.style.cssText = 'outline:none;min-height:20px;';
-  readText.style.setProperty('--placeholder-color', 'var(--text-dim)');
   readText.textContent = session.systemRead || '';
-  readText.addEventListener('blur', () => {
-    session.systemRead = readText.textContent.trim();
-    saveState(appState);
-  });
+  readText.addEventListener('blur', () => { session.systemRead = readText.textContent.trim(); saveState(appState); });
   readText.classList.add('session-read-text-edit');
   readEl.appendChild(readLabel);
   readEl.appendChild(readText);
   body.appendChild(readEl);
 
-  // Session distribution pie
-  const hist = loadBalHist();
-  if (hist.length > 0 || session.weights) {
-    let closest = null;
-    if (hist.length > 0) {
-      closest = hist[0];
-      let closestDist = Infinity;
-      hist.forEach(snap => {
-        const d = Math.abs(new Date(snap.date) - new Date(session.date));
-        if (d < closestDist) { closestDist = d; closest = snap; }
-      });
-    }
-    const snap = session.weights ? { weights: Object.assign({}, session.weights) } : closest;
-    const pieRow = document.createElement('div');
-    pieRow.className = 'session-pie-row';
-    const lbl = document.createElement('div');
-    lbl.className = 'session-pie-label';
-    lbl.textContent = 'Distribution';
-    pieRow.appendChild(lbl);
-    buildBalancePie(snap, 56, pieRow, {
-      parts: (s.parts || []).map(p => ({ id: p.id, name: p.name || p.id, role: p.role })),
-      getWeight: id => {
-        if (id === 'self') return s._selfWeight || 0;
-        const p = (s.parts||[]).find(x => x.id === id);
-        return p ? (p.balanceWeight || 0.1) : 0.1;
-      },
-      onChange: (id, v01) => {
-        if (!session.weights) session.weights = Object.assign({}, snap.weights || {});
-        session.weights[id] = v01;
-        saveState(appState);
-      }
-    });
-    body.appendChild(pieRow);
-  }
-
-  // Chat transcript toggle (shown when session was created from in-app chat)
+  // Chat transcript toggle
   if (session.chatMessages && session.chatMessages.length > 0) {
     const chatToggle = document.createElement('div');
     chatToggle.className = 'session-chat-toggle';
     const msgs = session.chatMessages;
     const userCount = msgs.filter(m => m.role === 'user').length;
-    chatToggle.innerHTML = `<button class="session-chat-toggle-btn">Show chat transcript (${userCount} message${userCount !== 1 ? 's' : ''})</button>`;
-    const toggleBtn = chatToggle.querySelector('button');
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'session-chat-toggle-btn';
+    toggleBtn.textContent = 'Show chat transcript (' + userCount + ' message' + (userCount !== 1 ? 's' : '') + ')';
     const transcriptDiv = document.createElement('div');
     transcriptDiv.className = 'session-transcript';
     transcriptDiv.style.display = 'none';
@@ -8488,111 +8725,249 @@ function buildSessionCard(session, s) {
     resumeBtn.className = 'btn-ghost session-resume-btn';
     resumeBtn.textContent = 'Resume in chat';
     resumeBtn.addEventListener('click', () => { openChat(); chatLoadSession(session.id); });
+    chatToggle.appendChild(toggleBtn);
     chatToggle.appendChild(resumeBtn);
     chatToggle.appendChild(transcriptDiv);
     body.appendChild(chatToggle);
   }
 
-  // Delete button
-  const footer = document.createElement('div');
-  footer.className = 'session-footer';
-  const delBtn = document.createElement('button');
-  delBtn.className = 'btn-danger';
-  delBtn.textContent = 'Delete session';
-  delBtn.addEventListener('click', () => {
-    confirmDelete(`Delete "${session.title || 'this session'}"?`, () => {
-      pushUndo('Delete ' + (session.title ? '"' + session.title + '"' : 'session'));
-      appState.sessions = (appState.sessions || []).filter(sess => sess.id !== session.id);
-      saveState(appState);
-      renderJournal(appState);
-    });
-  });
-  footer.appendChild(delBtn);
-  body.appendChild(footer);
+  item.appendChild(body);
+  return item;
+}
 
-  card.appendChild(body);
-  return card;
+// Build the inline coloured part-tag chips + pie used in check-in rows
+function _buildCheckinInlineContent(weights, s) {
+  const frag = document.createDocumentFragment();
+
+  // Opacity-scaled coloured part chips
+  const sortedEntries = Object.entries(weights).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+  const maxW = sortedEntries.reduce((m, [, v]) => Math.max(m, v), 0) || 1;
+  const tagsWrap = document.createElement('span');
+  tagsWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px;align-items:center;';
+  sortedEntries.forEach(([id, v]) => {
+    const part = id === 'self' ? null : (s.parts || []).find(p => p.id === id);
+    const name = id === 'self' ? 'Self' : (part ? part.name : id);
+    const rel = 0.35 + 0.65 * (v / maxW);
+    const tag = document.createElement('span');
+    tag.style.cssText = 'font-size:11px;font-family:var(--mono);padding:1px 6px;border-radius:3px;border:1px solid;white-space:nowrap;';
+    const color = _partColor(id);
+    tag.style.color       = color.replace(/[\d.]+\)$/, rel.toFixed(2) + ')');
+    tag.style.borderColor = color.replace(/[\d.]+\)$/, (rel * 0.4).toFixed(2) + ')');
+    tag.style.background  = color.replace(/[\d.]+\)$/, (rel * 0.09).toFixed(2) + ')');
+    tag.textContent = name + ' ' + Math.round(v * 100) + '%';
+    tagsWrap.appendChild(tag);
+  });
+  frag.appendChild(tagsWrap);
+
+  // Tiny pie — far right
+  const pieEntries = Object.entries(weights).filter(([, v]) => v > 0);
+  if (pieEntries.length > 0) {
+    const size = 18;
+    const canvas = document.createElement('canvas');
+    canvas.width = size; canvas.height = size;
+    canvas.style.cssText = `width:${size}px;height:${size}px;flex-shrink:0;border-radius:50%;pointer-events:none;margin-left:4px;`;
+    const ctx = canvas.getContext('2d');
+    const cx = size / 2, cy = size / 2, r = size / 2 - 0.5;
+    const total = pieEntries.reduce((a, [, v]) => a + v, 0) || 1;
+    let angle = -Math.PI / 2;
+    pieEntries.sort((a, b) => b[1] - a[1]).forEach(([id, w]) => {
+      const slice = (w / total) * Math.PI * 2;
+      ctx.beginPath(); ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, angle, angle + slice); ctx.closePath();
+      ctx.fillStyle = _partColor(id); ctx.fill();
+      angle += slice;
+    });
+    frag.appendChild(canvas);
+  }
+
+  return frag;
 }
 
 function buildCheckinCard(date, entries, s) {
-  const card = document.createElement('div');
-  card.className = 'session-card';
+  const mutableEntries = [...entries];
 
-  const hdr = document.createElement('div');
-  hdr.className = 'session-header';
-
-  const dateEl = document.createElement('span');
-  dateEl.className = 'session-date-edit';
-  dateEl.style.cursor = 'default';
-  dateEl.textContent = date;
-
-  const titleEl = document.createElement('div');
-  titleEl.className = 'session-title-edit';
-  titleEl.style.cssText += ';cursor:default;color:var(--text-mid);font-size:13px;';
-  titleEl.textContent = entries.length === 1 ? 'Check-in' : entries.length + ' check-ins';
-
-  const chevron = document.createElement('span');
-  chevron.textContent = '▶';
-  chevron.style.cssText = 'font-size:12px;color:var(--text-dim);transition:transform 0.2s;flex-shrink:0;pointer-events:none;';
-
-  // Small pie from averaged weights of this day's entries
-  const avgWeights = {};
-  const counts = {};
-  entries.forEach(e => {
-    Object.entries(e.weights || {}).forEach(([id, v]) => {
-      avgWeights[id] = (avgWeights[id] || 0) + v;
-      counts[id] = (counts[id] || 0) + 1;
+  // Compute averaged weights across all entries for this day
+  function computeAvg(ents) {
+    const sums = {}, counts = {};
+    ents.forEach(e => {
+      Object.entries(e.weights || {}).forEach(([id, v]) => {
+        sums[id] = (sums[id] || 0) + v;
+        counts[id] = (counts[id] || 0) + 1;
+      });
     });
-  });
-  Object.keys(avgWeights).forEach(id => { avgWeights[id] /= counts[id]; });
-  const snap = { date, weights: avgWeights };
-  const hdrPie = buildSessionHeaderPie(snap, s, 28);
+    const avg = {};
+    Object.keys(sums).forEach(id => { avg[id] = sums[id] / counts[id]; });
+    return avg;
+  }
 
-  hdr.appendChild(dateEl);
-  hdr.appendChild(titleEl);
-  if (hdrPie) hdr.appendChild(hdrPie);
-  hdr.appendChild(chevron);
+  function removeEntryFromLog(idx) {
+    mutableEntries.splice(idx, 1);
+    const log = _loadCheckinLog();
+    if (mutableEntries.length === 0) {
+      delete log[date];
+    } else {
+      log[date] = { entries: mutableEntries };
+    }
+    _saveCheckinLog(log);
+  }
 
-  hdr.addEventListener('click', () => {
-    card.classList.toggle('expanded');
-    chevron.style.transform = card.classList.contains('expanded') ? 'rotate(90deg)' : '';
-  });
-  card.appendChild(hdr);
+  function removeSelf() {
+    item.remove();
+    const list = document.getElementById('sessions-list');
+    const empty = document.getElementById('sessions-empty');
+    if (empty) empty.style.display = list && list.children.length === 0 ? 'block' : 'none';
+  }
 
-  const body = document.createElement('div');
-  body.className = 'session-body';
+  const multi = entries.length > 1;
+  const item = document.createElement('div');
+  item.className = 'ts-jtl-item ts-jtl-item--checkin';
 
-  entries.forEach((entry, i) => {
+  // ── Shared delete-day handler ──
+  function deleteDayFn() {
+    confirmDelete('Delete all check-ins for ' + date + '?', () => {
+      const log = _loadCheckinLog();
+      delete log[date];
+      _saveCheckinLog(log);
+      removeSelf();
+    });
+  }
+
+  // ── Build a flat row: [type | date |] time | pie + chips | del ──
+  // compact=true: omit type/date labels (used inside the expanded multi-entry body)
+  function buildFlatRow(weights, timeStr, delHandler, compact) {
     const row = document.createElement('div');
-    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:8px 0;' +
-      (i < entries.length - 1 ? 'border-bottom:1px solid var(--border);' : '');
+    row.className = 'ts-jtl-head ts-jtl-checkin-flat';
+
+    if (!compact) {
+      const typeEl = document.createElement('span');
+      typeEl.className = 'ts-jtl-type';
+      typeEl.textContent = 'Check-in';
+
+      const dateEl = document.createElement('span');
+      dateEl.className = 'ts-jtl-date';
+      dateEl.textContent = date;
+      row.appendChild(typeEl);
+      row.appendChild(dateEl);
+    }
 
     const timeEl = document.createElement('span');
-    timeEl.style.cssText = 'font-family:var(--mono);font-size:12px;color:var(--text-dim);flex-shrink:0;min-width:54px;';
-    const t = new Date(entry.ts);
-    timeEl.textContent = isNaN(t) ? '' : t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    timeEl.style.cssText = 'font-family:var(--mono);font-size:11px;color:var(--text-dim);flex-shrink:0;min-width:' + (compact ? '40px' : '0') + ';';
+    timeEl.textContent = timeStr;
+
+    const content = document.createElement('span');
+    content.style.cssText = 'display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;';
+    content.appendChild(_buildCheckinInlineContent(weights, s));
+
+    const del = document.createElement('button');
+    del.className = 'ts-jtl-del';
+    del.textContent = '×';
+    del.title = 'Delete this check-in';
+    del.addEventListener('click', e => { e.stopPropagation(); delHandler(); });
+
     row.appendChild(timeEl);
+    row.appendChild(content);
+    row.appendChild(del);
+    return row;
+  }
 
-    const partsEl = document.createElement('div');
-    partsEl.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
-    Object.entries(entry.weights || {}).sort((a, b) => b[1] - a[1]).forEach(([id, v]) => {
-      const part = id === 'self' ? null : (s.parts || []).find(p => p.id === id);
-      const name = id === 'self' ? 'Self' : (part ? part.name : id);
-      const tag = document.createElement('span');
-      tag.style.cssText = 'font-size:12px;font-family:var(--mono);padding:1px 7px;border-radius:3px;border:1px solid;white-space:nowrap;';
-      const color = _partColor(id);
-      tag.style.color = color.replace(/[\d.]+\)$/, '0.9)');
-      tag.style.borderColor = color.replace(/[\d.]+\)$/, '0.3)');
-      tag.style.background = color.replace(/[\d.]+\)$/, '0.08)');
-      tag.textContent = name + ' ' + Math.round(v * 100) + '%';
-      partsEl.appendChild(tag);
+  if (!multi) {
+    // ── Single entry: one flat non-collapsible row ──
+    const entry = mutableEntries[0];
+    const t = new Date(entry.ts);
+    const timeStr = isNaN(t) ? '' : t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const row = buildFlatRow(entry.weights || {}, timeStr, () => {
+      removeEntryFromLog(0);
+      removeSelf();
     });
-    row.appendChild(partsEl);
-    body.appendChild(row);
-  });
+    // flat rows are not clickable/collapsible
+    row.style.cursor = 'default';
+    item.appendChild(row);
+  } else {
+    // ── Multiple entries: averaged summary row that expands into individual entries ──
+    const avgWeights = computeAvg(mutableEntries);
 
-  card.appendChild(body);
-  return card;
+    const hdr = document.createElement('div');
+    hdr.className = 'ts-jtl-head';
+
+    const typeEl = document.createElement('span');
+    typeEl.className = 'ts-jtl-type';
+    typeEl.textContent = 'Check-in';
+
+    const dateEl = document.createElement('span');
+    dateEl.className = 'ts-jtl-date';
+    dateEl.textContent = date;
+
+    const countEl = document.createElement('span');
+    countEl.style.cssText = 'font-family:var(--mono);font-size:11px;color:var(--text-dim);flex-shrink:0;';
+    countEl.textContent = mutableEntries.length + ' entries';
+
+    const avgContent = document.createElement('span');
+    avgContent.style.cssText = 'display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;';
+    avgContent.appendChild(_buildCheckinInlineContent(avgWeights, s));
+
+    const delDayBtn = document.createElement('button');
+    delDayBtn.className = 'ts-jtl-del';
+    delDayBtn.textContent = '×';
+    delDayBtn.title = 'Delete all check-ins for this day';
+    delDayBtn.addEventListener('click', e => { e.stopPropagation(); deleteDayFn(); });
+
+    const arrow = document.createElement('span');
+    arrow.className = 'ts-jtl-arrow';
+    arrow.textContent = '▸';
+
+    hdr.appendChild(typeEl);
+    hdr.appendChild(dateEl);
+    hdr.appendChild(countEl);
+    hdr.appendChild(avgContent);
+    hdr.appendChild(delDayBtn);
+    hdr.appendChild(arrow);
+
+    const body = document.createElement('div');
+    body.className = 'ts-jtl-body';
+
+    hdr.addEventListener('click', () => {
+      const open = body.classList.toggle('open');
+      hdr.classList.toggle('ts-jtl-open', open);
+      arrow.style.transform = open ? 'rotate(90deg)' : '';
+    });
+
+    function rebuildBody() {
+      body.innerHTML = '';
+      mutableEntries.forEach((entry, i) => {
+        const t = new Date(entry.ts);
+        const timeStr = isNaN(t) ? '' : t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const subRow = buildFlatRow(entry.weights || {}, timeStr, () => {
+          removeEntryFromLog(i);
+          if (mutableEntries.length === 0) {
+            removeSelf();
+          } else if (mutableEntries.length === 1) {
+            renderJournal(appState);
+          } else {
+            countEl.textContent = mutableEntries.length + ' entries';
+            rebuildBody();
+          }
+        }, true);
+        subRow.style.cssText += ';border-radius:0;border-left:none;border-right:none;border-top:none;border-color:var(--border);';
+        subRow.style.cursor = 'default';
+        body.appendChild(subRow);
+      });
+
+      const footer = document.createElement('div');
+      footer.className = 'session-footer';
+      const delAllBtn = document.createElement('button');
+      delAllBtn.className = 'btn-danger';
+      delAllBtn.textContent = 'Delete day';
+      delAllBtn.addEventListener('click', deleteDayFn);
+      footer.appendChild(delAllBtn);
+      body.appendChild(footer);
+    }
+
+    rebuildBody();
+    item.appendChild(hdr);
+    item.appendChild(body);
+  }
+
+  return item;
 }
 
 // ══ TAB: TIMELINE ═════════════════════════════════════════════
@@ -9177,7 +9552,7 @@ function renderPartsTimeline(s) {
 
   const ROW_H = 34;
   const AXIS_H = 26;
-  const TOP_PAD = 8;
+  const TOP_PAD = 20;
   const LABEL_W = 108;
 
   // Rebuild label column
@@ -9261,10 +9636,13 @@ function renderPartsTimeline(s) {
   if (hasHist) {
     const bx = LEFT + histPW;
     ctx.strokeStyle = 'rgba(200,185,140,0.35)'; ctx.lineWidth = 1.5; ctx.setLineDash([]);
-    ctx.beginPath(); ctx.moveTo(bx, TOP_PAD); ctx.lineTo(bx, TOP_PAD + rows.length * ROW_H); ctx.stroke();
-    ctx.font = `10px var(--mono, monospace)`; ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(200,185,140,0.55)';
-    ctx.fillText('7 days', bx, TOP_PAD + 10);
+    ctx.beginPath(); ctx.moveTo(bx, TOP_PAD - 2); ctx.lineTo(bx, TOP_PAD + rows.length * ROW_H); ctx.stroke();
+    // Zone header labels above the data rows
+    ctx.font = `bold 8px var(--mono, monospace)`; ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(255,255,255,0.28)';
+    ctx.fillText('history', LEFT + histPW / 2, TOP_PAD - 7);
+    ctx.fillStyle = 'rgba(200,168,74,0.55)';
+    ctx.fillText('7 days', bx + recentPW / 2, TOP_PAD - 7);
   }
 
   // Axis grid lines + labels
@@ -9350,16 +9728,25 @@ function renderPartsTimeline(s) {
   // Hit map for click/hover
   const hitMap = [];
 
-  // Self moment ticks
+  // Self moment markers: star shape to distinguish from memory ticks
   if (hasSelf) {
     const ri = rows.findIndex(r => r.id === '__self__');
     const color = 'rgba(232,223,200,0.92)';
     timedSelf.forEach(({ mem, ms }) => {
       const x = xForMs(ms);
       const y = rowY(ri);
-      const H = ROW_H * 0.62;
-      ctx.beginPath(); ctx.moveTo(x, y - H / 2); ctx.lineTo(x, y + H / 2);
-      ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.stroke();
+      const r = 5, spikes = 5, inner = 2.5;
+      ctx.beginPath();
+      for (let i = 0; i < spikes * 2; i++) {
+        const angle = (i * Math.PI) / spikes - Math.PI / 2;
+        const rad = i % 2 === 0 ? r : inner;
+        const px = x + Math.cos(angle) * rad;
+        const py = y + Math.sin(angle) * rad;
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.fillStyle = color; ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1; ctx.stroke();
       hitMap.push({ x, ri, kind: 'self', mem });
     });
   }
@@ -9414,7 +9801,7 @@ function renderPartsTimeline(s) {
   legendEl.appendChild(memoryNote);
   const selfNote = document.createElement('span');
   selfNote.style.cssText = itemStyle;
-  selfNote.innerHTML = '<svg width="12" height="14" viewBox="0 0 12 14"><line x1="6" y1="2" x2="6" y2="12" stroke="rgba(232,223,200,0.88)" stroke-width="2"/></svg> Self-led moment';
+  selfNote.innerHTML = '<svg width="14" height="14" viewBox="-7 -7 14 14"><polygon points="0,-5 1.5,-1.9 4.8,-1.5 2.4,0.8 3,4.1 0,2.5 -3,4.1 -2.4,0.8 -4.8,-1.5 -1.5,-1.9" fill="rgba(232,223,200,0.92)" stroke="rgba(255,255,255,0.6)" stroke-width="0.8"/></svg> Self-led moment';
   legendEl.appendChild(selfNote);
   const diamondNote = document.createElement('span');
   diamondNote.style.cssText = itemStyle;
@@ -9500,11 +9887,11 @@ function _ptTooltipEl() {
         switchTab('self');
         setTimeout(() => {
           const el = document.getElementById('sm-anchor-' + hit.mem.id);
-          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); navGlow(el); }
         }, 80);
       } else if (hit.kind === 'memory') {
         const el = document.getElementById('memory-anchor-' + hit.mem.id);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); navGlow(el); }
       }
     }
 
@@ -10556,27 +10943,27 @@ function dismissWelcome() {
 }
 
 function toggleWelcomeSetup(mode) {
-  const steps    = document.getElementById('welcome-setup-steps');
-  const manualBtn = document.getElementById('welcome-setup-btn'); // A
-  const aiBtn     = document.getElementById('welcome-ai-btn');    // B
-  const chatBtn   = document.getElementById('welcome-chat-btn'); // C
+  const steps     = document.getElementById('welcome-setup-steps');
+  const manualBtn = document.getElementById('welcome-setup-btn'); // A: fill it in yourself
+  const chatBtn   = document.getElementById('welcome-chat-btn'); // B: chat inside (recommended)
+  const aiBtn     = document.getElementById('welcome-ai-btn');    // C: copy-paste
   const current = steps.getAttribute('data-mode');
   if (current === mode) {
     steps.style.display = 'none';
     steps.setAttribute('data-mode', '');
     if (manualBtn) manualBtn.classList.remove('active-noai');
-    if (aiBtn)     aiBtn.classList.remove('active-cloud');
     if (chatBtn)   chatBtn.classList.remove('active-green');
+    if (aiBtn)     aiBtn.classList.remove('active-cloud');
     return;
   }
   steps.setAttribute('data-mode', mode);
   steps.style.display = 'block';
   document.getElementById('welcome-path-manual').style.display = mode === 'manual' ? 'block' : 'none';
-  document.getElementById('welcome-path-ai').style.display     = mode === 'ai'     ? 'block' : 'none';
   document.getElementById('welcome-path-chat').style.display   = mode === 'chat'   ? 'block' : 'none';
+  document.getElementById('welcome-path-ai').style.display     = mode === 'ai'     ? 'block' : 'none';
   if (manualBtn) manualBtn.classList.toggle('active-noai',  mode === 'manual');
-  if (aiBtn)     aiBtn.classList.toggle('active-cloud',     mode === 'ai');
   if (chatBtn)   chatBtn.classList.toggle('active-green',   mode === 'chat');
+  if (aiBtn)     aiBtn.classList.toggle('active-cloud',     mode === 'ai');
 }
 
 function downloadInstructionsMd(btn) {
@@ -10768,6 +11155,12 @@ const ANTHROPIC_PRICING = {
   'claude-sonnet-4-6':         { in:  3.00, out: 15.00 },
   'claude-haiku-4-5-20251001': { in:  0.80, out:  4.00 },
 };
+const OPENAI_PRICING = {
+  'gpt-4o':      { in:  2.50, out: 10.00 },
+  'gpt-4o-mini': { in:  0.15, out:  0.60 },
+  'o3':          { in: 10.00, out: 40.00 },
+  'o4-mini':     { in:  1.10, out:  4.40 },
+};
 const CHAT_PRIVACY_ACK_KEY = 'ts-chat-privacy-acked-v1';
 const chatState = {
   messages: [],
@@ -10792,9 +11185,16 @@ function loadChatSettings() {
 }
 async function saveChatSettings(s) {
   if (IS_DEMO) return;
-  if (s.apiKey && !_isLocalModel(s.model) && !(typeof _pinActive !== 'undefined' && _pinActive)) {
+  const pinOn = typeof _pinActive !== 'undefined' && _pinActive;
+  if ((s.apiKey || s.openaiApiKey) && !_isLocalModel(s.model) && !pinOn) {
     console.warn('saveChatSettings: refusing to store cloud API key without active encryption');
     return;
+  }
+  // If saving with a local model and no PIN, drop any cloud keys so they are never stored in plaintext
+  if (_isLocalModel(s.model) && !pinOn) {
+    s = Object.assign({}, s);
+    delete s.apiKey;
+    delete s.openaiApiKey;
   }
   _chatSettingsCache = s;
   try { localStorage.setItem(CHAT_SETTINGS_KEY, JSON.stringify(s)); } catch {}
@@ -10946,7 +11346,7 @@ You are running directly inside team-sheet. Key differences from the standalone 
 ${modeInstr ? '\n' + modeInstr : ''}`;
   // Use trimmed context for small local models to avoid context overflow
   const numCtx = s.numCtx || _defaultNumCtx();
-  const isSmallModel = !s.model?.startsWith('claude-') && numCtx < 16384;
+  const isSmallModel = _isLocalModel(s.model) && numCtx < 16384;
   const dataSection = depth === 'full'
     ? JSON.stringify(_stateForContext(), null, 2)
     : isSmallModel ? _buildTrimmedContext() : buildCompactContext();
@@ -11154,8 +11554,9 @@ function renderChatQuickstarts() {
 }
 
 function _isLocalModel(model) {
-  return !!(model && !model.startsWith('claude-'));
+  return !!(model && !model.startsWith('claude-') && !model.startsWith('gpt-') && !model.startsWith('o3') && !model.startsWith('o4-'));
 }
+function _isOpenAIModel(model) { return !!(model && (model.startsWith('gpt-') || model.startsWith('o3') || model.startsWith('o4-'))); }
 
 // ── Chat mode selector ───────────────────────────────────────────────────────
 
@@ -11187,9 +11588,11 @@ function renderChatModeBar() {
   toggle.id = 'chat-leader-toggle';
   toggle.className = 'chat-leader-toggle' + (chatState.aiLed ? ' ai-led' : '');
   toggle.title = chatState.aiLed
-    ? 'Your AI opens the session. Click to switch to you leading.'
-    : 'You send the first message. Click to let your AI open the session.';
-  toggle.textContent = chatState.aiLed ? 'AI leads' : 'You lead';
+    ? 'AI leads: your AI sends the opening message to kick off the session. Click to switch so you go first instead.'
+    : 'You lead: you send the first message to start the session. Click to let your AI open instead.';
+  toggle.innerHTML = '<span class="chat-leader-seg chat-leader-seg-you">🧑 You</span>'
+    + '<span class="chat-leader-arrow">' + (chatState.aiLed ? '←' : '→') + '</span>'
+    + '<span class="chat-leader-seg chat-leader-seg-ai">🤖 AI</span>';
   toggle.onclick = chatToggleLeader;
   bar.appendChild(toggle);
 }
@@ -11313,7 +11716,11 @@ function _updatePrivacyBanner(model) {
   const isCloud = !_isLocalModel(model);
   document.getElementById('chat-cloud-warn')?.classList.toggle('visible', isCloud);
   const modelEl = document.getElementById('chat-hdr-model');
-  if (modelEl) modelEl.textContent = model;
+  if (modelEl) {
+    modelEl.textContent = model || '';
+    const isLocal = _isLocalModel(model);
+    modelEl.style.color = !_isLocalModel(model) && model ? '#f09090' : isLocal ? '#50c878' : '';
+  }
 }
 
 function openChat() {
@@ -11353,7 +11760,9 @@ function _openChatOverlay() {
   document.body.classList.toggle('chat-sidebar', savedCompact);
   const compactBtn = document.getElementById('chat-compact-btn');
   if (compactBtn) {
-    compactBtn.innerHTML = savedCompact ? '&#x2922;' : '&#x2921;';
+    compactBtn.innerHTML = savedCompact
+      ? '<span class="chat-icon-glyph">&#x2922;</span><span class="chat-icon-label">Expand</span>'
+      : '<span class="chat-icon-glyph">&#x2921;</span><span class="chat-icon-label">Sidebar</span>';
     compactBtn.title = savedCompact ? 'Expand to fullscreen' : 'Sidebar mode';
   }
   _warmPromptCache();
@@ -11378,7 +11787,7 @@ function _openChatOverlay() {
       chatAddInfoCard(_ollamaInstallHTML(detectOS(), 'qwen2.5:7b'));
     } else {
       const currentModel = loadChatSettings().model || '';
-      if (window.location.protocol === 'file:' && currentModel && !currentModel.startsWith('claude-')) {
+      if (window.location.protocol === 'file:' && currentModel && _isLocalModel(currentModel)) {
         chatAddInfoCard(_ollamaInstallHTML(detectOS(), currentModel));
       }
     }
@@ -11405,7 +11814,9 @@ function chatToggleCompact() {
   try { localStorage.setItem('ts-chat-compact', isCompact ? '1' : '0'); } catch {}
   const btn = document.getElementById('chat-compact-btn');
   if (btn) {
-    btn.innerHTML = isCompact ? '&#x2922;' : '&#x2921;';
+    btn.innerHTML = isCompact
+      ? '<span class="chat-icon-glyph">&#x2922;</span><span class="chat-icon-label">Expand</span>'
+      : '<span class="chat-icon-glyph">&#x2921;</span><span class="chat-icon-label">Sidebar</span>';
     btn.title = isCompact ? 'Expand to fullscreen' : 'Sidebar mode';
   }
 }
@@ -11501,7 +11912,7 @@ async function _warmPromptCache() {
 
 async function callAnthropicAPI(messages, systemPrompt, streamCallback = null) {
   const s = loadChatSettings();
-  if (!s.apiKey) throw new Error('No API key set. Open Chat Settings (gear icon in the chat panel) to add your Anthropic API key.');
+  if (!s.apiKey) throw new Error('No Anthropic API key set. Open Chat Settings (gear icon in the chat panel) to add your key.');
   const model     = s.model || 'claude-sonnet-4-6';
   const maxTokens = s.maxTokens || 4096;
   // Two-level cache: instructions (stable) + data section (per-session) both marked ephemeral
@@ -11537,8 +11948,8 @@ async function callAnthropicAPI(messages, systemPrompt, streamCallback = null) {
   if (!resp.ok) {
     let msg = 'API error ' + resp.status;
     try { const e = await resp.json(); msg = e?.error?.message || msg; } catch {}
-    if (resp.status === 401) msg = 'Invalid API key. Open Chat Settings (gear icon) and check your Anthropic API key.';
-    if (resp.status === 429) msg = 'Rate limit reached. Your Anthropic account has a low monthly limit. Either switch to a local Ollama model (free, no limits) or upgrade your Anthropic account at console.anthropic.com.';
+    if (resp.status === 401) msg = 'Invalid Anthropic API key. Open Chat Settings (gear icon) and check your key.';
+    if (resp.status === 429) msg = 'Rate limit reached. Your Anthropic account may have a low monthly limit. Either switch to a local Ollama model (free, no limits) or upgrade your plan at console.anthropic.com.';
     throw new Error(msg);
   }
   if (!streamCallback) {
@@ -11656,11 +12067,76 @@ async function callOllamaAPI(messages, systemPrompt, streamCallback = null) {
   return fullText;
 }
 
+async function callOpenAIAPI(messages, systemPrompt, streamCallback = null) {
+  const s = loadChatSettings();
+  if (!s.openaiApiKey) throw new Error('No OpenAI API key set. Open Chat Settings (gear icon in the chat panel) to add your OpenAI API key.');
+  const model     = s.model || 'gpt-4o';
+  const maxTokens = s.maxTokens || 4096;
+  const oaiMessages = [{ role: 'system', content: systemPrompt }, ...messages];
+  const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + s.openaiApiKey,
+    },
+    body: JSON.stringify({
+      model, max_tokens: maxTokens,
+      messages: oaiMessages,
+      ...(streamCallback ? { stream: true } : {}),
+    }),
+  });
+  if (!resp.ok) {
+    let msg = 'OpenAI API error ' + resp.status;
+    try { const e = await resp.json(); msg = e?.error?.message || msg; } catch {}
+    if (resp.status === 401) msg = 'Invalid OpenAI API key. Open Chat Settings (gear icon) and check your OpenAI API key.';
+    if (resp.status === 429) msg = 'OpenAI rate limit reached. Check your usage limits at platform.openai.com.';
+    throw new Error(msg);
+  }
+  if (!streamCallback) {
+    const data = await resp.json();
+    if (data.usage) {
+      chatState.tokenUsage.input  += data.usage.prompt_tokens     || 0;
+      chatState.tokenUsage.output += data.usage.completion_tokens || 0;
+      _updateCostDisplay();
+    }
+    return data.choices?.[0]?.message?.content || '';
+  }
+  const reader  = resp.body.getReader();
+  const decoder = new TextDecoder();
+  let fullText = '';
+  let inputTokens = 0, outputTokens = 0;
+  const SILENCE_MS = 30000;
+  while (true) {
+    let timeoutId;
+    const timeoutPromise = new Promise((_, rej) => { timeoutId = setTimeout(() => { reader.cancel(); rej(new Error('No response from model for 30 seconds. The model may be stuck or overloaded. Try again or switch models.')); }, SILENCE_MS); });
+    const { done, value } = await Promise.race([reader.read(), timeoutPromise]);
+    clearTimeout(timeoutId);
+    if (done) break;
+    const lines = decoder.decode(value, { stream: true }).split('\n');
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      const raw = line.slice(6).trim();
+      if (!raw || raw === '[DONE]') continue;
+      try {
+        const ev = JSON.parse(raw);
+        const delta = ev.choices?.[0]?.delta?.content;
+        if (delta) { fullText += delta; streamCallback(delta); }
+        if (ev.usage) { inputTokens = ev.usage.prompt_tokens || 0; outputTokens = ev.usage.completion_tokens || 0; }
+      } catch {}
+    }
+  }
+  chatState.tokenUsage.input  += inputTokens;
+  chatState.tokenUsage.output += outputTokens;
+  _updateCostDisplay();
+  return fullText;
+}
+
 async function callChatAPI(messages, systemPrompt, streamCallback = null) {
   const s = loadChatSettings();
   const model = s.model || s.defaultModel || 'gemma3:4b';
-if (!model.startsWith('claude-')) return callOllamaAPI(messages, systemPrompt, streamCallback);
-  return callAnthropicAPI(messages, systemPrompt, streamCallback);
+  if (_isOpenAIModel(model)) return callOpenAIAPI(messages, systemPrompt, streamCallback);
+  if (!_isLocalModel(model)) return callAnthropicAPI(messages, systemPrompt, streamCallback);
+  return callOllamaAPI(messages, systemPrompt, streamCallback);
 }
 
 function _chatHandleReply(reply, streamingEl = null) {
@@ -12378,19 +12854,24 @@ function _updateChatHeader() {
     const session = idx >= 0 ? sessions[idx] : null;
     sessionTitle = (session && session.title) ? session.title : '';
   }
+  const numEl = document.getElementById('chat-hdr-num');
   const titleEl = document.getElementById('chat-hdr-title');
   const deleteBtn = document.getElementById('chat-delete-session-btn');
   const lockBtn = document.getElementById('chat-hdr-lock-btn');
+  if (numEl) numEl.textContent = 'Session #' + sessionNum;
   if (titleEl && document.activeElement !== titleEl) {
-    titleEl.textContent = sessionTitle ? 'Session #' + sessionNum + '  –  ' + sessionTitle : 'Session #' + sessionNum;
+    titleEl.textContent = sessionTitle || '';
   }
   if (deleteBtn) deleteBtn.style.display = (displayId || chatState.messages.length > 0) ? '' : 'none';
   if (lockBtn) {
     const sess = displayId ? (appState.chatSessions || []).find(s => s.id === displayId) : null;
     const locked = sess ? !!sess.titleLocked : false;
     lockBtn.classList.toggle('locked', locked);
-    lockBtn.title = locked ? 'Title locked: your AI will not update it. Click to unlock.' : 'Lock title to prevent your AI from updating it';
-    lockBtn.textContent = locked ? '🔒' : '🔓';
+    lockBtn.title = locked ? 'You control the title. Click to let your AI name it automatically.' : 'Your AI is naming this session automatically. Click to take control.';
+    const icon = lockBtn.querySelector('.lock-icon');
+    const label = lockBtn.querySelector('.lock-label');
+    if (icon) icon.textContent = locked ? '🧑' : '🤖';
+    if (label) label.textContent = locked ? 'You name' : 'AI names';
   }
 }
 
@@ -12413,8 +12894,7 @@ function chatTitleSave(el) {
   const idx = appState.chatSessions.findIndex(s => s.id === displayId);
   if (idx < 0) { _updateChatHeader(); return; }
   const session = appState.chatSessions[idx];
-  const prefixRe = /^Session #\d+\s+[–-]\s+/i;
-  const title = raw.replace(prefixRe, '').trim();
+  const title = raw.trim();
   const changed = title !== (session.title || '');
   if (changed) {
     appState.chatSessions[idx] = Object.assign({}, session, {
@@ -12449,7 +12929,8 @@ const GIT_SYNC_TS_KEY = 'ts-gitsync-ts-v1';
 async function saveGitSyncSettings(s) {
   // Never persist the PAT in plaintext when no PIN is active
   const toSave = _pinActive ? s : { owner: s.owner, repo: s.repo, path: s.path,
-                                     lastPushed: s.lastPushed, lastPulled: s.lastPulled };
+                                     lastPushed: s.lastPushed, lastPulled: s.lastPulled,
+                                     lastSha: s.lastSha, autoSync: s.autoSync };
   try { localStorage.setItem(GIT_SYNC_SETTINGS_KEY, JSON.stringify(toSave)); } catch {}
   // Always persist non-sensitive timestamps separately so they survive _clearSensitiveKeys
   if (s.lastPushed || s.lastPulled) {
@@ -12530,6 +13011,7 @@ function gitSyncPullConfirm() {
 }
 
 async function gitSyncPush() {
+  if (IS_DEMO) return;
   const gs = _gitSyncReadForm();
   if (!gs) return;
   if (!gs.pat || !gs.owner || !gs.repo) { showToast('Fill in your GitHub token and owner/repo before syncing.'); return; }
@@ -12540,23 +13022,28 @@ async function gitSyncPush() {
   const pinCheck = localStorage.getItem(PIN_CHECK_KEY);
   if (!pinCheck) { showToast('No password check data found. Try setting your password again in Security.'); return; }
   const pushPayload = JSON.stringify({ _v: 2, enc: encData, check: pinCheck });
-  // Persist and encrypt form values before the network call
   await saveGitSyncSettings(gs);
   const btn = document.getElementById('ts-git-push-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Pushing...'; }
   try {
     const apiBase = `https://api.github.com/repos/${encodeURIComponent(gs.owner)}/${encodeURIComponent(gs.repo)}/contents/${encodeURIComponent(gs.path)}`;
     const headers = { Authorization: 'Bearer ' + gs.pat, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' };
-    let sha;
-    const check = await fetch(apiBase, { headers, referrerPolicy: 'no-referrer' });
-    if (check.ok) sha = (await check.json()).sha;
-    else if (check.status === 401) throw new Error('GitHub token rejected (401). Check your token has Contents read+write access to this repo.');
-    else if (check.status === 404) {} // file not yet created, that's fine
-    else throw new Error('GitHub returned ' + check.status + '. Check your owner/repo and token permissions.');
-    const body = { message: 'sync: team-sheet', content: btoa(unescape(encodeURIComponent(pushPayload))) };
-    if (sha) body.sha = sha;
-    const put = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body), referrerPolicy: 'no-referrer' });
+    const encodedContent = btoa(unescape(encodeURIComponent(pushPayload)));
+    const body = { message: 'sync: team-sheet', content: encodedContent };
+    if (gs.lastSha) body.sha = gs.lastSha;
+    let put = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body), referrerPolicy: 'no-referrer' });
+    if (put.status === 409 || (!gs.lastSha && put.status === 422)) {
+      const fresh = await fetch(apiBase, { headers: { Authorization: 'Bearer ' + gs.pat, Accept: 'application/vnd.github+json' }, referrerPolicy: 'no-referrer' });
+      if (fresh.status === 401) throw new Error('GitHub token rejected (401). Check your token has Contents read+write access to this repo.');
+      if (fresh.ok) { const fd = await fresh.json(); gs.lastSha = fd.sha; body.sha = fd.sha; }
+      else if (fresh.status !== 404) throw new Error('GitHub returned ' + fresh.status + '. Check your owner/repo and token permissions.');
+      put = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body), referrerPolicy: 'no-referrer' });
+    } else if (put.status === 401) {
+      throw new Error('GitHub token rejected (401). Check your token has Contents read+write access to this repo.');
+    }
     if (!put.ok) { const e = await put.json().catch(() => ({})); throw new Error(e.message || 'Push failed (status ' + put.status + '). Check your token and repo settings.'); }
+    const putData = await put.json();
+    gs.lastSha = putData.content && putData.content.sha ? putData.content.sha : gs.lastSha;
     gs.lastPushed = new Date().toISOString();
     await saveGitSyncSettings(gs);
     showToast('Pushed to ' + gs.owner + '/' + gs.repo + '/' + gs.path);
@@ -12621,6 +13108,13 @@ async function gitSyncPull() {
 
 async function gitSyncToggleAuto(enabled) {
   if (enabled) {
+    const pinActive = typeof _pinActive !== 'undefined' && _pinActive;
+    if (!pinActive) {
+      showToast('Unlock your password first, then enable auto-sync.');
+      const autoEl = document.getElementById('ts-git-autosync');
+      if (autoEl) autoEl.checked = false;
+      return;
+    }
     const form = _gitSyncReadForm();
     if (!form || !form.pat || !form.owner || !form.repo) {
       showToast('Fill in your GitHub token and owner/repo before enabling auto-sync.');
@@ -12632,6 +13126,7 @@ async function gitSyncToggleAuto(enabled) {
   const gs = loadGitSyncSettings();
   gs.autoSync = enabled;
   await saveGitSyncSettings(gs);
+  if (enabled) _updateGitSyncStatus();
 }
 
 let _autoSyncTimer = null;
@@ -12689,7 +13184,9 @@ async function _autoSyncPushSilent() {
     clearTimeout(_syncedFlashTimer);
     _syncedFlashTimer = setTimeout(() => _setSyncBtnState(null), 3000);
   } catch (err) {
-    if (statusEl) statusEl.textContent = 'Auto-sync failed: ' + err.message;
+    const msg = 'Auto-sync failed: ' + err.message;
+    if (statusEl) statusEl.textContent = msg;
+    showToast(msg, 4000);
     _setSyncBtnState(null);
   } finally {
     _autoSyncInFlight = false;
@@ -12700,7 +13197,7 @@ function _updateCostDisplay() {
   const el = document.getElementById('chat-cost-display');
   if (!el) return;
   const s = loadChatSettings();
-  const p = ANTHROPIC_PRICING[s.model];
+  const p = ANTHROPIC_PRICING[s.model] || OPENAI_PRICING[s.model];
   if (!p || (!chatState.tokenUsage.input && !chatState.tokenUsage.output)) { el.style.display = 'none'; return; }
   const cost = chatState.tokenUsage.input  * p.in  / 1e6
              + chatState.tokenUsage.output * p.out / 1e6;
@@ -12732,22 +13229,20 @@ function openChatSettings() {
   const tokensEl = document.getElementById('ts-chat-maxtokens');
   const ctxEl    = document.getElementById('ts-chat-numctx');
   if (keyEl)    keyEl.value    = s.apiKey || '';
+  const oaiKeyEl = document.getElementById('ts-chat-openai-apikey');
+  if (oaiKeyEl) oaiKeyEl.value = s.openaiApiKey || '';
   if (tokensEl) tokensEl.value = s.maxTokens || 4096;
   if (ctxEl)    ctxEl.value    = s.numCtx   || _defaultNumCtx();
   const model   = s.model || 'gemma3:4b';
   const presets = ['gemma3:4b','qwen2.5:7b','qwen3:8b','gemma3:12b','qwen2.5:14b',
                    'qwen2.5:32b','llama3.3:latest',
-                   'claude-sonnet-4-6','claude-opus-4-7','claude-haiku-4-5-20251001'];
+                   'claude-sonnet-4-6','claude-opus-4-7','claude-haiku-4-5-20251001',
+                   'gpt-4o','gpt-4o-mini','o3','o4-mini'];
   if (presetEl) presetEl.value = presets.includes(model) ? model : 'custom';
   if (customEl) {
     customEl.value         = presets.includes(model) ? model : model;
     customEl.style.display = presets.includes(model) ? 'none' : 'block';
   }
-  const hasPIN   = typeof _hasPIN === 'function' && _hasPIN();
-  const pinGate  = document.getElementById('ts-pin-gate');
-  const keyInputs= document.getElementById('ts-apikey-inputs');
-  if (pinGate)   pinGate.style.display   = hasPIN ? 'none'  : 'block';
-  if (keyInputs) keyInputs.style.display = hasPIN ? 'block' : 'none';
   const syncMode = s.syncMode || (s.autoApply ? 'always' : 'manual');
   document.querySelectorAll('input[name="ts-chat-syncmode"]').forEach(r => { r.checked = (r.value === syncMode); });
   const syncNEl = document.getElementById('ts-chat-syncevery');
@@ -12812,25 +13307,37 @@ function _modelGuideSetOs(os) {
 
 async function saveChatSettingsFromForm() {
   const keyEl    = document.getElementById('ts-chat-apikey');
+  const oaiKeyEl = document.getElementById('ts-chat-openai-apikey');
   const presetEl = document.getElementById('ts-chat-model-preset');
   const customEl = document.getElementById('ts-chat-model-custom');
   const tokensEl = document.getElementById('ts-chat-maxtokens');
   const ctxEl    = document.getElementById('ts-chat-numctx');
   const preset   = presetEl ? presetEl.value : '';
   const modelId  = (preset === 'custom' && customEl) ? (customEl.value.trim() || 'gemma3:4b') : (preset || 'gemma3:4b');
-  const errEl = document.getElementById('ts-apikey-error');
-  if (errEl) errEl.textContent = '';
-  if (modelId.startsWith('claude-') && keyEl?.value.trim() && !(typeof _hasPIN === 'function' && _hasPIN())) {
+  const errEl    = document.getElementById('ts-apikey-error');
+  const oaiErrEl = document.getElementById('ts-openai-apikey-error');
+  const hasPIN   = typeof _hasPIN === 'function' && _hasPIN();
+  if (errEl)    errEl.textContent = '';
+  if (oaiErrEl) oaiErrEl.textContent = '';
+  const isAnthropicModel = modelId.startsWith('claude-');
+  const isOpenAIModel    = _isOpenAIModel(modelId);
+  if ((isAnthropicModel || isOpenAIModel) && (keyEl?.value.trim() || oaiKeyEl?.value.trim()) && !hasPIN) {
     showToast('Set up a security password in Security (bottom bar) before saving an API key. This keeps your key encrypted in the browser.');
     return;
   }
   const s = loadChatSettings();
-  if (modelId.startsWith('claude-') && !keyEl?.value.trim() && !s.apiKey) {
+  if (isAnthropicModel && !keyEl?.value.trim() && !s.apiKey) {
     if (errEl) { errEl.textContent = 'An API key is required to use this model. Paste your key above.'; }
-    document.getElementById('ts-chat-apikey')?.focus();
+    keyEl?.focus();
     return;
   }
-  if (keyEl) s.apiKey = keyEl.value.trim();
+  if (isOpenAIModel && !oaiKeyEl?.value.trim() && !s.openaiApiKey) {
+    if (oaiErrEl) { oaiErrEl.textContent = 'An API key is required to use this model. Paste your key above.'; }
+    oaiKeyEl?.focus();
+    return;
+  }
+  if (keyEl)    s.apiKey       = keyEl.value.trim();
+  if (oaiKeyEl) s.openaiApiKey = oaiKeyEl.value.trim();
   s.model = modelId;
   s.maxTokens = tokensEl ? (parseInt(tokensEl.value) || 4096) : 4096;
   s.numCtx    = ctxEl    ? (parseInt(ctxEl.value)    || 8192) : 8192;
@@ -12863,19 +13370,35 @@ async function saveChatSettingsFromForm() {
 function onChatModelPresetChange() {
   const sel        = document.getElementById('ts-chat-model-preset');
   const custom     = document.getElementById('ts-chat-model-custom');
+  const localSec   = document.getElementById('ts-local-section');
   const cloudSec   = document.getElementById('ts-cloud-section');
   const ollamaNote = document.getElementById('ts-ollama-note');
   if (!sel) return;
   const isCustom  = sel.value === 'custom';
-  const isOllama  = !sel.value.startsWith('claude-') && !isCustom;
   const customVal = custom ? custom.value.trim() : '';
-  const customIsOllama = isCustom && customVal && !customVal.startsWith('claude-');
-  const showOllama = isOllama || customIsOllama;
-  if (custom)    custom.style.display    = isCustom    ? 'block' : 'none';
-  if (cloudSec)  cloudSec.style.display  = showOllama  ? 'none'  : 'block';
+  const effectiveModel = isCustom ? customVal : sel.value;
+  const showOllama = _isLocalModel(effectiveModel) || (isCustom && !customVal);
+  const showOpenAI = _isOpenAIModel(effectiveModel);
+  const showCloud  = !showOllama;
+  if (custom)   custom.style.display   = isCustom   ? 'block' : 'none';
+  if (localSec) localSec.style.display = showOllama ? 'block' : 'none';
+  if (cloudSec) cloudSec.style.display = showCloud  ? 'block' : 'none';
+  const anthropicSec = document.getElementById('ts-cloud-anthropic-section');
+  const openaiSec    = document.getElementById('ts-cloud-openai-section');
+  if (anthropicSec) anthropicSec.style.display = (showCloud && !showOpenAI) ? 'block' : 'none';
+  if (openaiSec)    openaiSec.style.display    = (showCloud && showOpenAI)  ? 'block' : 'none';
   const wasHidden = !ollamaNote || ollamaNote.style.display === 'none';
   if (ollamaNote) ollamaNote.style.display = showOllama ? 'block' : 'none';
   if (showOllama && wasHidden) checkOllamaModels();
+  const hasPIN = typeof _hasPIN === 'function' && _hasPIN();
+  const pinGate    = document.getElementById('ts-pin-gate');
+  const keyInputs  = document.getElementById('ts-apikey-inputs');
+  const oaiPinGate = document.getElementById('ts-openai-pin-gate');
+  const oaiInputs  = document.getElementById('ts-openai-apikey-inputs');
+  if (pinGate)    pinGate.style.display    = hasPIN ? 'none'  : 'block';
+  if (keyInputs)  keyInputs.style.display  = hasPIN ? 'block' : 'none';
+  if (oaiPinGate) oaiPinGate.style.display = hasPIN ? 'none'  : 'block';
+  if (oaiInputs)  oaiInputs.style.display  = hasPIN ? 'block' : 'none';
 }
 
 
@@ -12972,27 +13495,17 @@ function renderOllamaStatus(result) {
 
   if (!result.running) {
     if (badgeEl) { badgeEl.textContent = '● Ollama not running'; badgeEl.className = 'ollama-conn-err'; }
-    const row = document.createElement('div');
-    row.className = 'ollama-model-row';
-    const badge = document.createElement('span');
-    badge.className = 'ollama-badge ollama-badge-no'; badge.textContent = '○';
-    const name = document.createElement('span');
-    name.className = 'ollama-model-name'; name.style.color = 'var(--text-dim)';
-    name.textContent = 'not running';
-    const os = detectOS();
-    const cmd = os === 'win'
-      ? 'Stop-Process -Name ollama -Force -ErrorAction SilentlyContinue; Start-Sleep 1; $env:OLLAMA_ORIGINS="*"; ollama serve'
-      : os === 'linux'
-        ? 'pkill -f "ollama serve" 2>/dev/null; sleep 1; OLLAMA_ORIGINS="*" ollama serve'
-        : 'pkill -f "Ollama.app/Contents/MacOS" 2>/dev/null; pkill -f "ollama serve" 2>/dev/null; sleep 1; OLLAMA_ORIGINS="*" ollama serve';
-    const cmdTag  = document.createElement('code'); cmdTag.className = 'ollama-cmd-tag'; cmdTag.textContent = cmd;
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'ollama-mini-btn ollama-copy-btn'; copyBtn.textContent = 'copy';
-    copyBtn.onclick = () => _ollamaCopyCmd(cmd, copyBtn);
-    row.append(badge, name, cmdTag, copyBtn);
-    listEl.appendChild(row);
+    const installEl = document.getElementById('ts-ollama-install');
+    if (installEl) {
+      const sel = document.getElementById('ts-chat-model-preset');
+      const custom = document.getElementById('ts-chat-model-custom');
+      const model = (sel?.value === 'custom' ? custom?.value.trim() : sel?.value) || 'gemma3:4b';
+      installEl.innerHTML = _ollamaInstallHTML(detectOS(), model);
+    }
     return;
   }
+  const installEl = document.getElementById('ts-ollama-install');
+  if (installEl) installEl.innerHTML = '';
 
   if (badgeEl) { badgeEl.textContent = '● Ollama running'; badgeEl.className = 'ollama-conn-ok'; }
 
@@ -13167,47 +13680,40 @@ const _TOUR_STEPS = [
   // Step 0 — full-screen framing, no spotlight
   {
     target: null,
-    heading: "Welcome. You're looking at Alex's demo.",
-    body: "A map of your inner system: parts named, connected, and tracked over time.<br><br>Nothing here is saved. Take 60 seconds to see how it works.",
-    next: 'Take the tour',
+    heading: "Welcome. This is Alex's demo.",
+    body: "team-sheet helps you map the different parts of yourself: the one that pushes hard, the one that shuts down, the one that numbs out. You name them, describe them, and track how you relate to them over time.<br><br>No psychology background needed. Follow this guide to see how it works, then save your own copy to get started.",
+    next: 'Show me how it works',
     skip: 'Skip',
   },
-  // Step 1 — tab nav
-  {
-    target: '.tab-nav',
-    heading: 'Six views of your inner system',
-    body: "<strong>Parts</strong>: your full roster<br><strong>Connections</strong>: visual network<br><strong>Trailheads</strong>: physical sensations<br><strong>Self-led Moments</strong>: your core qualities<br><strong>Sessions</strong>: session log<br><strong>Memories</strong>: your system over time<br><br>All tabs are filled in. Click any one to explore freely.",
-    placement: 'below',
-  },
-  // Step 2 — parts tab
+  // Step 1 — parts list: the starting point
   {
     target: '#tab-parts',
-    heading: 'Parts: your inner roster',
-    body: "Every part has a <strong>role</strong> (Manager, Firefighter, or Exile), a core function, and a blending level.<br><br>You don't need to know IFS theory to start. Just name what you notice.",
+    heading: 'Step 1: Meet your parts',
+    body: "This is where you build your inner roster. Each entry is a part of you: a recurring voice, feeling, or pattern you notice.<br><br>You can start with just a name. Fill in the details over time as you learn more about each part.",
     placement: 'below',
   },
-  // Step 3 — connections tab button
+  // Step 2 — connections map
   {
     target: '[data-tab="map"]',
-    heading: 'Connections: your parts as a network',
-    body: "Each node is a part. Size reflects how prominent it is right now.<br><br>Click a node to open its full profile. Drag to rearrange. Edges show how parts relate to each other.",
+    heading: 'See your parts as a map',
+    body: "Once you have a few parts, the Connections tab turns them into a visual network. Each circle is a part. Size shows how much it is running things right now.<br><br>Click any circle to open that part's full profile.",
     placement: 'below',
   },
-  // Step 4 — check-in button
+  // Step 3 — check-in: the daily habit
   {
     target: '.fbar-btn.fbar-daily',
-    heading: 'Daily check-in',
-    body: "Tap this to log how blended or separate you feel with each part right now.<br><br>Takes 30 seconds. Check in regularly and a history chart builds itself over time.",
+    heading: 'Step 2: Check in daily',
+    body: "Tap this each day to rate how blended you feel with each part. Takes about 30 seconds.<br><br>Over time, a history chart builds itself so you can see patterns: which parts have been running things, and when your sense of Self feels strongest.",
     placement: 'above',
   },
-  // Step 5 — chat button
+  // Step 4 — chat button
   {
     target: '#chat-btn',
-    heading: 'Session with your AI',
-    body: "Connect an AI directly and journal for 10-20 minutes. Your map fills itself in from your own words.<br><br>Works with any AI via API key, or a local Ollama model that never leaves your device.",
+    heading: 'Step 3: Talk it through with your AI',
+    body: "The fastest way to fill in your map: tap this button, connect your AI, and just talk about what's been going on for you. Your parts map fills itself in from the conversation.<br><br>No AI? You can type everything in yourself, or copy-paste between your AI and the app.",
     placement: 'above',
   },
-  // Step 6 — demo banner CTA
+  // Step 5 — demo banner CTA
   {
     target: '#demo-banner',
     heading: 'Ready to map your own inner system?',
@@ -13266,9 +13772,9 @@ function _tourRender(){
     const ctaRow = document.createElement('div');
     ctaRow.className = 'tour-cta-row';
     const opts = [
-      { label: 'Fill it in yourself', sub: 'Click any field to edit. No AI needed.', action: ()=>{ _tourShowDownloadNudge(); } },
-      { label: 'Copy-paste with your AI', sub: 'Journal in any AI, import the result.', action: ()=>{ _tourShowDownloadNudge(); } },
-      { label: 'Chat inside the app', sub: 'Connect via API key or local Ollama. No copy-paste.', action: ()=>{ _tourShowDownloadNudge(); } },
+      { label: 'Fill it in yourself', sub: 'Type directly into any field. No AI needed, works offline.', action: ()=>{ _tourShowDownloadNudge(); } },
+      { label: 'Chat inside the app', sub: 'Connect your AI and just talk. Your map fills itself in. Recommended.', action: ()=>{ _tourShowDownloadNudge(); } },
+      { label: 'Copy-paste with your AI', sub: 'Journal in any AI, then import the result here.', action: ()=>{ _tourShowDownloadNudge(); } },
     ];
     opts.forEach(o => {
       const btn = document.createElement('button');
@@ -13284,7 +13790,7 @@ function _tourRender(){
     bodyEl.appendChild(ctaRow);
     const note = document.createElement('div');
     note.style.cssText = 'font-size:13px;color:var(--text-dim);line-height:1.5;margin-top:4px;';
-    note.textContent = 'Download the app first, then the welcome screen walks you through each option.';
+    note.textContent = 'Save the file to your computer, then open it in your browser. The setup guide walks you through each option.';
     bodyEl.appendChild(note);
   } else if(step.body){
     bodyEl.innerHTML = step.body; // static internal content only
@@ -13301,7 +13807,7 @@ function _tourRender(){
   });
 
   const nextBtn = document.getElementById('tour-btn-next');
-  nextBtn.textContent = step.next || (isLast ? 'Download the app' : 'Next');
+  nextBtn.textContent = step.next || (isLast ? 'Save my copy' : 'Next');
   if(isLast){
     nextBtn.onclick = e => { e.stopPropagation(); downloadApp(); _tourShowDownloadNudge(); };
   } else {
@@ -13328,7 +13834,7 @@ function _tourShowDownloadNudge(){
   bodyEl.innerHTML = '';
   const msg = document.createElement('div');
   msg.style.cssText = 'font-size:15px;color:var(--text-mid);line-height:1.6;';
-  msg.textContent = 'Your file is downloading. Open team-sheet.html in your browser to start mapping your own inner system.';
+  msg.textContent = 'Your file is saving. Once it downloads, open team-sheet.html in your browser to start mapping your own inner system. No installation needed.';
   bodyEl.appendChild(msg);
   const nextBtn = document.getElementById('tour-btn-next');
   nextBtn.textContent = 'Done';
@@ -13401,24 +13907,25 @@ function _tourPosition(step){
     <div class="chat-hdr-left">
       <div class="chat-hdr-app">team-sheet</div>
       <div class="chat-hdr-title-row">
+        <span id="chat-hdr-num" class="chat-hdr-num"></span>
         <div id="chat-hdr-title" class="chat-hdr-title" contenteditable="true" spellcheck="false"
-          title="Click to edit session title"
+          data-placeholder="Click to name this session"
+          title="Click to rename this session"
           onblur="chatTitleSave(this)"
           onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}else if(event.key==='Escape'){chatTitleAbort(this);this.blur()}"
-          onfocus="chatTitleFocus(this)">IFS Session</div>
-        <button id="chat-hdr-lock-btn" class="chat-hdr-lock-btn" onclick="chatTitleToggleLock()" title="Lock title to prevent your AI from updating it">&#128275;</button>
-        <span id="chat-hdr-model" class="chat-hdr-model"></span>
+          onfocus="chatTitleFocus(this)"></div>
+        <button id="chat-hdr-lock-btn" class="chat-hdr-lock-btn" onclick="chatTitleToggleLock()"><span class="lock-icon">🤖</span><span class="lock-label">AI names</span></button>
+        <div class="chat-sess-picker-wrap" id="chat-sess-picker-wrap" style="display:none">
+          <button class="chat-sess-picker-btn" id="chat-sess-picker-btn" onclick="chatPickerToggle()" title="Load a past session">Past sessions <span class="picker-arrow">&#9660;</span></button>
+          <div class="chat-sess-picker-panel" id="chat-sess-picker-panel"></div>
+        </div>
       </div>
     </div>
     <div class="chat-hdr-right">
-      <div class="chat-sess-picker-wrap" id="chat-sess-picker-wrap" style="display:none">
-        <button class="chat-sess-picker-btn" id="chat-sess-picker-btn" onclick="chatPickerToggle()" title="Load a past session">Past sessions <span class="picker-arrow">&#9660;</span></button>
-        <div class="chat-sess-picker-panel" id="chat-sess-picker-panel"></div>
-      </div>
       <span id="chat-cost-display" class="chat-cost-display" style="display:none"></span>
-      <button class="chat-icon-btn" id="chat-compact-btn" onclick="chatToggleCompact()" title="Sidebar mode">&#x2922;</button>
-      <button class="chat-icon-btn" onclick="openChatSettings()" title="Settings">&#9881;</button>
-      <button class="chat-icon-btn" onclick="closeChat()" title="Close (Esc)">&#x2715;</button>
+      <button class="chat-icon-btn" id="chat-compact-btn" onclick="chatToggleCompact()" title="Sidebar mode"><span class="chat-icon-glyph">&#x2922;</span><span class="chat-icon-label">Sidebar</span></button>
+      <button class="chat-icon-btn" id="chat-hdr-settings-btn" onclick="openChatSettings()" title="Settings"><span class="chat-icon-glyph">&#9881;</span><span id="chat-hdr-model" class="chat-hdr-model-inline"></span></button>
+      <button class="chat-icon-btn" onclick="closeChat()" title="Close (Esc)"><span class="chat-icon-glyph">&#x2715;</span><span class="chat-icon-label">Close</span></button>
     </div>
   </div>
   <div id="chat-cloud-warn" class="chat-cloud-warn">
@@ -13448,17 +13955,16 @@ function _tourPosition(step){
     <button class="modal-close" onclick="closeChatSettings()" title="Close">&#x2715;</button>
     <div class="modal-title" style="color:#2a9090;">Chat Settings</div>
     <div style="font-size:14px;color:var(--text);line-height:1.7;margin:0 0 14px;">
-      <div><strong style="color:#50c878;">A. Local models (Ollama):</strong> free, fully private, no account needed. Everything stays on your device. <span style="color:#50c878;font-weight:600;">Recommended.</span></div>
-      <div style="margin-top:5px;"><strong style="color:#f09090;">B. Cloud models (Anthropic):</strong> your session data is sent to Anthropic's servers and may be stored. Requires an API key.</div>
-      <div style="margin-top:5px;"><strong style="color:var(--text-mid);">C. No AI:</strong> all other features work fine without any AI model set up.</div>
+      <div><strong style="color:#50c878;">Local models (Ollama):</strong> free, fully private, no account needed. Everything stays on your device. <span style="color:#50c878;font-weight:600;">Recommended.</span></div>
+      <div style="margin-top:5px;"><strong style="color:#f09090;">Cloud models:</strong> your session data is sent to the provider's servers and may be stored. Requires an API key.</div>
       <div style="margin-top:7px;font-size:12px;color:var(--text-dim);"><a href="https://github.com/sam-holmes2/team-sheet/blob/master/ai-privacy-guide.md" target="_blank" style="color:inherit;text-decoration:underline;">Provider privacy guide</a></div>
     </div>
-    <!-- Local model settings -->
-    <div class="chat-section-local">
-      <div class="chat-section-hdr" style="color:#50c878;">Local model (Ollama)</div>
-      <div class="chat-field" style="margin-bottom:10px;">
-        <label class="chat-field-lbl" for="ts-chat-model-preset">Model</label>
-        <select id="ts-chat-model-preset" onchange="onChatModelPresetChange()">
+
+    <!-- Model selector (outside provider boxes) -->
+    <div class="chat-field" style="margin-bottom:14px;">
+      <label class="chat-field-lbl" for="ts-chat-model-preset">Model</label>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <select id="ts-chat-model-preset" onchange="onChatModelPresetChange()" style="flex:1;min-width:0;">
           <optgroup label="Ollama (local)">
             <option value="gemma3:4b" selected>gemma3:4b - fast, 4 GB RAM</option>
             <option value="qwen2.5:7b">qwen2.5:7b - reliable, 8 GB RAM</option>
@@ -13473,14 +13979,22 @@ function _tourPosition(step){
             <option value="claude-opus-4-7">claude-opus-4-7 (more capable, slower)</option>
             <option value="claude-haiku-4-5-20251001">claude-haiku-4-5 (fastest, cheapest)</option>
           </optgroup>
+          <optgroup label="OpenAI (cloud)">
+            <option value="gpt-4o">gpt-4o</option>
+            <option value="gpt-4o-mini">gpt-4o-mini (faster, cheaper)</option>
+            <option value="o3">o3 (reasoning)</option>
+            <option value="o4-mini">o4-mini (reasoning, fast)</option>
+          </optgroup>
           <option value="custom">Custom model ID...</option>
         </select>
-        <input type="text" id="ts-chat-model-custom" placeholder="e.g. qwen2.5:14b or llama3.3:latest" style="display:none;margin-top:6px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;gap:6px;">
-          <label class="chat-sync-radio"><input type="checkbox" id="ts-chat-default-model"> Save as default for new chats</label>
-          <button onclick="openModelGuide()" style="background:none;border:none;padding:0;color:var(--text-dim);text-decoration:underline;cursor:pointer;font-size:11px;white-space:nowrap;">Not sure which local model fits your computer?</button>
-        </div>
+        <label class="chat-sync-radio" style="white-space:nowrap;flex-shrink:0;"><input type="checkbox" id="ts-chat-default-model"> Save as default</label>
       </div>
+      <input type="text" id="ts-chat-model-custom" placeholder="e.g. qwen2.5:14b or llama3.3:latest" style="display:none;margin-top:6px">
+    </div>
+
+    <!-- Local model settings -->
+    <div class="chat-section-local" id="ts-local-section">
+      <div class="chat-section-hdr" style="color:#50c878;">Local model (Ollama)</div>
       <div id="ts-ollama-note" class="ollama-note" style="display:none;margin-bottom:10px;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:10px 12px;">
         <div class="ollama-status-hdr">
           <span id="ts-ollama-conn-badge" class="ollama-conn-err">&#9679; Ollama</span>
@@ -13489,31 +14003,55 @@ function _tourPosition(step){
         <div id="ts-ollama-model-list"></div>
         <div id="ts-ollama-install" class="chat-api-note" style="margin-top:9px;font-size:12px;"></div>
       </div>
-      <div class="chat-field" style="margin-bottom:0;">
+      <div class="chat-field" style="margin-bottom:8px;">
         <label class="chat-field-lbl" for="ts-chat-numctx">Context window</label>
         <input type="number" id="ts-chat-numctx" min="2048" max="131072" step="1024" value="8192">
-        <p class="chat-api-note" style="margin-top:5px;">Your current data is about <strong id="ts-ctx-token-est">...</strong> tokens. Set this to at least 2x that, plus headroom for the conversation.</p>
+        <p class="chat-api-note" style="margin-top:5px;">Auto-set to cover your data (~<strong id="ts-ctx-token-est">...</strong> tokens) with room for the conversation. Raise it only if you get context limit errors.</p>
       </div>
+      <button onclick="openModelGuide()" style="background:none;border:none;padding:0;color:var(--text-dim);text-decoration:underline;cursor:pointer;font-size:11px;white-space:nowrap;">Not sure which local model fits your computer?</button>
     </div>
 
     <!-- Cloud model settings -->
-    <div class="chat-section-cloud" id="ts-cloud-section">
-      <div class="chat-section-hdr" style="color:#f09090;">Cloud model (Anthropic)</div>
-      <div id="ts-apikey-section" class="chat-field" style="margin-bottom:0;">
-        <label class="chat-field-lbl" for="ts-chat-apikey">API Key</label>
-        <div id="ts-pin-gate" style="display:none;padding:10px 12px;background:rgba(200,168,74,0.07);border:1px solid rgba(200,168,74,0.25);border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.6;">
-          A security password is required before storing an API key.<br>
-          <button onclick="closeChatSettings();openSettings();setTimeout(()=>document.getElementById('settings-pin-new')?.focus(),300)" style="margin-top:8px;padding:5px 14px;background:rgba(200,168,74,0.12);border:1px solid rgba(200,168,74,0.4);color:var(--gold);border-radius:4px;cursor:pointer;font-size:13px;">Set up password in Settings</button>
+    <div class="chat-section-cloud" id="ts-cloud-section" style="display:none;">
+      <div id="ts-cloud-anthropic-section">
+        <div class="chat-section-hdr" style="color:#f09090;">Anthropic</div>
+        <div id="ts-apikey-section" class="chat-field" style="margin-bottom:0;">
+          <label class="chat-field-lbl" for="ts-chat-apikey">API Key</label>
+          <div id="ts-pin-gate" style="display:none;padding:10px 12px;background:rgba(200,168,74,0.07);border:1px solid rgba(200,168,74,0.25);border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.6;">
+            A security password is required before storing an API key.<br>
+            <button onclick="closeChatSettings();openSettings();setTimeout(()=>document.getElementById('settings-pin-new')?.focus(),300)" style="margin-top:8px;padding:5px 14px;background:rgba(200,168,74,0.12);border:1px solid rgba(200,168,74,0.4);color:var(--gold);border-radius:4px;cursor:pointer;font-size:13px;">Set up password in Settings</button>
+          </div>
+          <div id="ts-apikey-inputs">
+            <input type="password" id="ts-chat-apikey" placeholder="sk-ant-..." autocomplete="off">
+            <div id="ts-apikey-error" style="font-size:13px;color:#c84040;min-height:0;margin-top:5px;"></div>
+            <div class="chat-api-note">
+              <ol style="margin:4px 0 0 16px;padding:0;line-height:1.9;font-size:12px;">
+                <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in</li>
+                <li>Open <strong>API Keys</strong> and create a new key</li>
+                <li>Paste it above</li>
+              </ol>
+            </div>
+          </div>
         </div>
-        <div id="ts-apikey-inputs">
-          <input type="password" id="ts-chat-apikey" placeholder="sk-ant-..." autocomplete="off">
-          <div id="ts-apikey-error" style="font-size:13px;color:#c84040;min-height:0;margin-top:5px;"></div>
-          <div class="chat-api-note">
-            <ol style="margin:4px 0 0 16px;padding:0;line-height:1.9;font-size:12px;">
-              <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> and sign in (separate from Claude.ai)</li>
-              <li>Open <strong>API Keys</strong> and create a new key</li>
-              <li>Paste it above</li>
-            </ol>
+      </div>
+      <div id="ts-cloud-openai-section" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.07);">
+        <div class="chat-section-hdr" style="color:#f09090;">OpenAI</div>
+        <div class="chat-field" style="margin-bottom:0;">
+          <label class="chat-field-lbl" for="ts-chat-openai-apikey">API Key</label>
+          <div id="ts-openai-pin-gate" style="display:none;padding:10px 12px;background:rgba(200,168,74,0.07);border:1px solid rgba(200,168,74,0.25);border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.6;">
+            A security password is required before storing an API key.<br>
+            <button onclick="closeChatSettings();openSettings();setTimeout(()=>document.getElementById('settings-pin-new')?.focus(),300)" style="margin-top:8px;padding:5px 14px;background:rgba(200,168,74,0.12);border:1px solid rgba(200,168,74,0.4);color:var(--gold);border-radius:4px;cursor:pointer;font-size:13px;">Set up password in Settings</button>
+          </div>
+          <div id="ts-openai-apikey-inputs">
+            <input type="password" id="ts-chat-openai-apikey" placeholder="sk-..." autocomplete="off">
+            <div id="ts-openai-apikey-error" style="font-size:13px;color:#c84040;min-height:0;margin-top:5px;"></div>
+            <div class="chat-api-note">
+              <ol style="margin:4px 0 0 16px;padding:0;line-height:1.9;font-size:12px;">
+                <li>Go to <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a> and sign in</li>
+                <li>Create a new secret key</li>
+                <li>Paste it above</li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>
@@ -13555,7 +14093,7 @@ function _tourPosition(step){
     </div>
     <div class="modal-row" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
       <button class="btn-primary" onclick="saveChatSettingsFromForm()">Save</button>
-      <button class="btn-ghost" onclick="closeChatSettings()">Cancel</button>
+      <button class="btn-ghost" onclick="closeChatSettings()">No AI - close settings</button>
     </div>
   </div>
 </div>
