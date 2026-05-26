@@ -6,6 +6,15 @@ This guide covers how the major AI providers handle your data: conversations, up
 
 Provider privacy policies: [Anthropic](https://www.anthropic.com/privacy) | [OpenAI](https://openai.com/policies/privacy-policy) | [Google](https://policies.google.com/privacy) | [Mistral](https://mistral.ai/privacy-policy/) | [Ollama](https://ollama.com/privacy)
 
+---
+
+## The short version
+
+If privacy matters to you, here is what to know:
+
+- **Local models (Ollama, LM Studio):** Nothing you write ever leaves your device. This is the highest-privacy option. Setup takes about 10 minutes.
+- **Cloud AI (Anthropic, OpenAI, Google, Mistral):** Your session content is sent to their servers and may be stored for weeks to years. Most providers let you opt out of training data use, but storage is separate from training.
+- **API keys:** If you use the in-app cloud AI chat, your API key grants access to your account. Store it in a password manager (1Password, Bitwarden, Apple Passwords, etc.), not in a document or email. Never share it or paste it into websites you don't trust.
 
 ---
 
@@ -38,6 +47,8 @@ Provider privacy policies: [Anthropic](https://www.anthropic.com/privacy) | [Ope
 **Browser extensions.** Extensions installed in your AI session browser can read everything you type and receive on that domain. A dedicated browser profile for AI sessions reduces this exposure.
 
 **Network context.** On networks managed by an employer, school, or institution, TLS inspection may allow the network operator to log HTTPS traffic including AI conversations, regardless of the provider's own privacy policy.
+
+**API key security.** Your API key is a password to your AI account. Anyone who has it can send requests and generate charges on your behalf. Keep it in a password manager. Rotate it (create a new one and delete the old one) if you think it may have been exposed.
 
 ---
 
@@ -138,9 +149,9 @@ Mistral is a French company. Data is stored in the EU under GDPR. EU residents h
 A newer category of consumer AI products built on hardware Trusted Execution Environments (TEEs). In standard cloud AI, privacy depends on the provider's policies and contractual promises. TEE-based services enforce isolation in hardware: the provider's own staff cannot access conversation content, and each inference can generate a cryptographic attestation signed by the CPU manufacturer (Intel or AMD) proving a specific, unmodified model ran in a genuine enclave. Some providers include browser-based tools to verify these attestations yourself.
 
 **Current providers:**
-- [Tinfoil](https://tinfoil.sh) — consumer chat and API, iOS and web, $20/month. SOC 2 Type II. Open-source attestation verifier.
-- ExpressAI (by ExpressVPN, launched March 2026) — consumer chat using confidential enclaves, included with ExpressVPN Pro. [More info](https://www.expressvpn.com/blog/expressai-private-ai-platform/)
-- [NEAR Private Chat](https://near.ai) — uses Intel TDX and NVIDIA Confidential Computing. Open-source model focus.
+- [Tinfoil](https://tinfoil.sh): consumer chat and API, iOS and web, $20/month. SOC 2 Type II. Open-source attestation verifier.
+- ExpressAI (by ExpressVPN, launched March 2026): consumer chat using confidential enclaves, included with ExpressVPN Pro. [More info](https://www.expressvpn.com/blog/expressai-private-ai-platform/)
+- [NEAR Private Chat](https://near.ai): uses Intel TDX and NVIDIA Confidential Computing. Open-source model focus.
 
 This category is early-stage. New providers are appearing; search "confidential AI chat" to find current options.
 
@@ -185,7 +196,7 @@ Models run at 4-bit quantization by default in Ollama, so memory requirements ar
 
 | Model | Size | Min RAM | Notes |
 |---|---|---|---|
-| Llama 3.2 3B | 3B | 4 GB | Compact. fast on any hardware |
+| Llama 3.2 3B | 3B | 4 GB | Compact, fast on any hardware |
 | Llama 3.1 8B | 8B | 8 GB | Good general capability |
 | Gemma 2 9B | 9B | 8 GB | Strong at nuanced text |
 | Qwen 2.5 14B | 14B | 16 GB | Strong reasoning |
@@ -214,3 +225,21 @@ For a browser-based chat interface similar to commercial AI products, [Open WebU
 
 **4. Using with this app**
 Local models do not maintain persistent project context between sessions. At the start of each session, paste `instructions.md` and your current `data.json`. At the end, copy the updated JSON block and import it into the app. The workflow is more manual but the output format is identical.
+
+---
+
+## Backing up your data
+
+`data.json` is the only file that contains your personal history. If you lose your device or clear browser storage, it is gone. Back it up.
+
+| Approach | How | Privacy tradeoff | Best for |
+|----------|-----|-----------------|----------|
+| **AI project knowledge** | Keep the file in your AI project as part of the normal workflow | Sent to your AI provider (same exposure as your sessions) | Most users, already part of the workflow |
+| **Local folder** | Copy `data.json` to a folder on your machine after each session | No exposure beyond your device | Maximum privacy, manual effort |
+| **Encrypted cloud** | Upload to zero-knowledge cloud storage (e.g. Proton Drive, Tresorit) | Encrypted before leaving your device; provider cannot read it | Good balance of safety and convenience |
+| **Standard cloud** | Upload to Google Drive, Dropbox, iCloud | Provider has access to plaintext content | Convenient, but exposes your map to that provider |
+| **Password-locked export** | Enable password in the app, then back up the browser's localStorage via a browser profile backup | Encrypted on disk (AES-256-GCM) | Combined approach: cloud sync of browser profile stays encrypted |
+
+**Practical recommendation:** the simplest safe approach is to keep a copy of `data.json` in a folder that is backed up by your chosen cloud provider, and to use the password lock if that provider's access to your inner world material is a concern. If you use Proton Drive or Tresorit, the file is encrypted client-side before upload. If you use Google Drive or iCloud, the file is readable by the provider.
+
+**What does not need to be backed up:** `team-sheet.html` and `instructions.md` are identical for all users and can be re-downloaded from the GitHub repo at any time.

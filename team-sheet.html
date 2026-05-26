@@ -67,8 +67,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .hdr-util { display:flex; align-items:center; gap:6px; margin-top:3px; }
 .hdr-util-btn {
   background:none; border:none; cursor:pointer; border-radius:8px;
-  width:48px; height:48px; display:flex; align-items:center; justify-content:center;
-  font-size:28px; color:var(--text-dim); transition:color 0.15s, background 0.15s;
+  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
+  font-size:22px; color:var(--text-dim); transition:color 0.15s, background 0.15s;
   padding:0; line-height:1;
 }
 .hdr-util-btn { color:rgba(200,168,74,0.45); }
@@ -1494,13 +1494,13 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 #chat-settings-modal, #chat-privacy-modal { z-index:10000; }
 #ts-model-guide-modal { z-index:10002; }
 #chat-overlay.open { display:flex; }
-.chat-hdr { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 16px; border-bottom:1px solid var(--border-hi); background:rgba(19,15,9,0.98); flex-shrink:0; }
-.chat-hdr-left { display:flex; flex-direction:column; gap:3px; min-width:0; flex:1; }
-.chat-hdr-app { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.22em; color:var(--text-mid); text-transform:uppercase; }
-.chat-hdr-title-row { display:flex; align-items:center; gap:8px; min-width:0; flex-wrap:wrap; }
-.chat-hdr-num { font-family:var(--mono); font-size:11px; color:var(--text-dim); opacity:0.55; flex-shrink:0; white-space:nowrap; user-select:none; }
+.chat-hdr { display:flex; align-items:center; gap:8px; padding:8px 14px; border-bottom:1px solid var(--border-hi); background:rgba(19,15,9,0.98); flex-shrink:0; min-height:48px; }
+.chat-hdr-left { display:flex; align-items:center; gap:8px; min-width:0; flex:1; overflow:hidden; }
+.chat-hdr-app { font-family:'Cinzel',serif; font-size:10px; letter-spacing:0.22em; color:var(--text-dim); text-transform:uppercase; flex-shrink:0; opacity:0.6; }
+.chat-hdr-title-row { display:contents; }
+.chat-hdr-num { font-family:var(--mono); font-size:11px; color:var(--text-dim); opacity:0.5; flex-shrink:0; white-space:nowrap; user-select:none; }
 .chat-hdr-title {
-  font-family:'Cinzel',serif; font-size:17px; letter-spacing:0.13em;
+  font-family:'Cinzel',serif; font-size:15px; letter-spacing:0.1em;
   color:var(--gold); text-transform:uppercase; margin:0;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex-shrink:1; min-width:60px;
   cursor:text; border-radius:3px; padding:2px 5px; margin-left:-5px;
@@ -1518,7 +1518,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .chat-cloud-warn-dismiss:hover { opacity:1; }
 .chat-demo-banner { padding:7px 14px; background:rgba(180,130,20,0.15); border-bottom:1px solid rgba(200,168,74,0.3); font-size:12px; color:var(--gold); flex-shrink:0; }
 @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.chat-hdr-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.chat-hdr-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
 .chat-cost-display { font-size:12px; font-family:var(--mono); color:var(--text-dim); opacity:0.8; }
 .chat-sync-options { display:flex; flex-direction:column; gap:7px; margin-top:4px; }
 .chat-sync-radio { display:flex; align-items:flex-start; gap:7px; font-size:13px; color:var(--text); cursor:pointer; flex-wrap:wrap; }
@@ -1528,7 +1528,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .chat-icon-btn .chat-icon-glyph { font-size:16px; line-height:1; }
 .chat-icon-btn .chat-icon-label { font-size:12px; letter-spacing:0.03em; }
 .chat-icon-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(200,168,74,0.07); }
-.chat-hdr-model-inline { font-family:var(--mono); font-size:11px; color:rgba(200,168,74,0.75); white-space:nowrap; max-width:110px; overflow:hidden; text-overflow:ellipsis; }
+.chat-hdr-model-inline { font-family:var(--mono); font-size:12px; color:rgba(200,168,74,0.75); white-space:nowrap; }
 .chat-sess-name-chip { font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:130px; opacity:0.7; align-self:center; }
 .chat-msgs { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
 .chat-msg { max-width:82%; padding:10px 14px; border-radius:8px; font-size:17px; line-height:1.6; white-space:pre-wrap; word-break:break-word; }
@@ -1613,11 +1613,11 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 /* Chat session picker dropdown */
 .chat-sess-picker-wrap { position:relative; }
 .chat-sess-picker-btn {
-  font-size:12px; padding:3px 10px; height:26px; background:none;
+  font-size:12px; padding:5px 10px; height:32px; background:none;
   border:1px solid rgba(255,255,255,0.12); color:var(--text-dim);
-  border-radius:4px; cursor:pointer; display:flex; align-items:center; gap:5px; transition:all 0.15s;
+  border-radius:5px; cursor:pointer; display:flex; align-items:center; gap:5px; transition:all 0.15s;
 }
-.chat-sess-picker-btn:hover { background:rgba(200,168,74,0.08); border-color:rgba(200,168,74,0.35); color:var(--text); }
+.chat-sess-picker-btn:hover { background:rgba(200,168,74,0.07); border-color:rgba(200,168,74,0.5); color:var(--gold); }
 .chat-sess-picker-btn .picker-arrow { font-size:9px; opacity:0.6; }
 .chat-sess-picker-panel {
   display:none; position:absolute; right:0; top:calc(100% + 4px); z-index:200;
@@ -1655,17 +1655,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 .chat-sess-picker-del-no:hover { background:rgba(255,255,255,0.06); }
 .chat-sess-picker-empty { padding:12px; font-size:12px; color:var(--text-dim); text-align:center; }
 /* Chat header lock button */
-.chat-hdr-lock-btn {
-  background:none; border:1px solid rgba(255,255,255,0.1); cursor:pointer;
-  padding:3px 8px; border-radius:4px; line-height:1; flex-shrink:0;
-  transition:color 0.15s, border-color 0.15s, background 0.15s;
-  display:flex; align-items:center; gap:4px;
-  font-size:11px; font-family:var(--mono); color:var(--text-dim); opacity:0.6;
-}
-.chat-hdr-lock-btn .lock-icon { font-size:13px; line-height:1; }
-.chat-hdr-lock-btn .lock-label { letter-spacing:0.04em; }
-.chat-hdr-lock-btn:hover { opacity:1; color:var(--gold); border-color:rgba(200,168,74,0.4); background:rgba(200,168,74,0.07); }
-.chat-hdr-lock-btn.locked { color:var(--gold); border-color:rgba(200,168,74,0.4); background:rgba(200,168,74,0.07); opacity:1; }
+.chat-hdr-lock-btn.locked { color:var(--gold) !important; border-color:rgba(200,168,74,0.4) !important; background:rgba(200,168,74,0.07) !important; }
 /* Transcript in journal session cards */
 .session-chat-toggle { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
 .session-chat-toggle-btn { font-size:12px; color:var(--text-dim); background:none; border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:3px 10px; cursor:pointer; }
@@ -7612,6 +7602,7 @@ function _renderPulsePie() {
 function _openPulseModal(isAutoPrompt, bypassGate){
   const parts = appState.parts || [];
   if(parts.length === 0) return;
+  if(IS_DEMO && isAutoPrompt) return; // never auto-prompt in demo
   if(!IS_DEMO && isAutoPrompt && !bypassGate && !_checkinDueConsideringDismiss()) return;
   const modal = document.getElementById('pulse-modal');
   if(!modal) return;
@@ -10493,6 +10484,7 @@ let _lockTimer  = null;
 let _pinActive  = false;
 let _currentPIN = null;
 let _currentKey = null; // non-extractable CryptoKey
+const TS_SESSION_KEY = 'ts-session-key-v1';
 
 function _b64(buf){ return btoa(String.fromCharCode(...new Uint8Array(buf))); }
 function _unb64(s){ return Uint8Array.from(atob(s), c=>c.charCodeAt(0)).buffer; }
@@ -10609,6 +10601,7 @@ function lockApp(){
   _currentPIN = null;
   _currentKey = null;
   _chatSettingsCache = null;
+  sessionStorage.removeItem(TS_SESSION_KEY);
   const ls = document.getElementById('lock-screen');
   ls.classList.add('open');
   document.getElementById('lock-pin-input').value = '';
@@ -10657,6 +10650,8 @@ async function unlockApp(){
   _unlockBackoffUntil = 0;
   _currentPIN = null; // clear immediately
   _pinActive = true;
+  // Store PIN in sessionStorage for cross-device pull decryption (tab-scoped, cleared on lock)
+  try { sessionStorage.setItem(TS_SESSION_KEY, btoa(unescape(encodeURIComponent(pin)))); } catch {}
   // Derive CryptoKey from PIN so raw string isn't held in memory
   { const {salt} = JSON.parse(localStorage.getItem(PIN_CHECK_KEY)||'{}');
     if(salt) _deriveKey(pin, _unb64(salt)).then(k=>{ _currentKey=k; }).catch(()=>{}); }
@@ -10773,6 +10768,7 @@ async function settingsSavePIN(){
   _clearSensitiveKeys();
   _currentPIN = null;
   _pinActive = true;
+  try { sessionStorage.setItem(TS_SESSION_KEY, btoa(unescape(encodeURIComponent(p1)))); } catch {}
   { const {salt} = JSON.parse(localStorage.getItem(PIN_CHECK_KEY)||'{}');
     if(salt) _deriveKey(p1, _unb64(salt)).then(k=>{ _currentKey=k; }).catch(()=>{}); }
   const strengthEl = document.getElementById('settings-pw-strength');
@@ -10806,6 +10802,7 @@ async function settingsRemovePIN(){
   _currentPIN = null;
   _currentKey = null;
   _pinActive = false;
+  sessionStorage.removeItem(TS_SESSION_KEY);
   if(_lockTimer){ clearTimeout(_lockTimer); _lockTimer=null; }
   document.getElementById('lock-btn').style.display='none';
   _setSettingsStatus('Password removed. Your data is no longer encrypted.','ok');
@@ -10841,6 +10838,7 @@ async function settingsChangePIN(){
   localStorage.setItem(ENC_KEY, enc);
   _clearSensitiveKeys();
   _currentPIN = null;
+  try { sessionStorage.setItem(TS_SESSION_KEY, btoa(unescape(encodeURIComponent(newPin)))); } catch {}
   { const {salt} = JSON.parse(localStorage.getItem(PIN_CHECK_KEY)||'{}');
     if(salt) _deriveKey(newPin, _unb64(salt)).then(k=>{ _currentKey=k; }).catch(()=>{}); }
   _setSettingsStatus('Password changed.','ok');
@@ -11088,9 +11086,46 @@ function _doInit() {
     .then(r => r.json())
     .then(data => {
       appState = data;
-      // Build balance history from embedded history or current weights
+      // Build balance history from embedded history or current weights.
+      // Shift all dates forward so the latest entry always lands on today,
+      // keeping the demo charts populated up to the current date.
       if (data._balanceHistory && Array.isArray(data._balanceHistory)) {
-        saveBalHist(data._balanceHistory);
+        const balHist = data._balanceHistory;
+        const MS_DAY = 86400000;
+        const today = new Date(); today.setHours(0,0,0,0);
+        const todayStr = today.toISOString().slice(0,10);
+        const latestDate = balHist.reduce((max, e) => e.date > max ? e.date : max, '');
+        if (latestDate && latestDate !== todayStr) {
+          const shift = Math.round((today.getTime() - new Date(latestDate).getTime()) / MS_DAY);
+          balHist.forEach(e => {
+            if (e.date) {
+              const d = new Date(e.date); d.setDate(d.getDate() + shift);
+              e.date = d.toISOString().slice(0,10);
+            }
+          });
+          // Synthesise daily check-in entries for the past 7 days so the
+          // split 7-day panel of the chart is always populated.
+          const lastEntry = balHist[balHist.length - 1];
+          if (lastEntry && lastEntry.weights) {
+            const byDate = new Map(balHist.map(e => [e.date, e]));
+            for (let i = 6; i >= 1; i--) {
+              const d = new Date(today); d.setDate(d.getDate() - i);
+              const ds = d.toISOString().slice(0,10);
+              if (!byDate.has(ds)) {
+                // Interpolate weights slightly toward today's values with minor noise
+                const frac = (7 - i) / 7;
+                const w = {};
+                const keys = Object.keys(lastEntry.weights);
+                let total = 0;
+                keys.forEach(k => { w[k] = Math.max(0.01, lastEntry.weights[k] + (Math.random() - 0.5) * 0.02 * frac); total += w[k]; });
+                keys.forEach(k => { w[k] = Math.round(w[k] / total * 100) / 100; });
+                balHist.push({ date: ds, weights: w, source: 'check-in' });
+              }
+            }
+            balHist.sort((a,b) => a.date < b.date ? -1 : 1);
+          }
+        }
+        saveBalHist(balHist);
         delete appState._balanceHistory;
       } else if (data.parts && data.parts.some(p => p.balanceWeight)) {
         saveBalHist([]);
@@ -11758,6 +11793,7 @@ function _openChatOverlay() {
   const savedCompact = localStorage.getItem('ts-chat-compact') === '1';
   overlay.classList.toggle('compact', savedCompact);
   document.body.classList.toggle('chat-sidebar', savedCompact);
+  if (!savedCompact) document.body.style.overflow = 'hidden';
   const compactBtn = document.getElementById('chat-compact-btn');
   if (compactBtn) {
     compactBtn.innerHTML = savedCompact
@@ -11803,6 +11839,7 @@ function _openChatOverlay() {
 function closeChat() {
   document.getElementById('chat-overlay')?.classList.remove('open');
   document.body.classList.remove('chat-sidebar');
+  document.body.style.overflow = '';
   if (chatState.isLoading) document.getElementById('chat-btn')?.classList.add('chat-btn-loading');
 }
 
@@ -11811,6 +11848,7 @@ function chatToggleCompact() {
   if (!overlay) return;
   const isCompact = overlay.classList.toggle('compact');
   document.body.classList.toggle('chat-sidebar', isCompact);
+  document.body.style.overflow = isCompact ? '' : 'hidden';
   try { localStorage.setItem('ts-chat-compact', isCompact ? '1' : '0'); } catch {}
   const btn = document.getElementById('chat-compact-btn');
   if (btn) {
@@ -12643,10 +12681,10 @@ async function _chatGenerateTitle(sessionId, messages) {
   const convo = messages.filter(m => m.role === 'user' || m.role === 'assistant');
   if (convo.length < 2) return;
   const transcript = convo.map(m => (m.role === 'user' ? 'User: ' : 'AI: ') + m.content.slice(0, 400)).join('\n\n');
-  const titleMessages = [{ role: 'user', content: 'Conversation so far:\n\n' + transcript + '\n\nReply with only a short title (max 8 words). Multiple topics: separate with " | ". No punctuation at end. No quotes.' }];
+  const titleMessages = [{ role: 'user', content: 'Conversation so far:\n\n' + transcript + '\n\nReply with only a short title (2-4 words, 5 max). No punctuation at end. No quotes.' }];
   try {
-    const title = (await callChatAPI(titleMessages, 'You generate concise chat titles.')).trim().replace(/^["']|["']$/g, '').replace(/\.$/, '');
-    if (!title || title.length > 120) return;
+    const title = (await callChatAPI(titleMessages, 'You generate very concise chat titles. Keep them to 2-4 words.')).trim().replace(/^["']|["']$/g, '').replace(/\.$/, '');
+    if (!title || title.length > 60) return;
     if (!appState.chatSessions) return;
     const idx = appState.chatSessions.findIndex(s => s.id === sessionId);
     if (idx < 0) return;
@@ -13083,17 +13121,23 @@ async function gitSyncPull() {
       if (!raw.startsWith('{"iv"') && !raw.startsWith('{"salt"')) throw new Error('The file at that path is not a team-sheet backup. Check your owner/repo/path settings.');
       pulledEnc = raw;
     }
-    // Decrypt remote state with the current PIN and smart-merge into local state
-    const pin = _currentPIN;
-    if (!pin) throw new Error('Your authentication session has expired. Lock and unlock again, then retry.');
-    const remotePlain = await _decrypt(pin, pulledEnc);
+    // Decrypt remote state — must re-derive from PIN so the remote blob's salt is used
+    const _pullPIN = _currentPIN || (() => {
+      try { const s = sessionStorage.getItem(TS_SESSION_KEY); return s ? decodeURIComponent(escape(atob(s))) : null; } catch { return null; }
+    })();
+    if (!_pullPIN) throw new Error('Your authentication session has expired. Lock and unlock again, then retry.');
+    const remotePlain = await _decrypt(_pullPIN, pulledEnc);
     if (!remotePlain) throw new Error('Could not decrypt the backup. Make sure you are using the same password as on the device that pushed it.');
     let remoteBlob;
     try { remoteBlob = JSON.parse(remotePlain); } catch { throw new Error('Backup file is corrupted or unreadable.'); }
     const remoteState = remoteBlob.state || remoteBlob;
     if (!remoteState || typeof remoteState !== 'object') throw new Error('Backup file does not contain valid data.');
+    // Full restore: write all blob keys back to localStorage, then re-render
     closeGitSyncModal();
-    applyUpdate(remoteState);
+    _restoreBlob(remoteBlob);
+    appState = remoteState;
+    saveState(appState);
+    render(appState);
     gs.lastPulled = new Date().toISOString();
     await saveGitSyncSettings(gs);
     showToast('Pulled and merged from ' + gs.owner + '/' + gs.repo + '.');
@@ -13905,24 +13949,22 @@ function _tourPosition(step){
   <div id="chat-resize-handle"></div>
   <div class="chat-hdr">
     <div class="chat-hdr-left">
-      <div class="chat-hdr-app">team-sheet</div>
-      <div class="chat-hdr-title-row">
-        <span id="chat-hdr-num" class="chat-hdr-num"></span>
-        <div id="chat-hdr-title" class="chat-hdr-title" contenteditable="true" spellcheck="false"
-          data-placeholder="Click to name this session"
-          title="Click to rename this session"
-          onblur="chatTitleSave(this)"
-          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}else if(event.key==='Escape'){chatTitleAbort(this);this.blur()}"
-          onfocus="chatTitleFocus(this)"></div>
-        <button id="chat-hdr-lock-btn" class="chat-hdr-lock-btn" onclick="chatTitleToggleLock()"><span class="lock-icon">🤖</span><span class="lock-label">AI names</span></button>
-        <div class="chat-sess-picker-wrap" id="chat-sess-picker-wrap" style="display:none">
-          <button class="chat-sess-picker-btn" id="chat-sess-picker-btn" onclick="chatPickerToggle()" title="Load a past session">Past sessions <span class="picker-arrow">&#9660;</span></button>
-          <div class="chat-sess-picker-panel" id="chat-sess-picker-panel"></div>
-        </div>
-      </div>
+      <div class="chat-hdr-app">ts</div>
+      <span id="chat-hdr-num" class="chat-hdr-num"></span>
+      <div id="chat-hdr-title" class="chat-hdr-title" contenteditable="true" spellcheck="false"
+        data-placeholder="Click to name this session"
+        title="Click to rename this session"
+        onblur="chatTitleSave(this)"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}else if(event.key==='Escape'){chatTitleAbort(this);this.blur()}"
+        onfocus="chatTitleFocus(this)"></div>
     </div>
     <div class="chat-hdr-right">
       <span id="chat-cost-display" class="chat-cost-display" style="display:none"></span>
+      <button id="chat-hdr-lock-btn" class="chat-hdr-lock-btn chat-icon-btn" onclick="chatTitleToggleLock()"><span class="lock-icon chat-icon-glyph">🤖</span><span class="lock-label chat-icon-label">AI names</span></button>
+      <div class="chat-sess-picker-wrap" id="chat-sess-picker-wrap" style="display:none">
+        <button class="chat-sess-picker-btn" id="chat-sess-picker-btn" onclick="chatPickerToggle()" title="Load a past session">Past sessions <span class="picker-arrow">&#9660;</span></button>
+        <div class="chat-sess-picker-panel" id="chat-sess-picker-panel"></div>
+      </div>
       <button class="chat-icon-btn" id="chat-compact-btn" onclick="chatToggleCompact()" title="Sidebar mode"><span class="chat-icon-glyph">&#x2922;</span><span class="chat-icon-label">Sidebar</span></button>
       <button class="chat-icon-btn" id="chat-hdr-settings-btn" onclick="openChatSettings()" title="Settings"><span class="chat-icon-glyph">&#9881;</span><span id="chat-hdr-model" class="chat-hdr-model-inline"></span></button>
       <button class="chat-icon-btn" onclick="closeChat()" title="Close (Esc)"><span class="chat-icon-glyph">&#x2715;</span><span class="chat-icon-label">Close</span></button>
