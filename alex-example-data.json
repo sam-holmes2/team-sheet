@@ -3,20 +3,9 @@
     "name": "Alex's Inner System",
     "systemSummary": "A system shaped by an environment where love felt conditional on achievement and emotional needs went largely unmet. The Achiever and The Inner Critic form the dominant operating partnership, running daily life through high output and harsh self-evaluation.\n\nThe Soother serves as the pressure valve when the Achiever-Critic loop overheats, stepping in with distraction and numbing. The Pleaser operates quietly in the background, smoothing over conflict before it surfaces.\n\nUnderneath them all is The Younger One, carrying deep loneliness and the belief that she is fundamentally not enough as she is. Self exists and is making real but fragile contact.",
     "recentShifts": "The Critic softened when asked about its origins and acknowledged the primary school teacher connection for the first time. The Achiever and Critic are beginning to be seen as distinct. The Younger One made brief contact with Self, and The Pleaser was named for the first time.",
-    "topTensions": [
-      "The Achiever and The Soother are locked in a push-pull: The Achiever refuses to rest until it crashes, The Soother overshoots, and The Critic narrates the failure of both.",
-      "The Critic attacks The Pleaser for being spineless while The Pleaser tries to smooth over exactly the conflict The Critic creates, both working against each other while protecting the same wound."
-    ],
-    "topQuestions": [
-      "What is The Critic actually protecting underneath the fear of mediocrity, and what would it lose if it softened for good?",
-      "What does The Younger One need from Self before she will allow real contact, given that she is moving closer but still testing whether it is safe?",
-      "Is The Pleaser willing to try expressing a genuine preference in a low-stakes situation, and what does it expect will happen?"
-    ],
-    "topExperiments": [
-      "When The Critic fires after finishing something, pause before the next task and ask it what it is afraid will happen in that gap, then just listen without arguing.",
-      "Notice The Pleaser the moment it activates in a conversation, and ask what the exact trigger was and what it prevented by stepping in.",
-      "Spend two minutes with The Younger One before sleep, acknowledging she is there without reassuring or fixing."
-    ],
+    "topQuestion1": "What is The Critic actually protecting underneath the fear of mediocrity, and what would it lose if it softened for good?",
+    "topQuestion2": "What does The Younger One need from Self before she will allow real contact, given that she is moving closer but still testing whether it is safe?",
+    "topQuestion3": "Is The Pleaser willing to try expressing a genuine preference in a low-stakes situation, and what does it expect will happen?",
     "journeyStage": "developing",
     "currentAge": 34,
     "birthDate": "1992-03-14"
@@ -32,50 +21,41 @@
         "Turning vague ambitions into concrete plans and action",
         "Sustaining effort across long timelines, especially when there is external accountability",
         "Spotting what needs to happen next before anyone else does",
-        "Performing well under pressure and on visible stages",
         "Difficulty stopping, resting, or being present without an agenda"
       ],
       "wants": [
         "To have something to show for the time spent",
         "To be seen as capable, competent, and ahead of the curve",
-        "A full calendar and a clear next step at all times",
         "Recognition that lands as real and lasting, not just temporary"
       ],
       "valuesAndNeeds": [
         "Competence and forward momentum above almost everything",
-        "Knowing there is a plan and that the effort is going somewhere",
         "Visibility: being seen doing the work, not just having done it",
         "Proof that the output is good enough to justify the investment"
       ],
       "needsFromSelf": [
         "To be told that its worth is not on the line with every deliverable",
-        "For Self to not simply override it but to actually hear what it is protecting against",
         "Reassurance that slowing down will not cause irreversible loss"
       ],
       "fears": [
         "Being ordinary. Invisible. Having nothing to show.",
         "That stopping will mean falling behind and never catching up",
-        "Being found out as less capable than people think",
-        "That without drive, there is nothing worth staying for"
+        "Being found out as less capable than people think"
       ],
       "burdens": [
         "The belief that worth must be earned through output, taken on from an environment where love felt conditional on performance",
-        "The equation of stillness with failure, learned before there was language for it",
         "The feeling that there is never quite enough done, no matter how much gets done"
       ],
       "triggers": [
         "Seeing others who appear to be achieving more or moving faster",
         "Unstructured time with no clear deliverable or purpose",
-        "Receiving ambiguous or delayed feedback on work",
         "Sunday evenings, when the week ahead feels unplanned"
       ],
       "trailheads": [
-        "A tight, forward-leaning tension across the chest and upper shoulders",
-        "Restlessness in the legs: an urge to stand, pace, or move"
+        "A tight, forward-leaning tension across the chest and upper shoulders"
       ],
       "potentialRoles": [
-        "Genuine ambition rooted in love of the work rather than fear of inadequacy",
-        "A steady source of energy and vision that knows when to rest"
+        "Genuine ambition rooted in love of the work rather than fear of inadequacy"
       ],
       "relationships": [
         {
@@ -108,36 +88,22 @@
           "thisPartToOther": "Resents The Soother when it interrupts a productive streak. Sees it as weak.",
           "otherToThisPart": "The Soother deploys after The Achiever burns out. Offers relief but also enables the next burnout cycle.",
           "dynamic": "polarized",
-          "notes": "Classic manager-firefighter tension. The Achiever-Soother swing is the main energy pattern in this system."
-        },
-        {
-          "partId": "part-pleaser",
-          "partName": "The Pleaser",
-          "thisPartToOther": "Finds The Pleaser useful in professional contexts: it gets the room onside. Privately contemptuous of it.",
-          "otherToThisPart": "The Pleaser admires The Achiever's output and uses it as social currency.",
-          "dynamic": "allied",
-          "notes": "Cooperate in the world but from different fears."
+          "notes": "The Achiever-Soother swing is the main energy pattern in this system."
         }
       ],
       "emergedAge": 8,
-      "emergedAgeNote": "Around age 8, when academic performance began to feel like it determined whether Alex was loveable. May be earlier.",
+      "emergedAgeNote": "Around age 8, when academic performance began to feel like it determined whether Alex was loveable.",
       "keyEvents": [
         {
           "label": "Won class prize; father seemed proud for the first time in months",
           "age": 8,
           "sessionId": "session-001",
           "notes": "First clear memory of effort producing a change in emotional temperature at home."
-        },
-        {
-          "label": "Failed to get top mark; avoided talking for two days",
-          "age": 11,
-          "sessionId": "session-002",
-          "notes": "The Achiever's fear of being ordinary first had a name here."
         }
       ],
       "balanceWeight": 0.30,
       "nodeSize": "large",
-      "lastUpdated": "2026-04-17"
+      "lastUpdated": "2026-04-22"
     },
     {
       "id": "part-critic",
@@ -146,7 +112,6 @@
       "overview": "The internal quality-control voice that prevents embarrassment by attacking first",
       "skills": [
         "Spotting gaps, inconsistencies, and risks before anyone else names them",
-        "Keeping standards high and preventing complacency",
         "Articulating precisely what is wrong with a piece of work",
         "Anticipating how others might judge and preparing defences",
         "Turning impeccable taste into a weapon aimed inward"
@@ -154,53 +119,43 @@
       "wants": [
         "Flawlessness, or failing that, plausible deniability",
         "To be listened to rather than overridden or ignored",
-        "The gap between what Alex can imagine and what Alex produces to close",
         "To be right about the risk before the risk materialises"
       ],
       "valuesAndNeeds": [
         "Honesty, precision, and high standards above comfort",
-        "To be taken seriously as a protective voice rather than dismissed as noise",
         "Evidence that lowering the attack will not result in mediocrity"
       ],
       "needsFromSelf": [
         "To be asked what it is afraid of, not just told to be quieter",
-        "Acknowledgement that its fear of mediocrity is real and was once rational",
-        "For Self to not outsource the quality function to others before the Critic feels heard"
+        "Acknowledgement that its fear of mediocrity is real and was once rational"
       ],
       "fears": [
         "Being exposed as mediocre in front of people who matter",
-        "The gap between what Alex can imagine and what Alex can produce becoming visible to others",
-        "That without harshness, standards will collapse and nothing worthwhile will get made",
-        "Being laughed at or dismissed"
+        "That without harshness, standards will collapse and nothing worthwhile will get made"
       ],
       "burdens": [
         "The belief that harsh internal criticism protects against harsher external judgment: better to hear it from yourself first",
-        "Formed partly around a specific teacher whose feedback was cutting and public",
-        "The equation of gentleness toward self with dangerous complacency"
+        "Formed partly around a specific teacher whose feedback was cutting and public"
       ],
       "triggers": [
         "Submitting work or sharing something that cannot be taken back",
-        "Receiving feedback that is vague, delayed, or enthusiastic without specifics",
-        "Watching someone else succeed at something Alex wants to do",
         "Making a mistake in a social or professional context",
         "The moment after a good performance, when the adrenaline fades"
       ],
       "trailheads": [
-        "A constriction in the throat, like something being swallowed back down",
-        "A sudden drop in the stomach after saying or doing something visible"
+        "A constriction in the throat, like something being swallowed back down"
       ],
       "potentialRoles": [
-        "A trusted editorial voice with impeccable taste and no cruelty",
-        "An advisor who names risk early and then steps back"
+        "A trusted editorial voice with impeccable taste and no cruelty"
       ],
       "relationships": [
         {
           "partId": "self",
           "partName": "Self",
           "thisPartToOther": "Suspicious of Self's unconditional warmth. It feels naive, like it is missing something important.",
-          "otherToThisPart": "Self recognises The Critic is trying to protect Alex, even when the methods are painful. Wants to get underneath the harshness.",
+          "otherToThisPart": "Self recognises The Critic is trying to protect Alex, even when the methods are painful.",
           "dynamic": "distant",
-          "notes": "The Critic's suspicion of Self is the main obstacle. When it softened in session three, it was the first real crack."
+          "notes": "The Critic's suspicion of Self is the main obstacle. When it softened in the third session, it was the first real crack."
         },
         {
           "partId": "part-achiever",
@@ -215,39 +170,31 @@
           "partName": "The Younger One",
           "thisPartToOther": "Turns on The Younger One hardest of all. Her neediness is embarrassing.",
           "otherToThisPart": "The Younger One is terrified of The Critic. Hides when it is loud.",
-          "dynamic": "polarized",
-          "notes": "The Critic originally formed partly to manage The Younger One's vulnerability and prevent it from showing."
-        },
-        {
-          "partId": "part-soother",
-          "partName": "The Soother",
-          "thisPartToOther": "Criticises The Soother's methods even while the system is using them. Narrates the failure of both extremes.",
-          "otherToThisPart": "The Soother does not argue back. Just waits for The Critic to exhaust itself.",
-          "dynamic": "distant",
-          "notes": ""
+          "dynamic": "protective",
+          "notes": "The Critic originally formed partly to prevent The Younger One's vulnerability from showing. It is a protector, even if a harsh one."
         },
         {
           "partId": "part-pleaser",
           "partName": "The Pleaser",
           "thisPartToOther": "Criticises The Pleaser for being spineless and says it makes everything worse.",
-          "otherToThisPart": "The Pleaser absorbs the criticism and tries harder to smooth things over.",
+          "otherToThisPart": "The Pleaser absorbs the criticism and tries harder to compensate.",
           "dynamic": "polarized",
           "notes": "The Critic's contempt for The Pleaser may be partly self-directed."
         }
       ],
       "emergedAge": 10,
-      "emergedAgeNote": "Became a distinct voice around age 10, when the gap between what Alex could imagine and produce first felt painful. Connected to a primary school teacher's public, cutting feedback.",
+      "emergedAgeNote": "Became a distinct voice around age 10, connected to a primary school teacher's public, cutting feedback.",
       "keyEvents": [
         {
           "label": "Teacher read out Alex's essay as an example of careless work",
           "age": 10,
           "sessionId": "session-003",
-          "notes": "First time public exposure of inadequacy felt catastrophic. The Critic formed to prevent this from happening again."
+          "notes": "First time public exposure of inadequacy felt catastrophic."
         }
       ],
       "balanceWeight": 0.24,
       "nodeSize": "large",
-      "lastUpdated": "2026-04-17"
+      "lastUpdated": "2026-04-22"
     },
     {
       "id": "part-younger-one",
@@ -255,49 +202,37 @@
       "role": "exile",
       "overview": "A young part who carries deep loneliness and the feeling of being fundamentally unseen",
       "skills": [
-        "Pure, undefended feeling. Knows what actually matters without the noise.",
+        "Pure, undefended feeling: knows what actually matters without the noise",
         "Genuine capacity for tenderness and real connection when she feels safe",
-        "Can sense when someone is truly present versus performing presence",
         "Carries the system's original need for contact and belonging"
       ],
       "wants": [
         "To be seen without having to perform or prove anything",
-        "To be held and not left",
         "To stop running and just be with someone who is not going anywhere",
         "For the loneliness to not be permanent"
       ],
       "valuesAndNeeds": [
-        "Presence. Someone actually there, not adjacent.",
-        "Tenderness without agenda",
-        "The knowledge that she will not be abandoned for being vulnerable",
-        "Belonging that does not have to be earned"
+        "Presence: someone actually there, not adjacent",
+        "The knowledge that she will not be abandoned for being vulnerable"
       ],
       "needsFromSelf": [
         "For Self to move slowly and not rush contact",
-        "To not be fixed or reassured, just sat with",
-        "For the other parts to not immediately close back down when she shows up",
-        "To know Self will stay even if what she carries is heavy"
+        "To not be fixed or reassured, just sat with"
       ],
       "fears": [
         "That she is too much, and if she shows up fully, people will leave",
-        "That the loneliness is permanent and structural, not a wound that can heal",
-        "The Critic's voice. She goes very quiet when it is loud.",
-        "Being visible and then unseen again: the second abandonment is worse than the first"
+        "The Critic's voice: she goes very quiet when it is loud"
       ],
       "burdens": [
-        "The belief that she is fundamentally not enough as she is, taken on from an environment that could not fully meet her needs",
-        "The feeling that her emotional reality was too much for the people around her",
+        "The belief that she is fundamentally not enough as she is",
         "The split between performing okayness and the loneliness underneath"
       ],
       "triggers": [
         "Moments of warmth or closeness that then end abruptly",
-        "Being around people who seem indifferent to whether she is there or not",
-        "Someone not responding to a message for a long time",
-        "Watching families or groups who seem at ease with each other"
+        "Someone not responding to a message for a long time"
       ],
       "trailheads": [
-        "A hollow ache just below the sternum, like something scooped out",
-        "An impulse to curl inward, draw the knees up, make the body smaller"
+        "A hollow ache just below the sternum, like something scooped out"
       ],
       "relationships": [
         {
@@ -309,40 +244,32 @@
           "notes": "There is real movement here. The brief contact in session two, and again in session four, is significant."
         },
         {
-          "partId": "part-achiever",
-          "partName": "The Achiever",
-          "thisPartToOther": "Watches The Achiever run and does not understand why everything has to be earned. Feels left behind.",
-          "otherToThisPart": "The Achiever has no bandwidth for her. She would slow the whole thing down.",
-          "dynamic": "distant",
-          "notes": ""
-        },
-        {
           "partId": "part-critic",
           "partName": "The Inner Critic",
           "thisPartToOther": "Hides from The Critic. Goes very still when it is loud.",
           "otherToThisPart": "The Critic sees her as evidence of weakness. The thing most needing to be contained.",
-          "dynamic": "polarized",
-          "notes": "The Critic originally formed partly to prevent The Younger One from showing. This is the most painful dynamic in the system."
+          "dynamic": "unknown",
+          "notes": "The Critic references this relationship as protective; from The Younger One's side it is simply fear."
         },
         {
           "partId": "part-soother",
           "partName": "The Soother",
           "thisPartToOther": "Finds some comfort in The Soother's presence. It at least offers a pause in the driving.",
           "otherToThisPart": "The Soother responds to The Younger One's pain, but with numbing rather than genuine contact.",
-          "dynamic": "protective",
-          "notes": "The Soother is partly responding to The Younger One's distress even if imperfectly. It means well."
+          "dynamic": "unknown",
+          "notes": "The Soother is partly responding to The Younger One's distress even if imperfectly."
         },
         {
           "partId": "part-pleaser",
           "partName": "The Pleaser",
           "thisPartToOther": "Recognises that The Pleaser is trying to do what she could not: make people stay.",
           "otherToThisPart": "The Pleaser is one of the parts most directly trying to protect The Younger One from further rejection.",
-          "dynamic": "protective",
+          "dynamic": "unknown",
           "notes": "The Pleaser's strategy emerged directly from The Younger One's fear of abandonment."
         }
       ],
       "emergedAge": 5,
-      "emergedAgeNote": "The loneliness seems to trace back to early childhood, around age 5. A time when emotional needs were real but the environment could not fully meet them.",
+      "emergedAgeNote": "The loneliness seems to trace back to early childhood, around age 5.",
       "keyEvents": [
         {
           "label": "Waited at the window for a parent who was often late or did not come",
@@ -353,7 +280,7 @@
       ],
       "balanceWeight": 0.06,
       "nodeSize": "small",
-      "lastUpdated": "2026-04-17"
+      "lastUpdated": "2026-04-22"
     },
     {
       "id": "part-soother",
@@ -362,48 +289,38 @@
       "overview": "Arrives after overwhelm to offer relief through distraction, comfort food, scrolling, and numbing",
       "skills": [
         "Creating immediate relief from pressure with very little effort",
-        "Finding the lowest-resistance path to stopping the pain: scroll, snack, watch, sleep",
-        "Genuine enjoyment of rest, small pleasures, and ease when not driven by emergency",
+        "Genuine enjoyment of rest and small pleasures when not driven by emergency",
         "Knowing exactly which distraction the system needs in which moment"
       ],
       "wants": [
         "To stop. To not think. To be comfortable and off the hook.",
-        "Permission to rest without owing the time back",
         "For the pressure to be gone long enough to actually breathe"
       ],
       "valuesAndNeeds": [
         "Relief and ease without conditions attached",
-        "Permission to stop: the sense that stopping is allowed",
         "Safety in stillness: that stopping will not cause something to collapse"
       ],
       "needsFromSelf": [
         "For Self to offer real rest before the emergency hits, so The Soother does not have to overshoot",
-        "To be told that rest is not weakness and is not owed back",
-        "For The Achiever to stop narrating the failure of every minute not spent producing"
+        "To be told that rest is not weakness and is not owed back"
       ],
       "fears": [
         "The pain that surfaces when distraction is removed",
-        "That if the numbing stops, something unbearable will rise and cannot be put back",
         "Being forced back into the driver's seat before recovery is real"
       ],
       "burdens": [
-        "The belief that rest must be earned, so when it finally arrives it overshoots into shutdown",
-        "The equation of stopping with failure, borrowed from The Achiever's framework",
-        "Relief that has become compulsive because there is no other exit valve"
+        "Relief that has become compulsive because there is no other exit valve",
+        "The equation of stopping with failure, borrowed from The Achiever's framework"
       ],
       "triggers": [
-        "The Achiever burning out or hitting a wall after sustained high output",
-        "Any moment of genuine emotional exposure: vulnerability that has no container",
-        "Finishing something significant and having nothing to replace the momentum",
-        "Being criticised harshly or publicly"
+        "The Achiever burning out after sustained high output",
+        "Any moment of genuine emotional exposure with no container"
       ],
       "trailheads": [
-        "A heaviness through the whole body, like gravity has increased",
         "A pull toward the phone, the fridge, or the couch with no clear trigger"
       ],
       "potentialRoles": [
-        "Genuine nourishment and healthy self-care rooted in real enjoyment rather than emergency",
-        "The part that knows how to mark completion and transition between efforts"
+        "Genuine nourishment and healthy self-care rooted in real enjoyment rather than emergency"
       ],
       "relationships": [
         {
@@ -420,15 +337,7 @@
           "thisPartToOther": "Steps in when The Achiever collapses. Offers the opposite of everything The Achiever values.",
           "otherToThisPart": "The Achiever resents the interruption but also depends on The Soother for recovery.",
           "dynamic": "polarized",
-          "notes": "The Achiever-Soother swing is the main energy pattern. Each extreme enables the other."
-        },
-        {
-          "partId": "part-critic",
-          "partName": "The Inner Critic",
-          "thisPartToOther": "Does not argue back. Just waits for The Critic to exhaust itself.",
-          "otherToThisPart": "The Critic narrates The Soother's failure even while the system is using it.",
-          "dynamic": "distant",
-          "notes": ""
+          "notes": "The Achiever-Soother swing is the main energy pattern."
         },
         {
           "partId": "part-younger-one",
@@ -436,19 +345,11 @@
           "thisPartToOther": "Tries to offer The Younger One relief from pain through numbing. Means well but misses what she actually needs.",
           "otherToThisPart": "The Younger One finds some comfort here, even if it is not the contact she actually wants.",
           "dynamic": "protective",
-          "notes": "The Soother is partly responding to The Younger One's distress. It is an imperfect but real form of care."
-        },
-        {
-          "partId": "part-pleaser",
-          "partName": "The Pleaser",
-          "thisPartToOther": "Somewhat aware of The Pleaser. Activates partly when the social performance becomes exhausting.",
-          "otherToThisPart": "The Pleaser sometimes tries to hold things together socially while The Soother is running.",
-          "dynamic": "distant",
-          "notes": ""
+          "notes": "The Soother is partly responding to The Younger One's distress. An imperfect but real form of care."
         }
       ],
       "emergedAge": 14,
-      "emergedAgeNote": "The Soother became noticeable in early adolescence, around 14, as academic pressure mounted and home felt emotionally unavailable. Probably existed in milder form earlier.",
+      "emergedAgeNote": "The Soother became noticeable in early adolescence, around 14, as academic pressure mounted.",
       "keyEvents": [
         {
           "label": "First time Alex spent an entire day in bed with the curtains closed",
@@ -459,66 +360,55 @@
       ],
       "balanceWeight": 0.15,
       "nodeSize": "medium",
-      "lastUpdated": "2026-04-14"
+      "lastUpdated": "2026-04-22"
     },
     {
       "id": "part-pleaser",
       "name": "The Pleaser",
       "role": "manager",
-      "overview": "Manages relationships by anticipating what others need and pre-emptively providing it, before conflict can surface",
+      "overview": "Manages relationships by anticipating what others need and providing it before conflict can surface",
       "skills": [
         "Reading a room quickly and adjusting tone, affect, and content to fit it",
-        "Keeping the emotional temperature stable in groups",
         "Knowing what someone needs to hear and finding a way to say it",
         "Making others feel valued, understood, and at ease",
         "Disappearing its own preferences so completely that Alex often does not notice what was given up"
       ],
       "wants": [
         "For everyone to be okay with Alex. To be liked and not cause a problem.",
-        "To avoid conflict, tension, or the withdrawal of warmth",
         "To be useful enough that people choose to stay"
       ],
       "valuesAndNeeds": [
         "Harmony in the room: the sense that no one is quietly unhappy",
-        "Approval that signals safety: that Alex is not about to be rejected",
-        "Flexibility: the ability to shape-shift rather than be a fixed target"
+        "Approval that signals safety: that Alex is not about to be rejected"
       ],
       "needsFromSelf": [
         "For Self to model that Alex's own needs can be expressed without rupture",
-        "Reassurance that conflict will not mean permanent loss of the relationship",
-        "For The Critic to stop telling it that appeasement is pathetic"
+        "Reassurance that conflict will not mean permanent loss of the relationship"
       ],
       "fears": [
         "Disapproval. The withdrawal of warmth or connection from someone who matters.",
-        "Being seen as difficult, demanding, or too much",
-        "That if Alex says what is actually true, people will leave",
-        "Conflict: even mild, resolvable conflict"
+        "That if Alex says what is actually true, people will leave"
       ],
       "burdens": [
         "The belief that love is conditional on being agreeable and not causing difficulty",
-        "The early learning that expressing needs directly produced withdrawal or irritation",
         "Carrying the responsibility for other people's emotional states as though they were Alex's to manage"
       ],
       "triggers": [
         "Sensing even mild displeasure or distance in someone whose approval matters",
-        "A request that conflicts with what someone important seems to want",
-        "Group situations where the social temperature is ambiguous",
         "Being asked a direct preference question in a social setting"
       ],
       "trailheads": [
-        "A tightening across the upper chest paired with the urge to smile before feeling anything",
-        "A mild nausea or hollowing in the gut when what Alex wants to say and what feels safe to say diverge"
+        "A tightening across the upper chest paired with the urge to smile before feeling anything"
       ],
       "potentialRoles": [
-        "A genuinely warm and attuned relational presence who can be real without strategic warmth",
-        "The part that actually cares about others, freed from the fear that drives it"
+        "A genuinely warm and attuned relational presence who can be real without strategic warmth"
       ],
       "relationships": [
         {
           "partId": "self",
           "partName": "Self",
           "thisPartToOther": "Would like Self's support but worries that Self-leadership might mean saying hard things in relationships.",
-          "otherToThisPart": "Self recognises The Pleaser's warmth as real even through the strategy. Wants to honour it without the compulsion.",
+          "otherToThisPart": "Self recognises The Pleaser's warmth as real even through the strategy.",
           "dynamic": "distant",
           "notes": ""
         },
@@ -544,147 +434,161 @@
           "thisPartToOther": "Is trying, in its own way, to protect The Younger One from another rejection.",
           "otherToThisPart": "The Younger One recognises The Pleaser's strategy even if she wishes for something more real.",
           "dynamic": "protective",
-          "notes": "The Pleaser's strategy emerged directly from The Younger One's fear of abandonment. It is a protector for the exile."
+          "notes": "The Pleaser's strategy emerged directly from The Younger One's fear of abandonment. It is the primary protector for the exile."
         }
       ],
       "emergedAge": 7,
-      "emergedAgeNote": "The Pleaser seems to trace back to around age 7, when it became clear that emotional expressiveness or direct need-stating caused withdrawal rather than connection.",
+      "emergedAgeNote": "The Pleaser seems to trace back to around age 7, when direct need-stating caused withdrawal rather than connection.",
       "keyEvents": [
         {
           "label": "Gave up a school trip to stay home with an upset parent",
           "age": 9,
           "sessionId": "session-004",
-          "notes": "First clear memory of choosing someone else's emotional state over a genuine want. Felt right at the time."
+          "notes": "First clear memory of choosing someone else's emotional state over a genuine want."
         }
       ],
       "balanceWeight": 0.17,
       "nodeSize": "medium",
-      "lastUpdated": "2026-04-17"
+      "lastUpdated": "2026-04-22"
     }
   ],
 
   "_selfWeight": 0.10,
 
   "_balanceHistory": [
-    { "date": "2024-10-19", "weights": { "self": 0.02, "part-achiever": 0.44, "part-critic": 0.33, "part-soother": 0.13, "part-younger-one": 0.03, "part-pleaser": 0.05 } },
-    { "date": "2024-11-16", "weights": { "self": 0.02, "part-achiever": 0.46, "part-critic": 0.33, "part-soother": 0.11, "part-younger-one": 0.03, "part-pleaser": 0.05 } },
-    { "date": "2024-12-07", "weights": { "self": 0.02, "part-achiever": 0.42, "part-critic": 0.35, "part-soother": 0.13, "part-younger-one": 0.03, "part-pleaser": 0.05 } },
-    { "date": "2025-01-18", "weights": { "self": 0.03, "part-achiever": 0.38, "part-critic": 0.27, "part-soother": 0.22, "part-younger-one": 0.04, "part-pleaser": 0.06 } },
-    { "date": "2025-02-15", "weights": { "self": 0.02, "part-achiever": 0.37, "part-critic": 0.40, "part-soother": 0.12, "part-younger-one": 0.03, "part-pleaser": 0.06 } },
-    { "date": "2025-03-08", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.28, "part-soother": 0.19, "part-younger-one": 0.05, "part-pleaser": 0.08 } },
-    { "date": "2025-03-29", "weights": { "self": 0.05, "part-achiever": 0.34, "part-critic": 0.26, "part-soother": 0.18, "part-younger-one": 0.07, "part-pleaser": 0.10 } },
-    { "date": "2025-04-26", "weights": { "self": 0.03, "part-achiever": 0.30, "part-critic": 0.25, "part-soother": 0.29, "part-younger-one": 0.05, "part-pleaser": 0.08 } },
-    { "date": "2025-06-07", "weights": { "self": 0.03, "part-achiever": 0.32, "part-critic": 0.28, "part-soother": 0.27, "part-younger-one": 0.03, "part-pleaser": 0.07 } },
-    { "date": "2025-07-19", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.29, "part-soother": 0.18, "part-younger-one": 0.05, "part-pleaser": 0.08 } },
-    { "date": "2025-08-30", "weights": { "self": 0.06, "part-achiever": 0.34, "part-critic": 0.25, "part-soother": 0.17, "part-younger-one": 0.07, "part-pleaser": 0.11 } },
-    { "date": "2025-10-04", "weights": { "self": 0.09, "part-achiever": 0.31, "part-critic": 0.23, "part-soother": 0.16, "part-younger-one": 0.09, "part-pleaser": 0.12 } },
-    { "date": "2025-10-25", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.34, "part-soother": 0.15, "part-younger-one": 0.03, "part-pleaser": 0.08 } },
-    { "date": "2025-11-15", "weights": { "self": 0.07, "part-achiever": 0.32, "part-critic": 0.26, "part-soother": 0.17, "part-younger-one": 0.07, "part-pleaser": 0.11 } },
-    { "date": "2025-12-06", "weights": { "self": 0.05, "part-achiever": 0.39, "part-critic": 0.30, "part-soother": 0.13, "part-younger-one": 0.05, "part-pleaser": 0.08 } },
-    { "date": "2026-01-10", "weights": { "self": 0.08, "part-achiever": 0.33, "part-critic": 0.25, "part-soother": 0.17, "part-younger-one": 0.06, "part-pleaser": 0.11 } },
-    { "date": "2026-01-31", "weights": { "self": 0.06, "part-achiever": 0.34, "part-critic": 0.28, "part-soother": 0.18, "part-younger-one": 0.05, "part-pleaser": 0.09 } },
-    { "date": "2026-02-21", "weights": { "self": 0.08, "part-achiever": 0.31, "part-critic": 0.25, "part-soother": 0.18, "part-younger-one": 0.06, "part-pleaser": 0.12 } },
-    { "date": "2026-03-08", "weights": { "self": 0.07, "part-achiever": 0.33, "part-critic": 0.26, "part-soother": 0.18, "part-younger-one": 0.06, "part-pleaser": 0.10 } },
-    { "date": "2026-03-22", "weights": { "self": 0.09, "part-achiever": 0.31, "part-critic": 0.24, "part-soother": 0.17, "part-younger-one": 0.07, "part-pleaser": 0.12 } },
-    { "date": "2026-04-05", "weights": { "self": 0.08, "part-achiever": 0.30, "part-critic": 0.24, "part-soother": 0.18, "part-younger-one": 0.08, "part-pleaser": 0.12 } },
-    { "date": "2026-04-14", "weights": { "self": 0.11, "part-achiever": 0.28, "part-critic": 0.22, "part-soother": 0.17, "part-younger-one": 0.08, "part-pleaser": 0.14 } },
-    { "date": "2026-04-17", "weights": { "self": 0.10, "part-achiever": 0.29, "part-critic": 0.23, "part-soother": 0.17, "part-younger-one": 0.09, "part-pleaser": 0.12 } },
-    { "date": "2026-04-22", "weights": { "self": 0.12, "part-achiever": 0.27, "part-critic": 0.21, "part-soother": 0.16, "part-younger-one": 0.09, "part-pleaser": 0.15 } }
+    { "date": "2024-10-05", "weights": { "self": 0.02, "part-achiever": 0.44, "part-critic": 0.33, "part-soother": 0.13, "part-younger-one": 0.03, "part-pleaser": 0.05 }, "source": "import" },
+    { "date": "2024-11-02", "weights": { "self": 0.02, "part-achiever": 0.46, "part-critic": 0.33, "part-soother": 0.11, "part-younger-one": 0.03, "part-pleaser": 0.05 }, "source": "import" },
+    { "date": "2024-11-23", "weights": { "self": 0.02, "part-achiever": 0.42, "part-critic": 0.35, "part-soother": 0.13, "part-younger-one": 0.03, "part-pleaser": 0.05 }, "source": "import" },
+    { "date": "2025-01-04", "weights": { "self": 0.03, "part-achiever": 0.38, "part-critic": 0.27, "part-soother": 0.22, "part-younger-one": 0.04, "part-pleaser": 0.06 }, "source": "import" },
+    { "date": "2025-02-01", "weights": { "self": 0.02, "part-achiever": 0.37, "part-critic": 0.40, "part-soother": 0.12, "part-younger-one": 0.03, "part-pleaser": 0.06 }, "source": "import" },
+    { "date": "2025-02-22", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.28, "part-soother": 0.19, "part-younger-one": 0.05, "part-pleaser": 0.08 }, "source": "import" },
+    { "date": "2025-03-15", "weights": { "self": 0.05, "part-achiever": 0.34, "part-critic": 0.26, "part-soother": 0.18, "part-younger-one": 0.07, "part-pleaser": 0.10 }, "source": "import" },
+    { "date": "2025-04-12", "weights": { "self": 0.03, "part-achiever": 0.30, "part-critic": 0.25, "part-soother": 0.29, "part-younger-one": 0.05, "part-pleaser": 0.08 }, "source": "import" },
+    { "date": "2025-05-24", "weights": { "self": 0.03, "part-achiever": 0.32, "part-critic": 0.28, "part-soother": 0.27, "part-younger-one": 0.03, "part-pleaser": 0.07 }, "source": "import" },
+    { "date": "2025-07-05", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.29, "part-soother": 0.18, "part-younger-one": 0.05, "part-pleaser": 0.08 }, "source": "import" },
+    { "date": "2025-08-16", "weights": { "self": 0.06, "part-achiever": 0.34, "part-critic": 0.25, "part-soother": 0.17, "part-younger-one": 0.07, "part-pleaser": 0.11 }, "source": "import" },
+    { "date": "2025-09-20", "weights": { "self": 0.09, "part-achiever": 0.31, "part-critic": 0.23, "part-soother": 0.16, "part-younger-one": 0.09, "part-pleaser": 0.12 }, "source": "import" },
+    { "date": "2025-10-11", "weights": { "self": 0.04, "part-achiever": 0.36, "part-critic": 0.34, "part-soother": 0.15, "part-younger-one": 0.03, "part-pleaser": 0.08 }, "source": "import" },
+    { "date": "2025-11-01", "weights": { "self": 0.07, "part-achiever": 0.32, "part-critic": 0.26, "part-soother": 0.17, "part-younger-one": 0.07, "part-pleaser": 0.11 }, "source": "import" },
+    { "date": "2025-11-22", "weights": { "self": 0.05, "part-achiever": 0.39, "part-critic": 0.30, "part-soother": 0.13, "part-younger-one": 0.05, "part-pleaser": 0.08 }, "source": "import" },
+    { "date": "2025-12-27", "weights": { "self": 0.08, "part-achiever": 0.33, "part-critic": 0.25, "part-soother": 0.17, "part-younger-one": 0.06, "part-pleaser": 0.11 }, "source": "import" },
+    { "date": "2026-01-17", "weights": { "self": 0.06, "part-achiever": 0.34, "part-critic": 0.28, "part-soother": 0.18, "part-younger-one": 0.05, "part-pleaser": 0.09 }, "source": "import" },
+    { "date": "2026-02-07", "weights": { "self": 0.08, "part-achiever": 0.31, "part-critic": 0.25, "part-soother": 0.18, "part-younger-one": 0.06, "part-pleaser": 0.12 }, "source": "import" },
+    { "date": "2026-02-21", "weights": { "self": 0.07, "part-achiever": 0.33, "part-critic": 0.26, "part-soother": 0.18, "part-younger-one": 0.06, "part-pleaser": 0.10 }, "source": "session" },
+    { "date": "2026-03-07", "weights": { "self": 0.09, "part-achiever": 0.31, "part-critic": 0.24, "part-soother": 0.17, "part-younger-one": 0.07, "part-pleaser": 0.12 }, "source": "session" },
+    { "date": "2026-03-21", "weights": { "self": 0.08, "part-achiever": 0.30, "part-critic": 0.24, "part-soother": 0.18, "part-younger-one": 0.08, "part-pleaser": 0.12 }, "source": "session" },
+    { "date": "2026-03-31", "weights": { "self": 0.11, "part-achiever": 0.28, "part-critic": 0.22, "part-soother": 0.17, "part-younger-one": 0.08, "part-pleaser": 0.14 }, "source": "session" },
+    { "date": "2026-04-03", "weights": { "self": 0.10, "part-achiever": 0.29, "part-critic": 0.23, "part-soother": 0.17, "part-younger-one": 0.09, "part-pleaser": 0.12 }, "source": "check-in" },
+    { "date": "2026-04-05", "weights": { "self": 0.12, "part-achiever": 0.27, "part-critic": 0.21, "part-soother": 0.16, "part-younger-one": 0.09, "part-pleaser": 0.15 }, "source": "check-in" },
+    { "date": "2026-04-06", "weights": { "self": 0.11, "part-achiever": 0.28, "part-critic": 0.22, "part-soother": 0.17, "part-younger-one": 0.09, "part-pleaser": 0.13 }, "source": "check-in" },
+    { "date": "2026-04-08", "weights": { "self": 0.10, "part-achiever": 0.30, "part-critic": 0.24, "part-soother": 0.17, "part-younger-one": 0.08, "part-pleaser": 0.11 }, "source": "check-in" },
+    { "date": "2026-04-09", "weights": { "self": 0.09, "part-achiever": 0.32, "part-critic": 0.26, "part-soother": 0.16, "part-younger-one": 0.07, "part-pleaser": 0.10 }, "source": "check-in" },
+    { "date": "2026-04-10", "weights": { "self": 0.11, "part-achiever": 0.29, "part-critic": 0.23, "part-soother": 0.18, "part-younger-one": 0.08, "part-pleaser": 0.11 }, "source": "check-in" },
+    { "date": "2026-04-11", "weights": { "self": 0.13, "part-achiever": 0.27, "part-critic": 0.21, "part-soother": 0.17, "part-younger-one": 0.09, "part-pleaser": 0.13 }, "source": "check-in" },
+    { "date": "2026-04-12", "weights": { "self": 0.12, "part-achiever": 0.28, "part-critic": 0.22, "part-soother": 0.16, "part-younger-one": 0.09, "part-pleaser": 0.13 }, "source": "session" },
+    { "date": "2026-04-14", "weights": { "self": 0.11, "part-achiever": 0.29, "part-critic": 0.22, "part-soother": 0.18, "part-younger-one": 0.09, "part-pleaser": 0.11 }, "source": "check-in" },
+    { "date": "2026-04-15", "weights": { "self": 0.13, "part-achiever": 0.27, "part-critic": 0.21, "part-soother": 0.16, "part-younger-one": 0.10, "part-pleaser": 0.13 }, "source": "check-in" },
+    { "date": "2026-04-16", "weights": { "self": 0.12, "part-achiever": 0.28, "part-critic": 0.22, "part-soother": 0.17, "part-younger-one": 0.09, "part-pleaser": 0.12 }, "source": "check-in" },
+    { "date": "2026-04-18", "weights": { "self": 0.10, "part-achiever": 0.30, "part-critic": 0.25, "part-soother": 0.16, "part-younger-one": 0.08, "part-pleaser": 0.11 }, "source": "check-in" },
+    { "date": "2026-04-19", "weights": { "self": 0.11, "part-achiever": 0.29, "part-critic": 0.23, "part-soother": 0.17, "part-younger-one": 0.09, "part-pleaser": 0.11 }, "source": "check-in" },
+    { "date": "2026-04-20", "weights": { "self": 0.12, "part-achiever": 0.27, "part-critic": 0.22, "part-soother": 0.17, "part-younger-one": 0.09, "part-pleaser": 0.13 }, "source": "check-in" },
+    { "date": "2026-04-21", "weights": { "self": 0.13, "part-achiever": 0.27, "part-critic": 0.21, "part-soother": 0.16, "part-younger-one": 0.10, "part-pleaser": 0.13 }, "source": "check-in" },
+    { "date": "2026-04-22", "weights": { "self": 0.12, "part-achiever": 0.28, "part-critic": 0.22, "part-soother": 0.16, "part-younger-one": 0.10, "part-pleaser": 0.12 }, "source": "session" }
   ],
 
   "sessions": [
     {
       "id": "session-001",
-      "date": "2026-03-08",
+      "date": "2026-02-21",
       "title": "First mapping session",
-      "content": "Started mapping the system for the first time. The Achiever and The Critic showed up immediately and were very articulate. The Younger One was mentioned almost in passing: Alex noticed a tightness in the chest when her name came up and quickly moved on. The Soother came up as the end-of-day scroll and snack pattern. The Pleaser was not named yet but was present throughout the session in the way Alex kept framing its own experience in terms of how others might see it. A former therapist came up briefly; Alex mentioned the therapy ended two years ago.",
+      "content": "Started mapping the system for the first time. The Achiever and The Critic showed up immediately and were very articulate. The Younger One was mentioned almost in passing: Alex noticed a tightness in the chest when her name came up and quickly moved on. The Soother came up as the end-of-day scroll and snack pattern. The Pleaser was not named yet but was present throughout the session in the way Alex kept framing its own experience in terms of how others might see it.",
       "partsTagged": ["part-achiever", "part-critic", "part-younger-one", "part-soother"],
-      "systemRead": "This system is well-organised on the surface with two strong managers coordinating most behaviour. The exile is present but contained: the chest tightness when The Younger One was named is a classic trailhead for an exile nearby. The Pleaser is operating but not yet named. The reference to past therapy is worth tracking."
+      "systemRead": "This system is well-organised on the surface with two strong managers coordinating most behaviour. The exile is present but contained: the chest tightness when The Younger One was named is a classic trailhead. The Pleaser is operating but not yet named."
     },
     {
       "id": "session-002",
-      "date": "2026-03-22",
+      "date": "2026-03-07",
       "title": "The Achiever and the weekend",
-      "content": "Alex described a weekend where The Achiever could not rest: even on a walk, it was cataloguing what needed to be done. Then The Soother took over Sunday afternoon completely, and it felt like a crash into Netflix and snacks until midnight. Explored the polarity in detail. The Critic was present throughout, narrating the failure of both extremes: not productive enough, not actually resting well either. Brief moment near the end of the session where Alex sat with The Younger One's loneliness without trying to fix it. Described it as 'just being with her for a minute, which felt strange but not unbearable'.",
+      "content": "Alex described a weekend where The Achiever could not rest: even on a walk, it was cataloguing what needed to be done. Then The Soother took over Sunday afternoon completely, crashing into Netflix and snacks until midnight. Explored the polarity in detail. The Critic was present throughout, narrating the failure of both extremes. Brief moment near the end where Alex sat with The Younger One's loneliness without trying to fix it. Described it as 'just being with her for a minute, which felt strange but not unbearable'.",
       "partsTagged": ["part-achiever", "part-soother", "part-critic", "part-younger-one"],
-      "systemRead": "The Achiever-Soother polarity is clearer now. Each extreme enables the other: The Achiever's refusal to rest appropriately forces The Soother to overshoot. The Critic is working as a referee who criticises both sides without being able to intervene. The brief contact with The Younger One near the end is significant: the system did not immediately shut it down. This is early movement."
+      "systemRead": "The Achiever-Soother polarity is clearer now. Each extreme enables the other: The Achiever's refusal to rest appropriately forces The Soother to overshoot. The Critic works as a referee who criticises both sides without being able to intervene. The brief contact with The Younger One near the end is significant."
     },
     {
       "id": "session-003",
-      "date": "2026-04-05",
+      "date": "2026-03-21",
       "title": "What The Critic is protecting",
-      "content": "Went directly to The Critic today. Asked what it was afraid would happen if it stopped criticising. After initial resistance, it said: 'You would become complacent. Then mediocre. Then no one would want you around.' Got curious about where it learned that. After a pause, The Critic mentioned a teacher from primary school whose feedback was cutting and public. The Achiever was quieter than usual during this session. A moment near the end where Alex said 'I actually feel a little sorry for it' about The Critic: first time something other than frustration or identification appeared toward it.",
+      "content": "Went directly to The Critic today. Asked what it was afraid would happen if it stopped criticising. After initial resistance, it said: 'You would become complacent. Then mediocre. Then no one would want you around.' Got curious about where it learned that. After a pause, The Critic mentioned a teacher from primary school whose feedback was cutting and public. A moment near the end where Alex said 'I actually feel a little sorry for it' about The Critic: first time something other than frustration appeared toward it.",
       "partsTagged": ["part-critic", "part-achiever"],
-      "systemRead": "Direct engagement with The Critic produced the first real new information about its origin. The softening is significant: this is the first time the system has held The Critic with even brief compassion rather than either identifying with it or trying to override it. The Achiever going quiet may indicate early differentiation: the two are starting to be seen as distinct rather than fused."
+      "systemRead": "Direct engagement with The Critic produced the first real new information about its origin. The softening is significant: this is the first time the system has held The Critic with even brief compassion rather than either identifying with it or trying to override it."
     },
     {
       "id": "session-004",
-      "date": "2026-04-14",
+      "date": "2026-03-31",
       "title": "The Pleaser surfaces",
-      "content": "Opened by describing a work situation where Alex agreed to take on extra work despite already being stretched, then felt resentful for the rest of the week. As we got curious about what drove the yes, a part emerged that had not been named before: one that scans for what people need and provides it before being asked, to prevent the withdrawal of warmth. Named it The Pleaser. Alex immediately recognised it from childhood: a memory of giving up a school trip to stay home with an upset parent, and feeling that this was simply what love required. The Younger One came up in connection: The Pleaser seems to have emerged directly from her fear of abandonment. Brief image of The Younger One waiting at a window.",
+      "content": "Opened by describing a work situation where Alex agreed to take on extra work despite already being stretched, then felt resentful for the rest of the week. As we got curious about what drove the yes, a part emerged that had not been named before: one that scans for what people need and provides it before being asked, to prevent the withdrawal of warmth. Named it The Pleaser. The Younger One came up in connection: The Pleaser seems to have emerged directly from her fear of abandonment. Brief image of The Younger One waiting at a window.",
       "partsTagged": ["part-pleaser", "part-younger-one", "part-achiever", "part-critic"],
-      "systemRead": "A new part named: The Pleaser, with a clear functional role and traceable origin. The connection to The Younger One is significant: The Pleaser appears to be a protector whose strategy came directly from the exile's core fear of abandonment. The image of waiting at the window is the most vivid exile material to surface so far. The Critic's contempt for The Pleaser may be worth exploring: the thing it attacks most harshly in the system may be the thing most directly protecting the wound."
+      "systemRead": "A new part named: The Pleaser, with a clear functional role and traceable origin. The connection to The Younger One is significant: The Pleaser appears to be a protector whose strategy came directly from the exile's core fear of abandonment."
     },
     {
       "id": "session-005",
-      "date": "2026-04-17",
+      "date": "2026-04-12",
       "title": "The Critic-Pleaser polarity",
-      "content": "Focused on the relationship between The Critic and The Pleaser, which had come up at the end of the previous session. The Critic has contempt for The Pleaser: calls it spineless, says it makes things worse. The Pleaser absorbs the criticism and tries harder. Got curious about what the contempt might be protecting. After sitting with it, something interesting surfaced: The Critic may be attacking most harshly the part of the system that is closest to The Younger One's wound. A long pause followed. Alex said: 'It's going for the jugular because that's the thing it most needs to keep under control.'",
+      "content": "Focused on the relationship between The Critic and The Pleaser. The Critic has contempt for The Pleaser: calls it spineless, says it makes things worse. The Pleaser absorbs the criticism and tries harder. Got curious about what the contempt might be protecting. After sitting with it, something interesting surfaced: The Critic may be attacking most harshly the part of the system closest to The Younger One's wound. A long pause followed. Alex said: 'It's going for the jugular because that's the thing it most needs to keep under control.'",
       "partsTagged": ["part-critic", "part-pleaser", "part-younger-one"],
-      "systemRead": "The Critic-Pleaser dynamic is the second major polarity in this system, distinct from the Achiever-Soother swing. What makes it more complex is that both parts are protecting The Younger One, from different directions: The Pleaser by preventing rejection, The Critic by preventing exposure of the very neediness that might cause it. The insight that The Critic is 'going for the jugular' suggests increasing Self-led awareness of the system's structure."
+      "systemRead": "The Critic-Pleaser dynamic is the second major polarity in this system. What makes it complex is that both parts are protecting The Younger One from different directions: The Pleaser by preventing rejection, The Critic by preventing exposure of the very neediness that might cause it."
     },
     {
       "id": "session-006",
       "date": "2026-04-22",
       "title": "Check-in: what has shifted",
-      "content": "Shorter session. Alex opened by saying something felt different but they could not name it. We spent time noticing. The Achiever was present but less in front than usual. The Critic was audible but not dominating. There was a quality of spaciousness that felt unfamiliar - more room to notice what was happening before reacting to it. Briefly visited The Younger One: Alex described a small moment during the week of sitting with a difficult feeling without reaching for the phone. 'I just let it be there for a bit.' The Pleaser came up in the context of a conversation with a friend: Alex noticed it activating and paused before responding. Did not fully change the response, but noticed. That noticing is new.",
+      "content": "Shorter session. Alex opened by saying something felt different but could not name it. More room to notice what was happening before reacting. Briefly visited The Younger One: Alex described a small moment during the week of sitting with a difficult feeling without reaching for the phone. 'I just let it be there for a bit.' The Pleaser came up in the context of a conversation with a friend: Alex noticed it activating and paused before responding. Did not fully change the response, but noticed. That noticing is new.",
       "partsTagged": ["part-achiever", "part-critic", "part-younger-one", "part-pleaser"],
-      "systemRead": "Two real-world experiments from the previous session appear to have been tried: sitting with a feeling without numbing, and noticing The Pleaser activate before responding. Neither produced a dramatic change, but both produced awareness in the moment rather than only in retrospect. That is the gap closing. The system is beginning to observe itself from the inside."
+      "systemRead": "Two real-world experiments from the previous session appear to have been tried: sitting with a feeling without numbing, and noticing The Pleaser activate before responding. Neither produced a dramatic change, but both produced awareness in the moment rather than only in retrospect."
     }
   ],
 
   "selfMoments": [
     {
-      "id": "sm-2026-03-08-001",
-      "date": "2026-03-08",
+      "id": "sm-2026-02-21-001",
+      "date": "2026-02-21",
       "quality": "curiosity",
-      "description": "Noticed the tightness in the chest when The Younger One was named and stayed with it briefly rather than redirecting. Small, but the system did not immediately close it down."
+      "description": "Noticed the tightness in the chest when The Younger One was named and stayed with it briefly rather than redirecting. The system did not immediately close it down."
     },
     {
-      "id": "sm-2026-03-22-001",
-      "date": "2026-03-22",
+      "id": "sm-2026-03-07-001",
+      "date": "2026-03-07",
       "quality": "compassion",
       "description": "Sat with The Younger One's loneliness for a minute without trying to fix or reassure. Described it as 'strange but not unbearable': first time presence with her did not feel threatening."
     },
     {
-      "id": "sm-2026-04-05-001",
-      "date": "2026-04-05",
+      "id": "sm-2026-03-21-001",
+      "date": "2026-03-21",
       "quality": "curiosity",
-      "description": "Stayed curious toward The Critic even when it was deflecting, without either shutting it down or being swept into its framing. Asked about its origin and actually waited for the answer."
+      "description": "Stayed curious toward The Critic even when it was deflecting. Asked about its origin and actually waited for the answer."
     },
     {
-      "id": "sm-2026-04-05-002",
-      "date": "2026-04-05",
+      "id": "sm-2026-03-21-002",
+      "date": "2026-03-21",
       "quality": "compassion",
-      "description": "Said 'I actually feel a little sorry for it' about The Critic, unprompted. First time something other than frustration or identification appeared toward it. Brief, but genuine."
+      "description": "Said 'I actually feel a little sorry for it' about The Critic, unprompted. First time something other than frustration appeared toward it."
     },
     {
-      "id": "sm-2026-04-14-001",
-      "date": "2026-04-14",
+      "id": "sm-2026-03-31-001",
+      "date": "2026-03-31",
       "quality": "presence",
-      "description": "Held the image of The Younger One waiting at the window without switching immediately to analysis. Sat with it for almost two minutes. The Critic did not intervene."
+      "description": "Held the image of The Younger One waiting at the window without switching to analysis. Sat with it for almost two minutes. The Critic did not intervene."
     },
     {
-      "id": "sm-2026-04-17-001",
-      "date": "2026-04-17",
+      "id": "sm-2026-04-12-001",
+      "date": "2026-04-12",
       "quality": "clarity",
-      "description": "Said unprompted: 'It's going for the jugular because that's the thing it most needs to keep under control.' A clear, undefended read of the system's structure from the inside, without The Critic narrating it."
+      "description": "Said unprompted: 'It's going for the jugular because that's the thing it most needs to keep under control.' A clear, undefended read of the system's structure from the inside."
     },
     {
       "id": "sm-2026-04-22-001",
       "date": "2026-04-22",
       "quality": "presence",
-      "description": "During the week, sat with a difficult feeling without reaching for the phone. Just let it be there for a bit. Noticed The Pleaser activate in a conversation and paused before responding. Neither was a dramatic change, but both happened in real time rather than only recognised in retrospect."
+      "description": "Sat with a difficult feeling without reaching for the phone. Noticed The Pleaser activate in a conversation and paused before responding. Both happened in real time rather than only recognised in retrospect."
     }
   ],
 
@@ -742,7 +646,7 @@
       "label": "First therapy session",
       "date": "2016-09-01",
       "dateApprox": "age 24",
-      "notes": "Having language for the inner system for the first time made patterns visible that had been running silently for years. The therapy ended after about a year; the self-awareness it opened has continued.",
+      "notes": "Having language for the inner system for the first time made patterns visible that had been running silently for years.",
       "partsTagged": []
     }
   ],
