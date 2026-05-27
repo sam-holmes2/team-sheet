@@ -1219,12 +1219,39 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .welcome-opt-ghost.active { border-color:var(--gold); color:var(--gold); }
 .welcome-opt-ghost.active-noai  { border-color:#6090c8; color:#6090c8; }
 .welcome-opt-ghost.active-cloud { border-color:#f09090; color:#f09090; }
-#welcome-setup-steps { display:none; margin-top:18px; padding-top:18px; border-top:1px solid var(--border-hi); }
 .welcome-step { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
 .welcome-step:last-child { border-bottom:none; }
 .welcome-step-num { font-family:var(--mono); font-size:15px; color:var(--gold); flex-shrink:0; width:22px; padding-top:2px; }
 .welcome-step-text { font-size:17px; color:var(--text-mid); line-height:1.55; flex:1; }
 .welcome-step-text strong { color:var(--text-b); font-weight:600; }
+/* ── Sectioned welcome modal ── */
+.welcome-section { margin-bottom:4px; }
+.welcome-section-label { font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--text-dim); font-family:var(--mono); margin:14px 0 5px; opacity:0.7; }
+.welcome-section:first-child .welcome-section-label { margin-top:4px; }
+.welcome-row-btn {
+  display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+  background:none; border:1px solid var(--border-hi); border-radius:5px;
+  padding:10px 14px; cursor:pointer; transition:border-color 0.15s, background 0.15s;
+  margin-bottom:5px;
+}
+.welcome-row-btn:hover { border-color:var(--text-dim); background:rgba(255,255,255,0.03); }
+.welcome-row-btn.active-noai   { border-color:#6090c8; background:rgba(96,144,200,0.06); }
+.welcome-row-btn.active-chat   { border-color:#50c878; background:rgba(80,200,120,0.06); }
+.welcome-row-btn.active-ai     { border-color:#f09090; background:rgba(240,144,144,0.06); }
+.welcome-row-btn.active-import { border-color:rgba(200,168,74,0.7); background:rgba(200,168,74,0.06); }
+.welcome-row-btn.active-sync   { border-color:rgba(200,168,74,0.7); background:rgba(200,168,74,0.06); }
+.welcome-row-icon { font-size:20px; flex-shrink:0; width:28px; text-align:center; opacity:0.75; }
+.welcome-row-text { flex:1; min-width:0; }
+.welcome-row-title { font-family:'Cinzel',serif; font-size:13px; letter-spacing:0.1em; color:var(--text-b); line-height:1.3; display:block; }
+.welcome-row-sub { font-size:13px; color:var(--text-dim); line-height:1.4; margin-top:2px; display:block; }
+.welcome-row-chevron { font-size:14px; color:var(--text-dim); flex-shrink:0; transition:transform 0.15s; }
+.welcome-row-btn.active-noai .welcome-row-chevron,
+.welcome-row-btn.active-chat .welcome-row-chevron,
+.welcome-row-btn.active-ai .welcome-row-chevron,
+.welcome-row-btn.active-import .welcome-row-chevron,
+.welcome-row-btn.active-sync .welcome-row-chevron { transform:rotate(90deg); }
+.welcome-path-panel { display:none; border-left:2px solid var(--border-hi); margin:0 0 10px 14px; padding:10px 0 4px 16px; }
+.welcome-path-panel.open { display:block; }
 /* ── Demo banner ── */
 #demo-banner {
   display:none; align-items:center; gap:12px;
@@ -2268,43 +2295,93 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <div class="modal">
     <div class="modal-title">&#10022; &nbsp;WELCOME TO TEAM-SHEET</div>
     <p class="welcome-modal-desc">Your mind is made of <strong style="color:var(--text-b);">parts</strong>: the one that pushes forward, the one that shuts down, the one that numbs out when things get hard. team-sheet helps you name and understand them. No prior experience needed.</p>
-    <div style="font-size:13px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">How would you like to fill it in? You can change this any time.</div>
-    <div class="welcome-options">
-      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-setup-btn" onclick="toggleWelcomeSetup('manual')">A &nbsp;Fill it in yourself</button>
-      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-chat-btn" onclick="toggleWelcomeSetup('chat')">B &nbsp;Chat inside the app</button>
-      <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-ai-btn" onclick="toggleWelcomeSetup('ai')">C &nbsp;Copy-paste with your AI</button>
-      <button class="welcome-opt-btn welcome-opt-ghost" onclick="dismissWelcome();openModal()" style="border-color:rgba(80,120,180,0.4);color:rgba(80,120,180,0.8);">D &nbsp;Restore a backup</button>
-    </div>
-    <div id="welcome-setup-steps" data-mode="">
-      <!-- Path A: Fill it in yourself -->
-      <div class="welcome-path" id="welcome-path-manual">
-        <div style="font-size:13px;color:#6090c8;margin:14px 0 10px;font-weight:600;">A &nbsp;Fill it in yourself. No AI required. Works completely offline.</div>
+
+    <!-- ── Section 1: Manual ── -->
+    <div class="welcome-section">
+      <div class="welcome-section-label">Populate data manually</div>
+      <button class="welcome-row-btn" id="wb-noai" onclick="toggleWelcomeSetup('noai')">
+        <span class="welcome-row-icon">&#9999;</span>
+        <span class="welcome-row-text">
+          <span class="welcome-row-title">Fill it in yourself</span>
+          <span class="welcome-row-sub">Name your parts directly. No AI, no setup, works offline.</span>
+        </span>
+        <span class="welcome-row-chevron">&#9656;</span>
+      </button>
+      <div class="welcome-path-panel" id="welcome-path-noai">
         <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">1</div><div class="welcome-step-text"><strong>Go to Parts</strong> and click "+ Add part". Start with whatever you notice most right now: a voice, a pattern, a recurring tension. Just give it a name.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">2</div><div class="welcome-step-text"><strong>Add what you know.</strong> Give it a role (Manager, Firefighter, or Exile), describe what it does, what it fears, when it shows up. No need to fill everything at once.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">3</div><div class="welcome-step-text"><strong>Do your first check-in.</strong> Tap the Check-in button in the bottom bar. It takes 30 seconds and starts your history chart.</div></div>
-        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#6090c8;">4</div><div class="welcome-step-text"><strong>Export regularly</strong> using the Data button in the bottom bar. Your data only lives in this browser, so Export is your backup.</div></div>
-        <div style="margin-top:14px;"><button class="btn-primary" style="background:#3a50a0;border-color:#3a50a0;" onclick="dismissWelcome();_startNoAITour()">Start guided setup &#8594;</button></div>
-      </div>
-      <!-- Path B: Chat inside the app (recommended) -->
-      <div class="welcome-path" id="welcome-path-chat" style="display:none;">
-        <div style="font-size:13px;color:#50c878;margin:14px 0 10px;font-weight:600;">B &nbsp;Chat inside the app. The fastest way to build your map. <span style="background:rgba(80,200,120,0.15);border:1px solid rgba(80,200,120,0.35);border-radius:3px;padding:1px 6px;">Recommended</span></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">1</div><div class="welcome-step-text"><strong>Tap the star icon</strong> (&#10022;) in the bottom bar to open Chat.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">2</div><div class="welcome-step-text"><strong>Connect your AI.</strong> Tap the gear icon inside Chat. You can use a paid cloud service (you paste in an account key), or a free app called Ollama that runs entirely on your computer with nothing sent anywhere.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">3</div><div class="welcome-step-text"><strong>Just talk.</strong> Tell your AI what's been present for you lately. After 10-20 minutes, your map fills itself in. No typing into fields needed.</div></div>
-        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:var(--text-dim);">i</div><div class="welcome-step-text" style="font-size:16px;color:var(--text-dim);">Ollama is free and private: nothing leaves your device. Paid cloud services cost a few cents per session and send your conversation to their servers.</div></div>
-        <div style="margin-top:14px;"><button class="btn-primary" style="background:#2a6040;border-color:#2a6040;" onclick="dismissWelcome();_startChatTour()">Start guided setup &#8594;</button></div>
-      </div>
-      <!-- Path C: Copy-paste with your AI -->
-      <div class="welcome-path" id="welcome-path-ai" style="display:none;">
-        <div style="font-size:13px;color:#f09090;margin:14px 0 10px;font-weight:600;">C &nbsp;Copy-paste with your AI. Already using an AI assistant? Start here.</div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">1</div><div class="welcome-step-text"><strong>Download instructions.md</strong> below. This file teaches your AI how team-sheet works. <button class="btn-ghost btn-download" style="margin-left:6px;" onclick="downloadInstructionsMd(this)">&#8595; instructions.md</button></div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">2</div><div class="welcome-step-text"><strong>Open your AI</strong> and start a new project or conversation. Upload instructions.md so it knows the format.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">3</div><div class="welcome-step-text"><strong>Start talking.</strong> Try: <em>"Here's what's been present for me lately..."</em> and go from there.</div></div>
-        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">4</div><div class="welcome-step-text"><strong>When you're done,</strong> ask your AI: <em>"Update my data"</em> and copy what it gives you.</div></div>
-        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#f09090;">5</div><div class="welcome-step-text"><button class="btn-ghost" style="font-size:inherit;padding:2px 7px;font-weight:700;" onclick="dismissWelcome();openModal()">&#8593; Import</button> your data here, paste it in, and hit Apply. Your map updates instantly.</div></div>
-        <div style="margin-top:14px;"><button class="btn-primary" style="background:#803030;border-color:#803030;" onclick="dismissWelcome();_startCopyPasteTour()">Start guided setup &#8594;</button></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">4</div><div class="welcome-step-text"><strong>Export regularly</strong> using the Data button in the bottom bar. Your data only lives in this browser, so Export is your backup.</div></div>
+        <div style="margin-top:12px;"><button class="btn-primary" style="background:#3a50a0;border-color:#3a50a0;" onclick="dismissWelcome();_startNoAITour()">Start guided setup &#8594;</button></div>
       </div>
     </div>
+
+    <!-- ── Section 2: AI ── -->
+    <div class="welcome-section">
+      <div class="welcome-section-label">Fill it in with AI</div>
+      <button class="welcome-row-btn" id="wb-chat" onclick="toggleWelcomeSetup('chat')">
+        <span class="welcome-row-icon">&#10022;</span>
+        <span class="welcome-row-text">
+          <span class="welcome-row-title">Chat inside the app <span style="background:rgba(80,200,120,0.15);border:1px solid rgba(80,200,120,0.35);border-radius:3px;padding:1px 6px;font-size:11px;letter-spacing:0.1em;color:#50c878;font-family:var(--mono);vertical-align:middle;">Recommended</span></span>
+          <span class="welcome-row-sub">Connect your AI directly. Just talk, your map fills itself in.</span>
+        </span>
+        <span class="welcome-row-chevron">&#9656;</span>
+      </button>
+      <div class="welcome-path-panel" id="welcome-path-chat">
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">1</div><div class="welcome-step-text"><strong>Open Chat</strong> using the &#10022; Chat button in the bottom bar.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">2</div><div class="welcome-step-text"><strong>Connect your AI.</strong> Tap the gear icon inside Chat. Choose a cloud API key or Ollama, a free app that runs a model on your computer with nothing sent anywhere.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">3</div><div class="welcome-step-text"><strong>Just talk.</strong> Tell your AI what has been present for you lately. After 10 to 20 minutes, your map fills itself in. No typing into fields needed.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:var(--text-dim);">i</div><div class="welcome-step-text" style="color:var(--text-dim);">Ollama is free and private. Cloud services cost a few cents per session and send your conversation to their servers.</div></div>
+        <div style="margin-top:12px;"><button class="btn-primary" style="background:#2a6040;border-color:#2a6040;" onclick="dismissWelcome();_startChatTour()">Start guided setup &#8594;</button></div>
+      </div>
+      <button class="welcome-row-btn" id="wb-ai" onclick="toggleWelcomeSetup('ai')">
+        <span class="welcome-row-icon">&#8645;</span>
+        <span class="welcome-row-text">
+          <span class="welcome-row-title">Journal with an external AI</span>
+          <span class="welcome-row-sub">Use ChatGPT, Claude, or any AI app. Copy the result back in.</span>
+        </span>
+        <span class="welcome-row-chevron">&#9656;</span>
+      </button>
+      <div class="welcome-path-panel" id="welcome-path-ai">
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">1</div><div class="welcome-step-text"><strong>Download instructions.md.</strong> This file teaches your AI how team-sheet works and what data to produce. <button class="btn-ghost btn-download" style="margin-left:6px;" onclick="downloadInstructionsMd(this)">&#8595; instructions.md</button></div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">2</div><div class="welcome-step-text"><strong>Create a project in your AI</strong> and upload instructions.md so it is included in every session.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">3</div><div class="welcome-step-text"><strong>Talk about what has been present for you.</strong> At the end, ask: <em>"Update my data.json"</em> and copy the JSON it outputs.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">4</div><div class="welcome-step-text"><strong>Import</strong> the JSON here. Paste it in and hit Apply. Your map updates instantly.</div></div>
+        <div style="margin-top:12px;"><button class="btn-primary" style="background:#803030;border-color:#803030;" onclick="dismissWelcome();_startCopyPasteTour()">Start guided setup &#8594;</button></div>
+      </div>
+    </div>
+
+    <!-- ── Section 3: Restore ── -->
+    <div class="welcome-section">
+      <div class="welcome-section-label">Coming back?</div>
+      <button class="welcome-row-btn" id="wb-import" onclick="toggleWelcomeSetup('import')">
+        <span class="welcome-row-icon">&#8593;</span>
+        <span class="welcome-row-text">
+          <span class="welcome-row-title">Restore from a backup file</span>
+          <span class="welcome-row-sub">Import a data.json you exported from another device or browser.</span>
+        </span>
+        <span class="welcome-row-chevron">&#9656;</span>
+      </button>
+      <div class="welcome-path-panel" id="welcome-path-import">
+        <div class="welcome-step"><div class="welcome-step-num" style="color:var(--gold);">1</div><div class="welcome-step-text"><strong>Find your backup file.</strong> It will be named data.json and was created using the Export button in the Data menu.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:var(--gold);">2</div><div class="welcome-step-text"><strong>Open Import</strong> from the Data button in the bottom bar, paste your JSON, and hit Apply.</div></div>
+        <div style="margin-top:12px;"><button class="btn-primary" onclick="dismissWelcome();openModal()">Open Import &#8594;</button></div>
+      </div>
+      <button class="welcome-row-btn" id="wb-sync" onclick="toggleWelcomeSetup('sync')">
+        <span class="welcome-row-icon">&#8645;</span>
+        <span class="welcome-row-text">
+          <span class="welcome-row-title">Restore via GitHub sync</span>
+          <span class="welcome-row-sub">Pull your data from a private GitHub repo you set up previously.</span>
+        </span>
+        <span class="welcome-row-chevron">&#9656;</span>
+      </button>
+      <div class="welcome-path-panel" id="welcome-path-sync">
+        <div class="welcome-step"><div class="welcome-step-num" style="color:var(--gold);">1</div><div class="welcome-step-text"><strong>Open the Sync panel</strong> from the Data button in the bottom bar.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:var(--gold);">2</div><div class="welcome-step-text"><strong>Enter your GitHub token and repo details</strong> as you did on your previous device, then pull to restore your data.</div></div>
+        <div style="margin-top:12px;"><button class="btn-primary" onclick="dismissWelcome();openGitSyncModal()">Open Sync &#8594;</button></div>
+      </div>
+    </div>
+
     <div style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
       <strong style="color:var(--text-mid);">Privacy:</strong> Your data lives only in this browser. No accounts, no tracking. Export regularly and treat the file like a private diary. If you use a cloud AI, that provider may store what you share with them.
     </div>
@@ -11005,27 +11082,31 @@ function dismissWelcome() {
 }
 
 function toggleWelcomeSetup(mode) {
-  const steps     = document.getElementById('welcome-setup-steps');
-  const manualBtn = document.getElementById('welcome-setup-btn'); // A: fill it in yourself
-  const chatBtn   = document.getElementById('welcome-chat-btn'); // B: chat inside (recommended)
-  const aiBtn     = document.getElementById('welcome-ai-btn');    // C: copy-paste
-  const current = steps.getAttribute('data-mode');
-  if (current === mode) {
-    steps.style.display = 'none';
-    steps.setAttribute('data-mode', '');
-    if (manualBtn) manualBtn.classList.remove('active-noai');
-    if (chatBtn)   chatBtn.classList.remove('active-green');
-    if (aiBtn)     aiBtn.classList.remove('active-cloud');
-    return;
+  const cfg = {
+    noai:   { btn:'wb-noai',   panel:'welcome-path-noai',   cls:'active-noai'   },
+    chat:   { btn:'wb-chat',   panel:'welcome-path-chat',   cls:'active-chat'   },
+    ai:     { btn:'wb-ai',     panel:'welcome-path-ai',     cls:'active-ai'     },
+    import: { btn:'wb-import', panel:'welcome-path-import', cls:'active-import' },
+    sync:   { btn:'wb-sync',   panel:'welcome-path-sync',   cls:'active-sync'   },
+  };
+  const anchor = document.getElementById('welcome-path-noai');
+  if(!anchor) return;
+  const currentMode = anchor.dataset.welcomeMode || '';
+  Object.values(cfg).forEach(c => {
+    const b = document.getElementById(c.btn);
+    const p = document.getElementById(c.panel);
+    if(b) b.classList.remove(c.cls);
+    if(p) p.classList.remove('open');
+  });
+  if(currentMode === mode){ anchor.dataset.welcomeMode = ''; return; }
+  anchor.dataset.welcomeMode = mode;
+  const sel = cfg[mode];
+  if(sel){
+    const b = document.getElementById(sel.btn);
+    const p = document.getElementById(sel.panel);
+    if(b) b.classList.add(sel.cls);
+    if(p) p.classList.add('open');
   }
-  steps.setAttribute('data-mode', mode);
-  steps.style.display = 'block';
-  document.getElementById('welcome-path-manual').style.display = mode === 'manual' ? 'block' : 'none';
-  document.getElementById('welcome-path-chat').style.display   = mode === 'chat'   ? 'block' : 'none';
-  document.getElementById('welcome-path-ai').style.display     = mode === 'ai'     ? 'block' : 'none';
-  if (manualBtn) manualBtn.classList.toggle('active-noai',  mode === 'manual');
-  if (chatBtn)   chatBtn.classList.toggle('active-green',   mode === 'chat');
-  if (aiBtn)     aiBtn.classList.toggle('active-cloud',     mode === 'ai');
 }
 
 function downloadInstructionsMd(btn) {
