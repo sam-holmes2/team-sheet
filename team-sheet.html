@@ -73,6 +73,8 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 }
 .hdr-util-btn { color:rgba(200,168,74,0.45); }
 .hdr-util-btn:hover { color:var(--gold); background:var(--gold-dim); }
+.hdr-util-btn.help-pulse { animation:help-btn-pulse 0.8s ease-in-out 4; color:var(--gold); background:var(--gold-dim); }
+@keyframes help-btn-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(200,168,74,0);} 50%{box-shadow:0 0 0 5px rgba(200,168,74,0.35);} }
 .app-brand {
   font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.22em;
   text-transform:uppercase; color:var(--text-dim); opacity:0.6;
@@ -1190,6 +1192,16 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .undo-toast-btn { background:none; border:1px solid rgba(255,255,255,0.15); border-radius:4px; color:var(--text-dim); font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.08em; padding:3px 10px; cursor:pointer; white-space:nowrap; transition:border-color 0.15s,color 0.15s; flex-shrink:0; }
 .undo-toast-btn:hover { border-color:rgba(255,255,255,0.4); color:var(--text-b); }
 
+/* ── Check-in reminder toast ── */
+#ts-checkin-reminder { position:fixed; bottom:32px; left:50%; transform:translateX(-50%); background:rgba(14,12,22,0.97); border:1px solid rgba(200,168,74,0.45); border-radius:8px; padding:9px 14px; display:flex; align-items:center; gap:10px; z-index:2500; font-size:13px; font-family:'Cinzel',serif; letter-spacing:0.05em; color:var(--text-mid); box-shadow:0 4px 24px rgba(0,0,0,0.55); white-space:nowrap; opacity:0; transform:translateX(-50%) translateY(10px); transition:opacity 0.25s, transform 0.25s; pointer-events:none; }
+#ts-checkin-reminder.visible { opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+#ts-checkin-reminder .tscr-label { color:rgba(200,168,74,0.85); margin-right:2px; }
+#ts-checkin-reminder .tscr-body { display:flex; align-items:center; gap:6px; cursor:pointer; }
+#ts-checkin-reminder .tscr-body:hover .tscr-label { color:rgba(220,195,100,1); }
+#ts-checkin-reminder .tscr-open { background:rgba(200,168,74,0.15); border:1px solid rgba(200,168,74,0.4); color:rgba(200,168,74,0.9); cursor:pointer; font-size:11px; font-family:'Cinzel',serif; letter-spacing:0.06em; border-radius:4px; padding:2px 8px; line-height:1.5; transition:background 0.15s; white-space:nowrap; }
+#ts-checkin-reminder .tscr-open:hover { background:rgba(200,168,74,0.28); }
+#ts-checkin-reminder .tscr-close { background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:14px; padding:0 0 0 4px; line-height:1; }
+
 /* ── Welcome modal ── */
 #welcome-modal { z-index:400; }
 #welcome-modal .modal { max-width:620px; width:100%; border-top:3px solid var(--modal-brown-border); }
@@ -1221,8 +1233,31 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   font-size:16px; color:#6090c8;
 }
 #demo-banner .demo-banner-text { flex:1; }
-#demo-banner .demo-banner-dl { background:none; border:1px solid rgba(200,168,74,0.4); color:var(--gold); border-radius:4px; padding:3px 10px; font-size:14px; cursor:pointer; font-family:inherit; flex-shrink:0; }
-#demo-banner .demo-banner-dl:hover { background:var(--gold-dim); }
+#demo-banner .demo-banner-dl {
+  background: rgba(200,168,74,0.15);
+  border: 1.5px solid rgba(200,168,74,0.7);
+  color: var(--gold);
+  border-radius: 5px;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+  box-shadow: 0 0 10px rgba(200,168,74,0.25), 0 0 3px rgba(200,168,74,0.15);
+  animation: demo-dl-pulse 2.6s ease-in-out infinite;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+#demo-banner .demo-banner-dl:hover {
+  background: rgba(200,168,74,0.28);
+  box-shadow: 0 0 18px rgba(200,168,74,0.45), 0 0 6px rgba(200,168,74,0.25);
+  animation: none;
+}
+@keyframes demo-dl-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(200,168,74,0.2), 0 0 2px rgba(200,168,74,0.1); }
+  50%       { box-shadow: 0 0 18px rgba(200,168,74,0.5), 0 0 6px rgba(200,168,74,0.3); }
+}
 #demo-banner .demo-banner-dismiss { background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:18px; line-height:1; padding:0; flex-shrink:0; }
 #demo-banner .demo-banner-dismiss:hover { color:var(--text); }
 .btn-download { background:none; border:1px solid var(--border-hi); color:var(--text-dim); border-radius:3px; padding:2px 8px; font-size:14px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
@@ -1880,7 +1915,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <div class="app-left">
     <span class="app-brand">team-sheet</span>
     <div class="hdr-util">
-      <button class="hdr-util-btn hdr-util-help" onclick="openHelpModal()" title="Help: how team-sheet works, setup guide for AI-assisted IFS work, and first-time instructions.">?</button>
+      <button class="hdr-util-btn hdr-util-help" onclick="openHelpModal()" title="Help: how team-sheet works, setup guide for AI-assisted IFS work, and first-time instructions." id="hdr-help-btn">?</button>
       <button class="hdr-util-btn hdr-util-settings" onclick="openSettingsModal()" title="Security: set a password to encrypt all your data in this browser with AES-256. Nothing leaves your machine unless you send it.">&#9881;</button>
       <button class="hdr-util-btn hdr-util-support" onclick="openSupportModal()" title="Support: share team-sheet with a friend or star it on GitHub.">&#9829;</button>
     </div>
@@ -2326,6 +2361,15 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 <!-- ══ TOAST ════════════════════════════════════════════════════ -->
 <div id="toast"></div>
 <div id="undo-toast"><span id="undo-toast-label"></span><button class="undo-toast-btn" onclick="doUndo()">Undo</button></div>
+
+<!-- Check-in reminder toast (shown when no check-in logged today and user has parts) -->
+<div id="ts-checkin-reminder">
+  <span class="tscr-body" onclick="openDailyPulse()" title="Open check-in">
+    <span class="tscr-label">No check-in yet today</span>
+  </span>
+  <button class="tscr-open" onclick="openDailyPulse()" title="Open check-in modal">Check in</button>
+  <button class="tscr-close" onclick="_tsDcrMarkDismissed();document.getElementById('ts-checkin-reminder').classList.remove('visible')" title="Dismiss for today">&#x2715;</button>
+</div>
 
 <!-- ══ SUPPORT MODAL ════════════════════════════════════════════ -->
 <div class="modal-overlay" id="support-modal" onclick="if(event.target===this)this.classList.remove('open')">
@@ -7492,6 +7536,34 @@ function _applyBalCheckinGlow(){
   if(el) el.classList.toggle('bal-needs-checkin', needsPie);
   const btn = document.querySelector('.fbar-btn.fbar-daily');
   if(btn) btn.classList.toggle('checkin-due', _checkinButtonDue());
+  _tsUpdateCheckinReminder();
+}
+
+// ── Check-in reminder toast ──────────────────────────────────
+const TS_DCR_DISMISS_KEY = 'ts-dcr-dismissed-v1'; // { date } — dismissed for this effective date
+function _tsDcrDismissedToday(){
+  try{ const d=JSON.parse(localStorage.getItem(TS_DCR_DISMISS_KEY)||'{}'); return d.date===_pulseEffectiveDate(); }catch{ return false; }
+}
+function _tsDcrMarkDismissed(){
+  if(IS_DEMO) return;
+  try{ localStorage.setItem(TS_DCR_DISMISS_KEY, JSON.stringify({date:_pulseEffectiveDate()})); }catch{}
+}
+function _tsShowCheckinReminder(){
+  if(IS_DEMO) return;
+  if((appState.parts||[]).length === 0) return; // nothing to check in
+  if(_balCheckinDoneToday()) return;
+  if(_tsDcrDismissedToday()) return;
+  const el = document.getElementById('ts-checkin-reminder');
+  if(el) el.classList.add('visible');
+}
+function _tsUpdateCheckinReminder(){
+  const el = document.getElementById('ts-checkin-reminder');
+  if(!el) return;
+  if(_balCheckinDoneToday() || (appState.parts||[]).length === 0){
+    el.classList.remove('visible'); return;
+  }
+  // Don't re-show if user dismissed it
+  if(!el.classList.contains('visible') && _tsDcrDismissedToday()) return;
 }
 
 // Dismiss: skip is now just "don't auto-prompt again until interval elapses"
@@ -8253,10 +8325,7 @@ function renderJournal(s) {
   list.className = 'ts-jtl-list';
   list.innerHTML = '';
 
-  if (IS_DEMO) {
-    empty.style.display = TS_DEMO_SESSIONS.length === 0 ? 'block' : 'none';
-    [...TS_DEMO_SESSIONS].reverse().forEach(session => list.appendChild(buildDemoSessionCard(session)));
-  } else {
+  {
     // Build unified list: sessions + check-in days, merged by date, most recent first
     const sessions = s.sessions || [];
     const checkinLog = _loadCheckinLog();
@@ -8279,7 +8348,8 @@ function renderJournal(s) {
     empty.style.display = allItems.length === 0 ? 'block' : 'none';
     allItems.forEach(item => {
       if (item._type === 'session') {
-        list.appendChild(buildSessionCard(item._sess, s));
+        // In demo mode use the read-only demo card so controls are not shown
+        list.appendChild(IS_DEMO ? buildDemoSessionCard(item._sess) : buildSessionCard(item._sess, s));
       } else {
         list.appendChild(buildCheckinCard(item.date, item.entries, s));
       }
@@ -8288,33 +8358,6 @@ function renderJournal(s) {
 
   renderPartsDistribution(s);
 }
-
-const TS_DEMO_SESSIONS = [
-  {
-    id: 'ts-demo-1',
-    date: '2025-04-10',
-    title: 'Meeting with the Striver',
-    content: 'Spent time with the part that keeps pushing to do more. It showed up as a tight feeling in the chest and urgency in the thoughts. Got curious rather than trying to settle it down.',
-    systemRead: 'The Striver is carrying a belief that rest has to be earned. It works closely with the Critic and steps back slightly when Self is present. The system is more dynamic than it appears from the outside.',
-    partsTagged: [],
-  },
-  {
-    id: 'ts-demo-2',
-    date: '2025-04-19',
-    title: 'When the Pleaser takes over',
-    content: 'Noticed a familiar pattern: agreeing in the moment, then feeling resentful later. Traced it back to a younger part that learned that disagreement wasn\'t safe. The Pleaser has been protecting that exile for a long time.',
-    systemRead: 'The Pleaser is a classic protective manager. It doesn\'t trust that Self can handle the vulnerability the exile carries. The resentment is a signal from the exile leaking through. There\'s a potential unblending here if Self can stay present with the Pleaser long enough.',
-    partsTagged: [],
-  },
-  {
-    id: 'ts-demo-3',
-    date: '2025-04-27',
-    title: 'First glimpse of the exile',
-    content: 'Something shifted today. The Pleaser stepped back enough to feel what was underneath. A small, quiet part that just wants to be seen without needing to perform. Didn\'t push it. Just sat with it for a while.',
-    systemRead: 'This is a significant moment. The exile is not yet unburdened but it made contact. The Striver and Pleaser both relaxed slightly when Self held this space. This is what progress looks like in IFS: not fixing, just presence.',
-    partsTagged: [],
-  },
-];
 
 function buildDemoSessionCard(session) {
   const card = document.createElement('div');
@@ -9928,9 +9971,12 @@ function renderTimeline(s) {
   // Build chart data: replace per-day check-in averages with individual timestamped entries,
   // keeping all other sources (session snapshots, imports, manual entries) as-is.
   const checkinLog = _loadCheckinLog();
+  const checkinLogDates = new Set(Object.keys(checkinLog));
   const chartHist = [];
   hist.forEach(entry => {
-    if (entry.source === 'check-in') return; // replaced below by individual entries
+    // Only drop a check-in entry from balHist if checkinLog has that date covered —
+    // older entries that pre-date the log (or came via import) are kept as-is.
+    if (entry.source === 'check-in' && checkinLogDates.has(entry.date)) return;
     chartHist.push(entry);
   });
   // Add one point per individual check-in, using the ISO timestamp as date so the chart
@@ -10177,6 +10223,20 @@ function applyUpdate(chatData, importSource) {
     // _gitSync intentionally excluded from import: PAT is device-specific
     if (merged._gitSync) delete merged._gitSync;
 
+    // Restore check-in log if included in export
+    if (merged._checkinLog && typeof merged._checkinLog === 'object') {
+      if (!isPartial) {
+        // Full import: replace check-in log entirely
+        _saveCheckinLog(merged._checkinLog);
+      } else {
+        // Partial import: merge by date, imported entries replace existing for same date
+        const existing = _loadCheckinLog();
+        Object.entries(merged._checkinLog).forEach(([date, day]) => { existing[date] = day; });
+        _saveCheckinLog(existing);
+      }
+      delete merged._checkinLog;
+    }
+
     // Restore or rebuild balance history
     if (!isPartial && merged._balanceHistory) {
       // Full import with embedded history: restore it directly
@@ -10290,6 +10350,9 @@ function buildExportJSON() {
     ...appState,
     _balanceHistory: loadBalHist(),
   };
+  // Include check-in log so individual timestamps survive an export/import cycle
+  const checkinLog = _loadCheckinLog();
+  if (Object.keys(checkinLog).length) bundle._checkinLog = checkinLog;
   if (Object.keys(locks).length) bundle._locks = locks;
   const rawChatSettings = localStorage.getItem(CHAT_SETTINGS_KEY);
   if (rawChatSettings) try {
@@ -11010,6 +11073,7 @@ function _doInit() {
   function _handleCheckinPoll() {
     _applyBalCheckinGlow();
     _showPulseModal();
+    _tsShowCheckinReminder();
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden) _handleCheckinPoll(); if (document.hidden && _pinActive && _getLockOnHide()) lockApp(); });
   setInterval(_handleCheckinPoll, 60000);
@@ -11069,6 +11133,8 @@ function _doInit() {
     const _isFirstLoadOfDay = _lastLoadDate !== _todayDate;
     if(!IS_DEMO) try{ localStorage.setItem(CHECKIN_LOAD_DATE_KEY, _todayDate); }catch{}
     if(_isFirstLoadOfDay){ _showPulseModalFirstLoad(); } else { _showPulseModal(); }
+    // Show persistent reminder if no check-in done yet (slight delay so modal opens first)
+    setTimeout(_tsShowCheckinReminder, 900);
     // Show disclaimer banner on first load (dismissable; persists until "Don't show again")
     if (!localStorage.getItem(HIDE_DISC_BANNER_KEY)) {
       const db = document.getElementById('disclaimer-banner');
@@ -11086,50 +11152,55 @@ function _doInit() {
     .then(r => r.json())
     .then(data => {
       appState = data;
-      // Build balance history from embedded history or current weights.
-      // Shift all dates forward so the latest entry always lands on today,
-      // keeping the demo charts populated up to the current date.
+      // Shift all date-stamped content forward so the latest balance-history entry
+      // always lands on today, keeping demo charts and history populated up to the
+      // current date. This means sessions, selfMoments, and part timestamps all move
+      // forward by the same number of days.
+      const MS_DAY = 86400000;
+      const today = new Date(); today.setHours(0,0,0,0);
+      const todayStr = today.toISOString().slice(0,10);
+
+      function shiftDateStr(ds, shift) {
+        if (!ds) return ds;
+        const d = new Date(ds); d.setDate(d.getDate() + shift);
+        return d.toISOString().slice(0,10);
+      }
+
+      let dateShift = 0;
+
       if (data._balanceHistory && Array.isArray(data._balanceHistory)) {
         const balHist = data._balanceHistory;
-        const MS_DAY = 86400000;
-        const today = new Date(); today.setHours(0,0,0,0);
-        const todayStr = today.toISOString().slice(0,10);
         const latestDate = balHist.reduce((max, e) => e.date > max ? e.date : max, '');
         if (latestDate && latestDate !== todayStr) {
-          const shift = Math.round((today.getTime() - new Date(latestDate).getTime()) / MS_DAY);
-          balHist.forEach(e => {
-            if (e.date) {
-              const d = new Date(e.date); d.setDate(d.getDate() + shift);
-              e.date = d.toISOString().slice(0,10);
-            }
-          });
-          // Synthesise daily check-in entries for the past 7 days so the
-          // split 7-day panel of the chart is always populated.
-          const lastEntry = balHist[balHist.length - 1];
-          if (lastEntry && lastEntry.weights) {
-            const byDate = new Map(balHist.map(e => [e.date, e]));
-            for (let i = 6; i >= 1; i--) {
-              const d = new Date(today); d.setDate(d.getDate() - i);
-              const ds = d.toISOString().slice(0,10);
-              if (!byDate.has(ds)) {
-                // Interpolate weights slightly toward today's values with minor noise
-                const frac = (7 - i) / 7;
-                const w = {};
-                const keys = Object.keys(lastEntry.weights);
-                let total = 0;
-                keys.forEach(k => { w[k] = Math.max(0.01, lastEntry.weights[k] + (Math.random() - 0.5) * 0.02 * frac); total += w[k]; });
-                keys.forEach(k => { w[k] = Math.round(w[k] / total * 100) / 100; });
-                balHist.push({ date: ds, weights: w, source: 'check-in' });
-              }
-            }
-            balHist.sort((a,b) => a.date < b.date ? -1 : 1);
-          }
+          dateShift = Math.round((today.getTime() - new Date(latestDate).getTime()) / MS_DAY);
+          balHist.forEach(e => { e.date = shiftDateStr(e.date, dateShift); });
         }
+
+        // Build a _checkinLog from balHist entries with source 'check-in'.
+        // Each gets a synthetic timestamp at 09:00 local on its date (morning check-in).
+        const checkinLog = {};
+        balHist.forEach(e => {
+          if (e.source !== 'check-in' || !e.date || !e.weights) return;
+          const d = new Date(e.date + 'T09:00:00');
+          const ts = d.getTime();
+          if (!checkinLog[e.date]) checkinLog[e.date] = { entries: [] };
+          checkinLog[e.date].entries.push({ ts, weights: Object.assign({}, e.weights) });
+        });
+        _saveCheckinLog(checkinLog);
+
+        balHist.sort((a,b) => a.date < b.date ? -1 : 1);
         saveBalHist(balHist);
         delete appState._balanceHistory;
       } else if (data.parts && data.parts.some(p => p.balanceWeight)) {
         saveBalHist([]);
         snapshotBalance(data, 'import');
+      }
+
+      // Shift sessions and selfMoments by the same offset so history list is current
+      if (dateShift !== 0) {
+        (appState.sessions || []).forEach(sess => { sess.date = shiftDateStr(sess.date, dateShift); });
+        (appState.selfMoments || []).forEach(m => { m.date = shiftDateStr(m.date, dateShift); m.id = m.id && m.date ? 'sm-' + m.date + '-' + m.id.slice(-3) : m.id; });
+        (appState.parts || []).forEach(p => { if (p.lastUpdated) p.lastUpdated = shiftDateStr(p.lastUpdated, dateShift); });
       }
       if (IS_DEMO) {
         const b = document.getElementById('demo-banner');
@@ -11491,6 +11562,42 @@ function chatAddMsg(role, text, hint) {
   chatScrollBottom();
 }
 
+function _chatInjectDemoConversation(container) {
+  // Renders a static example conversation so demo visitors see what chatting looks like.
+  // Uses DOM construction (no innerHTML with external content) — all text is hard-coded.
+  const _addUser = t => {
+    const d = document.createElement('div');
+    d.className = 'chat-msg chat-msg-user';
+    d.textContent = t;
+    container.appendChild(d);
+  };
+  const _addAI = t => {
+    const d = document.createElement('div');
+    d.className = 'chat-msg chat-msg-ai';
+    const body = document.createElement('div');
+    _renderMarkdown(t, body);
+    d.appendChild(body);
+    container.appendChild(d);
+  };
+  const _addSys = t => {
+    const d = document.createElement('div');
+    d.className = 'chat-msg-sys';
+    d.textContent = t;
+    container.appendChild(d);
+  };
+
+  _addSys('Demo session with Alex\'s data. Save the file to chat with your own system.');
+  _addUser("I keep saying yes to things at work even when I'm already stretched. It happened again this week and I've been quietly furious ever since.");
+  _addAI("That gap between what you agreed to and what you actually felt sounds important. What was happening inside when the yes came out? Was there a moment of hesitation before it, or did it just move straight through?");
+  _addUser("There was definitely a moment. I could feel something tighten, like I knew it was too much. But then this other thing kicked in and sort of... smoothed it all over. The yes just came out.");
+  _addAI("That tightening is worth staying with. It sounds like a part of you knew, and then something stepped in quite quickly to handle the situation before that knowing could land.\n\nWhat do you think that part that moved in was protecting against? If it hadn't smoothed things over, what might have happened?");
+  _addUser("Probably tension. The person asking would have been disappointed. Maybe a bit cold with me after.");
+  _addAI("So that part is working very hard to prevent that cooling. Even a moment of disappointment or distance feels like something it needs to stop before it starts.\n\nThis sounds like it might connect to The Pleaser we've been looking at. Does that feel right, or is this something slightly different?");
+  _addUser("No, that's it. That's exactly The Pleaser. I just hadn't seen it move that fast before.");
+  _addAI("That noticing is new and it matters. You caught it mid-move, not just in retrospect.\n\nI'm curious: when you go back to that moment now, is there anything underneath the tightening? Something The Pleaser stepped in front of before it had a chance to speak?");
+  _addSys('Map updated from this session.');
+}
+
 function chatAddInfoCard(htmlOrNode) {
   const container = document.getElementById('chat-msgs');
   if (!container) return;
@@ -11820,7 +11927,8 @@ function _openChatOverlay() {
   const hasMessages = container && container.querySelectorAll('.chat-msg, .chat-msg-ai, .chat-msg-user').length > 0;
   if (container && container.children.length === 0) {
     if (IS_DEMO) {
-      chatAddInfoCard(_ollamaInstallHTML(detectOS(), 'qwen2.5:7b'));
+      // Show a pre-rendered example conversation so demo visitors see what chatting looks like
+      _chatInjectDemoConversation(container);
     } else {
       const currentModel = loadChatSettings().model || '';
       if (window.location.protocol === 'file:' && currentModel && _isLocalModel(currentModel)) {
@@ -13770,6 +13878,7 @@ const _TOUR_STEPS = [
 let _tourStep = 0;
 let _tourActive = false;
 let _tourResizeObs = null;
+let _miniSteps = [];
 
 function startTour(){
   _tourStep = 0;
@@ -13780,6 +13889,7 @@ function startTour(){
 
 function _tourEnd(skipped){
   _tourActive = false;
+  _miniSteps  = [];
   document.getElementById('tour-overlay').classList.remove('active');
   document.getElementById('tour-spotlight').classList.add('hidden');
   if(_tourResizeObs){ _tourResizeObs.disconnect(); _tourResizeObs = null; }
@@ -13796,7 +13906,7 @@ function _tourNext(){
 }
 
 function _tourScrimClick(){
-  _tourNext();
+  if(_miniSteps.length > 0) _miniNext(); else _tourNext();
 }
 
 function _tourRender(){
@@ -13816,9 +13926,9 @@ function _tourRender(){
     const ctaRow = document.createElement('div');
     ctaRow.className = 'tour-cta-row';
     const opts = [
-      { label: 'Fill it in yourself', sub: 'Type directly into any field. No AI needed, works offline.', action: ()=>{ _tourShowDownloadNudge(); } },
-      { label: 'Chat inside the app', sub: 'Connect your AI and just talk. Your map fills itself in. Recommended.', action: ()=>{ _tourShowDownloadNudge(); } },
-      { label: 'Copy-paste with your AI', sub: 'Journal in any AI, then import the result here.', action: ()=>{ _tourShowDownloadNudge(); } },
+      { label: 'Fill it in yourself', sub: 'Type directly into any field. No AI needed, works offline.', action: ()=>{ _tourEnd(false); _startNoAITour(); } },
+      { label: 'Chat inside the app', sub: 'Connect your AI and just talk. Your map fills itself in. Recommended.', action: ()=>{ _tourEnd(false); _startChatTour(); } },
+      { label: 'Copy-paste with your AI', sub: 'Journal in any AI, then import the result here.', action: ()=>{ _tourEnd(false); _startCopyPasteTour(); } },
     ];
     opts.forEach(o => {
       const btn = document.createElement('button');
@@ -13834,7 +13944,7 @@ function _tourRender(){
     bodyEl.appendChild(ctaRow);
     const note = document.createElement('div');
     note.style.cssText = 'font-size:13px;color:var(--text-dim);line-height:1.5;margin-top:4px;';
-    note.textContent = 'Save the file to your computer, then open it in your browser. The setup guide walks you through each option.';
+    note.textContent = 'Save the file to your computer, then open it in your browser. Each option walks you through your chosen path step by step.';
     bodyEl.appendChild(note);
   } else if(step.body){
     bodyEl.innerHTML = step.body; // static internal content only
@@ -13883,6 +13993,170 @@ function _tourShowDownloadNudge(){
   const nextBtn = document.getElementById('tour-btn-next');
   nextBtn.textContent = 'Done';
   nextBtn.onclick = e => { e.stopPropagation(); _tourEnd(false); };
+}
+
+// ── Mini-tour: reuses main tour overlay/card/spotlight machinery ────────────
+// Each step: { target, heading, body, placement, next, onEnter }
+// onEnter() fires before render — use it to open panels so targets exist in DOM.
+function startMiniTour(steps){
+  _miniSteps = steps;
+  _tourStep  = 0;
+  _tourActive = true;
+  document.getElementById('tour-overlay').classList.add('active');
+  _miniRender();
+}
+
+function _miniNext(){
+  if(_tourStep < _miniSteps.length - 1){
+    _tourStep++;
+    _miniRender();
+  } else {
+    _tourEnd(false);
+    _miniSteps = [];
+  }
+}
+
+function _miniRender(){
+  const step   = _miniSteps[_tourStep];
+  const isLast = _tourStep === _miniSteps.length - 1;
+
+  // Fire any side-effect before rendering (e.g. open chat panel)
+  if(step.onEnter) step.onEnter();
+
+  const spotlight = document.getElementById('tour-spotlight');
+  const card      = document.getElementById('tour-card');
+
+  // Step label
+  document.getElementById('tour-step-label').textContent =
+    _miniSteps.length > 1 ? `Step ${_tourStep + 1} of ${_miniSteps.length}` : '';
+
+  // Heading
+  document.getElementById('tour-heading').textContent = step.heading;
+
+  // Body
+  const bodyEl = document.getElementById('tour-body');
+  bodyEl.innerHTML = '';
+  if(step.body){
+    const p = document.createElement('div');
+    p.textContent = step.body;
+    bodyEl.appendChild(p);
+  }
+
+  // Progress dots
+  const prog = document.getElementById('tour-progress');
+  prog.innerHTML = '';
+  _miniSteps.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'tour-dot' + (i === _tourStep ? ' active' : '');
+    prog.appendChild(dot);
+  });
+
+  // Next button
+  const nextBtn = document.getElementById('tour-btn-next');
+  nextBtn.textContent = step.next || (isLast ? 'Got it' : 'Next');
+  nextBtn.onclick = e => { e.stopPropagation(); _miniNext(); };
+
+  // Spotlight + card positioning
+  if(!step.target){
+    spotlight.classList.add('hidden');
+    card.className = 'tour-card-center';
+    card.style.top = ''; card.style.left = ''; card.style.right = ''; card.style.bottom = '';
+  } else {
+    card.className = '';
+    spotlight.classList.remove('hidden');
+    // Double rAF so onEnter panels can paint before we measure them
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        _tourPosition(step);
+        if(_tourResizeObs) _tourResizeObs.disconnect();
+        _tourResizeObs = new ResizeObserver(() => { if(_tourActive) _tourPosition(step); });
+        _tourResizeObs.observe(document.documentElement);
+      });
+    });
+  }
+}
+
+function _pulseHelpBtn(){
+  const btn = document.getElementById('hdr-help-btn');
+  if(!btn) return;
+  btn.classList.add('help-pulse');
+  setTimeout(() => btn.classList.remove('help-pulse'), 3500);
+}
+
+// Path A: Fill it in yourself
+function _startNoAITour(){
+  startMiniTour([
+    {
+      target: '#tab-parts',
+      heading: 'Start here: your parts',
+      body: 'This tab is your inner roster. Click "+ Add part" and give it a name. Just a name is enough to start. Describe it, give it a role, fill in more over time.',
+      placement: 'below',
+    },
+    {
+      target: '[data-tab="map"]',
+      heading: 'See them as a map',
+      body: 'Once you have a few parts, the Connections tab turns them into a visual network. Size shows how much each part is running things right now.',
+      placement: 'below',
+    },
+    {
+      target: '.fbar-btn.fbar-daily',
+      heading: 'Check in each day',
+      body: 'Tap this to rate how blended you feel with each part. Takes 30 seconds. Over time it builds a history chart so you can see patterns.',
+      placement: 'above',
+    },
+    {
+      target: '#hdr-help-btn',
+      heading: "That's all you need",
+      body: 'This button is always here. It replays this tour and has the full guide whenever you want it.',
+      placement: 'left',
+      next: 'Got it',
+    },
+  ]);
+}
+
+// Path B: Chat inside the app
+function _startChatTour(){
+  startMiniTour([
+    {
+      target: '#chat-btn',
+      heading: 'Open Chat',
+      body: 'Tap this button to open the chat panel. You will connect your AI from inside.',
+      placement: 'above',
+    },
+    {
+      target: '#chat-hdr-settings-btn',
+      heading: 'Connect your AI here',
+      body: 'Tap the gear icon. You can use Ollama (free, runs on your computer) or paste in a cloud API key. Takes about two minutes.',
+      placement: 'left',
+      onEnter(){ openChat(); },
+    },
+    {
+      target: '#chat-hdr-settings-btn',
+      heading: 'Then just talk',
+      body: 'Once connected, close settings and start talking. Tell your AI what has been present for you lately. Your parts map fills itself in from the conversation.',
+      placement: 'left',
+      next: 'Got it',
+    },
+  ]);
+}
+
+// Path C: Copy-paste with your AI
+function _startCopyPasteTour(){
+  startMiniTour([
+    {
+      target: null,
+      heading: 'Step 1: journal with your AI',
+      body: 'Open your AI (ChatGPT, Claude, anything). Download instructions.md from the help menu, upload it, then talk about what has been present for you lately. What parts do you notice? What patterns keep showing up? 10 to 20 minutes is plenty.',
+      next: 'Next: bringing it back',
+    },
+    {
+      target: '#data-btn',
+      heading: 'Step 2: bring the data back here',
+      body: 'When you are done chatting, ask your AI: "Give me my team-sheet data as JSON". Then tap this Data button and choose Import. Paste what it gave you. Done.',
+      placement: 'above',
+      next: 'Got it',
+    },
+  ]);
 }
 
 function _tourPosition(step){
