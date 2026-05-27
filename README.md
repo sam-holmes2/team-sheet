@@ -2,9 +2,9 @@
 
 *Every part of you is on the same team.*
 
-Your mind is made up of **parts**: the Achiever that drives you, the Critic that cuts you down, the Soother that numbs when things get hard. [IFS (Internal Family Systems)](https://ifs-institute.com/) is a widely-used therapeutic framework built on this insight — that inner conflict is not a flaw to fix, but a system of parts to understand. team-sheet maps your inner system as it grows more detailed over time, session by session.
+Your mind is made up of **parts**: the Achiever that drives you, the Critic that cuts you down, the Soother that numbs when things get hard. [IFS (Internal Family Systems)](https://ifs-institute.com/) is a widely-used therapeutic framework built on this insight: that inner conflict is not a flaw to fix, but a system of parts to understand. team-sheet maps your inner system as it grows more detailed over time, session by session.
 
-🗺️ **[Try the live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html)** — no download needed
+🗺️ **[Try the live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html)** (no download needed)
 
 <img width="2708" height="1258" alt="image" src="https://github.com/user-attachments/assets/82689abe-04d2-4823-b230-b51c6b18b4a7" />
 
@@ -28,7 +28,7 @@ Your mind is made up of **parts**: the Achiever that drives you, the Critic that
 
 ## Privacy and security
 
-Your data stays on your device. Nothing is transmitted automatically — you decide what leaves your machine and when.
+Your data stays on your device. Nothing is transmitted automatically. You decide what leaves your machine and when.
 
 - **`data.json` is your private diary.** IFS material is deeply personal. Any AI provider you journal with may store or use what you share. Check their privacy settings to opt out.
 - **Think before syncing `data.json` to cloud storage.** Uploading to Google Drive, Dropbox, or iCloud means trusting that provider with your inner world. `team-sheet.html` and `instructions.md` are fine to sync.
@@ -39,7 +39,7 @@ Your data stays on your device. Nothing is transmitted automatically — you dec
 
 **Password lock.** The app has an optional password that encrypts all your data in the browser. Given the sensitivity of IFS material, this is strongly recommended. Set it in the Security section (gear icon, top right).
 
-[Full threat model](journalling-threat-model.md) — privacy risks broken down across every journalling approach.
+[Full threat model](journalling-threat-model.md): privacy risks broken down across every journalling approach.
 
 ---
 
@@ -72,7 +72,7 @@ No account required for any option. Pick based on how private you want your data
 
 Download and open `team-sheet.html`. Go to the Parts tab and click **+ Add part**. Fill in fields directly in the app.
 
-Export your data regularly with the download button (top right). That's it — the whole app works offline with no AI involved.
+Export your data regularly with the download button (top right). That's it. The whole app works offline with no AI involved.
 
 ---
 
@@ -114,13 +114,13 @@ Having trouble? See [ollama-setup.md](ollama-setup.md#troubleshooting).
 
 Use the [live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html) (requires HTTPS) or your downloaded file.
 
-> Your session data is sent to your AI provider with each message. IFS material is personal — use [Path B](#b-local-ai-with-ollama) if this concerns you. See [ai-privacy-guide.md](ai-privacy-guide.md) for provider details.
+> Your session data is sent to your AI provider with each message. IFS material is personal. Use [Path B](#b-local-ai-with-ollama) if this concerns you. See [ai-privacy-guide.md](ai-privacy-guide.md) for provider details.
 
 1. Create an account at [console.anthropic.com](https://console.anthropic.com) (separate from Claude.ai)
 2. Go to **API Keys** and create a new key
-3. Store the key in a password manager — it cannot be retrieved from Anthropic after creation
+3. Store the key in a password manager. It cannot be retrieved from Anthropic after creation
 4. Enable two-factor authentication on your Anthropic account
-5. In the app: go to **Security** (gear icon, top right) and set a password first — the app won't save an API key without one
+5. In the app: go to **Security** (gear icon, top right) and set a password first. The app won't save an API key without one
 6. Open Chat Settings (gear icon in the chat panel), select a Claude model, and paste your key
 
 > Your API key grants access to your Anthropic account. Anyone with it can generate charges. Never paste it into websites you don't trust.
@@ -129,10 +129,10 @@ Use the [live demo](https://sam-holmes2.github.io/team-sheet/team-sheet.html) (r
 
 ### D. Cloud AI via copy-paste (no API key)
 
-Use any AI — Claude, ChatGPT, Gemini — through its normal web interface. No in-app chat or API key needed.
+Use any AI (Claude, ChatGPT, Gemini) through its normal web interface. No in-app chat or API key needed.
 
 **First session:**
-1. Download [team-sheet.html](team-sheet.html) and [instructions.md](instructions.md) — click each link, then the download icon
+1. Download [team-sheet.html](team-sheet.html) and [instructions.md](instructions.md) (click each link, then the download icon)
 2. Create an AI project (e.g. [claude.ai](https://claude.ai) → New Project)
 3. Upload `instructions.md` to the project knowledge
 4. Paste the [quickstart prompt](#quickstart-prompt) and start talking
@@ -159,7 +159,7 @@ Once you have a reasonable picture, generate my initial data.json using the form
 ## Each session (copy-paste workflow)
 
 1. If you made any changes in the app, export first: click the download icon (top right)
-2. Start a new chat in your AI project — check your latest `data.json` is in the project knowledge
+2. Start a new chat in your AI project (check your latest `data.json` is in the project knowledge)
 3. Journal freely, or name a [session mode](#session-modes) to start with
 4. Ask your AI to *"Update my data"*
 5. Replace `data.json` in project knowledge: remove the old version, upload the new one
@@ -195,7 +195,7 @@ Name any mode at the start of a session to direct the conversation.
 
 ## The 6 Fs: working with a part
 
-When focusing on a specific part, your AI will use the 6 Fs as a loose guide. You don't need to know these in advance — the AI will lead naturally.
+When focusing on a specific part, your AI will use the 6 Fs as a loose guide. You don't need to know these in advance; the AI will lead naturally.
 
 1. **Find:** locate the part; where do you feel it in your body?
 2. **Focus:** turn attention toward it without trying to change it
@@ -237,13 +237,13 @@ Find a qualified IFS therapist:
 ## Want to learn more about IFS?
 
 **To listen first:**
-- [How (and Why) to Hug Your Inner Dragons](https://open.spotify.com/episode/3St6LBbY32Tuck0XAuQQHE) — interview with Richard Schwartz
+- [How (and Why) to Hug Your Inner Dragons](https://open.spotify.com/episode/3St6LBbY32Tuck0XAuQQHE) (interview with Richard Schwartz)
 - [The Tim Ferriss Show #492 with Richard Schwartz](https://www.youtube.com/watch?v=ebLMeNiuoEo)
 
 **To read:**
-- *Introduction to the Internal Family Systems Model* — Richard Schwartz. 140-page overview, the shortest path to understanding the whole model.
-- *Self-Therapy* — Jay Earley. Step-by-step guide for doing IFS on yourself.
-- *No Bad Parts* — Richard Schwartz. Applies IFS to relationships and broader societal change.
+- *Introduction to the Internal Family Systems Model* by Richard Schwartz. 140-page overview, the shortest path to understanding the whole model.
+- *Self-Therapy* by Jay Earley. Step-by-step guide for doing IFS on yourself.
+- *No Bad Parts* by Richard Schwartz. Applies IFS to relationships and broader societal change.
 
 [The IFS Institute](https://ifs-institute.com/) has free articles, videos, and the official practitioner directory.
 
@@ -264,7 +264,7 @@ Contributions welcome: [open a pull request](https://github.com/sam-holmes2/team
 
 IFS gave me a genuinely useful framework for understanding my inner world, but keeping track of this understanding as it grew more complex over time became difficult. Insights from one therapy session were often forgotten by the next. I found it helpful to regularly check in with my parts between sessions, as IFS creator Richard Schwartz recommends, but this became far easier when it contributed to a growing, evolving map.
 
-I also noticed some parts were craving something more external and objective — clear evidence that I was on the right track — to help recognise and appreciate the growth and healing that other skeptical parts tended to dismiss. team-sheet became that place for me, and I hope it can benefit others too.
+I also noticed some parts were craving something more external and objective: clear evidence that I was on the right track, to help recognise and appreciate the growth and healing that other skeptical parts tended to dismiss. team-sheet became that place for me, and I hope it can benefit others too.
 
 ---
 
