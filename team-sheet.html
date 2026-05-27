@@ -1206,7 +1206,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 #welcome-modal { z-index:400; }
 #welcome-modal .modal { max-width:620px; width:100%; border-top:3px solid var(--modal-brown-border); }
 #welcome-modal .modal-title { color:var(--modal-brown); }
-.welcome-modal-desc { font-size:16px; color:var(--text-mid); margin-bottom:18px; line-height:1.6; }
+.welcome-modal-desc { font-size:18px; color:var(--text-mid); margin-bottom:18px; line-height:1.6; }
 .welcome-options { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
 .welcome-opt-btn {
   font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.1em; padding:9px 16px;
@@ -1223,7 +1223,7 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .welcome-step { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
 .welcome-step:last-child { border-bottom:none; }
 .welcome-step-num { font-family:var(--mono); font-size:15px; color:var(--gold); flex-shrink:0; width:22px; padding-top:2px; }
-.welcome-step-text { font-size:15px; color:var(--text-mid); line-height:1.55; flex:1; }
+.welcome-step-text { font-size:17px; color:var(--text-mid); line-height:1.55; flex:1; }
 .welcome-step-text strong { color:var(--text-b); font-weight:600; }
 /* ── Demo banner ── */
 #demo-banner {
@@ -1853,16 +1853,16 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 #tour-card:not(.tour-card-center) { transform:none; }
 
 .tour-step-label {
-  font-family:var(--mono); font-size:11px;
+  font-family:var(--mono); font-size:13px;
   color:var(--gold); letter-spacing:0.08em;
   text-transform:uppercase; margin-bottom:6px;
 }
 .tour-heading {
-  font-family:'Cinzel',serif; font-size:15px;
+  font-family:'Cinzel',serif; font-size:17px;
   color:var(--text-b); margin-bottom:8px; line-height:1.35;
 }
 .tour-body {
-  font-size:14px; color:var(--text-mid);
+  font-size:16px; color:var(--text-mid);
   line-height:1.55; margin-bottom:12px;
 }
 .tour-body strong { color:var(--text-b); font-weight:600; }
@@ -2273,9 +2273,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-setup-btn" onclick="toggleWelcomeSetup('manual')">A &nbsp;Fill it in yourself</button>
       <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-chat-btn" onclick="toggleWelcomeSetup('chat')">B &nbsp;Chat inside the app</button>
       <button class="welcome-opt-btn welcome-opt-ghost" id="welcome-ai-btn" onclick="toggleWelcomeSetup('ai')">C &nbsp;Copy-paste with your AI</button>
-    </div>
-    <div style="margin:10px 0 2px;border-top:1px solid var(--border);padding-top:12px;">
-      <button onclick="dismissWelcome();openModal()" class="btn-gold-ghost" style="width:100%;padding:11px 16px;font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;border-radius:5px;cursor:pointer;">&#10022; Already have data? Import it</button>
+      <button class="welcome-opt-btn welcome-opt-ghost" onclick="dismissWelcome();openModal()" style="border-color:rgba(80,120,180,0.4);color:rgba(80,120,180,0.8);">D &nbsp;Restore a backup</button>
     </div>
     <div id="welcome-setup-steps" data-mode="">
       <!-- Path A: Fill it in yourself -->
@@ -2285,6 +2283,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">2</div><div class="welcome-step-text"><strong>Add what you know.</strong> Give it a role (Manager, Firefighter, or Exile), describe what it does, what it fears, when it shows up. No need to fill everything at once.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#6090c8;">3</div><div class="welcome-step-text"><strong>Do your first check-in.</strong> Tap the Check-in button in the bottom bar. It takes 30 seconds and starts your history chart.</div></div>
         <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#6090c8;">4</div><div class="welcome-step-text"><strong>Export regularly</strong> using the Data button in the bottom bar. Your data only lives in this browser, so Export is your backup.</div></div>
+        <div style="margin-top:14px;"><button class="btn-primary" style="background:#3a50a0;border-color:#3a50a0;" onclick="dismissWelcome();_startNoAITour()">Start guided setup &#8594;</button></div>
       </div>
       <!-- Path B: Chat inside the app (recommended) -->
       <div class="welcome-path" id="welcome-path-chat" style="display:none;">
@@ -2292,7 +2291,8 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">1</div><div class="welcome-step-text"><strong>Tap the star icon</strong> (&#10022;) in the bottom bar to open Chat.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">2</div><div class="welcome-step-text"><strong>Connect your AI.</strong> Tap the gear icon inside Chat. You can use a paid cloud service (you paste in an account key), or a free app called Ollama that runs entirely on your computer with nothing sent anywhere.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#50c878;">3</div><div class="welcome-step-text"><strong>Just talk.</strong> Tell your AI what's been present for you lately. After 10-20 minutes, your map fills itself in. No typing into fields needed.</div></div>
-        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:var(--text-dim);">i</div><div class="welcome-step-text" style="font-size:14px;color:var(--text-dim);">Ollama is free and private: nothing leaves your device. Paid cloud services cost a few cents per session and send your conversation to their servers.</div></div>
+        <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:var(--text-dim);">i</div><div class="welcome-step-text" style="font-size:16px;color:var(--text-dim);">Ollama is free and private: nothing leaves your device. Paid cloud services cost a few cents per session and send your conversation to their servers.</div></div>
+        <div style="margin-top:14px;"><button class="btn-primary" style="background:#2a6040;border-color:#2a6040;" onclick="dismissWelcome();_startChatTour()">Start guided setup &#8594;</button></div>
       </div>
       <!-- Path C: Copy-paste with your AI -->
       <div class="welcome-path" id="welcome-path-ai" style="display:none;">
@@ -2302,6 +2302,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">3</div><div class="welcome-step-text"><strong>Start talking.</strong> Try: <em>"Here's what's been present for me lately..."</em> and go from there.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:#f09090;">4</div><div class="welcome-step-text"><strong>When you're done,</strong> ask your AI: <em>"Update my data"</em> and copy what it gives you.</div></div>
         <div class="welcome-step" style="border-bottom:none;padding-bottom:0;"><div class="welcome-step-num" style="color:#f09090;">5</div><div class="welcome-step-text"><button class="btn-ghost" style="font-size:inherit;padding:2px 7px;font-weight:700;" onclick="dismissWelcome();openModal()">&#8593; Import</button> your data here, paste it in, and hit Apply. Your map updates instantly.</div></div>
+        <div style="margin-top:14px;"><button class="btn-primary" style="background:#803030;border-color:#803030;" onclick="dismissWelcome();_startCopyPasteTour()">Start guided setup &#8594;</button></div>
       </div>
     </div>
     <div style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
@@ -13923,28 +13924,13 @@ function _tourRender(){
   const bodyEl = document.getElementById('tour-body');
   if(step.isCTA){
     bodyEl.innerHTML = '';
-    const ctaRow = document.createElement('div');
-    ctaRow.className = 'tour-cta-row';
-    const opts = [
-      { label: 'Fill it in yourself', sub: 'Type directly into any field. No AI needed, works offline.', action: ()=>{ _tourEnd(false); _startNoAITour(); } },
-      { label: 'Chat inside the app', sub: 'Connect your AI and just talk. Your map fills itself in. Recommended.', action: ()=>{ _tourEnd(false); _startChatTour(); } },
-      { label: 'Copy-paste with your AI', sub: 'Journal in any AI, then import the result here.', action: ()=>{ _tourEnd(false); _startCopyPasteTour(); } },
-    ];
-    opts.forEach(o => {
-      const btn = document.createElement('button');
-      btn.className = 'tour-cta-btn';
-      const strong = document.createElement('strong');
-      strong.textContent = o.label;
-      const sub = document.createTextNode(o.sub);
-      btn.appendChild(strong);
-      btn.appendChild(sub);
-      btn.addEventListener('click', e => { e.stopPropagation(); o.action(); });
-      ctaRow.appendChild(btn);
-    });
-    bodyEl.appendChild(ctaRow);
+    const desc = document.createElement('div');
+    desc.style.cssText = 'font-size:15px;color:var(--text-mid);line-height:1.6;margin-bottom:14px;';
+    desc.textContent = 'Your copy is a single HTML file. Open it in any browser, on any device. No installation, no account. Your data stays on your machine.';
+    bodyEl.appendChild(desc);
     const note = document.createElement('div');
-    note.style.cssText = 'font-size:13px;color:var(--text-dim);line-height:1.5;margin-top:4px;';
-    note.textContent = 'Save the file to your computer, then open it in your browser. Each option walks you through your chosen path step by step.';
+    note.style.cssText = 'font-size:13px;color:var(--text-dim);line-height:1.5;margin-top:10px;';
+    note.textContent = 'When you open it for the first time, a setup guide will walk you through how to fill it in.';
     bodyEl.appendChild(note);
   } else if(step.body){
     bodyEl.innerHTML = step.body; // static internal content only
