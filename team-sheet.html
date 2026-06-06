@@ -75,6 +75,70 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
 .hdr-util-btn:hover { color:var(--gold); background:var(--gold-dim); }
 .hdr-util-btn.help-pulse { animation:help-btn-pulse 0.8s ease-in-out 4; color:var(--gold); background:var(--gold-dim); }
 @keyframes help-btn-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(200,168,74,0);} 50%{box-shadow:0 0 0 5px rgba(200,168,74,0.35);} }
+/* ── Inbox ── */
+.hdr-util-btn.inbox-active { color:var(--gold); background:var(--gold-dim); }
+.inbox-badge {
+  position:absolute; top:2px; right:2px;
+  background:var(--gold); color:var(--bg);
+  border-radius:999px; font-size:10px; line-height:1;
+  padding:2px 4px; font-family:var(--mono);
+  font-weight:700; pointer-events:none;
+}
+.hdr-util-btn { position:relative; }
+/* Inbox panel */
+#inbox-panel {
+  position:fixed; top:120px; right:16px; width:340px; max-height:70vh;
+  background:var(--card); border:1px solid var(--border-hi);
+  border-radius:10px; box-shadow:0 8px 32px rgba(0,0,0,0.55);
+  display:flex; flex-direction:column; z-index:1200;
+  overflow:hidden;
+}
+#inbox-panel.hidden { display:none; }
+.inbox-hdr {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 14px; border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.inbox-hdr-title { font-family:'Cinzel',serif; font-size:13px; color:var(--gold); letter-spacing:0.06em; }
+.inbox-hdr-close { background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:18px; line-height:1; padding:0 2px; }
+.inbox-hdr-close:hover { color:var(--text); }
+.inbox-list { overflow-y:auto; flex:1; padding:8px; }
+.inbox-empty { text-align:center; color:var(--text-dim); font-size:14px; padding:24px 12px; font-style:italic; }
+.inbox-item {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:7px; padding:10px 12px; margin-bottom:8px;
+  transition:opacity 0.2s;
+}
+.inbox-item.processed { opacity:0.38; }
+.inbox-item-top { display:flex; align-items:flex-start; gap:8px; }
+.inbox-priority {
+  background:rgba(200,168,74,0.15); border:1px solid rgba(200,168,74,0.3);
+  color:var(--gold); border-radius:4px; font-size:11px; font-family:var(--mono);
+  padding:1px 5px; flex-shrink:0; margin-top:1px;
+}
+.inbox-content { font-size:14px; line-height:1.5; color:var(--text); flex:1; }
+.inbox-meta { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:7px; }
+.inbox-badge-type {
+  font-size:10px; font-family:var(--mono); border-radius:3px;
+  padding:1px 5px; border:1px solid; text-transform:uppercase; letter-spacing:0.05em;
+}
+.inbox-badge-type.partUpdate  { color:var(--manager);     border-color:rgba(80,144,204,0.4);  background:var(--manager-bg); }
+.inbox-badge-type.newPart     { color:var(--exile);       border-color:rgba(112,170,72,0.4);  background:var(--exile-bg); }
+.inbox-badge-type.selfMoment  { color:var(--self-color);  border-color:rgba(232,223,200,0.25);background:var(--self-bg); }
+.inbox-badge-type.session     { color:var(--firefighter); border-color:rgba(208,112,56,0.4);  background:var(--firefighter-bg); }
+.inbox-badge-type.memory      { color:#a080c8;            border-color:rgba(160,128,200,0.4); background:rgba(160,128,200,0.07); }
+.inbox-badge-type.general     { color:var(--text-mid);    border-color:var(--border-hi);      background:transparent; }
+.inbox-target { font-size:11px; color:var(--text-mid); font-style:italic; }
+.inbox-source { font-size:10px; color:var(--text-dim); font-family:var(--mono); margin-left:auto; }
+.inbox-date   { font-size:10px; color:var(--text-dim); font-family:var(--mono); }
+.inbox-done-btn {
+  margin-top:8px; background:none; border:1px solid var(--border-hi);
+  color:var(--text-dim); border-radius:4px; font-size:12px; padding:3px 10px;
+  cursor:pointer; font-family:inherit; transition:all 0.15s;
+}
+.inbox-done-btn:hover { border-color:var(--gold); color:var(--gold); }
+.inbox-processed-divider { font-size:11px; color:var(--text-dim); text-align:center; margin:8px 0 4px; font-family:var(--mono); letter-spacing:0.05em; }
+
 .app-brand {
   font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.22em;
   text-transform:uppercase; color:var(--text-dim); opacity:0.6;
@@ -1020,6 +1084,51 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   margin-bottom:14px; display:flex; align-items:center; gap:12px;
 }
 .session-read-text-edit:empty::before { content:attr(data-placeholder); color:var(--text-dim); opacity:0.5; }
+/* ── Session inline edit mode ── */
+.ts-jtl-edit-btn {
+  background:none; border:none; color:var(--text-dim); cursor:pointer;
+  font-size:13px; line-height:1; padding:0 4px; flex-shrink:0; opacity:0;
+  transition:opacity 0.12s, color 0.12s; border-radius:3px;
+}
+.ts-jtl-body:hover .ts-jtl-edit-btn { opacity:0.4; }
+.ts-jtl-edit-btn:hover { opacity:1 !important; color:var(--gold); }
+.ts-jtl-edit-row {
+  display:flex; align-items:center; gap:6px;
+  margin-bottom:4px;
+}
+.ts-jtl-edit-input {
+  width:100%; background:var(--card); border:1px solid var(--border);
+  color:var(--text); border-radius:4px; padding:5px 8px;
+  font-size:14px; font-family:'Crimson Pro',Georgia,serif;
+  outline:none; box-sizing:border-box;
+  transition:border-color 0.15s;
+}
+.ts-jtl-edit-input:focus { border-color:var(--border-hi); }
+.ts-jtl-edit-textarea {
+  width:100%; background:var(--card); border:1px solid var(--border);
+  color:var(--text); border-radius:4px; padding:6px 8px;
+  font-size:15px; font-family:'Crimson Pro',Georgia,serif; line-height:1.65;
+  outline:none; box-sizing:border-box; resize:vertical; min-height:80px;
+  transition:border-color 0.15s;
+}
+.ts-jtl-edit-textarea:focus { border-color:var(--border-hi); }
+.ts-jtl-edit-actions {
+  display:flex; gap:8px; margin-top:8px; justify-content:flex-end;
+}
+.ts-jtl-edit-save {
+  background:var(--gold-dim,rgba(200,168,74,0.15)); border:1px solid var(--gold);
+  color:var(--gold); border-radius:4px; padding:3px 12px;
+  font-size:13px; font-family:var(--mono); cursor:pointer;
+  transition:background 0.12s, opacity 0.12s;
+}
+.ts-jtl-edit-save:hover { background:rgba(200,168,74,0.25); }
+.ts-jtl-edit-cancel {
+  background:none; border:1px solid var(--border-hi);
+  color:var(--text-dim); border-radius:4px; padding:3px 12px;
+  font-size:13px; font-family:var(--mono); cursor:pointer;
+  transition:color 0.12s, border-color 0.12s;
+}
+.ts-jtl-edit-cancel:hover { color:var(--text); border-color:var(--text-dim); }
 .memory-card {
   background:var(--card); border:1px solid var(--border-hi);
   border-radius:10px; margin-bottom:10px; padding:14px 18px;
@@ -1157,6 +1266,11 @@ h1,h2,h3 { font-family:'Cinzel',serif; font-weight:600; }
   font-size:14px; line-height:1.4; margin:8px 0;
 }
 .context-note { font-family:var(--mono); font-size:13px; color:var(--text-dim); margin:6px 0; }
+
+@media (max-width:700px) {
+  #export-grid { grid-template-columns:1fr !important; gap:0; }
+  #export-full-col { margin-top:24px; padding-top:20px; border-top:1px solid var(--border); }
+}
 
 /* ── Confirm modal ── */
 #confirm-modal .modal { max-width:380px; }
@@ -1930,6 +2044,40 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 @media (max-width:480px) {
   #tour-card { padding:15px 15px 12px; }
 }
+
+/* ── GitHub backup section (export modal) ── */
+.github-backup-section {
+  margin-top:20px;
+  padding-top:16px;
+  border-top:1px solid var(--border);
+}
+.github-backup-label {
+  font-family:'Cinzel',serif;
+  font-size:13px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--modal-brown);
+  margin-bottom:8px;
+}
+.github-backup-row {
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.github-backup-input {
+  flex:1;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:4px;
+  color:var(--text);
+  font-family:var(--mono);
+  font-size:13px;
+  padding:6px 10px;
+  outline:none;
+  transition:border-color 0.15s;
+}
+.github-backup-input:focus { border-color:var(--modal-brown-border); }
+.github-backup-input::placeholder { color:var(--text-dim); opacity:0.6; }
 /* ══ WELCOME MODAL: active-state colors for new option C ══ */
 .welcome-opt-ghost.active-green { border-color:#50c878; color:#50c878; }
 </style>
@@ -1942,6 +2090,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <div class="app-left">
     <span class="app-brand">team-sheet</span>
     <div class="hdr-util">
+      <button class="hdr-util-btn hdr-util-inbox" id="hdr-inbox-btn" onclick="toggleInboxPanel()" title="Inbox: flagged items from external sessions to process." style="font-size:16px;">&#128229;<span class="inbox-badge" id="inbox-badge" style="display:none;"></span></button>
       <button class="hdr-util-btn hdr-util-help" onclick="openHelpModal()" title="Help: how team-sheet works, setup guide for AI-assisted IFS work, and first-time instructions." id="hdr-help-btn">?</button>
       <button class="hdr-util-btn hdr-util-settings" onclick="openSettingsModal()" title="Security: set a password to encrypt all your data in this browser with AES-256. Nothing leaves your machine unless you send it.">&#9881;</button>
       <button class="hdr-util-btn hdr-util-support" onclick="openSupportModal()" title="Support: share team-sheet with a friend or star it on GitHub.">&#9829;</button>
@@ -1975,6 +2124,15 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
   <button class="tab-btn"        data-tab="journal"  onclick="switchTab('journal')"  title="Sessions: your AI session log. Each entry records which parts were active, what was explored, and any Self-led moments or breakthroughs that emerged."><span class="tab-nav-count" id="nav-journal">0</span>Sessions</button>
   <button class="tab-btn"        data-tab="timeline" onclick="switchTab('timeline')" title="Memories: your system over time. Charts show part leadership across all sessions, and memories anchor key life events to the timeline."><span class="tab-nav-count" id="nav-timeline">0</span>Memories</button>
 </nav>
+</div>
+
+<!-- ══ INBOX PANEL ═════════════════════════════════════════════ -->
+<div id="inbox-panel" class="hidden">
+  <div class="inbox-hdr">
+    <span class="inbox-hdr-title">&#128229; Inbox</span>
+    <button class="inbox-hdr-close" onclick="toggleInboxPanel()" title="Close">&#215;</button>
+  </div>
+  <div class="inbox-list" id="inbox-list"></div>
 </div>
 
 <!-- ══ BANNER ZONE (below nav) ══════════════════════════════════ -->
@@ -2254,7 +2412,7 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
 
 <!-- ══ EXPORT MODAL ══════════════════════════════════════════════ -->
 <div class="modal-overlay" id="export-modal" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="modal" style="border-top:3px solid var(--modal-brown-border);max-width:700px;width:100%;">
+  <div class="modal" style="border-top:3px solid var(--modal-brown-border);max-width:1000px;width:100%;">
     <button class="modal-close" onclick="document.getElementById('export-modal').classList.remove('open')">&#215;</button>
     <div class="modal-title" style="color:var(--modal-brown);">&#8595;&nbsp; Export</div>
     <div id="export-enc-row" style="display:none;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border);">
@@ -2262,18 +2420,53 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       <p style="margin:0 0 10px;font-size:14px;color:var(--text-dim);line-height:1.5;">Downloads the same encrypted file that GitHub sync uses. Safe to store anywhere: AES-256-GCM encrypted with your password and unreadable without it. Use as an offline backup or to move to a new device.</p>
       <button class="btn-ghost" style="font-size:14px;" onclick="downloadEncryptedJson()">&#8595; ts-data.enc</button>
     </div>
-    <div style="padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(160,60,60,0.12);border:1px solid rgba(160,60,60,0.4);color:#c07070;margin:0 0 10px;">This file contains your private data. Treat it like a diary.</div>
-    <p>Copy your data.json and share it with your AI project to start or continue a journalling session.</p>
-    <div id="export-warn-box" class="export-warn"></div>
-    <div id="export-context-note" class="context-note"></div>
-    <div style="display:flex;gap:12px;align-items:center;margin:8px 0;overflow:visible;">
-      <canvas id="export-pie" width="110" height="110" style="flex-shrink:0;width:90px;height:90px;"></canvas>
-      <div id="export-pie-legend" style="flex:1;display:flex;flex-direction:column;gap:3px;font-size:13px;font-family:var(--mono);min-width:0;"></div>
+    <p style="font-size:13px;color:#c84040;margin-bottom:16px;padding:10px 14px;border-radius:6px;background:rgba(200,64,64,0.08);border:1px solid rgba(200,64,64,0.25);">&#9888; These exports contain your private data in plain text. Store them securely and do not share them casually.</p>
+    <div id="export-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;">
+      <!-- Left: AI context snapshot -->
+      <div style="display:flex;flex-direction:column;">
+        <div style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">AI context snapshot</div>
+        <p style="margin:0 0 10px;font-size:14px;color:var(--text-dim);line-height:1.5;">Compact snapshot for sharing with your AI. Includes all parts, system info, sessions as summaries, and self moments. Chat message logs are stripped. Use the full export for device migration.</p>
+        <div id="export-warn-box" class="export-warn"></div>
+        <div id="export-context-note" class="context-note"></div>
+        <div style="display:flex;gap:12px;align-items:center;margin:8px 0;overflow:visible;">
+          <canvas id="export-pie" width="110" height="110" style="flex-shrink:0;width:90px;height:90px;"></canvas>
+          <div id="export-pie-legend" style="flex:1;display:flex;flex-direction:column;gap:3px;font-size:13px;font-family:var(--mono);min-width:0;"></div>
+        </div>
+        <textarea id="export-textarea" class="export-textarea" readonly style="flex:1;"></textarea>
+        <div class="modal-row" style="margin-top:8px;">
+          <button class="btn-primary" id="copy-export-btn" onclick="copyExport()">Copy</button>
+          <button class="btn-ghost" style="font-size:13px;opacity:0.7;" onclick="downloadExport()">&#8595; data.json</button>
+        </div>
+      </div>
+      <!-- Right: Full backup -->
+      <div id="export-full-col" style="display:flex;flex-direction:column;">
+        <div style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">Full backup</div>
+        <p style="margin:0 0 10px;font-size:14px;color:var(--text-dim);line-height:1.5;">Exports <em>all</em> app data including full chat message logs. Use this to move between devices or browsers. Do not paste this into an AI chat.</p>
+        <div id="full-size-warning" style="margin-bottom:10px;padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(200,168,74,0.08);border:1px solid rgba(200,168,74,0.3);color:var(--gold);">&#9888; This file includes full chat history and may be large. For migration only.</div>
+        <div style="display:flex;gap:12px;align-items:center;margin:8px 0;overflow:visible;">
+          <canvas id="full-pie" width="110" height="110" style="flex-shrink:0;width:90px;height:90px;"></canvas>
+          <div id="full-pie-legend" style="flex:1;display:flex;flex-direction:column;gap:3px;font-size:13px;font-family:var(--mono);min-width:0;"></div>
+        </div>
+        <textarea id="full-textarea" class="export-textarea" readonly style="flex:1;"></textarea>
+        <div class="modal-row" style="margin-top:8px;">
+          <button class="btn-primary" id="copy-full-btn" onclick="copyFullExport()" style="background:rgba(200,168,74,0.15);border-color:rgba(200,168,74,0.5);color:var(--gold);">Copy</button>
+          <button class="btn-ghost" style="font-size:13px;opacity:0.7;" onclick="downloadFullExport()">&#8595; backup.json</button>
+        </div>
+      </div>
     </div>
-    <textarea id="export-textarea" class="export-textarea" readonly></textarea>
-    <div class="modal-row" style="margin-top:8px;">
-      <button class="btn-primary" id="copy-export-btn" onclick="copyExport()">Copy</button>
-      <button class="btn-ghost" style="font-size:13px;opacity:0.7;" onclick="downloadExport()">&#8595; data.json</button>
+    <!-- ── GitHub backup link ── -->
+    <div class="github-backup-section">
+      <div class="github-backup-label">&#9741;&nbsp; GitHub backup</div>
+      <div class="github-backup-row">
+        <input class="github-backup-input" id="github-backup-url" type="url"
+               placeholder="https://github.com/you/repo"
+               oninput="saveGithubBackupUrl()" />
+        <button class="btn-ghost" id="github-backup-btn"
+                style="display:none;font-size:13px;white-space:nowrap;"
+                onclick="window.open(document.getElementById('github-backup-url').value,'_blank')">
+          &#8599; View on GitHub
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -2358,12 +2551,12 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
         <span class="welcome-row-icon">&#8593;</span>
         <span class="welcome-row-text">
           <span class="welcome-row-title">Restore from a backup file</span>
-          <span class="welcome-row-sub">Import a data.json you exported from another device or browser.</span>
+          <span class="welcome-row-sub">Import a backup.json (or data.json) you exported from another device or browser.</span>
         </span>
         <span class="welcome-row-chevron">&#9656;</span>
       </button>
       <div class="welcome-path-panel" id="welcome-path-import">
-        <div class="welcome-step"><div class="welcome-step-num" style="color:var(--gold);">1</div><div class="welcome-step-text"><strong>Find your backup file.</strong> It will be named data.json and was created using the Export button in the Data menu.</div></div>
+        <div class="welcome-step"><div class="welcome-step-num" style="color:var(--gold);">1</div><div class="welcome-step-text"><strong>Find your backup file.</strong> It will be named backup.json (or data.json for older exports) and was created using the Export button in the Data menu.</div></div>
         <div class="welcome-step"><div class="welcome-step-num" style="color:var(--gold);">2</div><div class="welcome-step-text"><strong>Open Import</strong> from the Data button in the bottom bar, paste your JSON, and hit Apply.</div></div>
         <div style="margin-top:12px;"><button class="btn-primary" onclick="dismissWelcome();openModal()">Open Import &#8594;</button></div>
       </div>
@@ -2614,26 +2807,6 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
     </div>
 
     <div class="settings-section">
-      <div class="settings-label">Check-In Prompts</div>
-      <p style="font-size:14px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">The check-in popup opens automatically on your first visit each day. You can also set it to prompt you again throughout the day.</p>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-        <label for="settings-checkin-interval" style="font-size:14px;color:var(--text-dim);white-space:nowrap;">Repeat every</label>
-        <select class="settings-select" id="settings-checkin-interval" onchange="settingsSaveCheckinInterval()">
-          <option value="0">Once per day only</option>
-          <option value="0.5">Every 30 minutes</option>
-          <option value="1">Every hour</option>
-          <option value="2">Every 2 hours</option>
-          <option value="3">Every 3 hours</option>
-          <option value="4">Every 4 hours</option>
-          <option value="6">Every 6 hours</option>
-          <option value="8">Every 8 hours</option>
-          <option value="12">Every 12 hours</option>
-          <option value="24">Every 24 hours</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="settings-section">
       <div class="settings-label">Browser</div>
       <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:var(--text-dim);">
         <input type="checkbox" id="settings-close-confirm" onchange="settingsSaveCloseConfirm()" style="width:16px;height:16px;cursor:pointer;">
@@ -2713,7 +2886,48 @@ body.chat-sidebar { padding-right:calc(40px + var(--chat-sidebar-width,420px)); 
       </label>
       <p class="chat-api-note" style="margin:12px 0 0;">Push after each session to keep a backup accessible from another device.</p>
     </div>
-    <div class="modal-row" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
+    <!-- ── GitHub backup link ── -->
+    <div class="github-backup-section" id="git-sync-backup-section" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+      <div class="github-backup-label">&#9741;&nbsp; GitHub backup link</div>
+      <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;line-height:1.5;">Save a link to your backup repo here for quick access.</p>
+      <div class="github-backup-row">
+        <input class="github-backup-input" id="sync-github-backup-url" type="url"
+               placeholder="https://github.com/you/repo"
+               oninput="syncGithubBackupUrlInput()" />
+        <span id="sync-github-backup-status" style="font-size:16px;flex-shrink:0;line-height:1;width:18px;text-align:center;" title=""></span>
+        <button class="btn-ghost" id="sync-github-backup-btn"
+                style="display:none;font-size:13px;white-space:nowrap;"
+                onclick="window.open(document.getElementById('sync-github-backup-url').value,'_blank')">
+          &#8599; View
+        </button>
+      </div>
+    </div>
+    <!-- Plain (unencrypted) auto-sync — personal use, no PIN required -->
+    <div id="ts-plain-sync-section" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.07);">
+      <div style="font-size:12px;font-family:monospace;letter-spacing:0.08em;color:rgba(255,255,255,0.3);text-transform:uppercase;margin-bottom:8px;">Plain backup (no encryption)</div>
+      <p style="font-size:13px;color:var(--text-dim);margin:0 0 10px;line-height:1.5;">Pushes your full data as readable JSON to a private GitHub repo. No password required.</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+        <input id="ts-plain-sync-pat" type="password" placeholder="GitHub personal access token" autocomplete="off"
+          style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:5px;padding:7px 10px;font-size:13px;color:var(--text);outline:none;width:100%;box-sizing:border-box;"
+          oninput="tsPlainSyncSaveSettings()">
+        <input id="ts-plain-sync-repo" type="text" placeholder="owner/repo" autocomplete="off"
+          style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:5px;padding:7px 10px;font-size:13px;color:var(--text);outline:none;width:100%;box-sizing:border-box;"
+          oninput="tsPlainSyncSaveSettings()">
+        <input id="ts-plain-sync-path" type="text" placeholder="ts-data.json" autocomplete="off"
+          style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:5px;padding:7px 10px;font-size:13px;color:var(--text);outline:none;width:100%;box-sizing:border-box;"
+          oninput="tsPlainSyncSaveSettings()">
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <button class="btn-primary" style="padding:7px 16px;font-size:13px;" onclick="tsPlainSyncPush(true)">Push now &#x2191;</button>
+        <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;">
+          <input type="checkbox" id="ts-plain-sync-auto" onchange="tsPlainSyncToggleAuto(this.checked)">
+          <span>Auto-sync after each edit</span>
+        </label>
+        <span id="ts-plain-sync-status" style="font-size:11px;color:var(--text-dim);flex:1;text-align:right;"></span>
+      </div>
+    </div>
+
+    <div class="modal-row" style="margin-top:16px;">
       <button class="btn-ghost" onclick="closeGitSyncModal()">Close</button>
     </div>
   </div>
@@ -2747,6 +2961,7 @@ const CLOSE_CONFIRM_KEY     = 'ts-close-confirm-v1';
 const LOCK_ON_HIDE_KEY      = 'ts-lock-on-hide-v1';
 const HIDE_DISC_BANNER_KEY  = 'ts-hide-disc-banner-v1';
 const HIDE_MAP_HINT_KEY     = 'ts-hide-map-hint-v1';
+const INBOX_VISIBLE_KEY     = 'ts-inbox-visible-v1';
 const DEMO_NAME     = "Alex's Inner System";
 const IS_DEMO       = location.hostname.endsWith('github.io');
 const INSTRUCTIONS_VERSION = '2.0.0';
@@ -3450,6 +3665,7 @@ let appState = {
   roleColors: {},
   bodyDiagram: { silhouette: 'human', dotSize: 1.0, defaultStyle: 'glow', dotOverrides: {}, partStyles: {} },
   mapAnnotations: [],
+  inbox: [],
   _instructionsVersion: '2.0.0',
 };
 
@@ -3465,9 +3681,11 @@ function saveState(s) {
     const b = document.getElementById('dirty-banner');
     if (b) b.style.display = 'flex';
   }
-  // Auto-sync debounce
+  // Auto-sync debounce (encrypted)
   clearTimeout(_autoSyncTimer);
   _autoSyncTimer = setTimeout(_autoSyncPushSilent, 300000);
+  // Plain auto-sync debounce
+  _tsSchedulePlainAutoSync();
   clearTimeout(saveState._dbt);
   saveState._dbt = setTimeout(() => { if (typeof renderBodyDiagramPanel === 'function') renderBodyDiagramPanel(appState); }, 300);
 }
@@ -8778,12 +8996,24 @@ function buildSessionCard(session, s) {
   }
   body.appendChild(topRow);
 
-  // Notes
+  // Notes — with edit button for explicit edit mode
+  const notesHeaderRow = document.createElement('div');
+  notesHeaderRow.className = 'ts-jtl-edit-row';
+  notesHeaderRow.style.marginTop = '10px';
+
   const contentLbl = document.createElement('div');
   contentLbl.className = 'ts-jtl-section-lbl';
-  contentLbl.style.marginTop = '10px';
+  contentLbl.style.cssText = 'margin-bottom:0;flex:1;';
   contentLbl.textContent = 'Notes';
-  body.appendChild(contentLbl);
+
+  const editBtn = document.createElement('button');
+  editBtn.className = 'ts-jtl-edit-btn';
+  editBtn.title = 'Edit title & notes';
+  editBtn.innerHTML = '&#9998;'; // ✎ pencil
+
+  notesHeaderRow.appendChild(contentLbl);
+  notesHeaderRow.appendChild(editBtn);
+  body.appendChild(notesHeaderRow);
 
   const contentEl = document.createElement('div');
   contentEl.className = 'session-content-edit';
@@ -8792,6 +9022,89 @@ function buildSessionCard(session, s) {
   contentEl.textContent = session.content || '';
   contentEl.addEventListener('blur', () => { session.content = contentEl.textContent.trim(); saveState(appState); });
   body.appendChild(contentEl);
+
+  // Inline edit form (hidden by default)
+  const editForm = document.createElement('div');
+  editForm.style.display = 'none';
+
+  const titleEditLbl = document.createElement('div');
+  titleEditLbl.className = 'ts-jtl-section-lbl';
+  titleEditLbl.style.cssText = 'margin-bottom:4px;margin-top:0;';
+  titleEditLbl.textContent = 'Title';
+  editForm.appendChild(titleEditLbl);
+
+  const titleInput = document.createElement('input');
+  titleInput.className = 'ts-jtl-edit-input';
+  titleInput.type = 'text';
+  titleInput.placeholder = 'Untitled session';
+  editForm.appendChild(titleInput);
+
+  const notesEditLbl = document.createElement('div');
+  notesEditLbl.className = 'ts-jtl-section-lbl';
+  notesEditLbl.style.cssText = 'margin-bottom:4px;margin-top:10px;';
+  notesEditLbl.textContent = 'Notes';
+  editForm.appendChild(notesEditLbl);
+
+  const contentTextarea = document.createElement('textarea');
+  contentTextarea.className = 'ts-jtl-edit-textarea';
+  contentTextarea.placeholder = 'Session notes...';
+  editForm.appendChild(contentTextarea);
+
+  const actionsRow = document.createElement('div');
+  actionsRow.className = 'ts-jtl-edit-actions';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'ts-jtl-edit-cancel';
+  cancelBtn.textContent = 'Cancel';
+
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'ts-jtl-edit-save';
+  saveBtn.textContent = 'Save';
+
+  actionsRow.appendChild(cancelBtn);
+  actionsRow.appendChild(saveBtn);
+  editForm.appendChild(actionsRow);
+  body.appendChild(editForm);
+
+  function enterEditMode() {
+    titleInput.value = session.title || '';
+    contentTextarea.value = session.content || '';
+    notesHeaderRow.style.display = 'none';
+    contentEl.style.display = 'none';
+    editForm.style.display = 'block';
+    titleInput.focus();
+    titleInput.select();
+  }
+
+  function exitEditMode(save) {
+    if (save) {
+      const newTitle   = titleInput.value.trim();
+      const newContent = contentTextarea.value.trim();
+      // Update in appState.sessions by id
+      const idx = (appState.sessions || []).findIndex(s => s.id === session.id);
+      if (idx !== -1) {
+        appState.sessions[idx].title   = newTitle;
+        appState.sessions[idx].content = newContent;
+        session.title   = newTitle;
+        session.content = newContent;
+      } else {
+        session.title   = newTitle;
+        session.content = newContent;
+      }
+      saveState(appState);
+      // Reflect updated values in the display elements
+      titleEl.textContent   = newTitle;
+      contentEl.textContent = newContent;
+    }
+    editForm.style.display = 'none';
+    notesHeaderRow.style.display = 'flex';
+    contentEl.style.display = '';
+  }
+
+  editBtn.addEventListener('click', e => { e.stopPropagation(); enterEditMode(); });
+  saveBtn.addEventListener('click', e => { e.stopPropagation(); exitEditMode(true); });
+  cancelBtn.addEventListener('click', e => { e.stopPropagation(); exitEditMode(false); });
+  editForm.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); exitEditMode(false); } });
 
   // System read
   const readEl = document.createElement('div');
@@ -10098,6 +10411,16 @@ function switchTab(name) {
   // Map tab needs body locked to viewport height so the canvas fills exactly the remaining space
   document.body.classList.toggle('map-tab-active', name === 'map');
 
+  // Map hint banner: only visible on the connections/map tab
+  const _mapHintBanner = document.getElementById('map-hint-banner');
+  if (_mapHintBanner) {
+    if (name === 'map' && !localStorage.getItem('ts-hide-map-hint-v1')) {
+      _mapHintBanner.style.display = 'flex';
+    } else {
+      _mapHintBanner.style.display = 'none';
+    }
+  }
+
   if (name === 'map') {
     mapVx = {}; mapVy = {};
     requestAnimationFrame(() => renderMap(appState));
@@ -10422,13 +10745,9 @@ function applyUpdate(chatData, importSource) {
 }
 
 // ══ EXPORT ════════════════════════════════════════════════════
-function buildExportJSON() {
+function _buildFullExportBundle() {
   const locks = getLocks();
-  const bundle = {
-    ...appState,
-    _balanceHistory: loadBalHist(),
-  };
-  // Include check-in log so individual timestamps survive an export/import cycle
+  const bundle = { ...appState, _balanceHistory: loadBalHist() };
   const checkinLog = _loadCheckinLog();
   if (Object.keys(checkinLog).length) bundle._checkinLog = checkinLog;
   if (Object.keys(locks).length) bundle._locks = locks;
@@ -10442,38 +10761,35 @@ function buildExportJSON() {
   return bundle;
 }
 
-function openExport() {
-  const data = buildExportJSON();
-  const jsonStr = JSON.stringify(data, null, 2);
-  document.getElementById('export-textarea').value = jsonStr;
+function _buildAIContextBundle() {
+  const full = _buildFullExportBundle();
+  const ctx = Object.assign({}, full);
 
-  const WARN_AMBER = 40000;
-  const WARN_RED = 80000;
-  const total = jsonStr.length;
-  const dataTok = Math.round(total / 4);
-  const instrTok = 3000;
-  const combined = dataTok + instrTok;
-  document.getElementById('export-context-note').textContent =
-    'data.json ~' + dataTok.toLocaleString() + ' tokens + instructions.md ~' + instrTok.toLocaleString() + ' tokens = ~' + combined.toLocaleString() + ' tokens total AI context.';
+  // Strip chatSessions entirely (raw message logs have no value for AI journalling context)
+  delete ctx.chatSessions;
 
-  const warn = document.getElementById('export-warn-box');
-  if (total >= WARN_RED) {
-    warn.style.cssText = 'display:block;padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(160,60,60,0.12);border:1px solid rgba(160,60,60,0.4);color:#c07070;margin:8px 0;';
-    warn.textContent = 'Large export (' + Math.round(total / 1000) + 'KB / ~' + dataTok.toLocaleString() + ' tokens). Consider trimming old session content.';
-  } else if (total >= WARN_AMBER) {
-    warn.style.cssText = 'display:block;padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(200,168,74,0.08);border:1px solid rgba(200,168,74,0.3);color:var(--gold);margin:8px 0;';
-    warn.textContent = 'Growing export (' + Math.round(total / 1000) + 'KB / ~' + dataTok.toLocaleString() + ' tokens). Keep an eye on session size.';
-  } else {
-    warn.style.cssText = 'display:none;';
+  // Strip internal/UI-only fields
+  delete ctx._balanceHistory;
+  delete ctx._checkinLog;
+  delete ctx._locks;
+  delete ctx._chatSettings;
+  delete ctx.bodyDiagram;
+  delete ctx.mapAnnotations;
+  delete ctx.roleColors;
+
+  // Strip chatMessages from journal sessions, keeping only metadata and summaries
+  if (Array.isArray(ctx.sessions)) {
+    ctx.sessions = ctx.sessions.map(s => {
+      const out = Object.assign({}, s);
+      delete out.chatMessages;
+      return out;
+    });
   }
 
-  renderExportPie(data, jsonStr);
-  const encRow = document.getElementById('export-enc-row');
-  if (encRow) encRow.style.display = (_pinActive && localStorage.getItem(ENC_KEY)) ? 'block' : 'none';
-  document.getElementById('export-modal').classList.add('open');
+  return ctx;
 }
 
-function renderExportPie(data, jsonStr) {
+function _renderPie(canvasId, legendId, data, jsonStr) {
   const COLORS = ['#5cb85c','#c8a84a','#7b68ee','#e07070','#60a8c8','#e09050','#a060c0','#60c0a0','#c06080','#8090b0','#b0a060'];
   const keys = Object.keys(data);
   const sized = keys.map(k => ({ k, s: JSON.stringify(data[k]).length })).sort((a, b) => b.s - a.s);
@@ -10485,8 +10801,8 @@ function renderExportPie(data, jsonStr) {
   const segments = [...top];
   if (otherSize > 0) segments.push({ k: 'other', s: otherSize });
 
-  const canvas = document.getElementById('export-pie');
-  const legend = document.getElementById('export-pie-legend');
+  const canvas = document.getElementById(canvasId);
+  const legend = document.getElementById(legendId);
   if (!canvas || !legend) return;
   const ctx = canvas.getContext('2d');
   const cx = 55, cy = 55, r = 48, inner = 28;
@@ -10522,9 +10838,149 @@ function renderExportPie(data, jsonStr) {
   });
 }
 
+function renderExportPie(data, jsonStr) { _renderPie('export-pie', 'export-pie-legend', data, jsonStr); }
+
+function openExport() {
+  // AI context snapshot (left)
+  const aiCtx = _buildAIContextBundle();
+  const aiStr = JSON.stringify(aiCtx, null, 2);
+  document.getElementById('export-textarea').value = aiStr;
+
+  const WARN_AMBER = 40000;
+  const WARN_RED = 80000;
+  const total = aiStr.length;
+  const dataTok = Math.round(total / 4);
+  const instrTok = 3000;
+  const combined = dataTok + instrTok;
+  document.getElementById('export-context-note').textContent =
+    'data.json ~' + dataTok.toLocaleString() + ' tokens + instructions.md ~' + instrTok.toLocaleString() + ' tokens = ~' + combined.toLocaleString() + ' tokens total AI context.';
+
+  const warn = document.getElementById('export-warn-box');
+  if (total >= WARN_RED) {
+    warn.style.cssText = 'display:block;padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(160,60,60,0.12);border:1px solid rgba(160,60,60,0.4);color:#c07070;margin:8px 0;';
+    warn.textContent = 'Large snapshot (' + Math.round(total / 1000) + 'KB / ~' + dataTok.toLocaleString() + ' tokens). Consider trimming old session content.';
+  } else if (total >= WARN_AMBER) {
+    warn.style.cssText = 'display:block;padding:8px 12px;border-radius:4px;font-size:14px;background:rgba(200,168,74,0.08);border:1px solid rgba(200,168,74,0.3);color:var(--gold);margin:8px 0;';
+    warn.textContent = 'Growing snapshot (' + Math.round(total / 1000) + 'KB / ~' + dataTok.toLocaleString() + ' tokens). Keep an eye on session size.';
+  } else {
+    warn.style.cssText = 'display:none;';
+  }
+
+  renderExportPie(aiCtx, aiStr);
+
+  // Full backup (right)
+  const fullBundle = _buildFullExportBundle();
+  const fullStr = JSON.stringify(fullBundle, null, 2);
+  document.getElementById('full-textarea').value = fullStr;
+  _renderPie('full-pie', 'full-pie-legend', fullBundle, fullStr);
+
+  const encRow = document.getElementById('export-enc-row');
+  if (encRow) encRow.style.display = (_pinActive && localStorage.getItem(ENC_KEY)) ? 'block' : 'none';
+  document.getElementById('export-modal').classList.add('open');
+  loadGithubBackupUrl();
+}
+
+function loadGithubBackupUrl() {
+  const url = localStorage.getItem('ts-github-backup-v1') || '';
+  const input = document.getElementById('github-backup-url');
+  const btn   = document.getElementById('github-backup-btn');
+  if (input) input.value = url;
+  if (btn)   btn.style.display = url ? 'inline-block' : 'none';
+}
+
+function saveGithubBackupUrl() {
+  const input = document.getElementById('github-backup-url');
+  const btn   = document.getElementById('github-backup-btn');
+  if (!input) return;
+  const url = input.value.trim();
+  if (url) {
+    localStorage.setItem('ts-github-backup-v1', url);
+    if (btn) btn.style.display = 'inline-block';
+  } else {
+    localStorage.removeItem('ts-github-backup-v1');
+    if (btn) btn.style.display = 'none';
+  }
+}
+
+// ── Sync modal: GitHub backup URL with debounced validation ──
+let _syncGithubDebounceTimer = null;
+
+function _loadSyncGithubBackupUrl() {
+  const url = localStorage.getItem('ts-github-backup-v1') || '';
+  const input = document.getElementById('sync-github-backup-url');
+  const btn   = document.getElementById('sync-github-backup-btn');
+  const status = document.getElementById('sync-github-backup-status');
+  if (input) input.value = url;
+  if (btn) btn.style.display = url ? 'inline-block' : 'none';
+  if (status) { status.textContent = ''; status.title = ''; }
+  if (url) _syncGithubValidate(url);
+}
+
+function syncGithubBackupUrlInput() {
+  const input = document.getElementById('sync-github-backup-url');
+  if (!input) return;
+  const url = input.value.trim();
+  const btn   = document.getElementById('sync-github-backup-btn');
+  const status = document.getElementById('sync-github-backup-status');
+  // Save immediately
+  if (url) {
+    localStorage.setItem('ts-github-backup-v1', url);
+    if (btn) btn.style.display = 'inline-block';
+    // Also keep export-modal input in sync
+    const exportInput = document.getElementById('github-backup-url');
+    const exportBtn   = document.getElementById('github-backup-btn');
+    if (exportInput) exportInput.value = url;
+    if (exportBtn)   exportBtn.style.display = 'inline-block';
+  } else {
+    localStorage.removeItem('ts-github-backup-v1');
+    if (btn) btn.style.display = 'none';
+    const exportInput = document.getElementById('github-backup-url');
+    const exportBtn   = document.getElementById('github-backup-btn');
+    if (exportInput) exportInput.value = '';
+    if (exportBtn)   exportBtn.style.display = 'none';
+  }
+  // Clear status while typing
+  if (status) { status.textContent = ''; status.title = ''; }
+  // Debounce validation
+  clearTimeout(_syncGithubDebounceTimer);
+  if (url) {
+    _syncGithubDebounceTimer = setTimeout(() => _syncGithubValidate(url), 800);
+  }
+}
+
+async function _syncGithubValidate(url) {
+  const status = document.getElementById('sync-github-backup-status');
+  if (!status || !url) return;
+  status.textContent = '…';
+  status.style.color = 'var(--text-dim)';
+  status.title = 'Checking URL…';
+  try {
+    const res = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+    // no-cors always returns opaque (status 0) if reachable, throws if network error
+    status.textContent = '✓';
+    status.style.color = 'var(--help, #5a9c6a)';
+    status.title = 'URL appears reachable';
+  } catch (e) {
+    status.textContent = '✗';
+    status.style.color = '#c07070';
+    status.title = 'URL could not be reached';
+  }
+}
+
 function copyExport() {
   const ta = document.getElementById('export-textarea');
   const btn = document.getElementById('copy-export-btn');
+  const done = () => { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 2000); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(ta.value).then(done).catch(() => { ta.select(); document.execCommand('copy'); done(); });
+  } else {
+    ta.select(); document.execCommand('copy'); done();
+  }
+}
+
+function copyFullExport() {
+  const ta = document.getElementById('full-textarea');
+  const btn = document.getElementById('copy-full-btn');
   const done = () => { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 2000); };
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(ta.value).then(done).catch(() => { ta.select(); document.execCommand('copy'); done(); });
@@ -10539,6 +10995,16 @@ function downloadExport() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = 'team-data.json';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function downloadFullExport() {
+  const ta = document.getElementById('full-textarea');
+  const blob = new Blob([ta.value], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'team-backup.json';
   document.body.appendChild(a); a.click();
   document.body.removeChild(a); URL.revokeObjectURL(url);
 }
@@ -10596,6 +11062,125 @@ function showToast(msg, dur) {
 }
 
 // ══ HELP MODAL ════════════════════════════════════════════════
+
+// ══ INBOX ══════════════════════════════════════════════════════
+function _inboxVisible() {
+  return localStorage.getItem(INBOX_VISIBLE_KEY) === '1';
+}
+
+function toggleInboxPanel() {
+  const visible = !_inboxVisible();
+  localStorage.setItem(INBOX_VISIBLE_KEY, visible ? '1' : '0');
+  _applyInboxVisibility();
+}
+
+function _applyInboxVisibility() {
+  const panel = document.getElementById('inbox-panel');
+  const btn   = document.getElementById('hdr-inbox-btn');
+  if (!panel) return;
+  if (_inboxVisible()) {
+    panel.classList.remove('hidden');
+    btn && btn.classList.add('inbox-active');
+    renderInboxPanel();
+  } else {
+    panel.classList.add('hidden');
+    btn && btn.classList.remove('inbox-active');
+  }
+}
+
+function renderInboxPanel() {
+  const list = document.getElementById('inbox-list');
+  const badge = document.getElementById('inbox-badge');
+  if (!list) return;
+  const inbox = (appState.inbox || []);
+  const unprocessed = inbox.filter(i => !i.processed).sort((a,b) => (a.priority||99)-(b.priority||99));
+  const processed   = inbox.filter(i =>  i.processed).sort((a,b) => (a.priority||99)-(b.priority||99));
+
+  // Update badge
+  if (badge) {
+    if (unprocessed.length > 0) {
+      badge.textContent = unprocessed.length;
+      badge.style.display = '';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  list.innerHTML = '';
+
+  if (inbox.length === 0 || (unprocessed.length === 0 && processed.length === 0)) {
+    list.innerHTML = '<div class="inbox-empty">Inbox clear &#10003;</div>';
+    return;
+  }
+
+  if (unprocessed.length === 0) {
+    list.innerHTML = '<div class="inbox-empty">All items processed &#10003;</div>';
+  }
+
+  function renderItem(item) {
+    const div = document.createElement('div');
+    div.className = 'inbox-item' + (item.processed ? ' processed' : '');
+
+    const typeLabel = {
+      partUpdate: 'Part Update', newPart: 'New Part', selfMoment: 'Self Moment',
+      session: 'Session', memory: 'Memory', general: 'General'
+    }[item.type] || item.type || 'General';
+
+    div.innerHTML = `
+      <div class="inbox-item-top">
+        <span class="inbox-priority" title="Priority">${item.priority || '—'}</span>
+        <span class="inbox-content">${escapeHtml(item.content || '')}</span>
+      </div>
+      <div class="inbox-meta">
+        <span class="inbox-badge-type ${escapeHtml(item.type || 'general')}">${escapeHtml(typeLabel)}</span>
+        ${item.targetPart ? `<span class="inbox-target">→ ${escapeHtml(item.targetPart)}</span>` : ''}
+        ${item.source ? `<span class="inbox-source">${escapeHtml(item.source)}</span>` : ''}
+        ${item.addedDate ? `<span class="inbox-date">${escapeHtml(item.addedDate)}</span>` : ''}
+      </div>
+      ${!item.processed ? `<button class="inbox-done-btn" onclick="markInboxProcessed('${escapeHtml(item.id)}')">Done</button>` : ''}
+    `;
+    return div;
+  }
+
+  unprocessed.forEach(item => list.appendChild(renderItem(item)));
+
+  if (processed.length > 0) {
+    const div = document.createElement('div');
+    div.className = 'inbox-processed-divider';
+    div.textContent = '— processed —';
+    list.appendChild(div);
+    processed.forEach(item => list.appendChild(renderItem(item)));
+  }
+}
+
+function markInboxProcessed(id) {
+  if (!appState.inbox) return;
+  const item = appState.inbox.find(i => i.id === id);
+  if (!item) return;
+  item.processed = true;
+  saveState(appState);
+  renderInboxPanel();
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function initInbox() {
+  _applyInboxVisibility();
+  // Always update the badge even if panel is hidden
+  const badge = document.getElementById('inbox-badge');
+  if (badge) {
+    const unprocessed = (appState.inbox || []).filter(i => !i.processed);
+    if (unprocessed.length > 0) {
+      badge.textContent = unprocessed.length;
+      badge.style.display = '';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}
+
 function openSupportModal() {
   document.getElementById('support-copy-msg').textContent = '';
   document.getElementById('support-modal').classList.add('open');
@@ -11208,6 +11793,7 @@ function _doInit() {
       if (appState.parts && appState.parts.some(p => p.balanceWeight)) snapshotBalance(appState, 'import');
     }
     render(appState);
+    initInbox();
     maybeShowResetUndoBanner();
     // On first load of a new day, always show check-in regardless of dismiss/interval.
     const _todayDate = _pulseEffectiveDate();
@@ -11221,10 +11807,6 @@ function _doInit() {
     if (!localStorage.getItem(HIDE_DISC_BANNER_KEY)) {
       const db = document.getElementById('disclaimer-banner');
       if (db) db.style.display = 'flex';
-    }
-    if (!localStorage.getItem(HIDE_MAP_HINT_KEY)) {
-      const mh = document.getElementById('map-hint-banner');
-      if (mh) mh.style.display = 'flex';
     }
     return;
   }
@@ -11299,13 +11881,11 @@ function _doInit() {
         }
       }
       render(appState);
-      if (!localStorage.getItem(HIDE_MAP_HINT_KEY)) {
-        const mh = document.getElementById('map-hint-banner');
-        if (mh) mh.style.display = 'flex';
-      }
+      initInbox();
     })
     .catch(() => {
       render(appState);
+      initInbox();
     });
 }
 
@@ -13224,7 +13804,10 @@ function openGitSyncModal() {
       : 'Auto-sync: push changes automatically (unlock your password first)';
     _updateGitSyncStatus();
   }
+  tsPlainSyncPopulateModal();
   document.getElementById('git-sync-modal').classList.add('open');
+  // Load GitHub backup URL into sync modal field
+  _loadSyncGithubBackupUrl();
 }
 
 function closeGitSyncModal() {
@@ -13362,6 +13945,96 @@ async function gitSyncToggleAuto(enabled) {
   await saveGitSyncSettings(gs);
   if (enabled) _updateGitSyncStatus();
 }
+
+// ── Plain (unencrypted) auto-sync — team-sheet ─────────────
+const TS_PLAIN_SYNC_KEY = 'ts-plain-sync-v1';
+
+function _tsLoadPlainSyncSettings() {
+  try { return JSON.parse(localStorage.getItem(TS_PLAIN_SYNC_KEY) || '{}'); } catch(e) { return {}; }
+}
+function _tsSavePlainSyncSettings(s) {
+  try { localStorage.setItem(TS_PLAIN_SYNC_KEY, JSON.stringify(s)); } catch(e) {}
+}
+
+function tsPlainSyncSaveSettings() {
+  const s = _tsLoadPlainSyncSettings();
+  const pat  = document.getElementById('ts-plain-sync-pat');
+  const repo = document.getElementById('ts-plain-sync-repo');
+  const path = document.getElementById('ts-plain-sync-path');
+  if (pat)  s.pat  = pat.value.trim();
+  if (repo) { const p = repo.value.trim().split('/'); s.owner = p[0]||''; s.repo = p.slice(1).join('/')||''; }
+  if (path) s.path = path.value.trim() || 'ts-data.json';
+  _tsSavePlainSyncSettings(s);
+}
+
+function tsPlainSyncPopulateModal() {
+  const s = _tsLoadPlainSyncSettings();
+  const pat  = document.getElementById('ts-plain-sync-pat');
+  const repo = document.getElementById('ts-plain-sync-repo');
+  const path = document.getElementById('ts-plain-sync-path');
+  const auto = document.getElementById('ts-plain-sync-auto');
+  if (pat)  pat.value  = s.pat  || '';
+  if (repo) repo.value = (s.owner && s.repo) ? s.owner + '/' + s.repo : '';
+  if (path) path.value = s.path || 'ts-data.json';
+  if (auto) auto.checked = !!s.autoSync;
+  const el = document.getElementById('ts-plain-sync-status');
+  if (el) el.textContent = s.lastPushed ? 'Last pushed: ' + new Date(s.lastPushed).toLocaleString() : '';
+}
+
+async function tsPlainSyncPush(showToast) {
+  const s = _tsLoadPlainSyncSettings();
+  if (!s.pat || !s.owner || !s.repo) {
+    if (showToast) showToast('Fill in your GitHub token and owner/repo first.');
+    return;
+  }
+  const blob = _collectBlob(appState);
+  const payload = JSON.stringify(blob, null, 2);
+  const encodedContent = btoa(unescape(encodeURIComponent(payload)));
+  const apiBase = `https://api.github.com/repos/${encodeURIComponent(s.owner)}/${encodeURIComponent(s.repo)}/contents/${encodeURIComponent(s.path || 'ts-data.json')}`;
+  const headers = { Authorization: 'Bearer ' + s.pat, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' };
+  const body = { message: 'sync: team-sheet plain backup', content: encodedContent };
+  if (s.lastSha) body.sha = s.lastSha;
+  try {
+    let put = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body), referrerPolicy: 'no-referrer' });
+    if (put.status === 409 || (!s.lastSha && put.status === 422)) {
+      const fresh = await fetch(apiBase, { headers: { Authorization: 'Bearer ' + s.pat, Accept: 'application/vnd.github+json' }, referrerPolicy: 'no-referrer' });
+      if (fresh.ok) { const fd = await fresh.json(); s.lastSha = fd.sha; body.sha = fd.sha; }
+      put = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body), referrerPolicy: 'no-referrer' });
+    }
+    if (!put.ok) { const e = await put.json().catch(()=>({})); throw new Error(e.message || 'status ' + put.status); }
+    const pd = await put.json();
+    s.lastSha = pd.content?.sha || s.lastSha;
+    s.lastPushed = new Date().toISOString();
+    _tsSavePlainSyncSettings(s);
+    const el = document.getElementById('ts-plain-sync-status');
+    if (el) el.textContent = 'Last pushed: ' + new Date(s.lastPushed).toLocaleString();
+    if (showToast && typeof showToast === 'function') showToast('Pushed to ' + s.owner + '/' + s.repo);
+  } catch(err) {
+    if (showToast && typeof showToast === 'function') showToast('Plain sync failed: ' + err.message);
+  }
+}
+
+function tsPlainSyncToggleAuto(enabled) {
+  tsPlainSyncSaveSettings();
+  const s = _tsLoadPlainSyncSettings();
+  if (enabled && (!s.pat || !s.owner || !s.repo)) {
+    const el = document.getElementById('ts-plain-sync-auto');
+    if (el) el.checked = false;
+    return;
+  }
+  s.autoSync = enabled;
+  _tsSavePlainSyncSettings(s);
+}
+
+let _tsPlainSyncTimer = null;
+function _tsSchedulePlainAutoSync() {
+  clearTimeout(_tsPlainSyncTimer);
+  _tsPlainSyncTimer = setTimeout(async () => {
+    const s = _tsLoadPlainSyncSettings();
+    if (s.autoSync && s.pat && s.owner && s.repo) await tsPlainSyncPush(false);
+  }, 300000);
+}
+// ── end TS plain sync ────────────────────────────────────────
 
 let _autoSyncTimer = null;
 let _autoSyncInFlight = false;
